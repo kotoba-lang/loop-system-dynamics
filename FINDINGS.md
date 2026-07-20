@@ -217,6 +217,48 @@ formally sorts. This is a real limitation of the scoring model worth stating
 plainly rather than letting the ranking imply an execution order it doesn't
 actually support.
 
+## 4e. Direct verification contradicts 4d -- reported as an open, unresolved tension, not resolved either way
+
+The natural next step after 4d was to check reality directly rather than
+keep re-analyzing the same secondary data source. A live check against
+`https://etzhayyim.com` (2026-07-21): 20/20 homepage requests returned 200,
+and all 6 other real paths from the ledger's own top-pages list
+(`/robots.txt`, `/_shell/home-feed.js`, `/organism/health.json`,
+`/organism/pulse.json`, `/xrpc/com.etzhayyim.apps.kotoba.stats`,
+`/system-dynamics`) also returned 200. Zero errors in 26 direct requests.
+
+**This flatly contradicts** the canvas-ledger's most recent observation
+(2026-07-19T22:05Z, 85% server-error rate on the same paths). The odds of 20
+consecutive successes against a genuinely 80%+ failure population are
+astronomically small (~(0.2)^20) -- this is not sampling noise, something is
+structurally different between the two measurements.
+
+Three candidate explanations, **none confirmed, presented without picking a
+winner**:
+
+1. Whatever caused the error rate was fixed sometime between 2026-07-19 and
+   this check.
+2. The ledger's 5xx measurement counts a different, wider population of
+   requests than a plain browser-like GET captures (unusual HTTP methods,
+   headers, User-Agents, or Cloudflare-internal probe traffic that a curl
+   check never triggers).
+3. The failure is genuinely intermittent or time-of-day-dependent -- the
+   ledger's own history isn't perfectly flat either: two anomalous dips to
+   44% (07-15) and 46% (07-17) interrupt an otherwise steady 84-92% pattern,
+   so *some* real variability clearly exists even within the ledger's own
+   data.
+
+**4d's framing ("now the single most plausible dominant explanation for
+F2") was premature.** This finding should be read as: a real, sustained,
+cross-product-verified anomaly existed in the secondary data (canvas-ledger)
+as recently as 2 days before this check, and a direct check right now does
+not reproduce it. Both facts are real; they have not been reconciled. The
+honest status of the "why does F2 near-zero" question is: still open, now
+with one hypothesis (site reliability) that gained strong support and then
+immediately lost it under direct verification -- which is itself the kind of
+result that should increase, not decrease, confidence in checking claims
+directly rather than stacking inference on secondary data indefinitely.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
