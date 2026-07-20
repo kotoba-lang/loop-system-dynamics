@@ -410,6 +410,25 @@ their own separate, more distributed rhythm. Still not confirmed as a single
 named event -- but this is now a real, cross-checked, structural pattern
 rather than a single-org coincidence.
 
+**A third org extends the pattern from binary to a gradient, and a re-check
+~36h later shows the event does not recur.** `gftdcojp` (105 repos: 55
+`ai-gftd-*`, 6 `cloud-*`, 2 `app-*`, 42 other -- a *mixed* portfolio of a
+moderate number of actively-developed products, not a swarm of
+per-entity-classified repos) shows 52/105 (49.5%) pushed in the same 07-17 to
+07-19 window -- elevated, but at roughly half the concentration of
+cloud-itonami (80.1%) or etzhayyim-actors (94.6%). That fits a cleaner
+hypothesis than "workspace-wide event, present or absent": concentration
+magnitude tracks how much of an org's repo count is fleet-style small
+classified repos versus a handful of substantive products, on a gradient
+rather than a switch. Separately, re-running the identical `pushed_at` pull
+against cloud-itonami and etzhayyim-actors ~36 hours after first observing
+them returned **byte-for-byte identical distributions** -- zero new pushes
+landed in either fleet in the interim (cloud-itonami: 18 more on 07-20, 0
+since; etzhayyim-actors: 3 more on 07-20, 0 since). A recurring batch cadence
+would show fresh concentration reappearing every few days; this doesn't,
+which supports reading 07-17 to 07-19 as one completed migration event
+rather than an ongoing pattern.
+
 ## 7. The model updates its own recommendations from what it measures
 
 Once F2 had a real number (finding #1), a new candidate intervention was
