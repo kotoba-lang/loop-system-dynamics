@@ -44,6 +44,23 @@ reference organizations), evaluates etzhayyim's candidate interventions and
 `target/loop-system-dynamics-report.md`, and appends one line to
 `ledger/loop-system-dynamics-ledger.edn`.
 
+## Run it with live traffic (no hand-copying numbers first)
+
+```bash
+# from a superproject checkout (needs 90-docs/business/metrics/*.edn):
+nbb --classpath "../dynamics/src:src" bin/refresh_and_run.cljs <superproject-root> <YYYY-MM-DD>
+```
+
+`refresh-from-bmc-metrics` re-reads the live BMC metrics files for the
+entities in `bmc-tracked-entities` (currently etzhayyim + 7 internal
+com-junkawasaki-ecosystem products) and merges fresh traffic into the
+observation before evaluate/decide/act/record-evidence run, appending to
+each entity's `:website-uniques-7d-history` only when the value actually
+changed. This is in-memory only -- it does not rewrite
+`resources/entities-seed.edn` (which stays a hand-curated, periodically
+updated snapshot); fold a genuinely new finding back into the seed by hand
+when it is worth keeping permanently, same as every prior cycle.
+
 ## Test
 
 ```bash
@@ -56,13 +73,15 @@ Add an entity to `resources/entities-seed.edn` -- the schema has no ceiling on
 how many entities it can hold or what kind of organization they are. The only
 requirement is that every stock value carry `:source` and (implicitly)
 `:as-of` at the top of the file. Fabricated numbers are the one thing this
-repository refuses to hold.
+repository refuses to hold. To wire a new entity into the live-refresh path
+too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
 
 ## Next (documented, not yet built)
 
-- Wire `observe` to a live `kqe` (kotoba-lang/kqe) query or a GitHub API pull
-  instead of the static seed, without changing the `evaluate`/`decide`/`act`
-  contract.
+- `refresh-from-bmc-metrics` covers the *file-based* half of "live source" --
+  it still only reads local BMC files, not a `kqe` (kotoba-lang/kqe) query or
+  a live GitHub API pull for the repo-count/west-registration stocks. Those
+  remain manual, hand-copied-into-the-seed numbers.
 - A `skill-loop-system-dynamics` (agent-instruction package) and/or
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
   taxonomy, once a resident CI schedule is wanted -- this repo's core stays
