@@ -120,6 +120,33 @@ human weekly uniques against **34,381 agent runs** in the same window --
 usage there is overwhelmingly machine-driven, not the human-traffic-without-
 conversion pattern at all.
 
+## 4b. For cloud-murakumo, the checkout mechanism itself is confirmed NOT the cause
+
+`canvas-ledger.edn` (seq 774-775, 2026-07-06) records that cloud-murakumo's
+Stripe checkout was independently verified working end-to-end two weeks
+before the latest zero-conversion observation: production Checkout issuing
+real `cs_live_` sessions, and a full test-mode purchase (the 4242 test card)
+walked through session-creation -> card-entry -> success-redirect. Despite
+that, the funnel data in finding #4 shows 0 paid conversions in the most
+recent observation, 6 observations after usage had already reached 200 real
+inference runs.
+
+This rules out "the checkout button is broken" as the explanation for at
+least this one product. The bottleneck is upstream of payment processing --
+discovery, trust, pricing, or motivation -- not the plumbing. Whether the
+same is true for cloud-itonami, club-shinshi, and etzhayyim (none of which
+have an equivalent "checkout independently verified working" data point in
+the ledger yet) is an open question, not an assumption this finding
+generalizes to.
+
+Also worth noting: `canvas-ledger.edn` independently proposed adding
+finer-grained funnel instrumentation ("計器 (funnel): checkout 開始 の計測")
+for exactly the same reason `dynamics.core`'s
+`instrument-trackable-first-step` intervention (finding #7) was proposed for
+etzhayyim -- two unrelated systems in this workspace converged on the same
+diagnostic principle (add an intermediate funnel stage to localize where a
+conversion actually breaks) without either being aware of the other.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism

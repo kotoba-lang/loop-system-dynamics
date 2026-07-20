@@ -180,8 +180,11 @@
             :website-requests-7d {:value 70512}
             :funnel {:value {:visits 689 :real-inference-runs 200 :paid-credits-purchases 0
                               :visits->runs-pct 29 :runs->paid-pct 0}
-                     :source "90-docs/business/canvas-ledger.edn, latest cloud-murakumo funnel observation, 2026-07-19T22:06:22Z"}}
-   :note "0% runs->paid conversion held across at least 6 consecutive real observations as visits grew 418->689 and real inference runs grew 4->200 -- not a single-snapshot artifact, a sustained zero"}
+                     :source "90-docs/business/canvas-ledger.edn, latest cloud-murakumo funnel observation, 2026-07-19T22:06:22Z"}
+            :checkout-mechanism-verified {:value true
+                                           :evidence "2026-07-06: Stripe Checkout confirmed live in production (#store/* issuing real cs_live_ sessions) AND a full test-mode purchase (4242 test card) verified session-creation -> card-entry -> success-redirect end-to-end"
+                                           :source "90-docs/business/canvas-ledger.edn seq 774-775, 2026-07-06"}}
+   :note "0% runs->paid conversion held across at least 6 consecutive real observations as visits grew 418->689 and real inference runs grew 4->200 -- not a single-snapshot artifact, a sustained zero. AND the checkout mechanism itself was independently verified working end-to-end 2 weeks before the latest zero-conversion observation -- this rules out 'checkout is broken' as the cause. The bottleneck is confirmed to be upstream of checkout (discovery, trust, pricing, or motivation), not the payment plumbing"}
 
   {:id :club-shinshi
    :org "jk-luxury"
