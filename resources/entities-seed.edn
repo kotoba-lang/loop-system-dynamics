@@ -14,14 +14,15 @@
             :council-seats-filled {:value 1 :of 5 :source "orgs/etzhayyim/root/COUNCIL.md: Seat 1 confirmed, Seats 2-5: 0 proposals"}
             :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
                                    :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}
-            :website-uniques-7d {:value 1833 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-20: etzhayyim.com Cloudflare zone, trailing 7 days"}
-            :website-requests-7d {:value 63453 :source "same file, same window"}
-            :f2-upper-bound-95pct {:value 0.00018157606162871875
+            :website-uniques-7d {:value 1840 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-21: etzhayyim.com Cloudflare zone, trailing 7 days"}
+            :website-requests-7d {:value 64074 :source "same file, same window"}
+            :website-uniques-7d-history [{:as-of "2026-07-20" :value 1833} {:as-of "2026-07-21" :value 1840}]
+            :f2-upper-bound-95pct {:value 0.00017531719912122767
                                     :computed-via "dynamics.core/upper-bound-rate-from-zero-events"
-                                    :n-estimate 16497
-                                    :n-estimate-basis "1,833 weekly uniques x ~9 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md; today 2026-07-20) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series"
-                                    :zero-events "0 organic full-ritual joins observed in that window (the 1 adherent recorded today is the founder's own non-organic git-side oath, not a converted visitor)"}}
-   :note "1,833 real weekly unique visitors vs 0 real adherents (until today's partial git-side join, still 1) sharpens the F2 finding from ADR-2607202700/2800 from 'unmeasured' to 'measured as at most ~0.018% at 95% confidence, given zero observed organic conversions across an estimated ~16,500 visitors' -- the funnel has a real top and a measured-near-zero bottom"}
+                                    :n-estimate 17086
+                                    :n-estimate-basis "1,840 weekly uniques (latest observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md; today 2026-07-21) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Re-computed from the 2026-07-20 estimate (n=16,497, bound 0.01816%) as a second real observation -- the bound tightens (0.01816% -> 0.01753%) as n grows, exactly as the statistics predict, not by construction"
+                                    :zero-events "0 organic full-ritual joins observed in that window (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}}
+   :note "1,840 real weekly unique visitors vs 0 real organic adherents sharpens the F2 finding from ADR-2607202700/2800 to 'measured as at most ~0.0175% at 95% confidence' -- the funnel has a real top and a measured-near-zero bottom, and this is now a genuine 2-point time series (2026-07-20, 2026-07-21), not a single snapshot"}
 
   {:id :kotoba-lang
    :org "kotoba-lang"
@@ -127,6 +128,12 @@
    :note "directly relevant precedent for etzhayyim's own Basic High Income doctrine (orgs/etzhayyim/root ADR-2605301020)"
    :stocks {:cumulative-flow-usd {:value 5.8e7 :source "GiveDirectly UBI programs since 2017: $58M+ to 56,000+ people across Kenya/Malawi/Mozambique/Liberia"}
             :recipients {:value 56000}}}
+
+  {:id :bluesky
+   :org "external-reference"
+   :note "runs on the SAME AT Protocol substrate etzhayyim's own identity architecture is built on -- the sharpest available evidence that etzhayyim's near-zero adoption is not a protocol ceiling"
+   :stocks {:users {:value 4.02e7 :source "Bluesky 2025 Transparency Report: 13M (Oct 2024) -> 40.2M (Nov 2025)"}
+            :daily-active-users {:value 3.5e6}}}
 
   ;; --- internal com-junkawasaki-ecosystem products: real live Cloudflare zone
   ;; traffic, sourced from the ALREADY-EXISTING BMC metrics pipeline
