@@ -23,7 +23,9 @@
   {:id :cloud-itonami
    :org "cloud-itonami"
    :stocks {:repos {:value 1331 :source "gh api orgs/cloud-itonami/repos --paginate, 2026-07-20"}
-            :west-registered {:value 1150 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 86.4% coverage"}}}
+            :west-registered {:value 1150 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 86.4% coverage"}
+            :repos-by-prefix {:value {:isic 457 :isco 340 :assoc 78 :municipality 59 :other 397}
+                               :source "gh api orgs/cloud-itonami/repos --paginate, name-prefix breakdown, 2026-07-20"}}}
 
   {:id :etzhayyim-actors
    :org "etzhayyim"
@@ -84,4 +86,14 @@
   {:id :online-gambling-industry
    :org "external-reference"
    :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
-   :stocks {:annual-flow-usd {:value 9.5e10 :source "Custom Market Insights / Precedence / Statista 2025, $88-105B range, $95B midpoint"}}}]}
+   :stocks {:annual-flow-usd {:value 9.5e10 :source "Custom Market Insights / Precedence / Statista 2025, $88-105B range, $95B midpoint"}}}
+
+  {:id :givewell
+   :org "external-reference"
+   :stocks {:annual-flow-usd {:value 4.18e8 :source "GiveWell 2025 grantmaking year (Feb 2025-Jan 2026): $418M approved, 131 grants to 69 orgs"}
+            :donors {:value 3.0e4 :source "GiveWell 2024 metrics year: 30,000+ donors"}}}
+
+  {:id :global-fossil-fuel-industry
+   :org "external-reference"
+   :note "non-digital extractive archetype, largest annual-flow-usd in the catalog by a wide margin -- included specifically to test whether flow size alone predicts structural-strength (it does not, see dynamics.core/loop-archetypes source comment)"
+   :stocks {:annual-flow-usd {:value 8.32e12 :source "Precedence Research 2025: global fossil fuels market ~$8.32T"}}}]}
