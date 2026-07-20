@@ -39,6 +39,79 @@
   ([seed-path] (slurp-edn seed-path)))
 
 ;; ---------------------------------------------------------------------------
+;; live refresh (first partial fulfillment of the README "Next" item)
+;; ---------------------------------------------------------------------------
+
+(def bmc-tracked-entities
+  "Entity :id -> BMC metrics filename (without .edn) that refresh-from-bmc-metrics
+   knows how to re-observe from a superproject checkout's
+   90-docs/business/metrics/. Extend this map to track more products; it is
+   the only place that needs to change."
+  {:etzhayyim "etzhayyim"
+   :cloud-manimani "cloud-manimani"
+   :cloud-itonami-saas-product "cloud-itonami"
+   :ai-gftd-apex "ai-gftd-apex"
+   :app-aozora "app-aozora"
+   :cloud-murakumo "cloud-murakumo"
+   :club-shinshi "club-shinshi"
+   :net-kotobase "net-kotobase"
+   :network-isekai "network-isekai"})
+
+(defn- read-bmc-traffic
+  "{:uniques-7d _ :requests-7d _} from a live BMC metrics file, or nil if the
+   file is missing or has no zone traffic data (e.g. app-aozora-yoro,
+   nexus-x402 -- some products genuinely have no Cloudflare zone yet)."
+  [bmc-metrics-dir filename]
+  (try
+    (let [d (slurp-edn (path/join bmc-metrics-dir (str filename ".edn")))
+          uniques (get-in d [:zone :uniques-7d-sum])
+          requests (get-in d [:zone :requests-7d])]
+      (when (and uniques requests)
+        {:uniques-7d uniques :requests-7d requests}))
+    (catch :default _ nil)))
+
+(defn- append-history-point [history new-point]
+  (let [history (or history [])]
+    (if (= (:value (last history)) (:value new-point))
+      history ;; unchanged since the last observation -- don't pad history with duplicates
+      (conj history new-point))))
+
+(defn refresh-from-bmc-metrics
+  "For every entity in bmc-tracked-entities, re-reads its live BMC metrics
+   file (from a superproject checkout at bmc-metrics-dir) and merges fresh
+   :website-uniques-7d / :website-requests-7d into the entity, appending to
+   :website-uniques-7d-history when the value actually changed. Entities not
+   in bmc-tracked-entities, or files this can't read, pass through
+   unchanged -- this never fabricates a number for an entity it can't
+   actually re-observe (same invariant `observe` itself carries).
+
+   In-memory only: it does NOT rewrite resources/entities-seed.edn (which
+   stays a hand-curated, commented, periodically-updated snapshot -- an
+   automated pr-str rewrite would destroy that formatting for no real
+   benefit). Call this to get a cycle that reflects right-now traffic
+   without hand-copying numbers first; fold genuinely new findings back into
+   the seed by hand when they're worth keeping as a permanent snapshot, the
+   same as every prior cycle in this loop's history."
+  [entities bmc-metrics-dir as-of-today]
+  (mapv
+   (fn [entity]
+     (if-let [filename (get bmc-tracked-entities (:id entity))]
+       (if-let [{:keys [uniques-7d requests-7d]} (read-bmc-traffic bmc-metrics-dir filename)]
+         (update entity :stocks
+                 (fn [stocks]
+                   (-> stocks
+                       (assoc :website-uniques-7d
+                              {:value uniques-7d
+                               :source (str "90-docs/business/metrics/" filename ".edn, " as-of-today " (live refresh via refresh-from-bmc-metrics)")})
+                       (assoc :website-requests-7d {:value requests-7d})
+                       (assoc :website-uniques-7d-history
+                              (append-history-point (:website-uniques-7d-history stocks)
+                                                     {:as-of as-of-today :value uniques-7d})))))
+         entity)
+       entity))
+   entities))
+
+;; ---------------------------------------------------------------------------
 ;; evaluate
 ;; ---------------------------------------------------------------------------
 
@@ -148,6 +221,24 @@
          report-path "target/loop-system-dynamics-report.md"
          ledger-path "ledger/loop-system-dynamics-ledger.edn"}}]
   (let [observation (observe seed-path)
+        evaluation (evaluate observation)
+        decision (decide evaluation)]
+    (act! observation evaluation decision report-path)
+    (record-evidence! observation decision ledger-path)
+    (assoc decision :report-path report-path :ledger-path ledger-path)))
+
+(defn run-cycle-with-live-refresh!
+  "Same cycle as run-cycle!, but observation is refreshed from live BMC
+   metrics (refresh-from-bmc-metrics) before evaluate/decide/act/
+   record-evidence run -- so the report and ledger entry reflect right-now
+   traffic, not whatever was last hand-copied into the seed."
+  [{:keys [seed-path report-path ledger-path bmc-metrics-dir as-of-today]
+    :or {seed-path "resources/entities-seed.edn"
+         report-path "target/loop-system-dynamics-report.md"
+         ledger-path "ledger/loop-system-dynamics-ledger.edn"}}]
+  {:pre [(some? bmc-metrics-dir) (some? as-of-today)]}
+  (let [raw-observation (observe seed-path)
+        observation (update raw-observation :entities refresh-from-bmc-metrics bmc-metrics-dir as-of-today)
         evaluation (evaluate observation)
         decision (decide evaluation)]
     (act! observation evaluation decision report-path)
