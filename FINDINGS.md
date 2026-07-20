@@ -345,6 +345,21 @@ that produce this band do not.
 None of this changes the headline "N repos" number anyone would quote, but it
 changes what that number means.
 
+**A deeper cut on etzhayyim's 613 `com-etzhayyim-*` actor repos**: only 2 are
+literally empty (`size` 0), so "613 real repos" is at least true in the sense
+that content exists. But their `pushed_at` dates cluster almost entirely into
+a single 3-day window: 413 (67.4%) last pushed 2026-07-19, another 105 on
+07-18, 62 on 07-17 -- **580/613 (94.6%) inside 3 days**, versus a scattered
+handful (26, 3, 3, 1) outside it. This is not what 613 independently-active
+projects would look like; it is the signature of one coordinated batch
+operation sweeping the fleet. The dates line up with the Phase-0
+numbered-layer-directory migration described in
+`orgs/etzhayyim/root/CLAUDE.md` (ADR-2607171100 -- moving components out of
+the monorepo into individually west-registered repos), though this was not
+independently confirmed as the specific cause. Either way, "613 actor repos"
+and "613 actively, independently developed actors" are not the same claim,
+and the raw count alone doesn't distinguish them.
+
 ## 7. The model updates its own recommendations from what it measures
 
 Once F2 had a real number (finding #1), a new candidate intervention was

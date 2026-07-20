@@ -69,9 +69,15 @@
 
   {:id :etzhayyim-actors
    :org "etzhayyim"
-   :note "com-etzhayyim-* actor repos, counted separately from the etzhayyim/root monorepo entity above"
    :stocks {:actor-repos {:value 613 :source "gh api orgs/etzhayyim/repos --paginate | grep ^com-etzhayyim-, 2026-07-20"}
-            :west-registered-org-total {:value 555 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: whole etzhayyim org (root + actors), 90.5% of GitHub org total"}}}
+            :west-registered-org-total {:value 555 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: whole etzhayyim org (root + actors), 90.5% of GitHub org total"}
+            :size-distribution-kb {:value {:total 218893 :mean 357 :median 32 :max 36133 :zero-size-count 2}
+                                    :source "gh api orgs/etzhayyim/repos --paginate, .size field across all 613 com-etzhayyim-* repos, 2026-07-21"}
+            :push-recency-concentration
+            {:value {"2026-07-19" 413 "2026-07-18" 105 "2026-07-17" 62 "2026-07-10" 26 "2026-07-20" 3 "2026-07-16" 3 "2026-07-14" 1}
+             :source "gh api orgs/etzhayyim/repos --paginate, .pushed_at date across all 613 com-etzhayyim-* repos, 2026-07-21"
+             :interpretation "580/613 (94.6%) of these repos were last pushed within a single 3-day window (07-17 to 07-19), 413 of them (67.4%) on 07-19 alone. This is not the shape of 613 independently-maintained projects with organic, staggered activity -- it is the signature of a single coordinated batch operation sweeping across nearly the entire actor fleet. Consistent with the Phase-0 numbered-layer-dir migration described in orgs/etzhayyim/root/CLAUDE.md (ADR-2607171100: moving components out of the monorepo into individual west-registered repos, tombstoned with *-MOVED.edn) landing across the fleet in that window -- not confirmed as the specific cause, but the dates line up and no other explanation was checked"}}
+   :note "com-etzhayyim-* actor repos, counted separately from the etzhayyim/root monorepo entity above. Only 2/613 are literally empty (size=0); the rest carry real content (median 32KB). But 'real content' and 'independently active' are different claims -- the push-recency data shows this fleet's apparent activity is dominated by one recent 3-day batch event, not steady per-actor development"}
 
   {:id :gftdcojp
    :org "gftdcojp"
