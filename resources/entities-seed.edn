@@ -22,6 +22,14 @@
                                     :n-estimate 17625
                                     :n-estimate-basis "1,898 weekly uniques (4th real observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Bound has now tightened across 4 real observations: 0.01816% -> 0.01753% -> 0.01743% -> 0.01700%, monotonically as n grows, which is the statistics behaving correctly, not a construction artifact"
                                     :zero-events "0 organic full-ritual joins observed across all 4 observation windows (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}
+            :github-social-engagement
+            {:value {:root-repo {:stargazers 0 :watchers 0 :forks 1 :open-issues 89}
+                     :fork-owner "dir445"
+                     :fork-owner-org-membership "dir445 IS listed in `gh api orgs/etzhayyim/members` -- an org insider, not an external adopter"
+                     :other-members-checked ["com-junkawasaki" "tanaka4B2"]
+                     :sampled-actor-repos-checked {:count-with-any-star-or-external-fork 0 :sample "5 com-etzhayyim-* repos via search API, all 0 stars/0 forks"}}
+             :source "gh api repos/etzhayyim/root + gh api repos/etzhayyim/root/stargazers + gh api repos/etzhayyim/root/forks + gh api users/dir445 + gh api orgs/etzhayyim/members + gh api search/repositories?q=org:etzhayyim&sort=stars, 2026-07-21"
+             :interpretation "Contrast with kotoba-lang's :github-social-engagement (on the kotoba-lang entity above): kotoba-lang has 3 confirmed-external stars from real outside developers; etzhayyim has zero external GitHub-level engagement of any kind across the org (root repo and a 5-repo actor sample) -- the single fork traces to an org member, not an outsider. This is a second, independent line of evidence (alongside the F2 website-funnel finding) pointing the same direction: kotoba-lang, a general-purpose language/tooling project, has drawn a handful of real external eyes; etzhayyim, whose stated purpose is drawing adherents, has drawn none by this measure either. Small-sample caveat applies equally to both sides"}
             :path-level-status-mix {:value {:ok 480 :server-error-5xx 800 :client-error-4xx 668}
                                      :total 1948
                                      :ok-pct 24.6 :server-error-pct 41.1 :client-error-pct 34.3
@@ -60,8 +68,18 @@
             :repos-by-prefix {:value {:com-vendor-spec 1049 :kami-engine 97 :org-standards-spec 85 :loop-skill-action-taxonomy 2 :other-substrate 416}
                                :source "gh api orgs/kotoba-lang/repos --paginate, name-prefix breakdown, 2026-07-21"}
             :push-recency-top-days {:value {"2026-07-08" 487 "2026-07-20" 419 "2026-07-16" 199 "2026-07-10" 153 "2026-07-09" 99}
-                                     :source "gh api orgs/kotoba-lang/repos --paginate .pushed_at, 2026-07-21"}}
-   :note "63.6% of kotoba-lang's repo count is com-* vendor-integration spec repos, not core substrate work. Push-recency shows MULTIPLE distinct spikes spread across different days (07-08, 07-20, 07-16, 07-10, 07-09), not one dominant window -- a different rhythm from etzhayyim's actors and cloud-itonami below, consistent with recurring maintenance batches on an actively-evolving substrate rather than a single one-time migration event"}
+                                     :source "gh api orgs/kotoba-lang/repos --paginate .pushed_at, 2026-07-21"}
+            :github-social-engagement
+            {:value {:sampled-flagship-repos {:kotoba 0 :kototama 0 :compiler 0 :dynamics 0 :loop-system-dynamics 0 :kqe 0 :loop-ux-kaizen 0}
+                     :org-wide-star-total 3
+                     :starred-repos {:kotoba-v2025 2 :kotoba-lang-meta 1}
+                     :stargazer-accounts ["He-Pin (954 followers, Akka/Pekko/Netty/Rust/Scala @taobao)"
+                                          "joakim (52 followers, \"Offline first\")"
+                                          "burinc (29 followers, \"Chief cheerleader for all things Clojure\")"]
+                     :org-membership-check "none of the 3 stargazers appear in `gh api orgs/kotoba-lang/members` or any other workspace org's member list -- genuinely external"}
+             :source "gh api search/repositories?q=org:kotoba-lang&sort=stars (full org, 1,649 repos, results exhausted at 0 stars by rank 100) + gh api repos/.../stargazers + gh api users/<login>, 2026-07-21"
+             :interpretation "Real, small, but genuine external validation exists -- 3 real external developers (not org-affiliated, one explicitly self-describing as a Clojure enthusiast, which matches kotoba-lang's implementation language) starred 2 of kotoba-lang's 1,649 repos. This is the first confirmed organic external engagement signal found anywhere in this workspace's analysis to date. It is also tiny relative to the org's size: 3 stars total, concentrated on 2 repos, with the other 1,647 (including this analysis's own 7-repo flagship sample) at zero. Both things are true simultaneously and neither should be flattened into the other: 'zero meaningful traction yet' and 'not literally zero -- some real external people have noticed' are the honest joint description"}}
+   :note "63.6% of kotoba-lang's repo count is com-* vendor-integration spec repos, not core substrate work. Push-recency shows MULTIPLE distinct spikes spread across different days (07-08, 07-20, 07-16, 07-10, 07-09), not one dominant window -- a different rhythm from etzhayyim's actors and cloud-itonami below, consistent with recurring maintenance batches on an actively-evolving substrate rather than a single one-time migration event. First confirmed real external interest signal in this whole analysis: 3 genuine external GitHub users starred 2 of its 1,649 repos (see :github-social-engagement)"}
 
   {:id :cloud-itonami
    :org "cloud-itonami"

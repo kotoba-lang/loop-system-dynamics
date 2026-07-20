@@ -22,6 +22,7 @@ Cloudflare traffic. Across three real observations of etzhayyim.com:
 | 2026-07-20 | 1,833 | 16,497 | 0.01816% |
 | 2026-07-21 (1st) | 1,840 | 17,086 | 0.01753% |
 | 2026-07-21 (2nd) | 1,851 | 17,188 | 0.01743% |
+| 2026-07-21 (3rd) | 1,898 | 17,625 | 0.01700% |
 
 The bound tightens monotonically as n grows -- exactly what the statistics
 predict, not a construction artifact. This is not a point estimate of the
@@ -34,6 +35,40 @@ of this analysis (the hand-built leverage artifact, ADR-2607202800's Tier
 list, ADR-2607203000's instrumentation thesis) *argued* that measurement was
 the blocker. This is the first time the analysis *has* a number instead of an
 argument for one.
+
+## 1b. A second, independent external-validation measurement: GitHub social signals
+
+F2 measures website-visitor-to-adherent conversion. This cycle adds a
+different, complementary measurement of external interest: GitHub-level
+social signals (stars, forks, watchers) across the whole workspace, which
+exist independently of etzhayyim.com and can't be explained by any website
+funnel-design choice.
+
+Checked directly via the GitHub API (`gh api search/repositories?q=org:...`,
+exhausted to rank 100 by star count -- confirming zero beyond that point for
+these org sizes): **etzhayyim has zero external GitHub engagement.** The
+org's root repo has 0 stars, 0 watchers, and exactly 1 fork -- and that fork
+traces to `dir445`, who is a listed member of the `etzhayyim` GitHub org
+itself, not an outside adopter. A 5-repo sample of `com-etzhayyim-*` actor
+repos found the same: zero stars or external forks anywhere.
+
+**kotoba-lang, by contrast, has real (if tiny) external validation.** Across
+1,649 repos, exactly 3 stars exist, on 2 repos, from 3 named individuals --
+`He-Pin` (954 followers, Akka/Pekko/Netty/Rust/Scala at Taobao), `joakim`
+(52 followers, "Offline first"), and `burinc` (29 followers, self-described
+"Chief cheerleader for all things Clojure" -- directly on-topic, since
+kotoba-lang is Clojure). None of the three appear on any workspace org's
+member list; this is genuine, if minimal, external interest.
+
+Two things are both true and neither should be collapsed into the other:
+kotoba-lang has essentially no external traction relative to its 1,649-repo
+size (3 stars total, 1,646 repos at zero) -- **and** it has drawn real
+outside eyes that etzhayyim, by the identical measurement, has not drawn
+any of. This is a second, independent line of evidence (alongside F2)
+pointing the same direction: a general-purpose language/tooling project has
+found a handful of real strangers who noticed it organically; an evangelism
+project whose stated purpose is drawing adherents has found none, by this
+measure, at all.
 
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
