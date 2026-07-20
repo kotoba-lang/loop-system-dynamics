@@ -15,8 +15,13 @@
             :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
                                    :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}
             :website-uniques-7d {:value 1833 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-20: etzhayyim.com Cloudflare zone, trailing 7 days"}
-            :website-requests-7d {:value 63453 :source "same file, same window"}}
-   :note "1,833 real weekly unique visitors vs 0 real adherents (until today's partial git-side join, still 1) sharpens the F2 finding from ADR-2607202700/2800: this is not a top-of-funnel traffic problem, the funnel has a real top and a measured-zero bottom"}
+            :website-requests-7d {:value 63453 :source "same file, same window"}
+            :f2-upper-bound-95pct {:value 0.00018157606162871875
+                                    :computed-via "dynamics.core/upper-bound-rate-from-zero-events"
+                                    :n-estimate 16497
+                                    :n-estimate-basis "1,833 weekly uniques x ~9 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md; today 2026-07-20) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series"
+                                    :zero-events "0 organic full-ritual joins observed in that window (the 1 adherent recorded today is the founder's own non-organic git-side oath, not a converted visitor)"}}
+   :note "1,833 real weekly unique visitors vs 0 real adherents (until today's partial git-side join, still 1) sharpens the F2 finding from ADR-2607202700/2800 from 'unmeasured' to 'measured as at most ~0.018% at 95% confidence, given zero observed organic conversions across an estimated ~16,500 visitors' -- the funnel has a real top and a measured-near-zero bottom"}
 
   {:id :kotoba-lang
    :org "kotoba-lang"
@@ -106,6 +111,11 @@
    :note "mutual credit precedent directly relevant to etzhayyim's own EN/ENGI design"
    :stocks {:annual-flow-usd {:value 5.4e7 :source "Monneta/P2P Foundation/Beyond Money: Sardex, Sardinia, ~EUR50M/yr trade volume"}
             :member-businesses {:value 2900}}}
+
+  {:id :optimism-retropgf
+   :org "external-reference"
+   :note "badgeholder-curated onchain public-goods governance, distinct mechanism from etzhayyim's 1-SBT-1-vote"
+   :stocks {:cumulative-flow-usd {:value 1.0e8 :source "Optimism Collective RetroPGF: $100M+ distributed across 4 rounds as of Aug 2025, $1.3B reserved for future rounds"}}}
 
   ;; --- internal com-junkawasaki-ecosystem products: real live Cloudflare zone
   ;; traffic, sourced from the ALREADY-EXISTING BMC metrics pipeline
