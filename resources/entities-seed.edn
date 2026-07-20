@@ -25,8 +25,11 @@
 
   {:id :kotoba-lang
    :org "kotoba-lang"
-   :stocks {:repos {:value 1647 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-20"}
-            :west-registered {:value 1623 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 98.5% of the GitHub org is integrated into this superproject's workspace"}}}
+   :stocks {:repos {:value 1649 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-21 (was 1647 on 2026-07-20: +2 organic growth)"}
+            :west-registered {:value 1623 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 98.5% of the GitHub org is integrated into this superproject's workspace"}
+            :repos-by-prefix {:value {:com-vendor-spec 1049 :kami-engine 97 :org-standards-spec 85 :loop-skill-action-taxonomy 2 :other-substrate 416}
+                               :source "gh api orgs/kotoba-lang/repos --paginate, name-prefix breakdown, 2026-07-21"}}
+   :note "63.6% of kotoba-lang's repo count is com-* vendor-integration spec repos, not core substrate work -- a caution against reading raw repo counts as a proxy for active development mass"}
 
   {:id :cloud-itonami
    :org "cloud-itonami"

@@ -61,7 +61,9 @@
    {:id :gitcoin-grantee-registration :band :band/D :tractability 0.7 :pool-size 1028
     :label "Register as a Gitcoin Grants grantee (pool-tap: couples into an existing external loop)"}
    {:id :ef-esp-proposal :band :band/D :tractability 0.5 :pool-size 900
-    :label "Submit an Ethereum Foundation ESP proposal against a published Wishlist item (pool-tap)"}])
+    :label "Submit an Ethereum Foundation ESP proposal against a published Wishlist item (pool-tap)"}
+   {:id :instrument-trackable-first-step :band :band/D :tractability 0.85
+    :label "Add a trackable low-friction CTA/waitlist on etzhayyim.com itself, so weekly visitors have an intermediate funnel step to convert into before the full DID+SBT ritual -- directly informed by the F2 upper-bound finding (<=~0.018% at 95% confidence against real traffic, not zero traffic)"}])
 
 (defn evaluate
   "All scoring goes through dynamics.core -- this function assembles inputs,
