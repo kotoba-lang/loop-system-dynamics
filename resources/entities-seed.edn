@@ -21,8 +21,13 @@
                                     :computed-via "dynamics.core/upper-bound-rate-from-zero-events"
                                     :n-estimate 17188
                                     :n-estimate-basis "1,851 weekly uniques (3rd real observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Bound has now tightened across 3 real observations: 0.01816% -> 0.01753% -> 0.01743%, monotonically as n grows, which is the statistics behaving correctly, not a construction artifact"
-                                    :zero-events "0 organic full-ritual joins observed across all 3 observation windows (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}}
-   :note "1,840 real weekly unique visitors vs 0 real organic adherents sharpens the F2 finding from ADR-2607202700/2800 to 'measured as at most ~0.0175% at 95% confidence' -- the funnel has a real top and a measured-near-zero bottom, and this is now a genuine 2-point time series (2026-07-20, 2026-07-21), not a single snapshot"}
+                                    :zero-events "0 organic full-ritual joins observed across all 3 observation windows (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}
+            :path-level-status-mix {:value {:ok 480 :server-error-5xx 800 :client-error-4xx 668}
+                                     :total 1948
+                                     :ok-pct 24.6 :server-error-pct 41.1 :client-error-pct 34.3
+                                     :source "90-docs/business/metrics/etzhayyim.edn :paths :status-mix, 2026-07-21 (live refresh)"
+                                     :caveat "the top-paths sample this status-mix is computed over is dominated by automated vulnerability-scanning bot traffic (/.env, /app/.env, /api/.env probes appear among the top-8 'ok' paths) mixed with legitimate app asset requests (/_shell/home-feed.js, /_app/immutable/chunks/*.js) -- it is NOT possible to cleanly attribute the 41.1% server-error rate to real human visitors vs. bot noise from this sample alone. Flagged as a genuine technical anomaly worth investigating, not confirmed as the cause of the F2 finding"}}
+   :note "1,840 real weekly unique visitors vs 0 real organic adherents sharpens the F2 finding from ADR-2607202700/2800 to 'measured as at most ~0.0175% at 95% confidence' -- the funnel has a real top and a measured-near-zero bottom, and this is now a genuine 2-point time series (2026-07-20, 2026-07-21), not a single snapshot. Separately, the site's own status-mix shows 41.1% server errors (5xx) in its sampled traffic -- unclear how much affects real visitors given bot-scan contamination in the sample, but a real, current, actionable signal worth checking regardless of the funnel-conversion question"}
 
   {:id :kotoba-lang
    :org "kotoba-lang"
@@ -191,8 +196,11 @@
    :stocks {:website-uniques-7d {:value 741 :source "90-docs/business/metrics/club-shinshi.edn, 2026-07-20, shinshi.club zone"}
             :website-requests-7d {:value 12869}
             :funnel {:value {:visits 1044 :creator-gmv 0}
-                     :source "90-docs/business/canvas-ledger.edn, latest club-shinshi funnel observation, 2026-07-19T22:06:22Z"}}
-   :note "creator GMV/revenue = 0 held across at least 7 consecutive real observations as visits grew 395->1044 -- the same sustained-zero shape as cloud-murakumo"}
+                     :source "90-docs/business/canvas-ledger.edn, latest club-shinshi funnel observation, 2026-07-19T22:06:22Z"}
+            :monetization-launch-status {:value :not-yet-launched
+                                          :evidence "2026-07-09: legal gate for adult x crypto payment confirmed cleared by the owner; remaining task to enable creator monetization is the UI flow (導線) only -- i.e. the feature had not shipped as of the legal-clearance date"
+                                          :source "90-docs/business/canvas-ledger.edn seq 1352, 2026-07-09"}}
+   :note "creator GMV/revenue = 0 held across at least 7 consecutive real observations as visits grew 395->1044 -- BUT unlike cloud-murakumo, this zero likely has a mundane explanation: as of 2026-07-09 creator monetization's UI was still unshipped (only the legal gate was cleared). This WEAKENS finding #4's 'shared root cause' hypothesis for this specific product -- club-shinshi's zero may simply mean the feature doesn't exist yet, not that real demand is failing to convert"}
 
   {:id :net-kotobase
    :org "gftdcojp"

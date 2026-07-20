@@ -115,6 +115,10 @@ from an unrelated hourly business-react-loop routine) to the analysis --
 neither pipeline was built for this question, and connecting them is what
 surfaced the cross-product pattern.
 
+**Update (see 4c below): the "4 products, 1 shared cause" framing above is
+now known to overstate at least one of the four.** club-shinshi's zero has a
+more mundane, confirmed explanation than the other three.
+
 A third shape shows up in `cloud-itonami-saas-product` (itonami.cloud): 74
 human weekly uniques against **34,381 agent runs** in the same window --
 usage there is overwhelmingly machine-driven, not the human-traffic-without-
@@ -134,10 +138,10 @@ inference runs.
 This rules out "the checkout button is broken" as the explanation for at
 least this one product. The bottleneck is upstream of payment processing --
 discovery, trust, pricing, or motivation -- not the plumbing. Whether the
-same is true for cloud-itonami, club-shinshi, and etzhayyim (none of which
-have an equivalent "checkout independently verified working" data point in
-the ledger yet) is an open question, not an assumption this finding
-generalizes to.
+same is true for cloud-itonami and etzhayyim (neither has an equivalent
+"checkout independently verified working" data point in the ledger yet) is
+still an open question. club-shinshi's answer turns out to be different --
+see 4c.
 
 Also worth noting: `canvas-ledger.edn` independently proposed adding
 finer-grained funnel instrumentation ("計器 (funnel): checkout 開始 の計測")
@@ -146,6 +150,47 @@ for exactly the same reason `dynamics.core`'s
 etzhayyim -- two unrelated systems in this workspace converged on the same
 diagnostic principle (add an intermediate funnel stage to localize where a
 conversion actually breaks) without either being aware of the other.
+
+## 4c. Correction: club-shinshi's zero has a different, more mundane cause
+
+`canvas-ledger.edn` (seq 1352, 2026-07-09) records that club-shinshi's
+creator-monetization feature had not shipped as of the legal-clearance date:
+the legal gate for adult x crypto payment was cleared, but "the remaining
+task to enable creator monetization is the UI flow only." In plain terms: as
+of that date, the feature that would generate creator GMV did not exist yet.
+
+This means club-shinshi's "creator GMV = 0 across 7 observations" most likely
+reflects **the feature not being launched**, not real demand failing to
+convert the way etzhayyim/cloud-manimani/cloud-murakumo's zeros appear to.
+Finding #4's headline ("4 products, same shape, maybe shared cause") should
+be read as: **3 products with a live, working conversion mechanism, all
+showing genuine zero-conversion, plus 1 product (club-shinshi) whose zero is
+better explained by the feature simply not shipping yet.** The 3-product
+pattern is still real and still worth taking seriously; the 4-product framing
+was an overstatement this iteration corrects rather than defends.
+
+## 4d. A separate, unresolved technical signal on etzhayyim.com: 41% server errors
+
+etzhayyim.com's live path-level status-mix (2026-07-21): 480 ok / 800
+server-error (5xx) / 668 client-error (4xx) out of 1,948 sampled requests --
+**41.1% server errors**. This is a real, current, measured number, not
+speculation.
+
+**Important caveat, stated plainly rather than glossed over**: the sampled
+top-8 "ok" paths include probes for `.env`, `app/.env`, `api/.env` -- almost
+certainly automated vulnerability-scanning bot traffic, not real visitors,
+mixed in the same sample as legitimate app asset requests
+(`_shell/home-feed.js`, `_app/immutable/chunks/*.js`). It is **not possible
+from this data alone** to say what fraction of the 41.1% server-error rate a
+real human visitor would actually experience versus what fraction is bot
+noise hitting unmatched routes.
+
+Flagged as a genuine, current, actionable technical anomaly worth
+investigating on its own merits, and a *plausible* additional contributor to
+the F2 finding (a visitor who hits a server error mid-session cannot
+complete a join ritual regardless of intent) -- but not claimed as confirmed
+the way 4b's checkout-verification finding was. The honest status is: real
+number, real caveat, real open question.
 
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
