@@ -319,6 +319,37 @@ into. Recorded as the current best read, explicitly held open to further
 revision -- this thread has already been wrong in both directions once each,
 and there is no reason to expect this iteration is the last word either.
 
+## 4h. A 3rd reading moves for the first time -- "frozen artifact" downgraded in favor of "real rolling-window average"
+
+A fresh BMC routine (`routine/bmc-operate-20260720`) landed new metrics
+several hours after 4g's second reading, giving a 3rd data point:
+487/792/662 (40.80% server-error), against 4g's 480/800/668 (41.07%) and
+474/796/669 (41.05%). The 2nd->3rd gap moved 0.25 points -- roughly 10x the
+1st->2nd gap's 0.02-point move -- over a similar or shorter elapsed time,
+while `website-uniques-7d` again climbed for real (1851 -> 1898).
+
+That is not what a frozen/cached artifact looks like; it is what a real but
+slow-moving rolling-window average looks like, at a denominator of ~1,900-2,000
+total requests where a few hours of new traffic can only nudge the ratio by a
+fraction of a point. The live metrics file itself carries a `:window "24h"`
+field on this same block, which is independent, structural support for the
+rolling-window explanation. **Revised best-supported read**: `:status-mix`
+is genuinely live, updates on something like a 24h rolling basis, and the
+~41% server-error rate it reports is real and sustained (41.07 -> 41.05 ->
+40.80, essentially flat at the level across all three readings, not trending
+toward zero) -- while 4e/4f's 76+ zero-failure direct GET checks against
+known-good paths are *also* real. The two are not actually in tension once
+"different slice of the request population" is taken seriously: ordinary
+browser-like GETs to real paths succeed every time tested, and some other,
+still-unidentified slice of the 24h traffic (unusual methods, headers,
+Cloudflare-internal probes, or something else) is what is landing in the
+error bucket. Settling *which* slice still needs the Worker's own logs, which
+this analysis does not have. This is the fourth revision of this thread's
+conclusion -- each one driven by a genuinely new data point, not by
+re-analyzing the same numbers, which is the discipline this loop commits to
+maintaining even when it is slower and less satisfying than picking a verdict
+and stopping.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
