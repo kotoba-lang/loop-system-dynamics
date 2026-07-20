@@ -168,18 +168,28 @@
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 74 :source "90-docs/business/metrics/cloud-itonami.edn, 2026-07-20, itonami.cloud zone"}
             :website-requests-7d {:value 644}
-            :agent-runs-7d {:value 34381 :source "same file: :agentRuns7d -- automated agent invocations, trailing 7 days"}}
-   :note "the itonami.cloud SaaS product (gftdcojp-owned business-os base), distinct from the :cloud-itonami entity above (the public cloud-itonami-* blueprint repo org). 74 human weekly uniques vs 34,381 agent runs in the same window (~465x more agent traffic than human traffic) -- itonami.cloud's real usage is overwhelmingly machine-driven right now, a genuinely different shape from etzhayyim/cloud-manimani's human-traffic-without-conversion pattern"}
+            :agent-runs-7d {:value 34381 :source "same file: :agentRuns7d -- automated agent invocations, trailing 7 days"}
+            :funnel {:value {:trial-orgs 4 :onboarded-orgs 4 :paying-orgs 0
+                              :trial->onboarded-pct 100 :onboarded->paying-pct 0}
+                     :source "90-docs/business/canvas-ledger.edn, latest cloud-itonami funnel observation, 2026-07-20T17:08:26Z"}}
+   :note "the itonami.cloud SaaS product (gftdcojp-owned business-os base), distinct from the :cloud-itonami entity above (the public cloud-itonami-* blueprint repo org). 74 human weekly uniques vs 34,381 agent runs in the same window (~465x more agent traffic than human traffic). Its real funnel: 100% of trials onboard, 0% of onboarded orgs ever pay -- the conversion failure here is one stage LATER than etzhayyim's (visitor->adherent) or cloud-manimani's (visitor->signup): people who actually engage still don't convert to revenue"}
 
   {:id :cloud-murakumo
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 678 :source "90-docs/business/metrics/cloud-murakumo.edn, 2026-07-20, murakumo.cloud zone"}
-            :website-requests-7d {:value 70512}}}
+            :website-requests-7d {:value 70512}
+            :funnel {:value {:visits 689 :real-inference-runs 200 :paid-credits-purchases 0
+                              :visits->runs-pct 29 :runs->paid-pct 0}
+                     :source "90-docs/business/canvas-ledger.edn, latest cloud-murakumo funnel observation, 2026-07-19T22:06:22Z"}}
+   :note "0% runs->paid conversion held across at least 6 consecutive real observations as visits grew 418->689 and real inference runs grew 4->200 -- not a single-snapshot artifact, a sustained zero"}
 
   {:id :club-shinshi
    :org "jk-luxury"
    :stocks {:website-uniques-7d {:value 741 :source "90-docs/business/metrics/club-shinshi.edn, 2026-07-20, shinshi.club zone"}
-            :website-requests-7d {:value 12869}}}
+            :website-requests-7d {:value 12869}
+            :funnel {:value {:visits 1044 :creator-gmv 0}
+                     :source "90-docs/business/canvas-ledger.edn, latest club-shinshi funnel observation, 2026-07-19T22:06:22Z"}}
+   :note "creator GMV/revenue = 0 held across at least 7 consecutive real observations as visits grew 395->1044 -- the same sustained-zero shape as cloud-murakumo"}
 
   {:id :net-kotobase
    :org "gftdcojp"

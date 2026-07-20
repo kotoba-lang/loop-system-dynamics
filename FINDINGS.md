@@ -81,20 +81,39 @@ the identical substrate has proven it can carry tens of millions of real
 users. Whatever the bottleneck is, it is specific to etzhayyim (positioning,
 demand, friction, awareness), not inherited from the protocol layer.
 
-## 4. "Traffic without conversion" recurs across the portfolio, not just etzhayyim
+## 4. "Traffic without final conversion" recurs across (at least) 4 unrelated products in the same portfolio
 
-- etzhayyim.com: ~1,850 real weekly unique visitors, F2 <= ~0.017%.
-- cloud-manimani (manimani.cloud): ~295-299 real weekly unique visitors,
-  **exactly 1 cumulative signup**, unchanged across three separate days of
-  observation.
+- **etzhayyim.com**: ~1,850 real weekly unique visitors, F2 <= ~0.017% (visitor
+  -> adherent, never fires).
+- **cloud-manimani** (manimani.cloud): ~295-299 real weekly unique visitors,
+  1 cumulative signup as of the most recent snapshot (visitor -> signup,
+  essentially doesn't fire).
+- **cloud-itonami** (itonami.cloud): 4 trial orgs -> 4 onboarded (**100%**) ->
+  0 paying orgs (**0%**). People who engage fully still don't pay -- the
+  failure is one stage *later* than the first two.
+- **cloud-murakumo** (murakumo.cloud): 689 visits -> 200 real inference runs
+  (29%) -> **0 paid credit purchases (0%)**, and that 0% held across at least
+  6 consecutive real observations while visits grew 418->689 and real usage
+  grew 4->200. Not a snapshot artifact -- a sustained zero under real,
+  growing usage.
+- **club-shinshi** (shinshi.club): 1,044 visits -> creator GMV/revenue **0**,
+  held across at least 7 consecutive real observations as visits grew
+  395->1044.
 
-Two unrelated products in the same portfolio show the identical shape: real,
-non-trivial top-of-funnel traffic, and a bottom of the funnel that is
-essentially not converting. This is either a shared root cause (something
-about how this portfolio's products present their calls-to-action) or a
-coincidence worth ruling out -- either way it was invisible before this loop
-connected the already-existing BMC metrics pipeline (`90-docs/business/metrics/*.edn`)
-to the analysis.
+Four separate products, four separate funnel stages (visitor->adherent,
+visitor->signup, onboarded->paying, usage->paid), the same shape every time:
+real and often *growing* engagement, and a downstream conversion step that
+stays at or near zero regardless. This is either a shared root cause
+(something about how this portfolio presents calls-to-action, pricing, or
+payment friction across very different products) or a genuine coincidence --
+but the coincidence explanation gets harder to hold with each additional
+product that shows the identical pattern. This was invisible before this loop
+connected the already-existing BMC metrics pipeline
+(`90-docs/business/metrics/*.edn`) *and* the existing BMC canvas-ledger
+(`90-docs/business/canvas-ledger.edn`, itself an append-only real-data log
+from an unrelated hourly business-react-loop routine) to the analysis --
+neither pipeline was built for this question, and connecting them is what
+surfaced the cross-product pattern.
 
 A third shape shows up in `cloud-itonami-saas-product` (itonami.cloud): 74
 human weekly uniques against **34,381 agent runs** in the same window --
