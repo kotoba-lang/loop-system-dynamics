@@ -24,6 +24,10 @@ be pointed at any set of entities with real stock/flow facts and produce a
 real, sourced, ranked answer, growing in coverage as more entities are
 observed rather than being capped by policy.
 
+**See [`FINDINGS.md`](FINDINGS.md) for the hand-curated synthesis of what 10
+real cycles have actually found** -- the ledger below is the raw append-only
+record, FINDINGS.md is the narrative built on top of it.
+
 ## Run it
 
 ```bash
@@ -31,12 +35,14 @@ observed rather than being capped by policy.
 nbb --classpath "../dynamics/src:src" bin/run.cljs
 ```
 
-This observes `resources/entities-seed.edn` (11 real, dated, sourced entities
-as of 2026-07-20: etzhayyim, kotoba-lang, cloud-itonami, etzhayyim's
-com-etzhayyim-* actors, gftdcojp, and 6 external reference organizations),
-evaluates etzhayyim's candidate interventions and 6 loop archetypes through
-`dynamics.core`, decides a ranking, writes `target/loop-system-dynamics-report.md`,
-and appends one line to `ledger/loop-system-dynamics-ledger.edn`.
+This observes `resources/entities-seed.edn` (31 real, dated, sourced entities
+as of 2026-07-21 and growing: etzhayyim, kotoba-lang, cloud-itonami, gftdcojp,
+com-junkawasaki, several internal com-junkawasaki-ecosystem products with real
+live traffic connected from the existing BMC metrics pipeline, and 16 external
+reference organizations), evaluates etzhayyim's candidate interventions and
+16 loop archetypes through `dynamics.core`, decides a ranking, writes
+`target/loop-system-dynamics-report.md`, and appends one line to
+`ledger/loop-system-dynamics-ledger.edn`.
 
 ## Test
 
