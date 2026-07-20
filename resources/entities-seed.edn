@@ -14,14 +14,14 @@
             :council-seats-filled {:value 1 :of 5 :source "orgs/etzhayyim/root/COUNCIL.md: Seat 1 confirmed, Seats 2-5: 0 proposals"}
             :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
                                    :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}
-            :website-uniques-7d {:value 1840 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-21: etzhayyim.com Cloudflare zone, trailing 7 days"}
-            :website-requests-7d {:value 64074 :source "same file, same window"}
-            :website-uniques-7d-history [{:as-of "2026-07-20" :value 1833} {:as-of "2026-07-21" :value 1840}]
-            :f2-upper-bound-95pct {:value 0.00017531719912122767
+            :website-uniques-7d {:value 1851 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-21 (later fetch): etzhayyim.com Cloudflare zone, trailing 7 days"}
+            :website-requests-7d {:value 64380 :source "same file, same window"}
+            :website-uniques-7d-history [{:as-of "2026-07-20" :value 1833} {:as-of "2026-07-21T1" :value 1840} {:as-of "2026-07-21T2" :value 1851}]
+            :f2-upper-bound-95pct {:value 0.0001742768921640936
                                     :computed-via "dynamics.core/upper-bound-rate-from-zero-events"
-                                    :n-estimate 17086
-                                    :n-estimate-basis "1,840 weekly uniques (latest observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md; today 2026-07-21) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Re-computed from the 2026-07-20 estimate (n=16,497, bound 0.01816%) as a second real observation -- the bound tightens (0.01816% -> 0.01753%) as n grows, exactly as the statistics predict, not by construction"
-                                    :zero-events "0 organic full-ritual joins observed in that window (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}}
+                                    :n-estimate 17188
+                                    :n-estimate-basis "1,851 weekly uniques (3rd real observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Bound has now tightened across 3 real observations: 0.01816% -> 0.01753% -> 0.01743%, monotonically as n grows, which is the statistics behaving correctly, not a construction artifact"
+                                    :zero-events "0 organic full-ritual joins observed across all 3 observation windows (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}}
    :note "1,840 real weekly unique visitors vs 0 real organic adherents sharpens the F2 finding from ADR-2607202700/2800 to 'measured as at most ~0.0175% at 95% confidence' -- the funnel has a real top and a measured-near-zero bottom, and this is now a genuine 2-point time series (2026-07-20, 2026-07-21), not a single snapshot"}
 
   {:id :kotoba-lang
@@ -189,4 +189,11 @@
   {:id :network-isekai
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 452 :source "90-docs/business/metrics/network-isekai.edn, 2026-07-20, isekai.network zone"}
-            :website-requests-7d {:value 9797}}}]}
+            :website-requests-7d {:value 9797}}}
+
+  {:id :japan-religious-corporations-registry
+   :org "external-reference"
+   :note "the reference class etzhayyim explicitly opts OUT of (Charter §0.4 constitutional invariant: 'NOT registered under 日本国 宗教法人法'). Not scored as a dynamics.core loop archetype -- this is a regulatory-registry STOCK (headcount of a legal category), not a growth loop with cycle-time/self-funding/instrumentation/friction, and forcing structural parameters onto it without a real basis would be exactly the kind of fabrication this whole model refuses to do. Included as pure context: how large is the conventional path etzhayyim is routing around"
+   :stocks {:registered-corporations {:value 178946
+                                       :breakdown {:shinto 84206 :buddhist 76701 :christian 4773 :other 13266}
+                                       :source "文化庁 宗教統計調査 (Agency for Cultural Affairs Religious Statistics Survey), 2025-12-24 release, 単位宗教法人 totals"}}}]}
