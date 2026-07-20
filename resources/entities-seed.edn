@@ -1,0 +1,63 @@
+;; First observation snapshot, ADR-2607203000 (com-junkawasaki/root).
+;;
+;; Every value below is real, dated, sourced -- never fabricated. This is a
+;; SEED, not a live query: `observe` reads this file today; wiring `observe`
+;; to a live kqe / GitHub-API pull is a documented follow-up (README "Next").
+;; Adding an entity here is how coverage grows -- nothing in the schema below
+;; caps which organizations can be represented.
+{:as-of "2026-07-20"
+
+ :entities
+ [{:id :etzhayyim
+   :org "etzhayyim"
+   :stocks {:adherents {:value 0 :source "orgs/etzhayyim/root/MEMBERS.md: roster empty, 'awaiting first member'"}
+            :council-seats-filled {:value 1 :of 5 :source "orgs/etzhayyim/root/COUNCIL.md: Seat 1 confirmed, Seats 2-5: 0 proposals"}
+            :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
+                                   :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}}}
+
+  {:id :kotoba-lang
+   :org "kotoba-lang"
+   :stocks {:repos {:value 1647 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-20"}}}
+
+  {:id :cloud-itonami
+   :org "cloud-itonami"
+   :stocks {:repos {:value 1331 :source "gh api orgs/cloud-itonami/repos --paginate, 2026-07-20"}}}
+
+  {:id :etzhayyim-actors
+   :org "etzhayyim"
+   :note "com-etzhayyim-* actor repos, counted separately from the etzhayyim/root monorepo entity above"
+   :stocks {:actor-repos {:value 613 :source "gh api orgs/etzhayyim/repos --paginate | grep ^com-etzhayyim-, 2026-07-20"}}}
+
+  {:id :gftdcojp
+   :org "gftdcojp"
+   :stocks {:repos {:value 105 :source "gh api orgs/gftdcojp/repos --paginate, 2026-07-20"}}}
+
+  {:id :gitcoin
+   :org "external-reference"
+   :stocks {:cumulative-funding-usd {:value 6.0e7 :source "gitcoin.co research: $60M+ to 3,700+ projects since 2019"}
+            :projects-funded {:value 3700}}}
+
+  {:id :ethereum-foundation-esp
+   :org "external-reference"
+   :stocks {:cumulative-funding-usd {:value 1.48e8 :source "esp.ethereum.foundation: $148M+ to 900+ projects since 2019"}
+            :projects-funded {:value 900}}}
+
+  {:id :radicalxchange-foundation
+   :org "external-reference"
+   :stocks {:annual-revenue-usd {:value 1.18e6 :source "ProPublica Nonprofit Explorer, FY2021 filing (most recent found)"}}}
+
+  {:id :quakers
+   :org "external-reference"
+   :stocks {:world-members {:value 3.8e5 :source "FWCC 2017 worldwide census"}}}
+
+  {:id :mozilla-foundation
+   :org "external-reference"
+   :stocks {:annual-revenue-usd {:value 3.72e7 :source "State of Mozilla 2025 / ProPublica: FY2024 $37.2M revenue"}}}
+
+  {:id :jehovahs-witnesses
+   :org "external-reference"
+   :stocks {:active-publishers-peak {:value 9.2e6}
+            :baptisms-per-year {:value 304500}
+            :home-bible-studies-per-year {:value 7.6e6}
+            :memorial-attendance {:value 2.05e7}
+            :source "jw.org 2025 Service Year Report Worldwide"}}]}

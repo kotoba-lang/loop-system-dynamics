@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: loop-system-dynamics
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/dynamics
+          path: dynamics
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g nbb
+      - working-directory: loop-system-dynamics
+        run: nbb --classpath "../dynamics/src:src:test" test/run_tests.cljs

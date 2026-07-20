@@ -1,0 +1,13 @@
+;; This repository's own entry in the loop-*/skill-*/action-* taxonomy
+;; established by kotoba-lang/loop-ux-kaizen. Repeated here (not just
+;; inherited by convention) so a reader of THIS repo alone can verify which
+;; contract it claims to satisfy.
+{:schema "kotoba.repository-role-rules.v0"
+ :this-repo
+ {:prefix "loop-"
+  :role :continuous-orchestrator
+  :must [:observe :evaluate :decide :act :record-evidence]
+  :must-not [:own-domain-scoring-truth :bind-to-one-ci-provider]
+  :authority-library "kotoba-lang/dynamics"
+  :composition {:authority "loop-system-dynamics"
+                :libraries ["dynamics"]}}}
