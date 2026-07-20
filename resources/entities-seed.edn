@@ -10,27 +10,35 @@
  :entities
  [{:id :etzhayyim
    :org "etzhayyim"
-   :stocks {:adherents {:value 0 :source "orgs/etzhayyim/root/MEMBERS.md: roster empty, 'awaiting first member'"}
+   :stocks {:adherents {:value 1 :source "orgs/etzhayyim/root/MEMBERS.md, PR etzhayyim/root#3302 (2026-07-20): founder's git-side oath recorded; on-chain join() still pending, see PENDING-JOINS.md"}
             :council-seats-filled {:value 1 :of 5 :source "orgs/etzhayyim/root/COUNCIL.md: Seat 1 confirmed, Seats 2-5: 0 proposals"}
             :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
                                    :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}}}
 
   {:id :kotoba-lang
    :org "kotoba-lang"
-   :stocks {:repos {:value 1647 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-20"}}}
+   :stocks {:repos {:value 1647 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-20"}
+            :west-registered {:value 1623 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 98.5% of the GitHub org is integrated into this superproject's workspace"}}}
 
   {:id :cloud-itonami
    :org "cloud-itonami"
-   :stocks {:repos {:value 1331 :source "gh api orgs/cloud-itonami/repos --paginate, 2026-07-20"}}}
+   :stocks {:repos {:value 1331 :source "gh api orgs/cloud-itonami/repos --paginate, 2026-07-20"}
+            :west-registered {:value 1150 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 86.4% coverage"}}}
 
   {:id :etzhayyim-actors
    :org "etzhayyim"
    :note "com-etzhayyim-* actor repos, counted separately from the etzhayyim/root monorepo entity above"
-   :stocks {:actor-repos {:value 613 :source "gh api orgs/etzhayyim/repos --paginate | grep ^com-etzhayyim-, 2026-07-20"}}}
+   :stocks {:actor-repos {:value 613 :source "gh api orgs/etzhayyim/repos --paginate | grep ^com-etzhayyim-, 2026-07-20"}
+            :west-registered-org-total {:value 555 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: whole etzhayyim org (root + actors), 90.5% of GitHub org total"}}}
 
   {:id :gftdcojp
    :org "gftdcojp"
-   :stocks {:repos {:value 105 :source "gh api orgs/gftdcojp/repos --paginate, 2026-07-20"}}}
+   :stocks {:repos {:value 105 :source "gh api orgs/gftdcojp/repos --paginate, 2026-07-20"}
+            :west-registered {:value 89 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 84.8% coverage"}}}
+
+  {:id :com-junkawasaki
+   :org "com-junkawasaki"
+   :stocks {:west-registered {:value 34 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: transitional-foundation org per ADR-2606302300, shrinking by design as libraries migrate to kotoba-lang"}}}
 
   {:id :gitcoin
    :org "external-reference"
@@ -60,4 +68,20 @@
             :baptisms-per-year {:value 304500}
             :home-bible-studies-per-year {:value 7.6e6}
             :memorial-attendance {:value 2.05e7}
-            :source "jw.org 2025 Service Year Report Worldwide"}}]}
+            :source "jw.org 2025 Service Year Report Worldwide"}}
+
+  {:id :wikimedia-foundation
+   :org "external-reference"
+   :stocks {:annual-revenue-usd {:value 2.086e8 :source "Wikimedia Foundation FY2024-2025 audit report"}
+            :donors {:value 7.0e6}
+            :articles {:value 6.6e7}}}
+
+  {:id :linux-foundation
+   :org "external-reference"
+   :stocks {:annual-revenue-usd {:value 3.113e8 :source "Linux Foundation Annual Report 2025"}
+            :member-orgs {:value 3000}}}
+
+  {:id :online-gambling-industry
+   :org "external-reference"
+   :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
+   :stocks {:annual-flow-usd {:value 9.5e10 :source "Custom Market Insights / Precedence / Statista 2025, $88-105B range, $95B midpoint"}}}]}
