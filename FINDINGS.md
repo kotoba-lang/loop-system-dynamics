@@ -169,28 +169,53 @@ better explained by the feature simply not shipping yet.** The 3-product
 pattern is still real and still worth taking seriously; the 4-product framing
 was an overstatement this iteration corrects rather than defends.
 
-## 4d. A separate, unresolved technical signal on etzhayyim.com: 41% server errors
+## 4d. Update: etzhayyim.com's server-error rate is real, sustained, and NOT bot noise -- likely the dominant explanation for F2
 
-etzhayyim.com's live path-level status-mix (2026-07-21): 480 ok / 800
-server-error (5xx) / 668 client-error (4xx) out of 1,948 sampled requests --
-**41.1% server errors**. This is a real, current, measured number, not
-speculation.
+The previous version of this finding (server-error rate 41.1% in one live
+snapshot, caveated as possibly bot-contaminated) undersold what
+`canvas-ledger.edn`'s longer history actually shows. Grouping every
+`観測 (paths)` (path-observation) event by product across the whole ledger:
 
-**Important caveat, stated plainly rather than glossed over**: the sampled
-top-8 "ok" paths include probes for `.env`, `app/.env`, `api/.env` -- almost
-certainly automated vulnerability-scanning bot traffic, not real visitors,
-mixed in the same sample as legitimate app asset requests
-(`_shell/home-feed.js`, `_app/immutable/chunks/*.js`). It is **not possible
-from this data alone** to say what fraction of the 41.1% server-error rate a
-real human visitor would actually experience versus what fraction is bot
-noise hitting unmatched routes.
+| product | 5xx rate | top path | verdict |
+|---|---|---|---|
+| net-kotobase | 1-2% | -- | healthy |
+| cloud-murakumo | 0-2% | -- | healthy |
+| cloud-manimani | 0-1% | -- | healthy |
+| app-aozora | 0% | -- | healthy |
+| network-isekai | 1-15% | -- | mostly healthy |
+| club-shinshi | 18-30% | -- | elevated, not severe |
+| ai-gftd-apex | 69-82% | `/stg/.env`, `/8573.php`, `/server/backend/.env` | severe, but explained -- clear bot-scan probes, server likely returns 500 instead of 404 for garbage paths (a code-quality nit, not user-facing) |
+| **etzhayyim** | **79-85%, sustained across 38+ observations since 2026-07-09** | **`/` (the homepage itself, 95->121 requests, by far the largest)** | **severe, and NOT explained the same way** |
 
-Flagged as a genuine, current, actionable technical anomaly worth
-investigating on its own merits, and a *plausible* additional contributor to
-the F2 finding (a visitor who hits a server error mid-session cannot
-complete a join ritual regardless of intent) -- but not claimed as confirmed
-the way 4b's checkout-verification finding was. The honest status is: real
-number, real caveat, real open question.
+Two things this table establishes that the previous version of this finding
+could not:
+
+1. **This is not a shared measurement-script artifact.** Six other products
+   using the exact same observation method show healthy 0-30% rates. If the
+   measurement itself were broken, it would be broken everywhere.
+2. **etzhayyim's case is not the bot-noise explanation that fits
+   ai-gftd-apex.** ai-gftd-apex's top paths are unambiguous vulnerability-scan
+   garbage; a 500 instead of a 404 there is a real but low-stakes bug.
+   etzhayyim's top path is `/` -- the homepage itself, requested far more than
+   anything else, growing over time as real traffic grows. There is no bot
+   explanation for the homepage itself server-erroring.
+
+**This is now the single most plausible dominant explanation for the F2
+finding.** If the homepage server-errors on roughly 4 out of 5 requests, the
+overwhelming majority of the ~1,850 real weekly visitors counted in findings
+#1 and #4 may never see a working page at all -- no amount of better
+positioning, paradigm-framing, or content strategy can convert a visitor who
+never gets a page to load. `diagnose-and-fix-website-reliability` was added
+to `etzhayyim-interventions` accordingly. It scores 2.4 (band D, 0.8
+tractability) and formally ranks 7th, below several content/framing
+interventions -- but the intervention's own label carries an explicit
+prerequisite note: **Meadows band-weight x tractability measures loop
+leverage per unit effort, not blocking-prerequisite status.** If this
+diagnosis is correct, none of the higher-ranked interventions' scores are
+actually realizable until this one is addressed, regardless of where it
+formally sorts. This is a real limitation of the scoring model worth stating
+plainly rather than letting the ranking imply an execution order it doesn't
+actually support.
 
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 

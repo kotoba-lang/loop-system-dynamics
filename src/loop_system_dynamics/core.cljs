@@ -136,7 +136,9 @@
    {:id :ef-esp-proposal :band :band/D :tractability 0.5 :pool-size 900
     :label "Submit an Ethereum Foundation ESP proposal against a published Wishlist item (pool-tap)"}
    {:id :instrument-trackable-first-step :band :band/D :tractability 0.85
-    :label "Add a trackable low-friction CTA/waitlist on etzhayyim.com itself, so weekly visitors have an intermediate funnel step to convert into before the full DID+SBT ritual -- directly informed by the F2 upper-bound finding (<=~0.018% at 95% confidence against real traffic, not zero traffic)"}])
+    :label "Add a trackable low-friction CTA/waitlist on etzhayyim.com itself, so weekly visitors have an intermediate funnel step to convert into before the full DID+SBT ritual -- directly informed by the F2 upper-bound finding (<=~0.018% at 95% confidence against real traffic, not zero traffic)"}
+   {:id :diagnose-and-fix-website-reliability :band :band/D :tractability 0.8
+    :label "Diagnose and fix etzhayyim.com's sustained ~80% server-error rate (canvas-ledger.edn: 38+ observations since 2026-07-09, top path = homepage itself, NOT bot-scan noise -- cross-checked against 6 other portfolio products on the identical measurement method, all healthy at 0-30%). PREREQUISITE NOTE: Meadows band-weight x tractability scores loop leverage per unit effort, not blocking-prerequisite status -- if the site itself fails to render on ~4/5 visits, no other intervention's score is meaningful until this is fixed, regardless of where it formally ranks below"}])
 
 (defn evaluate
   "All scoring goes through dynamics.core -- this function assembles inputs,
