@@ -259,7 +259,36 @@ immediately lost it under direct verification -- which is itself the kind of
 result that should increase, not decrease, confidence in checking claims
 directly rather than stacking inference on secondary data indefinitely.
 
-## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
+## 4f. Follow-up: still can't reproduce it, and the observation stream itself went quiet
+
+Two more pieces of evidence, both pointing the same direction as 4e:
+
+1. **`canvas-ledger.edn` has logged zero new etzhayyim path-observations
+   since 2026-07-19T22:05:46Z** -- despite this exact event type recurring
+   roughly every 1-2 days from 07-09 through 07-19 (47 observations total).
+   Whatever was generating this specific signal stopped at the same point
+   the error rate would need to have resolved for hypothesis (a) (fixed
+   around 07-19) to hold.
+2. **30+ additional live requests, varied deliberately to stress-test
+   hypothesis (b)** (that the ledger counts a request population a plain
+   GET doesn't reach): 6 different User-Agent strings (Googlebot-style,
+   python-requests, empty, Go-http-client), HEAD and POST methods (POST
+   correctly returned a clean 405, not a 500), and 5 scanner-typical paths
+   (`/wp-admin`, `/.git/config`, `/admin`, `//`, `/%2e%2e`). Every single
+   one returned a clean, correct response. Zero errors reproduced under any
+   variation tested.
+
+**Where this leaves the question**: hypothesis (b) (different measured
+population) is now weaker -- User-Agent, method, and path-style variation
+covers most of what would plausibly route to different Worker code, and none
+of it broke. Hypothesis (a) (issue resolved around 2026-07-19) is the
+best-supported explanation currently available, but this analysis has no
+access to the actual Cloudflare Worker logs for the 07-19 to 07-21 window --
+only (1) a periodic secondary observation that stopped, and (2) live checks
+now finding nothing wrong. The honest final state of this thread: **a real
+problem very likely existed and very likely got fixed**, not "a false alarm"
+and not "an unresolved active problem." Confirming this with certainty would
+require the Worker's own logs, which this loop does not have.
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
 (0.85), and optimism-retropgf (0.63) land in the same narrow band despite
@@ -317,6 +346,13 @@ would be exactly the kind of fabrication this model exists to avoid.
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed
   path to getting that first real data point.
-- The "traffic without conversion" pattern (finding #4) is observed in two
-  products, not diagnosed. Whether it is a shared root cause is an open
-  question this loop has surfaced but not answered.
+- The "traffic without conversion" pattern (finding #4) is observed in 3
+  products with confirmed-working conversion mechanisms (etzhayyim,
+  cloud-manimani, cloud-murakumo); club-shinshi's zero was reclassified
+  (finding 4c) as a feature-not-shipped-yet explanation, not the same
+  pattern. Whether the 3-product pattern has a shared root cause is still an
+  open question this loop has surfaced but not answered.
+- The site-reliability hypothesis for etzhayyim specifically (findings
+  4d-4f) landed on "very likely real, very likely already resolved" --
+  confirming this with certainty needs the actual Cloudflare Worker logs,
+  which this loop does not have access to.
