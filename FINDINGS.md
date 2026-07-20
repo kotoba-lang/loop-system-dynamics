@@ -360,6 +360,25 @@ independently confirmed as the specific cause. Either way, "613 actor repos"
 and "613 actively, independently developed actors" are not the same claim,
 and the raw count alone doesn't distinguish them.
 
+**Cross-org check confirms this isn't just an etzhayyim quirk, and isn't a
+workspace-wide artifact either -- it's specific to "fleet of many small
+classified repos" orgs.** The same push-recency pull run against
+cloud-itonami (1,331 repos, per-ISIC/ISCO-code blueprints, structurally
+similar in kind to etzhayyim's per-actor repos) shows 1,066/1,331 (80.1%)
+pushed in the **identical 07-17 to 07-19 window** as etzhayyim's 94.6%.
+kotoba-lang (1,649 repos, the substrate/library org, organized differently)
+shows no comparable concentration in that specific window -- its biggest
+spikes land on 07-08 and 07-20 instead, and its overall pattern is several
+distinct spikes spread across many days rather than one dominant window.
+
+Two independent orgs sharing a near-identical 3-day concentration is not
+plausibly chance; some workspace-wide event around 07-17 to 07-19
+specifically touched the fleet-style orgs (etzhayyim actors,
+cloud-itonami blueprints) while leaving kotoba-lang's substrate libraries on
+their own separate, more distributed rhythm. Still not confirmed as a single
+named event -- but this is now a real, cross-checked, structural pattern
+rather than a single-org coincidence.
+
 ## 7. The model updates its own recommendations from what it measures
 
 Once F2 had a real number (finding #1), a new candidate intervention was

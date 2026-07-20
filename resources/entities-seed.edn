@@ -57,15 +57,20 @@
    :stocks {:repos {:value 1649 :source "gh api orgs/kotoba-lang/repos --paginate, 2026-07-21 (was 1647 on 2026-07-20: +2 organic growth)"}
             :west-registered {:value 1623 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 98.5% of the GitHub org is integrated into this superproject's workspace"}
             :repos-by-prefix {:value {:com-vendor-spec 1049 :kami-engine 97 :org-standards-spec 85 :loop-skill-action-taxonomy 2 :other-substrate 416}
-                               :source "gh api orgs/kotoba-lang/repos --paginate, name-prefix breakdown, 2026-07-21"}}
-   :note "63.6% of kotoba-lang's repo count is com-* vendor-integration spec repos, not core substrate work -- a caution against reading raw repo counts as a proxy for active development mass"}
+                               :source "gh api orgs/kotoba-lang/repos --paginate, name-prefix breakdown, 2026-07-21"}
+            :push-recency-top-days {:value {"2026-07-08" 487 "2026-07-20" 419 "2026-07-16" 199 "2026-07-10" 153 "2026-07-09" 99}
+                                     :source "gh api orgs/kotoba-lang/repos --paginate .pushed_at, 2026-07-21"}}
+   :note "63.6% of kotoba-lang's repo count is com-* vendor-integration spec repos, not core substrate work. Push-recency shows MULTIPLE distinct spikes spread across different days (07-08, 07-20, 07-16, 07-10, 07-09), not one dominant window -- a different rhythm from etzhayyim's actors and cloud-itonami below, consistent with recurring maintenance batches on an actively-evolving substrate rather than a single one-time migration event"}
 
   {:id :cloud-itonami
    :org "cloud-itonami"
    :stocks {:repos {:value 1331 :source "gh api orgs/cloud-itonami/repos --paginate, 2026-07-20"}
             :west-registered {:value 1150 :source "manifest/west.yml (com-junkawasaki/root), 2026-07-20: 86.4% coverage"}
             :repos-by-prefix {:value {:isic 457 :isco 340 :assoc 78 :municipality 59 :other 397}
-                               :source "gh api orgs/cloud-itonami/repos --paginate, name-prefix breakdown, 2026-07-20"}}}
+                               :source "gh api orgs/cloud-itonami/repos --paginate, name-prefix breakdown, 2026-07-20"}
+            :push-recency-concentration {:value {"2026-07-17" 550 "2026-07-18" 316 "2026-07-19" 200 "2026-07-14" 103 "2026-07-10" 81}
+                                          :source "gh api orgs/cloud-itonami/repos --paginate .pushed_at, 2026-07-21"
+                                          :interpretation "1,066/1,331 (80.1%) pushed within 07-17 to 07-19 -- the SAME 3-day window as etzhayyim's actor-fleet concentration (94.6% there). kotoba-lang, checked the same way, shows no comparable concentration in this specific window (its top spikes are 07-08 and 07-20 instead). This cross-org correlation suggests a workspace-wide event around 07-17 to 07-19 specifically affecting the 'fleet-of-many-small-classified-repos' style orgs (etzhayyim's per-actor repos, cloud-itonami's per-ISIC/ISCO-code repos) rather than kotoba-lang's differently-organized substrate libraries. Not confirmed as a single named event, but the correlation across two independent orgs in the identical window is a real, checkable signal, not a coincidence explainable by chance alone"}}}
 
   {:id :etzhayyim-actors
    :org "etzhayyim"
