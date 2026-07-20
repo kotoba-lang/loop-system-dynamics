@@ -290,6 +290,37 @@ problem very likely existed and very likely got fixed**, not "a false alarm"
 and not "an unresolved active problem." Confirming this with certainty would
 require the Worker's own logs, which this loop does not have.
 
+## 4g. Reopened again: the aggregate status-mix hasn't moved, and 76+ direct checks still find nothing
+
+4f's "likely fixed" conclusion does not survive a closer look at the same
+live metrics file that first raised the flag. Two readings of
+`etzhayyim.edn`'s `:status-mix`, hours apart within this cycle: 480/800/668
+(41.07% server-error) then 474/796/669 (41.05% server-error) -- essentially
+frozen, while `website-uniques-7d` kept climbing (1833->1840->1851->1873)
+over the same window, meaning real traffic was clearly still arriving. A
+metric reflecting current health should move more than this across hours,
+whether the underlying issue is ongoing or newly resolved.
+
+Meanwhile this cycle's additional direct testing -- 11 more varied paths
+(including `/.well-known/did.json`, an XRPC endpoint, organism JSON
+endpoints) plus 30 rapid-fire homepage requests -- again found zero errors,
+bringing the running total to 76+ consecutive successful direct requests
+across this entire investigation.
+
+**The best-supported explanation has shifted a third time**: not "broken
+site" (4d), not "was broken, now fixed" (4f), but **the `:status-mix` field
+itself may be stale, cached, or computed over a fixed/non-rolling historical
+window rather than live traffic** -- a monitoring-pipeline artifact, not a
+statement about etzhayyim.com's actual current health. This would mean the
+entire 4d-4g chain chased a real number that was never actually describing
+"right now." Not confirmed; settling it definitively would require knowing
+how `:status-mix` is computed, which this analysis does not have visibility
+into. Recorded as the current best read, explicitly held open to further
+revision -- this thread has already been wrong in both directions once each,
+and there is no reason to expect this iteration is the last word either.
+
+## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
+
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
 (0.85), and optimism-retropgf (0.63) land in the same narrow band despite
 using entirely different instruments: mutual credit, direct cash transfer,
@@ -352,7 +383,9 @@ would be exactly the kind of fabrication this model exists to avoid.
   (finding 4c) as a feature-not-shipped-yet explanation, not the same
   pattern. Whether the 3-product pattern has a shared root cause is still an
   open question this loop has surfaced but not answered.
-- The site-reliability hypothesis for etzhayyim specifically (findings
-  4d-4f) landed on "very likely real, very likely already resolved" --
-  confirming this with certainty needs the actual Cloudflare Worker logs,
-  which this loop does not have access to.
+- The site-reliability thread for etzhayyim specifically (findings 4d-4g)
+  has flipped conclusions twice already (broken -> fixed -> possibly-never-
+  actually-measuring-live-health) and is explicitly left open rather than
+  forced to a verdict. Settling it needs either the actual Cloudflare
+  Worker logs or documentation of how `:status-mix` is computed, neither of
+  which this loop has access to.
