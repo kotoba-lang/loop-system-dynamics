@@ -13,7 +13,10 @@
    :stocks {:adherents {:value 1 :source "orgs/etzhayyim/root/MEMBERS.md, PR etzhayyim/root#3302 (2026-07-20): founder's git-side oath recorded; on-chain join() still pending, see PENDING-JOINS.md"}
             :council-seats-filled {:value 1 :of 5 :source "orgs/etzhayyim/root/COUNCIL.md: Seat 1 confirmed, Seats 2-5: 0 proposals"}
             :tracked-build-items {:value 199 :breakdown {:shipped 27 :landed 69 :proposed 102 :blocked 1}
-                                   :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}}}
+                                   :source "orgs/etzhayyim/root/90-docs/adr/status-index.edn"}
+            :website-uniques-7d {:value 1833 :source "com-junkawasaki/root/90-docs/business/metrics/etzhayyim.edn, 2026-07-20: etzhayyim.com Cloudflare zone, trailing 7 days"}
+            :website-requests-7d {:value 63453 :source "same file, same window"}}
+   :note "1,833 real weekly unique visitors vs 0 real adherents (until today's partial git-side join, still 1) sharpens the F2 finding from ADR-2607202700/2800: this is not a top-of-funnel traffic problem, the funnel has a real top and a measured-zero bottom"}
 
   {:id :kotoba-lang
    :org "kotoba-lang"
@@ -96,4 +99,52 @@
   {:id :global-fossil-fuel-industry
    :org "external-reference"
    :note "non-digital extractive archetype, largest annual-flow-usd in the catalog by a wide margin -- included specifically to test whether flow size alone predicts structural-strength (it does not, see dynamics.core/loop-archetypes source comment)"
-   :stocks {:annual-flow-usd {:value 8.32e12 :source "Precedence Research 2025: global fossil fuels market ~$8.32T"}}}]}
+   :stocks {:annual-flow-usd {:value 8.32e12 :source "Precedence Research 2025: global fossil fuels market ~$8.32T"}}}
+
+  {:id :sardex
+   :org "external-reference"
+   :note "mutual credit precedent directly relevant to etzhayyim's own EN/ENGI design"
+   :stocks {:annual-flow-usd {:value 5.4e7 :source "Monneta/P2P Foundation/Beyond Money: Sardex, Sardinia, ~EUR50M/yr trade volume"}
+            :member-businesses {:value 2900}}}
+
+  ;; --- internal com-junkawasaki-ecosystem products: real live Cloudflare zone
+  ;; traffic, sourced from the ALREADY-EXISTING BMC metrics pipeline
+  ;; (90-docs/business/metrics/*.edn, ADR-2607021500 series) rather than new
+  ;; research -- this is the "connect existing datasets" half of the loop.
+  {:id :ai-gftd-apex
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 5049 :source "90-docs/business/metrics/ai-gftd-apex.edn, 2026-07-20, gftd.ai zone"}
+            :website-requests-7d {:value 482034}}}
+
+  {:id :app-aozora
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 772 :source "90-docs/business/metrics/app-aozora.edn, 2026-07-20, aozora.app zone"}
+            :website-requests-7d {:value 37892}
+            :distinct-authors-200-window {:value 38}}}
+
+  {:id :cloud-manimani
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 295 :source "90-docs/business/metrics/cloud-manimani.edn, 2026-07-20, manimani.cloud zone"}
+            :website-requests-7d {:value 1773}
+            :signups {:value 1 :source "same file: :cloud {:signups 1} -- real cumulative signup count"}}
+   :note "295 weekly uniques vs 1 cumulative signup: the same traffic-without-conversion pattern found on etzhayyim.com, inside the same portfolio"}
+
+  {:id :cloud-murakumo
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 678 :source "90-docs/business/metrics/cloud-murakumo.edn, 2026-07-20, murakumo.cloud zone"}
+            :website-requests-7d {:value 70512}}}
+
+  {:id :club-shinshi
+   :org "jk-luxury"
+   :stocks {:website-uniques-7d {:value 741 :source "90-docs/business/metrics/club-shinshi.edn, 2026-07-20, shinshi.club zone"}
+            :website-requests-7d {:value 12869}}}
+
+  {:id :net-kotobase
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 921 :source "90-docs/business/metrics/net-kotobase.edn, 2026-07-20, kotobase.net zone"}
+            :website-requests-7d {:value 13951}}}
+
+  {:id :network-isekai
+   :org "gftdcojp"
+   :stocks {:website-uniques-7d {:value 452 :source "90-docs/business/metrics/network-isekai.edn, 2026-07-20, isekai.network zone"}
+            :website-requests-7d {:value 9797}}}]}
