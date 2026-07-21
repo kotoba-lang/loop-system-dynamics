@@ -1505,6 +1505,46 @@ mechanical the way etzhayyim's "restore what used to be there" fix was.
 Recorded precisely rather than dispatched, on the same reasoning as before,
 now backed by a materially more complete diagnosis.
 
+## 21. Third world-scale gap closed: the first major social platform in this catalog, and the first entity where the primary source matched a search snippet exactly on the first try
+
+"What's still open" flagged major social platforms as unrepresented
+(nation-states and healthcare/education/insurance remain the only gaps
+left in that original list). Closed with Reddit, Inc., sourced directly
+from its own SEC Form 10-Q (CIK 0001713445, filed 2026-05-01, period ended
+2026-03-31 -- the most recent 10-Q available, since Q2 2026's had not yet
+been filed as of this entry) fetched directly from `sec.gov/Archives`, the
+same tier of legally-mandated primary filing as the AFL-CIO's LM-2 and
+BOJ's balance sheet release.
+
+Unlike the two prior entities this cycle-family added, where the first
+source encountered turned out wrong (AFL-CIO, finding 17: a search
+snippet cited the wrong organization for the same filing) or incomplete
+(Bank of Japan, finding 19: an AI-summarized fetch silently dropped 2 line
+items), **this time the initial search snippet's headline number
+("Global DAUq reached 126.8 million, a 17% increase") matched the primary
+filing's own text exactly** -- verified by fetching the actual 10-Q and
+finding the identical figure in its "Overview of First Quarter 2026
+Results" section, word for word. Recorded as a genuine data point for the
+verify-before-recording discipline itself: it does not always catch an
+error, because there is not always an error to catch -- the value is in
+running the same check every time, not in it always finding something.
+
+**What the filing shows (three months ended 2026-03-31):** 126.8 million
+global Daily Active Uniques (+17% YoY, +4% quarter-over-quarter), $5.23
+average revenue per unique, $663.4 million total revenue (vs. $392.4
+million a year earlier), $204.0 million net income (vs. $26.2 million a
+year earlier -- roughly 7.8x growth), $266.0 million adjusted EBITDA,
+$311.2 million free cash flow, and $2.8 billion in cash and marketable
+securities as of quarter-end.
+
+This is also the first entity in this catalog with real,
+publicly-comparable per-user economics (ARPU) alongside its raw user-count
+stock -- a genuinely different kind of number from anything else recorded
+here (etzhayyim's F2 upper bound, the AFL-CIO's per-capita tax, BOJ's
+balance sheet composition), useful as a real-world anchor for what
+"monetized user attention at platform scale" actually looks like in
+audited, dated figures.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1515,13 +1555,13 @@ now backed by a materially more complete diagnosis.
   human copying `gh api` output, not a live ingestion pipeline. No `kqe`
   (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
   exist yet either.
-- Coverage is still a small, honest sample, not "the whole world": 33
+- Coverage is still a small, honest sample, not "the whole world": 34
   entities, 17 loop archetypes. The schema has no ceiling, but the actual
   instantiation covers a tiny fraction of real-world organizations and
-  systems -- no nation-states, major social platforms, or
-  healthcare/education/insurance systems are represented yet (labor unions
-  and central banks now each have one real instance: finding 17, the
-  AFL-CIO, and finding 19, the Bank of Japan).
+  systems -- no nation-states or healthcare/education/insurance systems are
+  represented yet (labor unions, central banks, and major social platforms
+  now each have one real instance: finding 17 the AFL-CIO, finding 19 the
+  Bank of Japan, finding 21 Reddit).
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed

@@ -271,6 +271,22 @@
             :javgb-share-of-total-assets-pct {:value 81.03 :derivation "517,511,154,658 / 638,675,186,572 * 100 = 81.02884933351943, both thousand yen, from the same filing"
                                                :interpretation "Japanese government securities alone are 81% of the entire BOJ balance sheet -- the largest single stock in this whole catalog by a wide margin, and a real, precisely-dated number for a widely-discussed but rarely precisely-cited fact (BOJ's government-bond-heavy balance sheet from a decade-plus of large-scale asset purchases). Recorded as a derived ratio, not itself a filed line item"}}}
 
+  {:id :reddit
+   :org "external-reference"
+   :note "Fills the third explicitly-flagged 'What's still open' gap: no major social platforms represented yet (labor unions and central banks were closed in the 2 prior cycles). Sourced directly from Reddit Inc.'s own SEC Form 10-Q (CIK 0001713445, filed 2026-05-01, period ended 2026-03-31 -- the most recent 10-Q available as of this entry, since the Q2 2026 10-Q had not yet been filed) -- a legally-mandated, audited-adjacent primary filing, the same tier of source as the AFL-CIO's LM-2 and BOJ's balance sheet release, fetched directly from sec.gov/Archives (not a financial-news aggregator, though a search snippet's headline numbers were spot-checked against this primary text and matched exactly, unlike the AFL-CIO/BOJ cases where a first-pass source turned out wrong or incomplete)"
+   :stocks {:global-dauq-millions {:value 126.8 :period "three months ended 2026-03-31" :yoy-growth-pct 17 :qoq-growth-pct 4
+                                    :source "10-Q 'Overview of First Quarter 2026 Results — User Metrics': 'Daily Active Uniques (\"DAUq\") were 126.8 million for the three months ended March 31, 2026, an increase of 17% year-over-year'"}
+            :arpu-usd {:value 5.23 :period "three months ended 2026-03-31" :source "same 10-Q: 'Average revenue per unique (\"ARPU\") was $5.23'"}
+            :total-revenue-usd {:value 663411000 :period "three months ended 2026-03-31" :yoy-comparison-usd 392361000
+                                 :source "same 10-Q Statement of Operations"}
+            :net-income-usd {:value 203981000 :period "three months ended 2026-03-31" :yoy-comparison-usd 26158000
+                              :source "same 10-Q: net income grew ~7.8x year-over-year"}
+            :adjusted-ebitda-usd {:value 265970000 :period "three months ended 2026-03-31" :yoy-comparison-usd 115271000
+                                   :source "same 10-Q non-GAAP reconciliation"}
+            :free-cash-flow-usd {:value 311200000 :period "three months ended 2026-03-31" :yoy-comparison-usd 126600000
+                                  :source "same 10-Q: 'Free Cash Flow was $311.2 million...as compared to $126.6 million'"}
+            :cash-and-marketable-securities-usd {:value 2.8e9 :as-of "2026-03-31" :source "same 10-Q"}}}
+
   {:id :online-gambling-industry
    :org "external-reference"
    :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
