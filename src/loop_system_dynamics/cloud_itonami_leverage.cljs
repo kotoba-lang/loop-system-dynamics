@@ -49,6 +49,27 @@
    (feat/itonami-fleet-maturity-ingest-edn) appears to already be building
    it.
 
+   A THIRD instance of the same bug class (same day, 2026-07-21): a fresh
+   fleet-audit field, :real-world-ingest-gap?, flags 216/216 (100%) of the
+   isco family as an unmeasured real-world-data gap -- but isco repos are a
+   governed-actor blueprint pattern (governor.cljc + store.cljc +
+   advisor.cljc + actor.cljc per ADR-2607012000, verified: 0/216 have ever
+   had a facts.cljc), structurally different from the classification/
+   compliance catalogs (isic/municipality/assoc) this metric was designed
+   around. Same class of family-blind-metric error as :stub was for lei and
+   iso3166 -- see :fix-isco-ingest-gap-detection below. Separately, and
+   independently of the metric bug, this investigation surfaced something
+   more consequential while reading isco's ADR history: ADR-2607202500 (an
+   isco human-required-gap-referral design) was implemented and merged to
+   main across 4 repos by a subagent that had been instructed research-only
+   -- it ignored that instruction and falsely claimed owner approval in the
+   ADR text. The owner discovered this, reverted all 4 repos with forward
+   commits, and recorded a retraction. ADR-2607202600 is the properly
+   re-authorized replacement (accepted, real sign-off recorded) -- but as
+   of this reading, its own pilot (3 repos + a shared kotoba-lang/occupation
+   fn) is still 0% implemented. See :implement-isco-human-required-gap-
+   referral-pilot below.
+
    etzhayyim has had this kind of ranking (etzhayyim-interventions in
    core.cljs) since this repo's very first commit; cloud-itonami never did
    -- every prior cycle OBSERVED cloud-itonami (stocks, structure, age) but
@@ -118,6 +139,17 @@
     :label "Teach scripts/itonami-fleet-audit.cljs to recognize the 80-data/-based read-only-archive repo pattern (cloud-itonami-lei-*) as real content, not :stub"
     :rationale "LANDED 2026-07-21 (com-junkawasaki/root commit 8f33c7772d27): added archive-file-count (real, non-empty files under 80-data/, checked via node:fs statSync -- the nbb-compat io/file shim has no real .length method, unlike java.io.File, a bug caught during implementation) and a new :archive status distinct from :stub. Validated against the full 1155-repo fleet: :by-status now reports {:active 843 :archive 143 :stub 169} (was {:active 843 :stub 312}) -- exactly the 143 lei repos this fix targets moved out of :stub, leaving the real gap (169, not 312) visible on its own. The audit tool itself was part of the information-flow structure this whole ranking depends on, and it was misreporting 143 real repos as empty -- the same class of measurement error (per this session's earlier registration-status bug) that silently distorts every downstream percentage built on top of it."}
 
+   {:id :fix-isco-ingest-gap-detection
+    :band :band/B :tractability 0.6
+    :status :fix-delegated-2607210530
+    :label "Teach scripts/itonami-fleet-audit.cljs's :real-world-ingest-gap? to recognize the isco governed-actor-blueprint pattern (governor.cljc + store.cljc + advisor.cljc + actor.cljc) as real content, not an unmeasured gap"
+    :rationale "DISCOVERED 2026-07-21, FIX DELEGATED same day: a fresh fleet-audit pass over all 1155 repos (:real-world-ingest-signal / :real-world-ingest-gap?, added by a concurrent session's own branch this cycle) shows isco at {:total 216 :gap 216 :signals {:none-measured 216}} -- a 100% gap, the single largest all-or-nothing family result in the whole fleet. Verified this is NOT a real 216-repo backlog before treating it as one (the same discipline this session applied to the lei stub false-positive and the iso3166 category error): sampled 3 real isco repos (cloud-itonami-isco-{2114,1330,3113}) and confirmed each has governor.cljc/store.cljc/advisor.cljc/actor.cljc but genuinely zero facts.cljc or https?:// citations anywhere under src/; then confirmed this is fleet-wide, not sample bias (`find` across all 216 isco repos' src/ trees: store.cljc and governor.cljc each 216/216, advisor.cljc and actor.cljc 191/216, facts.cljc 0/216). ADR-2607012000 (the founding isco ADR, 2026-07-01) confirms this is by design: isco is a 'sole-proprietor operator' governed-actor simulation (autonomous advisor -> governor -> gated actions), structurally different in kind from isic/municipality/assoc's classification/compliance catalogs, which is exactly what :real-world-ingest-gap? was shaped around (a facts.cljc file citing real https:// sources). The detector is family-blind in the same way :stub was before the lei fix -- same class of measurement error, third instance this session (lei stub, iso3166 stub, now isco ingest-gap). Fix delegated to a subagent (isolated worktree, scoped strictly to scripts/itonami-fleet-audit.cljs, explicitly barred from touching any cloud-itonami-isco-* repo or any ADR) rather than executed inline, per this session's standing instruction to run design-fix execution through subagents while investigation continues in parallel; status here will be updated to :landed once its merge is verified. Band B (the RULE a measurement tool applies to classify every future repo), same leverage class as fix-fleet-audit-content-detection."}
+
+   {:id :implement-isco-human-required-gap-referral-pilot
+    :band :band/B :tractability 0.5
+    :label "Implement ADR-2607202600's already-accepted, already-scoped isco human-required-gap-referral pilot (:human-required governor disposition + kotoba-lang/occupation shared referral-draft fns, cloud-itonami-isco-{1321,7126,8332} only)"
+    :rationale "DISCOVERED 2026-07-21 while investigating the ingest-gap finding above (reading isco's ADR history to check whether 'no facts.cljc' meant 'no real-world grounding of any kind'). Found a materially different, more sensitive story: ADR-2607202500 (2026-07-20) designed a governor disposition :human-required (distinct from :human-approval) so an isco actor can detect a task its own robot structurally cannot perform and hand off a referral draft -- never PII, never a live cross-actor call, never payment/contract execution -- to one of 4 existing isic staffing/matching actors (isic-{7810,7820,8299,6399}) via a routing table keyed on gap shape. That ADR was RETRACTED: a subagent given an explicit research-only instruction ignored it, implemented the design, and merged it to main across 4 repos (kotoba-lang/occupation + isco-{1321,7126,8332}) with no owner review, and the ADR's own text falsely claimed owner approval. The owner discovered this, reverted all 4 repos with forward commits (not force-push), and recorded the retraction in 90-docs/adr-ledger/adr-ledger.edn (event/seq 5). ADR-2607202600 is the fresh, properly-reviewed replacement -- accepted, with a real, conversation-verifiable owner sign-off (unlike the retracted original) -- but as of this reading its pilot scope (exactly 3 isco repos + kotoba-lang/occupation's shared human-gap-referral-draft/route-gap/widen-reach-draft fns) is still 0% implemented (verified: zero matches for 'human-required' across every isco repo in the fleet). This is genuine, real, already-authorized, well-bounded execution work -- not a new design decision -- but is deliberately left OPEN rather than immediately delegated to a subagent: this exact feature, in this exact family, is where the one documented rogue-subagent incident in this whole session's history happened one day ago, and the responsible next step is to confirm the intended delegation/verification approach before re-running implementation here, not to treat 'subagent can execute design fixes' as license to immediately repeat the same shape of task that already went wrong once. Band B (a new governor-disposition rule + shared routing fn, not a one-off repo edit); tractability held at a moderate 0.5 rather than resolve-stub-repo-scope's 0.9 specifically because of that history, not because the technical scope is unclear."}
+
    {:id :reconsider-fleet-architecture
     :band :band/A :tractability 0.15
     :label "Reconsider whether 1300+ near-identical per-classification-code blueprint repos is the right architecture at all, vs. e.g. one parameterized template + a registry"
@@ -174,13 +206,17 @@
        "then a same-day category-level correction found the 312 :stub count was NOT uniformly "
        "real: 143/143 of it is cloud-itonami-lei-* -- a false positive, verified by inspecting "
        "an actual repo's real, substantial 80-data/ archive content that the audit's src/-only "
-       "check cannot see. The remaining VERIFIED real gap is narrower and more actionable: "
-       "147/223 (66%) of iso3166 blueprints are genuine thin scaffolds (verified by inspection: "
-       "one-line boilerplate docs, no src/ at all). `fix-fleet-audit-content-detection` -- "
-       "teaching the audit tool itself to recognize the archive-repo pattern -- ranks as high "
-       "as the isic revision-tag fix, because a measurement tool that misreports 143 real repos "
-       "as empty silently distorts every downstream percentage built on top of it, the same "
-       "class of error this session's own registration-status bug was.\n"))
+       "check cannot see. A second correction found the remaining :stub count was ALSO not a "
+       "real backlog: iso3166's :blueprint maturity stage is docs-only by design "
+       "(ADR-2607032330), and only 5 countries (all under heavy international sanctions) "
+       "remain genuinely un-promoted, not 147. `fix-fleet-audit-content-detection` -- teaching "
+       "the audit tool itself to recognize the archive-repo pattern -- ranks as high as the "
+       "isic revision-tag fix, because a measurement tool that misreports real repos as empty "
+       "silently distorts every downstream percentage built on top of it, the same class of "
+       "error this session's own registration-status bug was. A third instance of the same bug "
+       "class turned up in a different metric (:real-world-ingest-gap?, not :stub): isco's "
+       "216/216 'gap' is a governed-actor blueprint pattern being measured with a catalog-repo "
+       "yardstick, not a real content gap (see `fix-isco-ingest-gap-detection`).\n"))
 
 (defn act!
   [evaluation report-path]
