@@ -1144,6 +1144,65 @@ append-only ledger event against ADR-2607100400 in
 own EDN-only ADR convention), rather than hand-editing that already-accepted
 ADR's body.
 
+## 16. Following up on the last cycle's own open thread: a second real, quantified infrastructure finding, found the same way -- and confirmed to be systemic across the entire live actor roster, not one actor
+
+Finding 13c flagged an "open inconsistency in the source itself": tomoshibi's
+own `MATURITY.md` header still says its `did:web` is "(placeholder, not
+live-hosted)", while a later 2026-07-12 entry in the same file claims
+"did:web live". This cycle resolved that specific inconsistency by checking
+reality directly, `curl https://etzhayyim.com/actor/tomoshibi/did.json`
+returns `HTTP 200` with a real, populated `verificationMethod` -- the R2
+claim is correct; the top-of-file header is simply stale prose that was
+never updated, not a live discrepancy.
+
+Chasing that thread further surfaced a second, different, and larger real
+issue. tomoshibi's DID document lists a secondary identity in
+`alsoKnownAs`: `did:web:tomoshibi.etzhayyim.com`. `dig +short
+tomoshibi.etzhayyim.com A` returns nothing -- that subdomain has no DNS
+record at all (not even the "resolves but proxies to a dead app" shape of
+finding 1c; here there is no DNS entry whatsoever). Checking whether this
+was tomoshibi-specific or systemic: fetched the full named-actor roster from
+`https://etzhayyim.com/.well-known/actors.json` (104 handles), fetched all
+104 `did.json` documents (103 resolved with HTTP 200, 1 -- `gov-municipality`
+-- 404s), and checked every resolved document's `alsoKnownAs` array against
+its own claimed subdomain.
+
+**Result: 102 of 103 resolvable actor DID documents claim a
+`did:web:<handle>.etzhayyim.com` alsoKnownAs identity, and `dig` confirms
+0 of those 102 claimed subdomains have any DNS record -- 100% false, with
+no exceptions.** The one actor that does NOT follow this pattern, `pds`,
+instead correctly claims `did:web:pds.aozora.app` -- verified live and
+healthy (`https://pds.aozora.app/xrpc/_health` returns `{"ok":true,...}`),
+proving the generator is capable of emitting a true `alsoKnownAs` value when
+one exists; for these 102 it always fabricates one that has never been true.
+
+Root-caused to source, not just observed at the HTTP layer (same discipline
+as finding 1c): two independent call sites in `etzhayyim/root` duplicate the
+identical unconditional construction --
+`50-infra/etzhayyim-did-web/src/registry/actor-profiles.ts` inside
+`toDidDoc()` (the primary KV/kotoba/compiled-registry path) and
+`50-infra/etzhayyim-did-web/src/worker.ts` inside `buildPerActorDidDoc()`
+(the scaffold fallback for handles not yet registered) both build
+`` `did:web:${handle}.etzhayyim.com` `` and push it into `alsoKnownAs`
+unconditionally, with no check for whether the subdomain is provisioned.
+Checked the ADR that governs this exact code path
+(`90-docs/adr/2606013800-actor-profile-and-dynamic-did-issuance.edn` in
+`etzhayyim/root`) for a "reserved for the future" rationale -- it contains
+no mention of a per-actor subdomain plan at all, so this reads as an
+unreviewed implementation artifact rather than a documented, intentional,
+forward-looking claim.
+
+A fix (removing the always-false claim from both call sites, leaving the
+real `did:web:etzhayyim.com:actor:<handle>` primary `id` and the genuinely
+real did:key/ERC725 alsoKnownAs entries untouched) has been dispatched to a
+fresh, worktree-isolated subagent under this workspace's standing
+authorization for discovery-surface updates, following the same
+verify-before-deploy discipline as finding 1d. **Whether it has actually
+landed and been independently re-verified live is not yet known as of this
+entry** -- recorded here as the finding + root cause + fix-in-flight, with
+the outcome to be recorded separately once confirmed, exactly as findings
+1c and 1d were split.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
