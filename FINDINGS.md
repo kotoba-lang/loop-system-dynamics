@@ -2638,6 +2638,51 @@ given every observed gap was a small, safe fast-forward, but a
 measured fact about how this workspace's pin-freshness actually
 behaves rather than an assumption.
 
+## 37b. Finding 37's 13 stale pins were advanced and landed -- independently re-verified, with one honest correction to the fixing agent's own report
+
+The 13 stale pins finding 37 identified were dispatched to a fresh,
+worktree-isolated agent to advance in one batch (same multi-entry
+`gen-west-manifest.cljs --entry name1,name2,...` pattern finding 35
+used for its smaller 6-repo batch). It landed as `com-junkawasaki/root`
+PR #977 (merge commit `98d272c4`), and this analysis re-verified the
+result independently rather than trusting the agent's self-report:
+
+- Confirmed PR #977's merge commit diff is exactly 13 additions / 13
+  deletions in `manifest/west.yml` via `gh api .../commits/<sha>`
+  (matches the agent's own claim).
+- Independently re-fetched all 13 new pin SHAs via `gh api .../commits/
+  <sha>` -- all 13 resolve to real commits with real, recent dates
+  (2026-07-10 through 2026-07-21), not fabricated.
+- Independently confirmed the live `manifest/west.yml` on `main` (not
+  the agent's local worktree copy) contains the exact 13 SHAs claimed,
+  spot-checked via `gh api repos/.../contents/manifest/west.yml`.
+
+**One correction to the agent's own report**: it stated CI showed
+"exactly the three known-outage jobs failing" (`Analyze (python)`,
+`kotoba migration parity`, `verify`). Independently checking the merge
+commit's check-runs found **five** failing jobs, not three -- the same
+three plus `guard` and `reconcile` (two workflow jobs evidently added
+to this repo's CI since earlier in this session). All five were
+independently re-verified via `gh api .../actions/jobs/<id>` to show
+the identical `runner_id: 0, runner_name: ""` unscheduled-runner
+pattern this catalog has confirmed many times as a pre-existing infra
+issue, not a content failure -- so the agent's underlying judgment
+(safe to merge) was correct, but its count of affected checks was
+incomplete. Recorded as exactly the kind of self-report inaccuracy
+"trust but verify" exists to catch: not wrong in substance, but wrong
+in a checkable detail that would have gone unrecorded without an
+independent re-check.
+
+Separately, syncing the superproject checkout after this landed
+surfaced an unrelated discovery: real, in-progress, uncommitted WIP in
+the shared `com-junkawasaki` superproject checkout removing stale
+`clone-depth: 1` lines from `manifest/west.yml` (consistent with this
+session's own ADR-2607211600 full-history policy reversal), evidently
+left by a different concurrent session. Per this workspace's mandatory
+git discipline, it was not discarded -- preserved via `git stash push`
+with a clear message for that other session to reconcile, not popped
+or resolved by this analysis.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
