@@ -100,6 +100,27 @@ kotoba-lang sits in between: it is infrastructure, but general-purpose-language
 infrastructure competing in a far more crowded space than a narrow BPMN/
 jsonnet tool, which likely explains its smaller (but nonzero) draw.
 
+**One star turns out to be a real, well-documented contribution story, not
+just a click.** Checking `rs-jsonnet`'s issue/PR history (not just its star
+count) finds `He-Pin` filed two well-diagnosed bug reports in September 2025
+-- a lexer byte-offset/UTF-8 bug and a `parseInt` safe-integer-range bug --
+each correctly citing his own relevant prior art from `databricks/sjsonnet`
+(a real Databricks open-source project; both referenced PRs -- his own
+merged `#502`, and a third party's merged `#381` -- were independently
+verified as real and merged, not fabricated citations). His own accompanying
+PR wasn't merged, but the bugs were real: **nine months later**, on
+2026-06-27, the maintainer fixed both -- via `Copilot` (GitHub's AI coding
+agent), not by hand -- and closed both issues with comments thanking He-Pin
+**by name**, explicitly crediting his upstream references as "a great
+reference."
+
+This matters for reading the star-count numbers correctly: quantity of
+external engagement across this whole workspace is very low everywhere it's
+been checked, but the one clear exception (gftdcojp) isn't shallow when
+examined closely -- a real domain expert found a real bug, was taken
+seriously, and got credited once it was fixed. Low external N does not mean
+low external signal quality when it does arrive.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 16 entries. Ranked by
