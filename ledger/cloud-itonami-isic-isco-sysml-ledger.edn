@@ -1,0 +1,1 @@
+#:event{:as-of "2026-07-21", :registration {:isic {:total 457, :registered 426, :unregistered 31}, :isco {:total 340, :registered 216, :unregistered 124}, :total {:total 797, :registered 642, :unregistered 155}}, :revision-declaration {:correctly-declared 216, :undeclared 239, :mislabeled 2, :total 457}}
