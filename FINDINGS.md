@@ -2237,6 +2237,48 @@ With this fix landed, `aozora.app` is now the one remaining
 unfixed discoverability gap this thread has diagnosed (findings
 20/20b) -- its stale-content decision remains genuinely open.
 
+## 32. Reconsidering aozora.app's own remaining blockers -- both resolve the same way isekai.network's did, dispatched
+
+Findings 20/20b left `aozora.app`'s discoverability bug deliberately
+unfixed for 2 real reasons: an unclear deploy mechanism (no CI/CD in
+that repo) and a real stale-content decision (the existing committed
+`robots.txt` is still YORO-branded, pointing at a defunct domain).
+Finding 29/31 resolved isekai.network's analogous blockers by (a)
+having the fixing agent run the documented deploy command directly
+rather than needing pre-existing CI/CD, and (b) using a minimal,
+truthful default rather than inventing brand content. Both resolutions
+apply equally well to `aozora.app`:
+
+**Deploy is not actually blocked by "no CI/CD"** -- that observation
+only meant this analysis couldn't determine deploy HISTORY from
+workflow logs, not that a fix can't be deployed going forward. A
+subagent running `wrangler deploy` (or the equivalent documented
+command for this app's specific config,
+`wrangler.aozora.jsonc`) directly, under this workspace's standing
+authorization, makes the live site match a fresh fix regardless of
+what happened before -- the same resolution already proven for
+isekai.network and, earlier, for etzhayyim.com's own 3-round fix.
+
+**The stale-content decision shrinks to the same "remove false claims,
+restore a minimal truthful default" pattern already used twice in this
+catalog** (the DID subdomain fix, findings 16b/18/24b/27b/27c; and
+isekai.network's fix, finding 29/31) -- not "invent detailed new brand
+policy," which is the part this analysis has consistently, correctly
+declined to do unilaterally. Replacing a robots.txt that is
+demonstrably wrong (wrong product name, dead Sitemap target) with a
+minimal `Allow: /` default and a sitemap listing only verified-live
+routes requires no brand judgment call this analysis shouldn't make.
+
+Dispatched under the same standing authorization and
+verify-before-deploy discipline as every fix in this thread, with
+explicit instructions mirroring what worked for isekai.network:
+confirm the repo's own actual merge convention rather than assume it,
+verify every claim in the dispatch prompt independently before acting,
+deploy via the documented command and confirm it's a real production
+deployment of the correct custom domain, and report honest live
+verification rather than an assumed "should be fixed now." Outcome not
+yet known as of this entry.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
