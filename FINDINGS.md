@@ -644,6 +644,48 @@ recorded as an honest failure of narrative-fitting, not smoothed over --
 seven consecutive readings have now taught this thread that whatever
 pattern looks compelling with N points is not safe to extrapolate to N+1.
 
+## 4l. A 7th reading, hours after this session's own discoverability fixes -- real, notable, and explicitly NOT claimed as caused by them
+
+Refetched `90-docs/business/metrics/etzhayyim.edn` fresh, today
+(`:as-of "2026-07-21"`, `:window "24h"`), hours after this session's own
+robots.txt/sitemap.xml fix (finding 1d) and DID subdomain fixes
+(findings 16b/18/24b) actually deployed. Raw 24h status-mix:
+`{:ok 784 :server-error 464 :client-error 545}`, total 1793 -- ok-pct
+43.7%, server-error-pct 25.9%, client-error-pct 30.4%. This does not
+slot cleanly onto finding 4k's own 6-reading sequence (whose last point
+was 34.90% server-error on different raw counts, 622/647/585) --
+flagged honestly rather than force-fit: the checked-in
+`:path-level-status-mix` stock in `entities-seed.edn` (480/800/668,
+41.1% server-error) also doesn't match either this new fetch or 4k's
+own narrative sequence, meaning this specific window's raw numbers
+appear to rotate/refresh in ways this analysis has not been tracking
+with strict reading-to-reading continuity -- a real data-hygiene gap,
+not smoothed over.
+
+**What IS directly notable, real, and dated:** the top 6 "ok" paths in
+this exact 24h window are `/robots.txt` (25 requests), `/actor/
+tomoshibi/did.json` (22), `/actor/danjo/did.json` (22), `/actor/
+kabuto/did.json` (14), `/actor/tsumugi/did.json` (13), and `/sitemap.
+xml` (12) -- `/robots.txt` and `/sitemap.xml` are literally the exact
+2 paths finding 1d fixed, and `tomoshibi`/`danjo`/`kabuto`/`tsumugi`
+are all actors whose DID document `alsoKnownAs` false claim this
+session's 3-round fix (findings 16b/18/24b) removed. Real traffic is
+actively hitting exactly the surface this session changed, right now,
+and landing in the 2xx/3xx bucket.
+
+**Explicitly NOT claimed:** that this traffic pattern, or the
+ok/error-rate shift, is caused by this session's fixes. The traffic
+here could simply be crawlers that were already probing these same
+paths before the fixes (they'd have gotten a 200 either way -- the bug
+was wrong CONTENT at 200, not an error status, for robots.txt/sitemap;
+the DID bug was a false claim inside an otherwise-200 document). Server
+-error rate improving at the same time these paths show up as
+top-traffic is a real, dated coincidence in timing worth recording
+precisely -- not yet evidence of a causal link, and this thread's own
+6-reading history (finding 4k) is the strongest argument against
+reading anything into a single favorable data point. Recorded as a 7th
+real reading in an honest, still-unresolved series, not a resolution.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
