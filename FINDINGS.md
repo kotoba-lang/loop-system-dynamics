@@ -1829,6 +1829,45 @@ not "the same bug found again," but the actual upstream data-quality
 issue that produced it in the first place, one layer further back than
 anything this thread has looked at yet.
 
+## 27. Followed the seed-data root cause to its actual entries -- one clean, one messier, and only the clean one dispatched
+
+Opened `00-contracts/schemas/actor-profile-seed.kotoba.edn` directly
+rather than leaving finding 26b's "still exists upstream" as an
+unopened pointer. Found both entries are real, but not the same shape
+of bug:
+
+**Kizuna's entry is a clean, unambiguous, single-field-family typo.**
+`:actor/handle "Kizuna 絆"`, `:actor/did "did:web:etzhayyim.com:actor:
+Kizuna 絆"`, and both `:actor/service` `"id"` fields all carry the raw
+display-name-like string instead of the slug `"kizuna"`. Confirmed this
+is a typo, not intent, 3 independent ways: (1) every neighboring entry
+in the same file uses a clean lowercase-hyphen-only handle; (2) this
+same entry's own `:actor/primary-schema` field already reads
+`"orgs/etzhayyim/com-etzhayyim-kizuna/data/seed-interactions.kotoba.edn"`
+-- lowercase, no space, the correct value sitting right next to the
+wrong one; (3) the live Worker already resolves this actor correctly as
+`kizuna` via a completely separate registry file
+(`src/registry/infra-actors.ts`), independent of this seed. A narrow
+fix (4 string replacements, one entry, nothing else touched) has been
+dispatched.
+
+**wadachi's entry is messier and was explicitly excluded from the same
+fix.** Multiple fields (`:actor/glyph`, `:actor/display-name-ja`,
+`:actor/display-name-en`, `:actor/description`) all contain the exact
+same long English sentence -- not a single wrong string propagated
+mechanically like Kizuna's, but several distinct fields that should each
+hold different content (a single glyph character, a Japanese name, an
+English name, a longer description) all wrongly holding identical text.
+Fixing this would require deciding what the actually-correct glyph
+character and display names should be, a real content decision this
+analysis and its dispatched subagents should not make unilaterally --
+the same restraint already applied to the aozora.app/isekai.network
+discoverability content decisions (findings 20/20b). Left as an
+explicitly separate, still-open, more complex item -- not silently
+folded into "the same fix."
+
+Outcome of the Kizuna fix not yet known as of this entry.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1861,19 +1900,18 @@ anything this thread has looked at yet.
   purpose. Scoped precisely rather than attempted rushed in the same
   cycle this was discovered: a real next step, not a vague "someday" line
   anymore.
-- The 2 malformed-handle actor names ("Kizuna 絆",
-  "wadachi (轍 — autonomous mobility Tier-B actor)") still exist upstream
-  in `orgs/etzhayyim/root`'s `00-contracts/schemas/actor-profile-seed.
-  kotoba.edn` and in the compiled snapshot `public/kotoba/actors-v1.root.
-  json` (finding 26b) -- only the downstream generated static artifacts
-  were cleaned up this cycle, deliberately, since fixing seed data was
-  out of that task's scope. If the generator that produces
-  `public/actor/<handle>/*` from this seed ever runs again unmodified,
-  it would presumably regenerate the same malformed output. Not yet
-  investigated: whether the seed entries themselves need a handle fix,
-  or whether they're intentionally free-form display data that a
-  DIFFERENT, more careful generator step should slugify before ever
-  reaching a file path.
+- Of the 2 malformed-handle seed entries (finding 26b), Kizuna's is a
+  clean single-field-family typo with a dispatched fix (finding 27,
+  outcome not yet known). wadachi's is messier -- multiple fields
+  (glyph, both display-name fields, description) all wrongly hold the
+  same duplicated sentence, not a single mechanically-wrong string --
+  and needs a real content decision (what the correct distinct glyph
+  and display names should actually be) this analysis has deliberately
+  not made. Still open regardless of how Kizuna's fix lands. The
+  compiled snapshot `public/kotoba/actors-v1.root.json` (also flagged
+  in finding 26b as containing the malformed strings) has not yet been
+  checked for whether it's a regeneratable build artifact or something
+  that needs its own fix.
 - Coverage is still a small, honest sample, not "the whole world": 35
   entities, 17 loop archetypes -- all 5 categories this bullet used to
   name as unrepresented (labor unions, central banks, major social
