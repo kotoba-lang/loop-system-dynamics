@@ -2683,6 +2683,49 @@ git discipline, it was not discarded -- preserved via `git stash push`
 with a clear message for that other session to reconcile, not popped
 or resolved by this analysis.
 
+## 38. Closing the DID `alsoKnownAs` saga properly: an exhaustive durability re-check, plus a genuinely new scope finding about the actor space the bug never touched
+
+Findings 13c/18/24b tracked a real bug across 3 fix rounds (PRs
+#3306-3308): named etzhayyim actors' `did.json` documents falsely
+claimed a `<handle>.etzhayyim.com` subdomain identity that never had
+DNS. Each round's own verification was thorough but same-day (fix,
+then immediately re-check). This cycle did something different: came
+back days later and re-checked from scratch, plus asked a question no
+earlier round asked.
+
+**Durability re-check**: fetched all 104 named actors currently listed
+in `https://etzhayyim.com/.well-known/actors.json` (not a sample --
+the complete named registry) and checked every `alsoKnownAs` array.
+0/104 false claims. Also directly checked `wadachi`, `danjo`, and
+`toritate` -- three handles the registry endpoint's own note says it
+does *not* enumerate ("free-form member/council handles") -- all 3
+clean. The fix has held; no regression.
+
+**New scope finding**: `https://etzhayyim.com/.well-known/actors.json`
+reports `entityActorCount: 24213` (namespace mirror actors: gov 7089 +
+corp 17075 + cable 14 + station 22 + craft 13) and
+`unispscActorCount: 18342` -- together 42,555 additional resolvable
+actor identities, none of which were ever checked against this bug in
+any earlier finding. Testing real-seeming handles (`gov-jpn`,
+`gov-usa`, `unspsc-43211500`) showed all had `alsoKnownAs: []`. Testing
+one more thing no earlier round tried: a deliberately fabricated,
+never-registered handle (`totally-bogus-handle-xyz123`) *also* resolved
+to a real, correctly-`Content-Type`'d (`application/did+json`) document
+with `alsoKnownAs: []` -- revealing that `/actor/<handle>/did.json`
+synthesizes a document for literally any handle string via a distinct
+code path (`_meta.kind: "entity-mirror"`, `_meta.source: "compiled"`),
+structurally separate from the `toDidDoc()`/`buildPerActorDidDoc()`
+functions the original bug lived in. This space was never at risk --
+not because anyone fixed it, but because it was never exposed to the
+same code path in the first place.
+
+**Not raised as new alarm**: the wildcard-resolves-any-handle behavior
+is itself an intentional keyless-observational-mirror pattern (per the
+namespace metadata's own G1/G2/G3 non-impersonation governance notes
+this catalog has referenced before, e.g. finding on `new-project-
+scaffold`'s etzhayyim actor-scope-overlap check) -- recorded as a
+distinct architectural fact worth knowing, not a defect.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
