@@ -1398,6 +1398,69 @@ claimed filer identity, before writing anything down) -- worth keeping as
 standard practice for every future entity this catalog adds, not just
 these two.
 
+## 20. Extending the discoverability-audit methodology repo-wide, beyond etzhayyim: 2 more real domains found with the identical bug, 1 smaller variant, 2 minor
+
+Findings 1c/1d/16/16b/18 found and fixed this exact bug class on
+etzhayyim.com: `/robots.txt` and `/sitemap.xml` falling through to serve
+something other than real discoverability content. That methodology had
+never been applied to this portfolio's OTHER live product domains --
+aozora.app, manimani.cloud, itonami.cloud, murakumo.cloud, shinshi.club,
+kotobase.net, isekai.network (the 7 domains already tracked in
+`entities-seed.edn` for their traffic/funnel numbers). This cycle ran the
+same direct curl-plus-content-type check across all 7.
+
+**2 domains have the identical severity-class bug as etzhayyim's original
+finding:** `aozora.app` and `isekai.network` both return `HTTP 200` with
+`content-type: text/html` for *both* `/robots.txt` and `/sitemap.xml` --
+the actual response body in each case is the app's own SPA shell
+(`<!DOCTYPE html>...<div id="app"></div><script src="/js/main.js">`,
+`<title>isekai.network — Build games with AI</title>`), not discoverability
+content. Confirmed via header inspection (`content-type`), not just eyeballing
+the body -- the same rigor as the original etzhayyim finding.
+
+**1 domain has a real, smaller, distinct bug:** `shinshi.club`'s
+`/robots.txt` declares `Sitemap: https://shinshi.club` (the bare domain
+root, not a `/sitemap.xml` path) -- and that bare root returns the site's
+own HTML homepage, not sitemap content. `shinshi.club/sitemap.xml` itself
+IS real, working XML when fetched directly, so this isn't the same class
+of bug as the two above -- it's a wrong pointer inside an otherwise-correct
+robots.txt, meaning a crawler that trusts the `Sitemap:` directive (rather
+than guessing `/sitemap.xml` on its own) would be misdirected to the
+homepage instead of the real sitemap.
+
+**2 domains have a minor, likely-cosmetic issue:** `manimani.cloud` and
+`kotobase.net` serve real, correct robots.txt CONTENT (a legitimate
+Cloudflare "AI content-signals" policy block) but with `content-type:
+application/json` instead of `text/plain` -- crawlers generally parse the
+body regardless of content-type, so this is unlikely to actually block
+anything, but it is measurably wrong and, given both affected domains use
+the same header, plausibly a shared Cloudflare-zone-level default rather
+than something either product's own code controls.
+
+**2 domains checked clean:** `itonami.cloud` and `murakumo.cloud` both
+serve real robots.txt (`text/plain`) and real sitemap.xml
+(`application/xml`) content.
+
+**Root cause located but a fix NOT dispatched this cycle, unlike the
+etzhayyim precedent -- an explicit, deliberate choice, not an oversight:**
+traced `aozora.app` to `gftdcojp/app-aozora` (a governance/registry repo,
+no wrangler config) and then to the actual deploy repo,
+`gftdcojp/aozora-yoro-ui`, which has 2 candidate robots.txt locations
+(`appview/yoro-ui-g00h5zto/static/robots.txt` and
+`appview/yoro-ui-g00h5zto/svelte/public/robots.txt`) and 2 wrangler
+configs (`wrangler.jsonc`, `wrangler.aozora.jsonc`) -- a materially
+messier, heavier repo than etzhayyim-did-web's single clean Worker (it has
+committed shadow-cljs build caches and WASM binaries in its tree). Traced
+`isekai.network` to `gftdcojp/network-isekai`, which has multiple Worker
+directories (`goriketsu-proxy`, `social-rooms`, `stage-rooms` -- the latter
+with committed `.wrangler` local-dev SQLite state, a separate hygiene issue
+noted but not this finding's focus) with no single obvious site-root
+handler found from a tree scan. Given the added ambiguity (which config is
+actually live, which of 2 robots.txt files wins) relative to etzhayyim's
+unambiguous single-Worker case, this is recorded as found-and-scoped, with
+enough of a head start for a future cycle to finish the diagnosis quickly,
+rather than dispatched blind the way the etzhayyim fix was.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

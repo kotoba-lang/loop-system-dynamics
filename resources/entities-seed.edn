@@ -329,7 +329,12 @@
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 772 :source "90-docs/business/metrics/app-aozora.edn, 2026-07-20, aozora.app zone"}
             :website-requests-7d {:value 37892}
-            :distinct-authors-200-window {:value 38}}}
+            :distinct-authors-200-window {:value 38}
+            :discoverability-bug {:value {:robots-txt "HTTP 200, content-type text/html -- body is the app's own SPA shell (<!DOCTYPE html>...<div id=\"app\"></div><script src=\"/js/main.js\">), not robots.txt content"
+                                           :sitemap-xml "same bug: HTTP 200, content-type text/html, SPA shell body"
+                                           :root-cause-located "gftdcojp/aozora-yoro-ui (the deploy repo, found via gftdcojp/app-aozora which is a governance/registry repo with no wrangler config) -- 2 candidate robots.txt files (appview/yoro-ui-g00h5zto/static/robots.txt, appview/yoro-ui-g00h5zto/svelte/public/robots.txt) and 2 wrangler configs (wrangler.jsonc, wrangler.aozora.jsonc), which is live not yet disambiguated"
+                                           :fix-status "NOT dispatched this cycle -- deliberately, given the added ambiguity vs. the etzhayyim-did-web precedent (single clean Worker); recorded as found-and-scoped for a future cycle"}
+                                   :source "Direct curl + header inspection against the live domain, plus gh api git/trees traversal of gftdcojp/app-aozora and gftdcojp/aozora-yoro-ui, 2026-07-21"}}}
 
   {:id :cloud-manimani
    :org "gftdcojp"
@@ -368,7 +373,12 @@
                      :source "90-docs/business/canvas-ledger.edn, latest club-shinshi funnel observation, 2026-07-19T22:06:22Z"}
             :monetization-launch-status {:value :not-yet-launched
                                           :evidence "2026-07-09: legal gate for adult x crypto payment confirmed cleared by the owner; remaining task to enable creator monetization is the UI flow (導線) only -- i.e. the feature had not shipped as of the legal-clearance date"
-                                          :source "90-docs/business/canvas-ledger.edn seq 1352, 2026-07-09"}}
+                                          :source "90-docs/business/canvas-ledger.edn seq 1352, 2026-07-09"}
+            :robots-txt-sitemap-pointer-bug {:value {:issue "robots.txt's own Sitemap: directive reads 'Sitemap: https://shinshi.club' -- the bare domain root, not a /sitemap.xml path"
+                                                      :bare-root-returns "real HTML homepage (<!doctype html><html lang=\"ja\">...), not sitemap content"
+                                                      :sitemap-xml-itself "IS real, working XML when fetched directly at /sitemap.xml -- so this is a wrong pointer inside an otherwise-correct robots.txt, not the same severity as app-aozora/network-isekai's bug (where the actual discoverability paths themselves serve the wrong thing)"}
+                                              :source "Direct curl against shinshi.club/robots.txt and the bare domain root, 2026-07-21"
+                                              :interpretation "A crawler that trusts the Sitemap: directive rather than guessing /sitemap.xml on its own would be misdirected to the homepage instead of the real sitemap -- smaller in scope than the other 2 domains' bug but still a real, fixable gap"}}
    :note "creator GMV/revenue = 0 held across at least 7 consecutive real observations as visits grew 395->1044 -- BUT unlike cloud-murakumo, this zero likely has a mundane explanation: as of 2026-07-09 creator monetization's UI was still unshipped (only the legal gate was cleared). This WEAKENS finding #4's 'shared root cause' hypothesis for this specific product -- club-shinshi's zero may simply mean the feature doesn't exist yet, not that real demand is failing to convert"}
 
   {:id :net-kotobase
@@ -379,7 +389,12 @@
   {:id :network-isekai
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 452 :source "90-docs/business/metrics/network-isekai.edn, 2026-07-20, isekai.network zone"}
-            :website-requests-7d {:value 9797}}}
+            :website-requests-7d {:value 9797}
+            :discoverability-bug {:value {:robots-txt "HTTP 200, content-type text/html; charset=utf-8 -- body is the app's own SPA shell (<title>isekai.network — Build games with AI</title>...), not robots.txt content"
+                                           :sitemap-xml "same bug: HTTP 200, content-type text/html, SPA shell body"
+                                           :root-cause-located "gftdcojp/network-isekai has multiple Worker directories (goriketsu-proxy, social-rooms, stage-rooms) with no single obvious site-root handler found via a full tree scan -- less disambiguated than app-aozora's case, more investigation needed before a fix could be dispatched safely. Also noted in passing (separate hygiene issue, not this bug): workers/stage-rooms has committed .wrangler local-dev SQLite state in the tree"
+                                           :fix-status "NOT dispatched this cycle -- found-and-scoped for a future cycle, same as app-aozora"}
+                                   :source "Direct curl + header inspection against the live domain, plus gh api git/trees traversal of gftdcojp/network-isekai and gftdcojp/isekai-network, 2026-07-21"}}}
 
   {:id :japan-religious-corporations-registry
    :org "external-reference"
