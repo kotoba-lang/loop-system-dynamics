@@ -1246,6 +1246,64 @@ chain, in some tension with that same codebase's own stated
 "did:web never goes dark" intent -- a question for the repo owner, not
 something this analysis or its dispatched subagents should decide alone.
 
+## 17. Filling a real, explicitly-flagged coverage gap: the first labor union in this catalog, and a wrong assumption caught before it entered the record
+
+"What's still open" has said since it was first written that no labor
+unions are represented anywhere in this analysis, despite
+`labor-union-dues-organizing` having existed as a real loop archetype in
+`dynamics.core` for several cycles now with zero real entity data behind
+it. This cycle closes that specific gap with one real, precisely-sourced
+entity: the AFL-CIO.
+
+The source is the US Department of Labor's Office of Labor-Management
+Standards (OLMS) Form LM-2 -- the primary legal record of US
+labor-organization finances, mandatory for any union with $250k+ annual
+receipts, filed under penalty of perjury (29 U.S.C. 431 et seq), and
+publicly queryable at `olmsapps.dol.gov`. This is the same tier of primary
+source this analysis already uses elsewhere (SEC EDGAR, World Bank API,
+UN Stats) rather than a news summary or aggregator.
+
+**A wrong assumption was caught before it entered the record, not after.**
+A web search for a specific well-known union's LM-2 data returned a
+snippet citing "the National Education Association had 2,839,808 total
+members in 2024" and linked filing `000-106`. Before writing anything down,
+the actual filing was fetched directly (not the search snippet) -- and its
+real filer field reads `AFFILIATION OR ORGANIZATION NAME: AFL-CIO`, signed
+by Elizabeth Shuler (AFL-CIO's real president) at AFL-CIO's real
+Washington DC headquarters address. "National Education Association"
+appears exactly once in that filing, as a $62,500 disbursement *payee*,
+not as the filer. The search result had silently associated the wrong
+organization's news coverage with the wrong file number. This is the same
+discipline as the iso3166 stub-scope correction and the dir445-is-an-
+insider correction earlier in this catalog: verify the primary document
+itself, not a claim about it, before it becomes a permanent fact in this
+file.
+
+**What the real filing (File 000-106, period 07/01/2023-06/30/2024)
+actually shows:** 13,448,499 total affiliated members/fee payers (8,827,223
+via affiliated national/international unions, 4,569,500 associate members
+via directly-affiliated locals, the remainder small direct-affiliate
+categories); $82,166,449 in per-capita tax receipts for the period (the
+actual dues-equivalent flow -- AFL-CIO's own "Dues and Agency Fees" line
+reports exactly $0, confirming per-capita tax, paid by affiliated unions
+based on their own membership counts rather than individuals paying AFL-CIO
+directly, is the real mechanism here); $167,184,480 total receipts;
+$152,396,656 total disbursements (largest single categories: $30,092,166
+political activities/lobbying, $21,966,851 representational activities,
+$19,504,628 benefits); total assets grew from $124,724,142 to $138,199,874
+over the period. A naive per-member average of the per-capita flow
+(~$6.11/member/year) is recorded explicitly as a derived approximation of
+an almost-certainly tiered, convention-set rate, not a literal filed price
+-- the same care this analysis already applies to not overstating precision
+elsewhere (e.g. the F2 upper bound).
+
+This is a structurally different kind of "stock" from most of this
+catalog's entities: not a product's users or a platform's adherents, but a
+federation's affiliate-union membership aggregated up from tens of
+underlying organizations, funded by an inter-organizational tax rather than
+individual dues. Exactly the shape `labor-union-dues-organizing` was added
+to represent -- it now has its first real number behind it.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1256,11 +1314,12 @@ something this analysis or its dispatched subagents should decide alone.
   human copying `gh api` output, not a live ingestion pipeline. No `kqe`
   (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
   exist yet either.
-- Coverage is still a small, honest sample, not "the whole world": 31
+- Coverage is still a small, honest sample, not "the whole world": 32
   entities, 17 loop archetypes. The schema has no ceiling, but the actual
   instantiation covers a tiny fraction of real-world organizations and
-  systems -- no nation-states, central banks, major social platforms, labor
-  unions, or healthcare/education/insurance systems are represented yet.
+  systems -- no nation-states, central banks, major social platforms, or
+  healthcare/education/insurance systems are represented yet (labor unions
+  now has one real instance, finding 17, the AFL-CIO).
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed

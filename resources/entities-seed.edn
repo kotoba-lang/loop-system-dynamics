@@ -230,6 +230,18 @@
    :stocks {:annual-revenue-usd {:value 3.113e8 :source "Linux Foundation Annual Report 2025"}
             :member-orgs {:value 3000}}}
 
+  {:id :afl-cio
+   :org "external-reference"
+   :note "Fills a real gap this analysis had explicitly flagged as open ('What's still open': no labor unions represented). Matches the labor-union-dues-organizing loop archetype (added to dynamics.core/loop-archetypes 2 cycles ago) with its first real entity instance -- that archetype had zero real data behind it until now. Found via US DOL OLMS's official LM-2 filing system, the primary legal source of record for US labor-organization finances (mandatory for any org with >=$250k annual receipts, filed under penalty of perjury, 29 U.S.C. 431 et seq). Caught and corrected an initial wrong assumption before recording anything: a web search snippet suggested file 000-106 was NEA's, but the filing itself (fetched directly, not trusted secondhand) shows filer = AFL-CIO (Elizabeth Shuler, President, National Headquarters, 815 Black Lives Matter Plz NW Washington DC) -- NEA appears only as a $62,500 disbursement payee on this filing, not as the filer. Corrected before it ever entered the record, same discipline as the iso3166 stub-scope correction and the dir445-insider-not-external correction"
+   :stocks {:affiliated-members {:value 13448499 :breakdown {:affil-national-intl-unions 8827223 :directly-affil-local-unions 11 :assoc-members-directly-affil-locals 4569500 :direct-local-affiliates 51765}
+                                  :source "Form LM-2, File Number 000-106, Period Covered 07/01/2023 through 06/30/2024, https://olmsapps.dol.gov/query/orgReport.do?rptId=898724&rptForm=LM2Form (fetched directly 2026-07-21, not a secondary source)"}
+            :per-capita-tax-receipts-usd {:value 82166449 :period "07/01/2023-06/30/2024" :source "same LM-2 filing, Schedule of Receipts line 37"
+                                           :interpretation "This is the actual dues-equivalent flow this archetype models: affiliated unions pay AFL-CIO a per-capita tax based on their own membership counts, not individual workers paying AFL-CIO directly. Naive division (82,166,449 / 13,448,499 = ~$6.11/member/year) is an IMPLIED AVERAGE across a real, almost certainly tiered/negotiated per-capita rate structure set by convention -- reported here as a derived approximation, not a filed rate, and should not be read as a literal per-member price"}
+            :total-receipts-usd {:value 167184480 :period "07/01/2023-06/30/2024" :source "same LM-2 filing"}
+            :total-disbursements-usd {:value 152396656 :breakdown {:representational-activities 21966851 :political-activities-and-lobbying 30092166 :contributions-gifts-grants 3202002 :general-overhead 17169515}
+                                       :period "07/01/2023-06/30/2024" :source "same LM-2 filing"}
+            :total-assets-usd {:start-of-period 124724142 :end-of-period 138199874 :period "07/01/2023-06/30/2024" :source "same LM-2 filing"}}}
+
   {:id :online-gambling-industry
    :org "external-reference"
    :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
