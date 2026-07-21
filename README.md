@@ -400,9 +400,24 @@ audit first revised the scale of the real gap upward (774/1155 maturity-
 unset, 312/1155 flagged `:stub`), then a same-day category-level correction
 found the 312 was NOT uniformly real: 143/143 of it is `cloud-itonami-lei-*`
 -- a false positive from the audit's `src/`-only content check (a real
-repo's actual `80-data/` archive content was verified by inspection). The
-real, verified stub gap is narrower: 147/223 (66%) of `iso3166` blueprints
-are genuine thin scaffolds.
+repo's actual `80-data/` archive content was verified by inspection). A
+second, separate correction found the initial "147/223 (66%) of `iso3166`
+blueprints are genuine thin scaffolds" framing was itself a category error,
+not a narrower version of the same real gap: ADR-2607032330 (2026-07-03)
+designed `cloud-itonami-iso3166-*` as an explicit 3-stage maturity ladder
+(`:spec` -> `:blueprint` -> `:implemented`) where `:blueprint`-stage
+countries are BY DESIGN docs-only (no `src/` until `:implemented`), so the
+generic `:stub` check (src-file-count == 0) mischaracterizes every
+intentionally-docs-only `:blueprint` country as empty -- the same class of
+detector error as the lei false positive, just structural instead of a
+missing-content-type check. Cross-referenced against `kotoba-lang/iso3166`'s
+own `registry.edn` (154 `:blueprint`, 68 `:implemented`) and a spot-checked
+real repo (`cloud-itonami-iso3166-ago`, registry-marked `:implemented`,
+verified to have 9 real `.cljc` files under `src/`), only 5 countries remain
+genuinely un-promoted `:spec`: Afghanistan, Iran, North Korea, Syria,
+Venezuela -- all under heavy international sanctions, where not building a
+market-entry/procurement-compliance service is plausibly deliberate, not
+neglect. There is no 147-repo implementation backlog.
 
 Result: wiring live `observe`, fixing the isic revision-tag template, and
 teaching the audit tool itself to recognize the archive-repo pattern (all
@@ -411,12 +426,13 @@ isic template fix, because a measurement tool that misreports 143 real
 repos as empty distorts every downstream percentage the same way this
 session's own registration-status bug did) outrank simply clearing the
 current 153-repo registration backlog (band E, a one-off buffer drain).
-Finishing the 147 real iso3166 scaffolds (corrected from an initial band-A
-"open question" framing to band D: execution against an already-decided
-template, once category-level inspection showed the real gap was narrower
-and already scoped) and reconsidering the whole many-tiny-repos
-architecture (band A) are included too, so the ranking shows its full
-real shape instead of only the easiest items.
+Resolving the iso3166 stub-scope question turned out to be band E work too
+(corrected from an initial band-A "open question" framing, then a band-D
+"147 real scaffolds to execute" framing, to what it actually was: a stock
+check against data that already existed -- verifying `registry.edn` and one
+real repo, not a backlog to clear) and reconsidering the whole
+many-tiny-repos architecture (band A) are included too, so the ranking
+shows its full real shape instead of only the easiest items.
 
 ## Detect drift (the first real fulfillment of `:wire-live-observe`)
 

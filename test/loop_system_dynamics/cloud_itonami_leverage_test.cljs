@@ -38,12 +38,14 @@
       (is (> (:base-score (by-id :standardize-maturity-declaration))
              (:base-score (by-id :backfill-revision-tags)))))))
 
-(deftest stub-repo-scope-is-band-d-execution-not-band-a-goal-question-test
-  (testing "corrected: finishing the iso3166 thin-scaffold backlog is execution against an already-decided template (band D), not an open goal-level question -- the pre-correction band-A framing was itself corrected when category-level inspection showed the gap was narrower and already scoped"
+(deftest stub-repo-scope-second-correction-there-was-no-real-backlog-test
+  (testing "second correction: iso3166's :blueprint maturity stage is BY DESIGN docs-only (ADR-2607032330) -- the '147 repos need implementation' framing was a category error, not a real gap. Real state: only 5 countries (all sanctioned) remain :spec"
     (let [ev (leverage/evaluate)
           by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
           resolve-stubs (by-id :resolve-stub-repo-scope)]
-      (is (= :band/D (:band resolve-stubs))))))
+      (is (= :band/E (:band resolve-stubs)))
+      (is (:status resolve-stubs))
+      (is (= :landed (:status resolve-stubs))))))
 
 (deftest fix-fleet-audit-content-detection-ranks-as-high-as-a-template-fix-test
   (testing "correcting the audit tool's own lei false-positive (band B: the rule the audit applies) ranks alongside fix-revision-tag-template, both fixes to information-flow accuracy rather than one-off content backfills"
