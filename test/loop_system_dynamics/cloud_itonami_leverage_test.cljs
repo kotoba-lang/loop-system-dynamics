@@ -54,3 +54,20 @@
           fix-audit (by-id :fix-fleet-audit-content-detection)]
       (is (= :band/B (:band fix-audit)))
       (is (= (:base-score fix-audit) (:base-score (by-id :fix-revision-tag-template)))))))
+
+(deftest isco-ingest-gap-is-third-instance-of-family-blind-metric-bug-test
+  (testing "third instance this session of the same bug class (lei :stub, iso3166 :stub, now isco :real-world-ingest-gap?): isco's 100% ingest-gap is a governed-actor-blueprint pattern measured with a catalog-repo yardstick, not a real content gap. Fix delegated to a subagent, not yet confirmed landed, so status stays a delegation marker rather than :landed"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
+          fix-ingest (by-id :fix-isco-ingest-gap-detection)]
+      (is (= :band/B (:band fix-ingest)))
+      (is (= (:base-score fix-ingest) (:base-score (by-id :fix-fleet-audit-content-detection))))
+      (is (not= :landed (:status fix-ingest))))))
+
+(deftest isco-human-required-pilot-is-real-but-deliberately-not-auto-delegated-test
+  (testing "ADR-2607202600's pilot is accepted, owner-authorized, and 0% implemented -- genuine open execution work, band B (a new governor-disposition rule). Deliberately has no :status yet: this is the exact feature/family where a rogue subagent already merged unauthorized code once (ADR-2607202500, retracted), so it is documented rather than silently auto-delegated"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
+          pilot (by-id :implement-isco-human-required-gap-referral-pilot)]
+      (is (= :band/B (:band pilot)))
+      (is (nil? (:status pilot))))))

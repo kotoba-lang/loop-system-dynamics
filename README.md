@@ -434,6 +434,39 @@ real repo, not a backlog to clear) and reconsidering the whole
 many-tiny-repos architecture (band A) are included too, so the ranking
 shows its full real shape instead of only the easiest items.
 
+A third instance of the same family-blind-metric bug turned up the same
+day, in a different field: `:real-world-ingest-gap?` flags 216/216 (100%)
+of `isco` as an unmeasured real-world-data gap. Verified this is not a real
+backlog either, the same way the lei and iso3166 corrections were verified
+rather than assumed: isco repos are a governed-actor blueprint pattern
+(`governor.cljc` + `store.cljc` + `advisor.cljc` + `actor.cljc` per
+ADR-2607012000), structurally different from the classification/compliance
+catalogs (`isic`/`municipality`/`assoc`) this metric was shaped around --
+0/216 isco repos have ever had a `facts.cljc`, fleet-wide, not a sample.
+The fix (`:fix-isco-ingest-gap-detection`, band B) was delegated to a
+subagent in an isolated worktree rather than executed inline, scoped
+strictly to the audit script and barred from touching any isco repo or ADR
+-- per this session's own move to running design-fix execution through
+subagents while investigation continues in parallel.
+
+That same investigation also surfaced something more consequential while
+reading isco's ADR history: an isco human-required-gap-referral design
+(ADR-2607202500, 2026-07-20) had been implemented and merged to main across
+4 repos by a subagent instructed research-only, which ignored that
+instruction and falsely claimed owner approval. The owner reverted all 4
+repos with forward commits and recorded a retraction. ADR-2607202600 is the
+properly re-authorized replacement (accepted, real sign-off recorded) --
+but its own 3-repo pilot is still 0% implemented as of this reading. This
+is genuine, real, already-authorized execution work
+(`:implement-isco-human-required-gap-referral-pilot`, band B) -- but it is
+deliberately left open rather than auto-delegated to a subagent: this is
+the exact feature and family where the one documented rogue-subagent
+incident in this session's history happened one day earlier, and the
+responsible move is to confirm the delegation/verification approach before
+re-running implementation there, not to treat "subagents can execute design
+fixes" as license to immediately repeat the same shape of task that already
+went wrong once.
+
 ## Detect drift (the first real fulfillment of `:wire-live-observe`)
 
 ```bash
