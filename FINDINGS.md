@@ -1675,6 +1675,42 @@ verify-before-deploy discipline, same PR-and-deploy conventions as rounds
 separately once confirmed, continuing the same 1c->1d->16->16b->18
 discipline this whole thread has followed throughout.
 
+## 24b. The 3-round DID subdomain thread is now fully closed -- independently re-verified across the complete 250-handle set, not just the fixing subagent's own sample
+
+Round 3 landed exactly as designed: found the real count (148, matching
+finding 24's estimate exactly, 0 pattern mismatches), used pure
+line-level substitution (verified via `git diff --numstat` showing
+precisely 1 insertion / 1 deletion per file, nothing else touched across
+all 148), tests unaffected, landed via
+`orgs/etzhayyim/root` PR #3308 (squash-merged, commit `fc995a18`),
+deployed via `wrangler deploy` (Version ID
+`a225bc58-5b1e-4d55-931d-a9955ddb266e`, exactly 148 assets uploaded, 2716
+unchanged).
+
+Independently re-verified, not just trusting the subagent's own 7-handle
+spot check or its own repo-wide sweep claim: re-fetched the real
+`toritsugi-*` directory listing from GitHub (148, an exact match) and
+re-ran the same fetch-and-check script against **all 148**, fresh, after
+deploy -- **148/148 fixed, 0 still broken, 0 errors.**
+
+**The full arc, closed end to end:** finding 16 found the systemic bug
+across the 103-actor named roster (102 affected); finding 16b's first
+fix reached only 13/102 live (static-asset shadow); finding 18's second
+fix closed the 102 completely (102/102, independently verified) and, in
+the process of diagnosing why, discovered the true scope was 250, not
+102 (148 more in the `toritsugi-*` sub-actor roster); finding 24
+root-caused why those 148 hadn't been reachable by the same safe-fix
+method (a JSON pretty-printer mismatch, not a content difference) and
+dispatched a differently-shaped but equally safe fix; this entry closes
+it -- **250/250 affected documents now serve a truthful `alsoKnownAs`
+live, independently confirmed at every step, not asserted from a single
+subagent's self-report at any point in the chain.**
+
+The 2 corrupted-handle directories with a separate, pre-existing
+malformed-`did:web`-id bug remain the one deliberately out-of-scope item
+from this entire thread -- a distinct data-quality issue, not part of
+this bug's own closure.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
