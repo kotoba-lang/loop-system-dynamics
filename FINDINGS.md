@@ -500,6 +500,31 @@ rate is actually resolving, rather than this thread's conclusion merely
 being reclassified again on the same static level. Fifth revision of this
 thread; still driven entirely by new real data points.
 
+## 4j. A 5th reading breaks the decline -- two plateaus with a real step, not a trend
+
+4i's "continuing decline" hypothesis predicted the next reading would keep
+falling. It didn't: a 5th reading, the next routine tick after 4i, came back
+546/755/643 (38.84% server-error) -- UP 0.32 points from 4i's 38.52%, not
+down. The full sequence across all 5 readings is 41.07% / 41.05% / 40.80% /
+38.52% / 38.84%, which is not monotonic in either direction.
+
+Looked at as a whole rather than reading-to-reading, the shape is two
+roughly-flat plateaus -- ~41% across readings 1-3, ~38.5-38.8% across
+readings 4-5 -- joined by one real step down between reading 3 and 4. This is
+a more parsimonious explanation than "continuously improving": a single
+real change (a fix, a config update, something) landing once, then the
+metric stabilizing at a new, still-elevated level, rather than an ongoing
+trend that would eventually reach zero. Total request volume moved too
+(1846 -> 1944 between readings 4 and 5, real traffic variance) but the
+error RATE stayed inside the new plateau's range rather than drifting
+further, which is more consistent with "stabilized" than "still trending".
+
+Still real, still unidentified without Worker logs, still explicitly open --
+this is the sixth revision of this thread's conclusion, and the discipline
+stays the same: each revision is forced by a genuinely new data point that
+didn't fit the previous story, not by re-reading the same numbers with a
+different mood.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
@@ -747,12 +772,13 @@ needs to say so, not assume a proportional-rate ODE gives it automatically.
   (finding 4c) as a feature-not-shipped-yet explanation, not the same
   pattern. Whether the 3-product pattern has a shared root cause is still an
   open question this loop has surfaced but not answered.
-- The site-reliability thread for etzhayyim specifically (findings 4d-4i)
-  has now revised its conclusion five times (broken -> fixed -> possibly-
+- The site-reliability thread for etzhayyim specifically (findings 4d-4j)
+  has now revised its conclusion six times (broken -> fixed -> possibly-
   never-actually-measuring-live-health -> real+live but measuring an
-  unidentified traffic slice -> real+live and possibly improving over time)
-  and is explicitly left open rather than forced to a verdict. Settling it
-  needs either the actual Cloudflare Worker logs or documentation of how
+  unidentified traffic slice -> real+live and possibly improving over time
+  -> real+live, stepped down once, now plateaued at a new level) and is
+  explicitly left open rather than forced to a verdict. Settling it needs
+  either the actual Cloudflare Worker logs or documentation of how
   `:status-mix` is computed, neither of which
   this loop has access to.
 - None of etzhayyim's 9 candidate interventions have actually been applied
