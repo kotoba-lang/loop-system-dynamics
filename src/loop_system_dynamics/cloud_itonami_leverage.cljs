@@ -78,8 +78,9 @@
 
    {:id :wire-live-observe
     :band :band/B :tractability 0.7
+    :status :partially-landed
     :label "Replace loop-system-dynamics's hand-copied cloud-itonami seed files with a live gh-api + manifest/west.yml diff, run on a schedule"
-    :rationale "Already the README's own documented 'Next' follow-up, and the exact mechanism (gh api repos --paginate + west.yml exact-name grep) has now been proven twice this session (the XMILE and SysML seeds) and used to CATCH a real bug (the role-suffix mis-flag correction) -- the pattern works, it just isn't automated. Changes the STRUCTURE of how information flows into this whole loop's decide/act stages -- band B, not a one-off data refresh."}
+    :rationale "PARTIALLY LANDED 2026-07-21: cloud_itonami_live_diff.cljs runs the real gh api + exact-name west.yml match live and diffs it against the checked-in seed (:new-codes/:removed-codes/:registration-flips, never conflated) -- the exact mechanism this session proved twice by hand (the XMILE and SysML seeds) and used to CATCH a real bug (the role-suffix mis-flag correction), now a real, tested, runnable tool rather than a manual gh-api-then-hand-edit ritual. First real run found 0 drift (the seed already matched live, confirming clear-current-backlog's own landing). What remains is 'on a schedule' -- that needs external cron/CI infra this repo does not own, so this stays open rather than :landed. Still band B: it changes the STRUCTURE of how information flows into this whole loop's decide/act stages, not a one-off data refresh."}
 
    {:id :automate-age-lag-monitor
     :band :band/C :tractability 0.6
