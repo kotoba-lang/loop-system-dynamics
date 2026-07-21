@@ -1942,6 +1942,48 @@ signal, motivation, something else) remains unanswered, but "it's not
 a technical checkout bug, in at least these 2 cases" is now backed by
 2 independent, live, dated verifications rather than 1.
 
+## 28b. A real complication to finding 28's own pooling, found the same cycle it was written: itonami.cloud's "4 onboarded tenants" may not be comparable to cloud-murakumo's at all
+
+Kept investigating itonami.cloud's own live APIs past finding 28's
+headline result, rather than stopping at the first confirming number.
+Found something that complicates finding 28's own framing, recorded
+honestly rather than left out because it arrived inconveniently soon
+after writing the finding it undermines.
+
+`https://itonami.cloud/isco-1212/agent.json` is a real, live,
+machine-readable manifest whose explicit purpose is describing the
+free-tier claim flow (a WebAuthn passkey ceremony) **for an AI agent to
+execute programmatically** -- its own text reads "Sign up with passkey
+on a unique non-gftdcojp org/repo -- no Stripe required for free path."
+This is not incidental: `agentRuns7d: 34421` against `74` human weekly
+uniques is roughly a **465:1** ratio of automated to human activity on
+this product, both figures already recorded in this same file
+(`:agent-runs-7d`, `:website-uniques-7d`).
+
+This is real, structural, evidence -- not proof, but a genuine basis to
+suspect that some or all of the "4 external tenants /
+selfRegisteredOwners" (the same 4 counted as "100% trial->onboarded" in
+finding 28 and the entity's own `:funnel` stock) were claimed via this
+agent-executable path rather than by a real human business evaluating a
+purchase decision. This analysis cannot identify who the 4 tenants
+actually are, so this is recorded as an open, well-evidenced
+possibility, not a settled fact -- but if true, it would mean
+itonami.cloud's "0% onboarded->paying" measures something categorically
+different from cloud-murakumo's (which has no comparable
+agent-executable claim path documented), undermining rather than
+supporting finding 28's own "2 independent confirmations of the same
+shared cause" framing.
+
+**Recorded as a genuine self-correction, on the same discipline this
+whole catalog has applied to itself repeatedly** (the iso3166
+stub-scope correction, the dir445-insider correction, the AFL-CIO/NEA
+mixup correction): finding 28 is not retracted -- the checkout
+mechanism verification itself stands, real and confirmed -- but its
+generalization ("2 independent products, same shared cause") is now
+flagged as resting on an unverified assumption (that the 4 tenants are
+real human commercial evaluators) this same cycle's own further
+investigation could not confirm and has real reason to doubt.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
