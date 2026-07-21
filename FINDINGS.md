@@ -164,6 +164,42 @@ Mozilla.ai) were not searched individually this cycle -- given the base term
 returns zero hits anywhere, per-name searches would almost certainly also
 return zero and were judged not worth the additional queries.
 
+## 1c. The root cause of the discoverability finding, found by checking the actual files
+
+A direct owner conversation about this analysis's own findings ("what should
+etzhayyim do next") flagged "fix search-engine discoverability" as the
+highest-priority, cheapest recommendation. Checking it directly (not just
+inferring it from the earlier zero-search-results finding) found the actual
+mechanism: `etzhayyim.com/robots.txt` returns 200, but its entire content is
+for a DIFFERENT product ("# YORO — AI Agent-First Social Platform, Built on
+AT Protocol", listing paths like `/profile/`/`/hashtag/`/`/messages/` that
+don't exist on etzhayyim.com at all). `etzhayyim.com/sitemap.xml` returns
+200 with exactly 2 `<sitemap>` entries, both pointing at
+`yoro.etzhayyim.com/sitemaps/*`. Both files that sitemap.xml points to are
+themselves served correctly ON etzhayyim.com's own domain -- but every
+single `<loc>` entry inside them (7/7 in the static sitemap, all entries in
+the actors-index sitemap, counted exhaustively via `grep -c`, not sampled)
+is a `yoro.etzhayyim.com` URL.
+
+`yoro` was a real etzhayyim sub-project (an AT-Protocol social app, listed
+in `orgs/etzhayyim/root/CLAUDE.md`'s own `60-apps/` directory). Checking
+`yoro.etzhayyim.com/` directly finds a real HTTP 301 redirect to
+`https://aozora.app/` -- a completely different, unrelated real product in
+this workspace's own portfolio. The sub-app was retired/merged away from
+the domain, but its dead robots.txt/sitemap were never replaced with
+etzhayyim.com's own.
+
+**This is the root cause, not just a correlated symptom**: a crawler that
+successfully found and followed etzhayyim.com's own sitemap chain would
+discover zero real etzhayyim.com pages and instead be led toward a
+redirect to a different product's site entirely -- actively teaching a
+search engine the wrong thing about what etzhayyim.com is, not merely
+failing to teach it anything. The actual page content served at
+etzhayyim.com/ itself is fine and correct (real `<title>etzhayyim</title>`,
+a real, on-topic meta description) -- the bug is fully confined to the
+discoverability-file chain. A concrete, fixable infrastructure bug, not a
+content or traction problem.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 19 entries -- 2 added this cycle
