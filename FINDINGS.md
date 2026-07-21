@@ -1792,6 +1792,43 @@ due-diligence instruction to stop rather than proceed if the fixing
 agent's own investigation finds anything contradicting this being safe,
 dead garbage. Outcome not yet known as of this entry.
 
+## 26b. Cleanup landed, independently re-verified -- and the fixing agent's own due diligence surfaced a real, distinct remaining root cause this cycle did NOT close
+
+The cleanup completed as designed: 14 git-tracked malformed paths
+removed (`git rm --pathspec-from-file`, confirmed via `git diff
+--name-only origin/main HEAD` that only those 14 files changed), tests
+unaffected (122/127, same pre-existing 5 failures), landed via
+`orgs/etzhayyim/root` PR #3309 (squash-merged, commit `631f2284b4`),
+deployed (Version ID `12c060dd-be59-4fb8-a802-8e01b5a18b33`).
+
+Independently re-verified, not just trusting the report: fresh curl
+confirms `https://etzhayyim.com/actor/Kizuna%20絆/did.json` now returns
+`HTTP 400 HandleInvalid` (correctly rejected, no longer served as a
+static file at all), and both real actors are unaffected --
+`.../actor/kizuna/did.json` and `.../actor/wadachi/did.json` still
+return the correct `id` and `alsoKnownAs: []`.
+
+**The fixing agent's own due-diligence check surfaced a real finding
+beyond this task's scope, reported honestly rather than silently
+expanded into:** the malformed handles ("Kizuna 絆",
+"wadachi (轍 — ...)") still exist **upstream**, in
+`00-contracts/schemas/actor-profile-seed.kotoba.edn` (the actual seed
+data, not generated output) and in a compiled snapshot,
+`public/kotoba/actors-v1.root.json`. This cycle's cleanup removed the
+downstream symptom (stale, unreachable generated static files) but did
+not touch the seed entries that would presumably regenerate the same
+malformed output if that generator ever runs again -- correctly left
+alone, since fixing seed data was never this task's scope and doing so
+would have required understanding a different part of the pipeline
+(`00-contracts/` is also Phase-0-frozen for *new* files, though editing
+an existing seed file is a different question this cycle did not
+investigate).
+
+**Recorded as a genuinely new, real, distinct, still-open item** --
+not "the same bug found again," but the actual upstream data-quality
+issue that produced it in the first place, one layer further back than
+anything this thread has looked at yet.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1824,6 +1861,19 @@ dead garbage. Outcome not yet known as of this entry.
   purpose. Scoped precisely rather than attempted rushed in the same
   cycle this was discovered: a real next step, not a vague "someday" line
   anymore.
+- The 2 malformed-handle actor names ("Kizuna 絆",
+  "wadachi (轍 — autonomous mobility Tier-B actor)") still exist upstream
+  in `orgs/etzhayyim/root`'s `00-contracts/schemas/actor-profile-seed.
+  kotoba.edn` and in the compiled snapshot `public/kotoba/actors-v1.root.
+  json` (finding 26b) -- only the downstream generated static artifacts
+  were cleaned up this cycle, deliberately, since fixing seed data was
+  out of that task's scope. If the generator that produces
+  `public/actor/<handle>/*` from this seed ever runs again unmodified,
+  it would presumably regenerate the same malformed output. Not yet
+  investigated: whether the seed entries themselves need a handle fix,
+  or whether they're intentionally free-form display data that a
+  DIFFERENT, more careful generator step should slugify before ever
+  reaching a file path.
 - Coverage is still a small, honest sample, not "the whole world": 35
   entities, 17 loop archetypes -- all 5 categories this bullet used to
   name as unrepresented (labor unions, central banks, major social
