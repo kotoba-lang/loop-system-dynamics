@@ -1461,6 +1461,50 @@ unambiguous single-Worker case, this is recorded as found-and-scoped, with
 enough of a head start for a future cycle to finish the diagnosis quickly,
 rather than dispatched blind the way the etzhayyim fix was.
 
+## 20b. Deepened the diagnosis on both remaining domains -- still not dispatching a fix, but for a more precise, now-comparative reason
+
+Continued finding 20's diagnosis rather than stopping at "ambiguous, needs
+more investigation." Resolved which of `aozora-yoro-ui`'s 2 wrangler
+configs is actually live: `wrangler.aozora.jsonc` binds `routes: [{pattern:
+"aozora.app", custom_domain: true}]` -- unambiguous. That config's
+`assets.not_found_handling: "single-page-application"` is the exact
+mechanism producing the bug: any requested path with no matching static
+asset silently falls back to serving `index.html`.
+
+**A real `static/robots.txt` file DOES exist in the repo** (632 bytes,
+last touched 2026-07-18, 3 days before this session, as an incidental part
+of an unrelated OAuth-delegation commit) -- but two things are true at
+once, not one: (1) the live site is NOT serving it (still returns the SPA
+shell, meaning either the deployed build predates this file or the deploy
+pipeline doesn't include it -- this repo has **zero GitHub Actions
+workflows**, so deployment is manual/external and this analysis has no
+visibility into when it last actually ran); (2) even if it WERE served,
+its content is itself stale -- still branded `# YORO — AI Agent-First
+Social Platform` and its `Sitemap:` line points at
+`https://yoro.etzhayyim.com/sitemap.xml`, the exact same defunct legacy
+domain finding 1c already found redirecting away to this very app. A
+"just redeploy" fix would ship a robots.txt that's technically served but
+substantively still wrong.
+
+**`isekai.network` is a cleaner but differently-shaped gap:** no
+`robots.txt` or `sitemap.xml` file exists anywhere in the repo tree at
+all -- this isn't a stale-content problem, it's a never-authored one. The
+repo's `public/` directory structure (character/asset EDN files, no
+wrangler.toml alongside it) is consistent with a Cloudflare Pages-style
+deploy rather than a Workers deploy, which would make adding real files
+and pushing to `main` plausible as a genuine fix path -- but this analysis
+cannot confirm the Pages project's actual git-branch binding from the repo
+alone, so that remains an assumption, not a verified fact.
+
+**Conclusion, sharpened from finding 20's "needs more investigation":**
+these are two structurally different problems (stale-and-undeployed vs.
+never-authored) requiring different fixes, and aozora.app's fix additionally
+needs a real content decision (what should a truthful, current robots.txt
+for the "aozora" product actually say, given the "yoro" rebrand) that isn't
+mechanical the way etzhayyim's "restore what used to be there" fix was.
+Recorded precisely rather than dispatched, on the same reasoning as before,
+now backed by a materially more complete diagnosis.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
