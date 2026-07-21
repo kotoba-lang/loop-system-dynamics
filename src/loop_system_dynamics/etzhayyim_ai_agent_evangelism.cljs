@@ -24,21 +24,37 @@
    - The CACAO leash (`ADR-2606111400`): a revocable per-actor off-switch,
      the human oversight mechanism for autonomous publication (post-hoc
      transparency + revocation, not pre-approval).
-   - `com-etzhayyim-tomoshibi` (灯): the one CONFIRMED evangelism-scoped
+   - `com-etzhayyim-tomoshibi` (灯): the FIRST confirmed evangelism-scoped
      actor ('invitational evangelism digital-publication actor, Mission
-     Charter §1.16', per its own GitHub description).
+     Charter §1.16', per its own GitHub description) -- AUTONOMOUS
+     publication, no per-post approval, per the 種をまく doctrine above.
+   - `com-etzhayyim-com-google-ads` (広): the SECOND confirmed
+     evangelism/outreach-scoped actor -- verified by reading its actual
+     README (ADR-2606292130, R0 design scaffold, 2026-06-29; real code
+     exists under `kotoba/`, not just docs). Its purpose is explicitly
+     'mission amplification (events, publications, mutual-aid drives,
+     land-sovereignty appeals, donation drives)' via paid/performance-
+     marketing channels -- structurally the OPPOSITE governance shape from
+     tomoshibi: a 9-gate architecture (G1-G9) where G1 is
+     'propose-not-actuate' -- a sealed LLM Propose node returns proposals
+     ONLY, an independent PolicyGovernor screens them, and a human
+     finance-DID must sign off (`interrupt-before`) before any campaign,
+     spend, or creative is ever published. Real, verified, structurally
+     distinct evidence that this workspace's actors do NOT all share one
+     autonomy model -- paid/spend-involving evangelism gets a stricter
+     human gate than free/organic publication.
    - `evangelismActivityAttestation.json`: an append-only ledger SCHEMA
      exists (deliberately excludes recipient-identifying fields -- no
      target list) -- but has ZERO real writes anywhere in the checkout.
 
-   What is REAL but only PARTIALLY characterized this cycle: of 613 real
-   `com-etzhayyim-*` actor repos (gh api orgs/etzhayyim/repos --paginate,
-   2026-07-21), 2 more have outreach-adjacent GitHub descriptions --
-   `com-etzhayyim-com-google-ads` ('charter-clean outreach actor
-   contracts') and `com-etzhayyim-recruit` ('recruit (aozora.app)', whose
-   relevance to etzhayyim-adherent evangelism specifically is unverified,
-   since its description ties it to a different product). Only tomoshibi
-   is confirmed in-scope.
+   What was checked and RULED OUT this cycle: `com-etzhayyim-recruit`
+   (flagged as an unverified candidate in an earlier draft of this exact
+   design) is confirmed, by reading its actual CLAUDE.md, to be a 'Global
+   Job-Posting Aggregator' (ESCO/O*NET/EURES/HelloWork/USAJOBS/Job Bank
+   public sources) -- a labor-market/talent-matching function unrelated to
+   etzhayyim-adherent evangelism. Its name ties to etzhayyim's separate
+   'labor liberation' mission theme, not adherent recruitment. Removed
+   from the evangelism-actor count; a real correction, not a guess.
 
    What is NOT built and NOT measured (do not treat any number below as
    real): any agent-to-agent (as opposed to agent-to-population) reach
@@ -81,11 +97,13 @@
 (defn observe []
   {:as-of "2026-07-21"
    :total-actor-repos 613
-   :confirmed-evangelism-actors ["com-etzhayyim-tomoshibi"]
-   :candidate-outreach-actors ["com-etzhayyim-com-google-ads" "com-etzhayyim-recruit"]
+   :confirmed-evangelism-actors ["com-etzhayyim-tomoshibi" "com-etzhayyim-com-google-ads"]
+   :autonomous-publication-actors ["com-etzhayyim-tomoshibi"]
+   :human-approval-gated-actors ["com-etzhayyim-com-google-ads"]
+   :ruled-out-actors ["com-etzhayyim-recruit"]
    :attestation-ledger-writes 0
    :adherents 1
-   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc, orgs/etzhayyim/root/CLAUDE.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
+   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc + com-google-ads/README.md (ADR-2606292130, G1-G9 gates) + recruit/CLAUDE.md, orgs/etzhayyim/root/CLAUDE.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
 
 ;; ---------------------------------------------------------------------------
 ;; evaluate -- real SysML structure + explicitly-labeled Bass scenarios
@@ -137,7 +155,8 @@
            {:name "NoCoercion" :text "evangelism_gate.cljc section 1.16(b), regex-enforced, tested" :req-id "CHARTER-1.16-B"}
            {:name "NoMinorSoloSolicitation" :text "evangelism_gate.cljc section 1.16(c), regex-enforced, tested" :req-id "CHARTER-1.16-C"}
            {:name "OptOutAffordanceRequired" :text "evangelism_gate.cljc section 1.16(d), positive requirement" :req-id "CHARTER-1.16-D"}
-           {:name "PublicationNotActuation" :text "an actor may autonomously SAY/PUBLISH; high-stakes real-world actuation keeps its human/Council gate" :req-id "CHARTER-PUBLICATION-NE-ACTUATION"}]})
+           {:name "PublicationNotActuation" :text "an actor may autonomously SAY/PUBLISH; high-stakes real-world actuation keeps its human/Council gate" :req-id "CHARTER-PUBLICATION-NE-ACTUATION"}
+           {:name "SpendRequiresHumanSignoff" :text "com-google-ads G1 propose-not-actuate: a sealed LLM Propose node returns proposals only, an independent PolicyGovernor screens them, a human finance-DID signs off via interrupt-before -- spend-involving evangelism gets a STRICTER human gate than free/organic publication, verified two governance shapes coexist in this real system" :req-id "COM-GOOGLE-ADS-G1"}]})
         structural-valid? (svalidate/valid? (svalidate/validate structural-model))
         scenario-projections
         (into {}
@@ -170,15 +189,23 @@
        "diffusion model (kotoba-lang/org-oasis-open-xmile, via dynamics.xmile/bass-diffusion-model).\n\n"
        "## What is real (as of " (:as-of observation) ")\n\n"
        "- " (:total-actor-repos observation) " real com-etzhayyim-* actor repos exist\n"
-       "- Confirmed evangelism-scoped: " (str/join ", " (:confirmed-evangelism-actors observation)) "\n"
-       "- Candidate outreach actors (unverified scope): " (str/join ", " (:candidate-outreach-actors observation)) "\n"
+       "- Confirmed evangelism-scoped (2 of 613, both verified by reading actual source): "
+       (str/join ", " (:confirmed-evangelism-actors observation)) "\n"
+       "  - Autonomous-publication (種をまく, no per-post approval): "
+       (str/join ", " (:autonomous-publication-actors observation)) "\n"
+       "  - Human-approval-gated (propose-not-actuate, G1, finance-DID sign-off before spend/publish): "
+       (str/join ", " (:human-approval-gated-actors observation)) "\n"
+       "- Ruled out this cycle (verified unrelated, not just unchecked): "
+       (str/join ", " (:ruled-out-actors observation))
+       " (a job-posting aggregator, not adherent evangelism)\n"
        "- Attestation ledger writes: " (:attestation-ledger-writes observation) " (schema exists, never written)\n"
        "- Current adherents: " (:adherents observation) " (founder, non-organic)\n\n"
        "## Structural model (real, validated)\n\n"
        (:structural-element-count evaluation) " real elements: EvangelistAgent -> EvangelismGate -> "
-       "TargetPopulation, with 6 real Charter-cited requirements (autonomous-publication-by-default, "
-       "the 4 real evangelism_gate.cljc section 1.16(a)-(d) rules, and the publication-is-not-actuation "
-       "boundary), all satisfied and structurally valid.\n\n"
+       "TargetPopulation, with 7 real Charter-cited requirements (autonomous-publication-by-default, "
+       "the 4 real evangelism_gate.cljc section 1.16(a)-(d) rules, the publication-is-not-actuation "
+       "boundary, and com-google-ads's own G1 propose-not-actuate gate), all satisfied and "
+       "structurally valid.\n\n"
        "## Dynamic scenarios (illustrative round numbers, NEVER measured -- see namespace docstring; "
        "market-size = " (:market-size evaluation) ", time in YEARS)\n\n"
        "| scenario | p | q | 10yr | 30yr | 50yr | 70yr | 90yr |\n|---|---|---|---|---|---|---|---|\n"
@@ -206,7 +233,15 @@
        "q-channel (adherents/agents reaching NEW contacts, not just being reached from outside) can. If "
        "AI-agent evangelism is meant to compound the way the owner's directive implies, a real "
        "agent-to-agent or adherent-to-contact propagation channel has to be deliberately built; it will "
-       "not emerge from publishing more content through more actors alone.\n"))
+       "not emerge from publishing more content through more actors alone.\n\n"
+       "A second, separate real finding from verifying the actors directly (not just their GitHub "
+       "descriptions): the 2 confirmed evangelism-scoped actors do NOT share one governance shape. "
+       "tomoshibi publishes autonomously by default (種をまく); com-google-ads, whose evangelism runs "
+       "through paid/spend channels, requires a human finance-DID sign-off before anything is published "
+       "(G1 propose-not-actuate). \"AI-agent evangelism\" is not a single autonomy model in this real "
+       "system -- whether spend is involved appears to be the real dividing line, and any future "
+       "p-scaling or q-channel design has to account for both governance shapes, not assume tomoshibi's "
+       "is the only one.\n"))
 
 (defn act!
   [observation evaluation report-path]

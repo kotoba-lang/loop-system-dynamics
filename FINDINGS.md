@@ -887,6 +887,39 @@ directive implies, a real agent-to-agent or adherent-to-contact
 propagation channel has to be deliberately built -- publishing more
 content through more actors alone will not produce it.
 
+## 13b. Verifying the 2 candidate actors directly: one confirmed with a genuinely different governance shape, one ruled out
+
+Section 13 flagged `com-google-ads` and `recruit` as evangelism-adjacent by
+GitHub description only, unverified in scope. This cycle read both actors'
+actual source (README/CLAUDE.md, manifest, real code directories) directly.
+
+**`com-google-ads` (広) is confirmed real and evangelism-scoped** --
+ADR-2606292130 (R0 design scaffold, 2026-06-29), real code under `kotoba/`
+(not just docs). Its stated purpose: "mission amplification (events,
+publications, mutual-aid drives, land-sovereignty appeals, donation
+drives)" via paid/performance-marketing channels. Its governance is the
+structural OPPOSITE of tomoshibi's: a 9-gate architecture (G1-G9) where G1
+is "propose-not-actuate" -- a sealed LLM Propose node returns proposals
+only, an independent PolicyGovernor screens them, and a human finance-DID
+must sign off (`interrupt-before`) before any campaign, spend, or creative
+is published. This is a real, verified finding that this workspace's
+actors do not share one autonomy model: spend-involving evangelism gets a
+stricter human gate than free/organic publication. The evangelism-scoped
+actor count moves from 1 to 2 of 613, and the structural SysML model now
+carries a 7th real requirement (`COM-GOOGLE-ADS-G1`) capturing this second
+governance shape.
+
+**`recruit` is confirmed unrelated** -- its actual CLAUDE.md describes a
+"Global Job-Posting Aggregator" (public ESCO/O*NET/EURES/HelloWork/
+USAJOBS/Job Bank sources, ISCO-08 occupation mapping, commercial-scrape
+prohibited). Its name ties to etzhayyim's separate "labor liberation"
+Mission theme, not adherent recruitment -- removed from the evangelism-
+actor count as a real, verified correction, not a guess. The general
+lesson repeats one this catalog has hit before (rs-jsonnet's He-Pin story,
+the ACA threshold bug): a name or a one-line description is not a
+substitute for reading the actual source before treating a finding as
+settled.
+
 ## 14. The same stock-flow pattern, applied to 2 more entities: three genuinely different real registration-backlog shapes
 
 Finding 10's XMILE stock-flow model (`Backlog_<cat>` drained by

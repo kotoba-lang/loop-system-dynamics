@@ -7,10 +7,13 @@
             [loop-system-dynamics.etzhayyim-ai-agent-evangelism :as evangelism]))
 
 (deftest observe-reports-the-real-verified-structural-facts-test
-  (testing "observe returns the real, verified 2026-07-21 facts -- 613 actors, tomoshibi confirmed, zero attestation writes"
+  (testing "observe returns the real, verified 2026-07-21 facts -- 613 actors, 2 confirmed evangelism-scoped (tomoshibi + com-google-ads), recruit ruled out, zero attestation writes"
     (let [obs (evangelism/observe)]
       (is (= 613 (:total-actor-repos obs)))
-      (is (= ["com-etzhayyim-tomoshibi"] (:confirmed-evangelism-actors obs)))
+      (is (= ["com-etzhayyim-tomoshibi" "com-etzhayyim-com-google-ads"] (:confirmed-evangelism-actors obs)))
+      (is (= ["com-etzhayyim-tomoshibi"] (:autonomous-publication-actors obs)))
+      (is (= ["com-etzhayyim-com-google-ads"] (:human-approval-gated-actors obs)))
+      (is (= ["com-etzhayyim-recruit"] (:ruled-out-actors obs)))
       (is (= 0 (:attestation-ledger-writes obs))))))
 
 (deftest evaluate-produces-a-valid-structural-model-test
@@ -19,11 +22,11 @@
       (is (:structural-valid? ev))
       (is (pos? (:structural-element-count ev))))))
 
-(deftest structural-model-has-all-6-real-charter-requirements-test
-  (testing "all 6 real Charter-cited requirements round-trip as traceable RequirementUsages, not free-text"
+(deftest structural-model-has-all-7-real-charter-requirements-test
+  (testing "all 7 real Charter-cited requirements round-trip as traceable RequirementUsages, not free-text -- including the com-google-ads G1 propose-not-actuate gate, verified as a distinct real governance shape"
     (let [ev (evangelism/evaluate (evangelism/observe))
           model (:structural-model ev)]
-      (doseq [req-id ["ADR-2606281500" "CHARTER-1.16-A" "CHARTER-1.16-B" "CHARTER-1.16-C" "CHARTER-1.16-D" "CHARTER-PUBLICATION-NE-ACTUATION"]]
+      (doseq [req-id ["ADR-2606281500" "CHARTER-1.16-A" "CHARTER-1.16-B" "CHARTER-1.16-C" "CHARTER-1.16-D" "CHARTER-PUBLICATION-NE-ACTUATION" "COM-GOOGLE-ADS-G1"]]
         (is (some #(= req-id (:sysml/req-id %)) (sm/elements model)))))))
 
 (deftest p-only-scenarios-never-accelerate-test
