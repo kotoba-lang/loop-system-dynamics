@@ -123,7 +123,10 @@ low external signal quality when it does arrive.
 
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
-`dynamics.core/loop-archetypes` now has 16 entries. Ranked by
+`dynamics.core/loop-archetypes` now has 19 entries -- 2 added this cycle
+(`labor-union-dues-organizing`, `aca-marketplace-enrollment`) specifically
+to widen real-world domain coverage into organized labor and social-
+insurance enrollment, neither represented before. Ranked by
 `loop-structural-strength` (cycle-time x self-funding x instrumentation x
 low-friction -- deliberately independent of `$` flow size):
 
@@ -132,18 +135,29 @@ low-friction -- deliberately independent of `$` flow size):
 3. online-gambling -- 41,008
 4. mlm-recruitment -- 83.2
 5. bluesky-atproto-growth -- 81.4
-6. jehovahs-witnesses-evangelism -- 3.16
-7. global-fossil-fuel-industry -- 2.84
-8. sardex-mutual-credit -- 1.49
-9. givedirectly-ubi -- 1.17
-10. givewell-effective-altruism -- 0.85
-11. optimism-retropgf -- 0.63
-12. wikimedia-commons -- 0.41
-13. public-goods-quadratic-funding (gitcoin) -- 0.27
-14. estonia-e-residency -- 0.24
-15. linux-foundation-membership -- 0.18
-16. quaker-consensus-membership -- 0.025
+6. labor-union-dues-organizing -- 4.16
+7. jehovahs-witnesses-evangelism -- 3.16
+8. global-fossil-fuel-industry -- 2.84
+9. sardex-mutual-credit -- 1.49
+10. givedirectly-ubi -- 1.17
+11. givewell-effective-altruism -- 0.85
+12. optimism-retropgf -- 0.63
+13. wikimedia-commons -- 0.41
+14. public-goods-quadratic-funding (gitcoin) -- 0.27
+15. aca-marketplace-enrollment -- 0.26
+16. estonia-e-residency -- 0.24
+17. linux-foundation-membership -- 0.18
+18. quaker-consensus-membership -- 0.025
 - etzhayyim-adherent-loop -- **unmeasured** (never fired, correctly excluded rather than scored 0)
+
+`labor-union-dues-organizing` lands notably above the religious/commons
+band on the strength of a real, statutory self-funding mechanism (payroll
+dues checkoff directly funds organizing staff) -- structurally similar to
+why MLM/adtech score high, minus the exploitative content. `aca-marketplace-
+enrollment` lands near the bottom despite covering 23.1 million real
+enrollees, because its cycle is annual (365 days) and its friction
+(identity/income verification, active plan selection) is real -- another
+demonstration that flow size alone does not predict structural-strength.
 
 **global-fossil-fuel-industry is the deliberate stress test**: at ~$8.32T/yr
 it is by far the largest flow in the catalog (dwarfing
