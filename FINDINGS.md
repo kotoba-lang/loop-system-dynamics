@@ -2522,6 +2522,42 @@ exactly this kind of curiosity-driven investigation). Recorded as
 puzzling" -- a real correction to the previous entry's scope, same
 discipline as every other self-correction in this catalog.
 
+## 35. A different kind of contribution: real repo-wide infrastructure maintenance, not just analysis -- 6 stale etzhayyim actor pins found and advanced
+
+Every prior finding in this catalog has been analysis, diagnosis, or a
+dispatched product/content fix. This cycle did something structurally
+different: checked whether `manifest/west.yml` (`com-junkawasaki/root`,
+this whole workspace's superproject) had drifted for the specific
+actor repos this session has directly worked with this cycle-family
+(`com-etzhayyim-kizuna`, `com-etzhayyim-wadachi`, findings 27b/33b).
+
+Both had real, stale pins -- 5 and 3 commits behind their real upstream
+`main`, respectively, confirmed via GitHub's compare API (`ahead_by >
+0, behind_by 0` for each -- a safe fast-forward, not a divergence)
+before touching anything, the same discipline this workspace's own
+`git-operations` skill documents as mandatory before any pin-related
+git operation. Sampled 5 more neighboring etzhayyim actor repos to
+check whether this was isolated or systemic: `com-etzhayyim-
+tomoshibi` (2 behind), `com-etzhayyim-danjo` (3 behind), `com-
+etzhayyim-tsumugi` (8 behind), `com-etzhayyim-toritate` (3 behind) --
+all stale, all safe fast-forwards. Only `com-etzhayyim-kabuto` was
+already current.
+
+Advanced all 6 in one minimal-diff commit (`nbb scripts/gen-west-
+manifest.cljs --entry <name1,name2,...>`, the documented multi-entry
+form), verified `verify-west-pins` passed for all 6, verified the diff
+touched exactly those 6 revision lines and nothing else, landed via
+`com-junkawasaki/root` PR #972 (merged).
+
+This is recorded as a genuinely different category of contribution
+from everything else in this catalog -- real repo-wide governance
+health, not business analysis or a product bug -- worth keeping
+precise about scope: this was a targeted check of repos this session
+had reason to look at, not a full sweep of the whole west.yml (which
+tracks 3600+ projects). Whether similar staleness exists broadly
+across the rest of the manifest remains a real, unchecked, much larger
+question this single cycle did not attempt to answer.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
