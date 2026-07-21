@@ -2400,6 +2400,42 @@ trio untouched. This is a partial closure of finding 27's open item,
 not a full one -- recorded precisely as such rather than overstated.
 Outcome not yet known as of this entry.
 
+## 33b. wadachi's sourced fix landed, independently re-verified -- exactly the 4 field values, nothing else, plus one more real blast-radius data point
+
+The dispatched fix landed exactly as scoped: `00-contracts/schemas/
+actor-profile-seed.kotoba.edn`'s wadachi entry now reads `:actor/handle
+"wadachi"`, `:actor/did "did:web:etzhayyim.com:actor:wadachi"`, both
+`:actor/service` ids corrected, `:actor/glyph "轍"` -- 4 field values,
+1 file, `:actor/display-name-ja`/`:actor/display-name-en`/
+`:actor/description` left untouched exactly as instructed. Landed via
+`orgs/etzhayyim/root` PR #3311 (squash-merged, commit `f9c3df7480b4`).
+Independently re-verified, not just trusting the report: fetched the
+merged file directly from `main` and confirmed the entry now reads
+`:actor/handle "wadachi"`.
+
+The fixing agent's own due diligence added a real, precise blast-radius
+data point beyond what was asked: checked `etzhayyim/com-etzhayyim-
+wadachi`'s own `.well-known/did.json` (a file distinct from the already
+-known-malformed `wire/identity/*.json` pair) and found it **already
+clean** (`"id": "did:web:etzhayyim.com:actor:wadachi"`) -- the bug in
+that repo is isolated to the 2 `wire/identity/` files, not the whole
+repo. Also confirmed no generator script exists there (checked
+`bb.edn`, `scripts/`, `README.md`/`CLAUDE.md`) and, as a control,
+compared against the already-fixed sibling `com-etzhayyim-kizuna`
+repo, which doesn't even have a `wire/` directory -- no precedent
+exists for safely regenerating this file shape, so those 2 files were
+correctly left untouched rather than hand-edited without a
+reproducible source.
+
+Net picture for wadachi: the seed-data source of truth is now correct
+(handle/did/glyph), independently verified; the 2 generated `wire/
+identity/*.json` projections in the actor's own repo remain stale
+copies of the old bug (a real, known, explicitly out-of-scope
+remainder, same disposition as Kizuna's own compiled-snapshot/IPFS-
+block leftovers in finding 27b); and the display-name-ja/display-name
+-en/description trio remains genuinely unfixed, still lacking any
+authoritative source.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
