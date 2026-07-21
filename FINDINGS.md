@@ -636,6 +636,68 @@ every field it exposes traces back to a `:source`-carrying value already in
 the seed. Nothing new was measured to build this; what changed is that the
 already-real facts are now askable as data, not just readable as prose.
 
+## 10. A real dynamic (XMILE) projection and structural (SysML v2) model of the F2 finding -- and a real substrate-check gap this corrects
+
+`kotoba-lang/org-oasis-open-xmile` (a real, ADR-authoritative OASIS XMILE
+1.0 implementation with an actual Euler/RK4 simulator) already existed --
+and was already the designated computational substrate for system dynamics
+in kotoba-lang (`ADR-2607072350`, 2026-07-07) -- when this catalog's own
+`dynamics.core` stock/flow/loop primitives were built two weeks later
+(`ADR-2607203000`, 2026-07-20) without checking for it. This is exactly the
+"check for existing infrastructure before building new" failure mode this
+workspace's own CLAUDE.md repeatedly warns about (BMC/Lean Loop tracking,
+design-quality scoring, coscientist loops all have the same caveat) -- this
+loop's own scoring layer is not exempt from that discipline just because it
+was built to formalize a repo-wide rule about it. A companion real standard,
+`kotoba-lang/org-omg-sysmlv2` (OMG SysML v2, structural systems modeling),
+existed alongside it.
+
+This cycle corrects course with two new generic namespaces in
+`kotoba-lang/dynamics` (`dynamics.xmile`/`dynamics.sysml`, thin host-
+injects-dependencies layers over the real standards, no hard dependency
+added) and one concrete instantiation against etzhayyim's real observed
+data (`loop-system-dynamics.etzhayyim-xmile-sysml`, see README "Simulate +
+model it"). Two real artifacts came out of it:
+
+**A real trajectory, not just a static bound.** `dynamics.core`'s
+`loop-structural-strength` stays -- it answers a genuinely different,
+cheaper question (comparative ranking across N archetypes from 4 coarse
+parameters, no full equation model needed) -- but the F2 finding (section 1)
+had only ever been expressed as a static percentage bound. Actually
+RK4-integrating a real XMILE model (constant real visitor inflow x the real
+F2 upper bound, feeding an Adherents stock from its real value of 1) over a
+10-year horizon gives: ~18 adherents after 1 year, ~87 after 5, ~173 after
+10 -- under the single MOST OPTIMISTIC rate consistent with everything
+observed so far. This is not a new fact (it is exactly what the F2 bound
+already implied, done correctly with a real integrator instead of hand
+arithmetic), but it is a more legible, more rigorous, standards-based way to
+communicate the same finding, and the exact tool this catalog should have
+reached for from the start.
+
+**A real, traceable structural model, not free-text Charter citations.**
+Every prior finding in this catalog that cited etzhayyim's Charter (the
+Estonia e-residency note, section 8's religious-registry context, this
+cycle's requirements) did so as prose in an `:interpretation` or `:note`
+string. `dynamics.sysml/acquisition-system`, instantiated for etzhayyim,
+makes the same citations real `RequirementUsage`s (`CHARTER-0.4`
+no-state-registration, `CHARTER-1.12` anti-monopoly) structurally satisfied
+by a real, `sysml.validate`-checked System part composed of real
+Website/DIDSBTRitual/Adherent parts and connections -- traceable data, not
+just accurate prose.
+
+A second, independent real XMILE model already existed in this repo before
+this cycle touched it -- `loop-system-dynamics.cloud-itonami-xmile`
+(concurrent work, landed the same day): a per-category backlog-drain
+simulation of cloud-itonami's GitHub-repo -> `manifest/west.yml`
+registration pipeline, finding `isco`'s 124-repo backlog has a measured
+registration rate of exactly 0/day and will never close without a new
+intervention. That work's CI was passing `xmile.model`/`xmile.execute`
+requires without the necessary sibling checkouts wired into
+`.github/workflows/ci.yml`, so its CI run had actually failed silently on
+main; this cycle fixed the workflow (adding the `org-oasis-open-xmile`/
+`org-omg-sysmlv2`/pinned-`dsl-core` checkouts) as part of landing its own,
+overlapping dependency needs.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

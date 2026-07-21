@@ -130,11 +130,38 @@ only a real flow measurement -- not just the two point-in-time repo counts
 already in `resources/entities-seed.edn`'s `:cloud-itonami` entity --
 tells them apart.
 
+## Simulate + model it (etzhayyim's F2 finding, as a real trajectory and a real structure)
+
+```bash
+# from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-oasis-open-xmile,
+# kotoba-lang/org-omg-sysmlv2, and kotoba-lang/dsl-core are checked out as siblings:
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+    bin/run_etzhayyim_xmile_sysml.cljs
+```
+
+`src/loop_system_dynamics/etzhayyim_xmile_sysml.cljs` takes the F2
+upper-bound finding (findings 1/1b in FINDINGS.md) one step further using
+the same real standards as the cloud-itonami simulation above, via the
+generic builders in `kotoba-lang/dynamics.xmile`/`dynamics.sysml`: reads
+etzhayyim's real `:website-uniques-7d-history` and `:f2-upper-bound-95pct`
+straight out of `resources/entities-seed.edn`, builds a real XMILE
+acquisition model (constant real visitor inflow x the real F2 upper bound,
+feeding an Adherents stock from its real starting value of 1), and actually
+RK4-integrates it forward -- first real evidence, from a simulator rather
+than hand arithmetic, of what the bound means as a trajectory: even under
+the single most optimistic rate consistent with everything observed so far,
+projected adherent count is single digits per year (~18 after 1 year, ~87
+after 5, ~173 after 10). It also builds the real SysML v2 STRUCTURAL
+counterpart -- Website/DIDSBTRitual/Adherent parts, connected, with 2
+Charter-cited `RequirementUsage`s (no-state-registration, anti-monopoly)
+satisfied by the system -- so the acquisition system's structure is a
+validated, traceable model, not free-text prose.
+
 ## Test
 
 ```bash
 npm install
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src:test" test/run_tests.cljs
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src:test" test/run_tests.cljs
 ```
 
 ## Extending coverage

@@ -1,0 +1,2 @@
+#:event{:as-of "2026-07-20", :avg-weekly-uniques 1846.4, :f2-upper-bound-95pct 0.00017822024693214808, :xmile-valid true, :sysml-valid true, :projection {365 18.15843433378061, 1825 86.79217166890459, 3650 172.58434333780343}}
+#:event{:as-of "2026-07-20", :avg-weekly-uniques 1846.4, :f2-upper-bound-95pct 0.00017822024693214808, :xmile-valid true, :sysml-valid true, :projection {365 18.15843433378061, 1825 86.79217166890459, 3650 172.58434333780343}}
