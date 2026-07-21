@@ -243,28 +243,33 @@ nbb --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljs
 Every cycle above OBSERVES cloud-itonami (stocks, structure, age) but never
 RANKS what to do about it -- etzhayyim has had that ranking
 (`etzhayyim-interventions` in `core.cljs`) since this repo's first commit;
-cloud-itonami never did. `cloud_itonami_leverage.cljs` runs 8 real candidate
+cloud-itonami never did. `cloud_itonami_leverage.cljs` runs 9 real candidate
 interventions -- each grounded in a specific finding from the cycles above,
 including com-junkawasaki/root's own pre-existing
 `scripts/itonami-fleet-audit.cljs` (real per-repo `blueprint.edn` maturity +
 git-activity signals across all 1155 checked-out cloud-itonami-* repos) --
 through the same `dynamics.core/rank-interventions` Meadows scoring. That
-audit revised the scale of the real gap upward: 774/1155 (67%) of the fleet
-declares no maturity at all in its own `blueprint.edn`, and 312/1155 (27%)
-are pure `:stub` repos with zero real content -- both larger than the
-registration/revision-tag gaps this ranking started from.
+audit first revised the scale of the real gap upward (774/1155 maturity-
+unset, 312/1155 flagged `:stub`), then a same-day category-level correction
+found the 312 was NOT uniformly real: 143/143 of it is `cloud-itonami-lei-*`
+-- a false positive from the audit's `src/`-only content check (a real
+repo's actual `80-data/` archive content was verified by inspection). The
+real, verified stub gap is narrower: 147/223 (66%) of `iso3166` blueprints
+are genuine thin scaffolds.
 
 Result: wiring live `observe`, fixing the isic revision-tag template, and
-standardizing `blueprint.edn`'s own maturity declaration (all band B,
-information/rule structure) outrank simply clearing the current 153-repo
-registration backlog (band E, a one-off buffer drain) -- the naive "just
-clear the backlog" answer is real, tractable, and genuinely one of the
-LOWEST-leverage items on the list, because it does not change whatever
-produces the NEXT backlog. Deciding what to do about the 312 stub repos,
-and reconsidering the whole many-tiny-repos architecture (both band A),
-are included too, at their honest low tractability, so the ranking shows
-its real ceiling instead of silently omitting the hardest, highest-leverage
-(and, in the stub-repo case, LARGEST-scale) options.
+teaching the audit tool itself to recognize the archive-repo pattern (all
+band B, information/rule structure -- the tool-fix ranks as high as the
+isic template fix, because a measurement tool that misreports 143 real
+repos as empty distorts every downstream percentage the same way this
+session's own registration-status bug did) outrank simply clearing the
+current 153-repo registration backlog (band E, a one-off buffer drain).
+Finishing the 147 real iso3166 scaffolds (corrected from an initial band-A
+"open question" framing to band D: execution against an already-decided
+template, once category-level inspection showed the real gap was narrower
+and already scoped) and reconsidering the whole many-tiny-repos
+architecture (band A) are included too, so the ranking shows its full
+real shape instead of only the easiest items.
 
 ## Test
 

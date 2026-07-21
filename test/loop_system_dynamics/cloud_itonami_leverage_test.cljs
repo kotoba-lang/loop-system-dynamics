@@ -38,10 +38,17 @@
       (is (> (:base-score (by-id :standardize-maturity-declaration))
              (:base-score (by-id :backfill-revision-tags)))))))
 
-(deftest stub-repo-scope-decision-is-band-a-and-included-despite-low-tractability-test
-  (testing "resolving what happens to the 312 stub repos is a goal-level (band A) decision, deliberately kept in the ranking at its honest low tractability rather than omitted"
+(deftest stub-repo-scope-is-band-d-execution-not-band-a-goal-question-test
+  (testing "corrected: finishing the iso3166 thin-scaffold backlog is execution against an already-decided template (band D), not an open goal-level question -- the pre-correction band-A framing was itself corrected when category-level inspection showed the gap was narrower and already scoped"
     (let [ev (leverage/evaluate)
           by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
           resolve-stubs (by-id :resolve-stub-repo-scope)]
-      (is (= :band/A (:band resolve-stubs)))
-      (is (< (:tractability resolve-stubs) 0.3)))))
+      (is (= :band/D (:band resolve-stubs))))))
+
+(deftest fix-fleet-audit-content-detection-ranks-as-high-as-a-template-fix-test
+  (testing "correcting the audit tool's own lei false-positive (band B: the rule the audit applies) ranks alongside fix-revision-tag-template, both fixes to information-flow accuracy rather than one-off content backfills"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
+          fix-audit (by-id :fix-fleet-audit-content-detection)]
+      (is (= :band/B (:band fix-audit)))
+      (is (= (:base-score fix-audit) (:base-score (by-id :fix-revision-tag-template)))))))
