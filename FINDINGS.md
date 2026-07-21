@@ -2156,6 +2156,42 @@ of this entry. `aozora.app`'s sibling finding remains genuinely
 unfixed -- its stale-content decision is real and this entry does not
 resolve it.
 
+## 30. Completing the "self-documented product status" sweep across the gftdcojp portfolio -- kotobase.net has a real, novel, verified-working payment mechanism distinct from every other product checked
+
+The same live-verification method already applied to
+itonami.cloud/murakumo.cloud/manimani.cloud (findings 28/28b/28c/28d)
+had not yet been run against `net-kotobase` (kotobase.net), which this
+catalog previously only checked for discoverability (finding, the
+`:discoverability-check` stock -- "checked clean"). Ran it now.
+
+`kotobase.net/llms.txt` (real, HTTP 200) documents a Knowledge Graph
+BaaS with a genuinely distinct monetization mechanism from every other
+product this thread has examined: alongside a conventional
+subscription tier ("Standard and Pro subscriptions for self-serve
+graph workspaces"), it exposes **x402** -- HTTP 402 Payment Required,
+per-request USDC micropayments on Base L2, no account or subscription
+needed. Verified this end-to-end rather than taking the documentation
+at face value: `GET /.well-known/x402` returns a real discovery
+document (seller `kotobase`, price `$0.001 USDC`, network `base`); an
+actual unauthenticated `GET /x402/ipfs/<real-cid>` correctly returns
+`HTTP 402` with a properly-formed payment challenge naming a specific
+`payTo` address and asset contract. Cross-checked that asset contract
+address (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`) against a real
+web search -- it is Circle's own verified, canonical native USDC
+contract on Base mainnet, not a placeholder or an unrelated/incorrect
+address.
+
+This is a genuinely different verification result from every other
+payment-mechanism check this thread has done: cloud-murakumo and
+cloud-itonami-saas-product both had working-but-zero-conversion Stripe
+checkouts (real infrastructure, no real customers yet); kotobase.net's
+x402 mechanism is real, correctly configured, AND requires no account
+signup at all to attempt a purchase (a structurally lower-friction
+payment path than either Stripe case) -- whether it has ever actually
+been paid is not something this analysis can determine without
+on-chain transaction history for that specific address, which remains
+a genuinely open, not yet investigated, question.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
