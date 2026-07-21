@@ -5,7 +5,8 @@
             [loop-system-dynamics.cloud-itonami-xmile-test]
             [loop-system-dynamics.etzhayyim-xmile-sysml-test]
             [loop-system-dynamics.cloud-itonami-isic-isco-sysml-test]
-            [loop-system-dynamics.aca-marketplace-decline-test]))
+            [loop-system-dynamics.aca-marketplace-decline-test]
+            [loop-system-dynamics.cloud-itonami-leverage-test]))
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
   (when-not (t/successful? m)
@@ -15,4 +16,5 @@
               'loop-system-dynamics.cloud-itonami-xmile-test
               'loop-system-dynamics.etzhayyim-xmile-sysml-test
               'loop-system-dynamics.cloud-itonami-isic-isco-sysml-test
-              'loop-system-dynamics.aca-marketplace-decline-test)
+              'loop-system-dynamics.aca-marketplace-decline-test
+              'loop-system-dynamics.cloud-itonami-leverage-test)

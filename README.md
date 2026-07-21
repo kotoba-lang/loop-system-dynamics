@@ -234,6 +234,28 @@ modeling error even though both "run" -- recognizing which real facts are
 levels-changing-proportionally versus flows-feeding-accumulators is itself
 part of doing this honestly.
 
+## Where to start (a real leverage-point ranking, not just observation)
+
+```bash
+nbb --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljs
+```
+
+Every cycle above OBSERVES cloud-itonami (stocks, structure, age) but never
+RANKS what to do about it -- etzhayyim has had that ranking
+(`etzhayyim-interventions` in `core.cljs`) since this repo's first commit;
+cloud-itonami never did. `cloud_itonami_leverage.cljs` runs 6 real candidate
+interventions -- each grounded in a specific finding from the cycles above
+-- through the same `dynamics.core/rank-interventions` Meadows scoring.
+Result: wiring live `observe` and fixing the isic revision-tag template
+(both band B, information/rule structure) outrank simply clearing the
+current 153-repo registration backlog (band E, a one-off buffer drain) --
+the naive "just clear the backlog" answer is real, tractable, and genuinely
+the LOWEST-leverage item on the list, because it does not change whatever
+produces the NEXT backlog. Reconsidering the whole many-tiny-repos
+architecture (band A) is included too, at its honest low tractability,
+so the ranking shows its real ceiling instead of silently omitting the
+hardest, highest-leverage option.
+
 ## Test
 
 ```bash
