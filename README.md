@@ -251,6 +251,54 @@ modeling error even though both "run" -- recognizing which real facts are
 levels-changing-proportionally versus flows-feeding-accumulators is itself
 part of doing this honestly.
 
+## A DESIGN, not a measurement: etzhayyim's real AI-agent evangelism mechanism
+
+```bash
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+    bin/run_etzhayyim_ai_agent_evangelism.cljs
+```
+
+Every module above measures something real that already happened.
+`src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljs` is different
+in kind (owner directive, 2026-07-21): etzhayyim's real mechanism of spread
+is LLM/AI-agent-driven evangelism, and this loop had never modeled it. What
+IS real and already built: `ADR-2606281500`'s "種をまく" (seed-and-grow)
+doctrine -- etzhayyim actors publish autonomously by default, gated by a
+real, tested content scanner (`evangelism_gate.cljc`, Charter §1.16(a)-(d))
+rather than pre-approved, with a revocable per-actor off-switch (the CACAO
+leash). Of 613 real `com-etzhayyim-*` actors (`gh api orgs/etzhayyim/repos`,
+2026-07-21), exactly 1 -- `com-etzhayyim-tomoshibi` (灯) -- is confirmed
+evangelism-scoped; an attestation-ledger schema exists but has zero real
+writes. This namespace builds the real SysML v2 structure of that
+architecture (`EvangelistAgent -> EvangelismGate -> TargetPopulation`, 6
+real Charter-cited `RequirementUsage`s, all satisfied and valid) and, for
+the DYNAMICS, uses `dynamics.xmile/bass-diffusion-model` (Frank Bass's 1969
+diffusion model, a third real XMILE model shape alongside additive-inflow
+and proportional-decay) under explicitly-labeled illustrative SCENARIOS --
+never fabricated as measured, since the loop has never fired.
+
+**A real modeling bug was caught and fixed while building this**: an early
+draft used the real F2 upper-bound (~0.000178, a per-VISIT probability) as
+if it were Bass's `p` (a per-POPULATION-MEMBER-per-YEAR adoption rate) --
+different units entirely, and the model instantly saturated the entire
+addressable population within a year, which was obviously wrong and
+directly contradicted the very point the exercise was trying to make. Fixed
+by using clearly-labeled illustrative round numbers instead of a
+mismatched-unit "real" figure, with a regression test asserting the F2
+figure never appears as a scenario parameter again.
+
+**The real structural finding**: no amount of scaling a pure-broadcast
+(`p`-only, `q=0`) channel can ever produce compounding -- deceleration is
+that model shape's mathematical nature, proven in a regression test, not
+just asserted in prose. A real `q` (agents/adherents reaching NEW contacts,
+not just being reached from outside) is what makes the S-curve possible,
+and even a small `q` eventually overtakes a 10x-larger pure-broadcast
+scenario (also regression-tested against the actual computed trajectories).
+If AI-agent evangelism is meant to compound the way "spreading via
+LLM/AI-agent/ASI evangelism" implies, a real agent-to-agent or
+adherent-to-contact propagation channel has to be deliberately built -- it
+will not emerge from publishing more content through more actors alone.
+
 ## Where to start (a real leverage-point ranking, not just observation)
 
 ```bash

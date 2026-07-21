@@ -817,6 +817,53 @@ the first finding in this catalog that the loop's own `act` step -- not
 just its `observe`/`decide` -- changed: the registration gap it measured is
 gone because this cycle closed it, not because it was re-measured smaller.
 
+## 13. A DESIGN, not a measurement: etzhayyim's real AI-agent evangelism mechanism
+
+Owner directive (2026-07-21): etzhayyim spreads by having LLM/AI agents (and
+eventually ASI-tier systems) conduct evangelism -- design its system
+dynamics. This is a different kind of task than every prior finding in this
+file: not measuring something that already happened, but designing what
+should exist, using the same real tools.
+
+**What's real**: `ADR-2606281500`'s "種をまく" (seed-and-grow) doctrine --
+etzhayyim actors publish autonomously by default, no per-post prior
+restraint, gated by a real, tested content scanner
+(`evangelism_gate.cljc`, Charter §1.16(a)-(d): no individual-vulnerability
+targeting, no coercion, no minor-solo-solicitation, positive opt-out
+required) rather than pre-approved, bounded by a revocable per-actor
+off-switch (the CACAO leash, post-hoc transparency not pre-approval). Of
+613 real `com-etzhayyim-*` actors, exactly 1 --
+`com-etzhayyim-tomoshibi` (灯) -- is confirmed evangelism-scoped (2 more,
+`com-google-ads` and `recruit`, have outreach-adjacent descriptions but
+unverified relevance). An attestation-ledger schema exists with zero real
+writes. `src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljs`
+builds the real SysML v2 structure of this (`EvangelistAgent ->
+EvangelismGate -> TargetPopulation`, 6 real Charter-cited
+`RequirementUsage`s, all satisfied and valid).
+
+**A real modeling bug caught mid-build**: an early draft used the real F2
+upper-bound (~0.000178, a per-VISIT probability) as `p` in a new Bass
+(1969) diffusion model (`dynamics.xmile/bass-diffusion-model`, a third real
+XMILE model shape this cycle added) -- but Bass's `p` is a per-POPULATION-
+MEMBER-per-YEAR rate, a different unit entirely. The bug produced instant
+saturation of the whole addressable population within a year, obviously
+wrong and contradicting the exercise's own point. Fixed with clearly-
+labeled illustrative round numbers instead, plus a regression test
+asserting F2's figure never appears as a Bass parameter again.
+
+**The real structural finding, regression-tested against the actual
+computed trajectories, not just asserted in prose**: a pure-broadcast
+channel (`p` only, `q=0` -- exactly what's built today) can NEVER produce
+compounding, no matter how much its `p` is scaled -- deceleration is that
+model shape's mathematical nature. Only a real `q` (agents/adherents
+reaching NEW contacts, not just an external channel reaching the
+population) makes an S-curve possible, and even a small illustrative `q`
+eventually overtakes a 10x-larger pure-broadcast scenario given enough
+simulated time. If AI-agent evangelism is meant to compound the way the
+directive implies, a real agent-to-agent or adherent-to-contact
+propagation channel has to be deliberately built -- publishing more
+content through more actors alone will not produce it.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
