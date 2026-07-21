@@ -2361,6 +2361,45 @@ corrections in this catalog: the fix stands, real and re-verified; the
 root-cause attribution in findings 20/20b is now known to have named
 the wrong repo, and this entry is the record of that correction.
 
+## 33. wadachi's messier seed entry (finding 27, deliberately left unfixed) -- found a real authoritative source that narrows, but doesn't fully close, what was thought to need an invented content decision
+
+Finding 27 fixed Kizuna's seed-data typo (a clean single-field-family
+swap) but explicitly left wadachi's entry alone -- multiple fields
+(glyph, both display-name fields, description) all wrongly holding the
+same duplicated English sentence, judged to need a real content
+decision (what the correct distinct glyph/display-names actually are)
+this analysis should not make unilaterally.
+
+This cycle checked whether that judgment still holds, rather than
+leaving it as a closed question. Found `etzhayyim/com-etzhayyim-
+wadachi`, this actor's own dedicated repo, whose `manifest.edn` is a
+real, clean, authoritative canonical source -- not this analysis's
+invention:
+```
+{:actor/id "wadachi" :actor/glyph "轍" :actor/domain
+ "wadachi.etzhayyim.com" :actor/purpose "Autonomous-mobility R&D
+ (SAE L4 ceiling) — ground autonomous vehicle orchestration for
+ on-site + inter-site ground transport." ...}
+```
+This confirms, with real sourcing rather than a guess: the correct
+handle is `wadachi`, and the correct glyph is `轍` -- a single kanji,
+not the duplicated English sentence currently occupying that field
+(the same shape of bug findings 16b/18/24b/27b already fixed for the
+DID subdomain thread and finding 27 fixed for Kizuna).
+
+**This narrows the fix, it does not fully resolve finding 27's
+original concern.** `manifest.edn` does NOT provide a separate,
+distinct Japanese display name beyond the glyph itself -- so the
+`:actor/display-name-ja`/`:actor/display-name-en`/`:actor/description`
+trio (all 3 currently holding the identical duplicated sentence) still
+lacks a sourced correct value this analysis could substitute without
+inventing content. Dispatched a narrowly-scoped fix covering only
+what's now sourced (handle, did, 2 service ids, glyph -- 4 field
+values), explicitly instructed to leave the display-name/description
+trio untouched. This is a partial closure of finding 27's open item,
+not a full one -- recorded precisely as such rather than overstated.
+Outcome not yet known as of this entry.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -2394,12 +2433,15 @@ the wrong repo, and this entry is the record of that correction.
   cycle this was discovered: a real next step, not a vague "someday" line
   anymore.
 - Kizuna's seed-data typo is now fixed at the source (finding 27b,
-  independently re-verified). wadachi's is still open and unfixed --
-  multiple fields (glyph, both display-name fields, description) all
-  wrongly hold the same duplicated sentence, not a single
-  mechanically-wrong string -- and needs a real content decision (what
-  the correct distinct glyph and display names should actually be)
-  this analysis has deliberately not made. The generated-artifact
+  independently re-verified). wadachi's handle/did/glyph fields have a
+  fix dispatched (finding 33), sourced from that actor's own dedicated
+  repo's canonical manifest.edn rather than invented -- outcome not yet
+  known. Even once that lands, the display-name-ja/display-name-en/
+  description trio (all 3 currently holding the same duplicated
+  sentence) will remain genuinely unfixed -- no authoritative source
+  provides a distinct value for those, and inventing one would still
+  be a real content decision this analysis has deliberately not made.
+  The generated-artifact
   copies of the OLD Kizuna string (the compiled snapshot
   `public/kotoba/actors-v1.root.json` and a raw IPFS content block
   under `public/kotoba/blocks/`, both found in finding 27b) were left
