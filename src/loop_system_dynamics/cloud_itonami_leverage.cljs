@@ -11,12 +11,22 @@
    + git-activity signals across all 1155 checked-out cloud-itonami-* repos
    -- a MUCH larger, real finding than the registration-status work above:
    774/1155 (67%) have no maturity declared at all in their own blueprint.edn,
-   and 312/1155 (27%) are literal :stub repos with zero src files, as of
-   2026-07-21). This confirms the fleet-architecture concern already in
-   this list (`:reconsider-fleet-architecture` below) was underselling the
-   scale of the real gap -- registration status (west.yml presence) and
-   actual content maturity are two DIFFERENT axes, and the second one is
-   worse.
+   and 312/1155 (27%) were flagged :stub (zero src files) by the audit's
+   generic actor-shape check, as of 2026-07-21.
+
+   CORRECTION (same day, category-level verification): the 312 :stub flags
+   are NOT evenly real. 143/143 (100%) of that count is cloud-itonami-lei-*
+   -- inspecting an actual repo (cloud-itonami-lei-ilul7b6z54mrycf6h308)
+   shows real, substantial content (a 248-line archived-ToS journal.edn
+   under 80-data/, per ADR-2607110300/2607199960's own 'read-only archive,
+   not a governed actor' design) that the audit script's src/-only check
+   cannot see -- a false positive from a tool blind spot, not a real gap.
+   iso3166's 147/223 (66%) flag IS real, verified by inspecting a sample
+   (cloud-itonami-iso3166-grd: one-line boilerplate docs, no src/ at all).
+   isic/isco/assoc/municipality are 0-5% stub. The real, verified stub
+   concentration is iso3166 alone, not the fleet at large -- see
+   `:resolve-stub-repo-scope`'s corrected rationale and the new
+   `:fix-fleet-audit-content-detection` below.
 
    etzhayyim has had this kind of ranking (etzhayyim-interventions in
    core.cljs) since this repo's very first commit; cloud-itonami never did
@@ -70,9 +80,14 @@
     :rationale "scripts/itonami-fleet-audit.cljs, run 2026-07-21: :by-maturity {:blueprint 23 :implemented 334 :maturity-unset 774 :no-blueprint 24} across all 1155 checked-out repos -- two-thirds of the fleet cannot even answer 'how mature is this' from its own declared metadata, only from re-deriving it externally (as the audit script itself has to). This is the SAME kind of gap as the isic revision-tag finding (a missing self-declaration a template should enforce), at 3x the scale (774 vs 241) -- band B (rules/information-flow: what every future scaffold must declare), moderate tractability (setting the field is mechanical once a real value is decided per repo, but deciding the correct value for 774 repos individually is real work, not a single template edit)."}
 
    {:id :resolve-stub-repo-scope
-    :band :band/A :tractability 0.2
-    :label "Decide, deliberately, what should happen to the 312/1155 (27%) cloud-itonami repos that are pure :stub (zero src files) -- implement, deprioritize, or retire each"
-    :rationale "scripts/itonami-fleet-audit.cljs, 2026-07-21: 312 repos have :status :stub (src-file-count 0) yet are marked :status/active in west.yml and counted in every coverage percentage this whole analysis (entities-seed.edn's 86.4%, the SysML model's 644/797 registered) as if 'registered' meant 'exists as real content.' Registration and content are different axes; conflating them overstates fleet maturity by exactly this 27%. This is a GOAL-level question (is scaffolding-then-leaving-empty an accepted interim state, or should coverage metrics exclude stubs) -- band A, and honestly low tractability: resolving 312 individual repos' fate is a real product decision, not a mechanical fix, included here so this ranking doesn't hide its largest real gap behind a smaller, easier-sounding one."}
+    :band :band/D :tractability 0.4
+    :label "Finish implementing the 147/223 (66%) cloud-itonami-iso3166-* repos that are still thin, one-line boilerplate scaffolds (blueprint.edn + governance files, no real src/)"
+    :rationale "CORRECTED 2026-07-21: the fleet-audit's raw 312-repo :stub count was NOT a uniform fleet-wide gap -- 143 of those 312 are cloud-itonami-lei-* false positives (verified real, substantial content in 80-data/, a repo TYPE the audit's src/-only check does not recognize; see this namespace's docstring). The remaining, VERIFIED real gap is narrower and more concrete: 147/223 iso3166 market-entry-compliance blueprints share one scaffold template (governance boilerplate + a 1-line business-model.md/operator-guide.md) with no actual implementation yet. Unlike the pre-correction framing, this isn't an open goal-level question (whether to implement was already decided at scaffold time, given the governance files exist) -- it's execution against an existing, well-understood template. Band D (stock-flow: filling existing repos' own content), moderate tractability since all 147 likely share the same shape (one real reference implementation could inform the rest)."}
+
+   {:id :fix-fleet-audit-content-detection
+    :band :band/B :tractability 0.6
+    :label "Teach scripts/itonami-fleet-audit.cljs to recognize the 80-data/-based read-only-archive repo pattern (cloud-itonami-lei-*) as real content, not :stub"
+    :rationale "The audit tool itself is part of the information-flow structure this whole ranking depends on -- and it currently misreports 143 real, substantial repos as empty, which is exactly the kind of measurement error that (per this session's earlier registration-status bug) silently distorts every downstream percentage and decision built on top of it. Fixing the tool's own blind spot (band B: the RULE the audit itself applies, not one repo's content) is more tractable than the maturity-declaration backfill above, since it is a single, well-scoped script change (recognize a non-empty 80-data/*.edn or an explicit blueprint.edn 'archive, not actor' declaration as satisfying content), not 774 individual per-repo judgment calls."}
 
    {:id :reconsider-fleet-architecture
     :band :band/A :tractability 0.15
@@ -124,14 +139,18 @@
        "structure that generates every FUTURE observation or repo, not one-off cleanup of "
        "what already exists. This is the same distinction Meadows' own hierarchy makes "
        "formal: a parameter fix helps once, a structure fix helps every cycle after.\n\n"
-       "This cycle's own `scripts/itonami-fleet-audit.cljs` run (2026-07-21) revised the "
-       "scale of the real gap upward: 774/1155 (67%) of the fleet has no maturity declared "
-       "at all, and 312/1155 (27%) are pure :stub repos with zero real content -- both "
-       "larger than the 153-repo/241-repo registration and revision-tag gaps this ranking "
-       "started from. `resolve-stub-repo-scope` deliberately ranks low despite that scale, "
-       "because band alone does not make a goal-level decision tractable -- it belongs in "
-       "this ranking precisely so its real cost is visible, not hidden by only listing the "
-       "easier items.\n"))
+       "This cycle's own `scripts/itonami-fleet-audit.cljs` run (2026-07-21) first revised "
+       "the scale of the real gap upward (774/1155 maturity-unset, 312/1155 flagged :stub), "
+       "then a same-day category-level correction found the 312 :stub count was NOT uniformly "
+       "real: 143/143 of it is cloud-itonami-lei-* -- a false positive, verified by inspecting "
+       "an actual repo's real, substantial 80-data/ archive content that the audit's src/-only "
+       "check cannot see. The remaining VERIFIED real gap is narrower and more actionable: "
+       "147/223 (66%) of iso3166 blueprints are genuine thin scaffolds (verified by inspection: "
+       "one-line boilerplate docs, no src/ at all). `fix-fleet-audit-content-detection` -- "
+       "teaching the audit tool itself to recognize the archive-repo pattern -- ranks as high "
+       "as the isic revision-tag fix, because a measurement tool that misreports 143 real repos "
+       "as empty silently distorts every downstream percentage built on top of it, the same "
+       "class of error this session's own registration-status bug was.\n"))
 
 (defn act!
   [evaluation report-path]
