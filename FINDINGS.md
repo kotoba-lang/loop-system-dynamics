@@ -1745,6 +1745,53 @@ thing to a live pipeline anywhere in this workspace -- a real `gh api`
 fetch diffed against a checked-in seed, for one entity family, not yet
 generalized.
 
+## 26. Actually investigated the "2 corrupted-handle directories" that 4 prior entries mentioned in passing but none had opened
+
+Findings 18, 24, and 24b all referenced "2 corrupted-handle directories"
+as an out-of-scope, pre-existing, separate bug -- correctly deferred each
+time, but never actually opened and looked at directly. This cycle did.
+
+Found `Kizuna 絆` and `wadachi (轍 — autonomous mobility Tier-B actor)`
+under `50-infra/etzhayyim-did-web/public/actor/` in `etzhayyim/root` -- 6
+files/directories each (12 total): a directory plus `.did.canonical.json`
+/ `.did.json` / `.diddoc.cid` / `.profile.json` / `.record.json` variants,
+all using the actor's raw display name (with spaces, kanji, parentheses,
+an em-dash) as the literal file path instead of a proper slugified
+handle.
+
+**These turned out to be dead, not live-broken.** Direct curl confirms
+`https://etzhayyim.com/actor/kizuna/did.json` and
+`.../actor/wadachi/did.json` both already work correctly (`id:
+"did:web:etzhayyim.com:actor:kizuna"`, `alsoKnownAs: []`, already clean
+from the 3-round bug fix) -- served entirely through the Worker's dynamic
+path, since no correctly-named static file exists for either handle. The
+Worker's own handle-validation regex
+(`^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$`) rejects "Kizuna 絆" and
+"wadachi (轍 — ...)" outright, so no `did:web:...` reference any real
+verifier would construct could ever resolve to these malformed paths --
+they're only fetchable by someone hand-crafting the exact URL-encoded
+garbled path, which nothing in normal DID resolution would generate.
+
+**And the content itself confirms this is stale, superseded output, not
+intentional data:** fetched `Kizuna 絆/did.json` directly -- its own `id`
+field is `"did:web:etzhayyim.com:actor:Kizuna 絆"`, a raw space and kanji
+character embedded in a DID string, not valid DID syntax at all (W3C DID
+Core requires the method-specific-id segment to be percent-encoded or
+charset-restricted). It also still carries the exact false `alsoKnownAs`
+claim the 3-round bug fix already removed from every other live actor --
+this is leftover output from an early, buggy generation run that used a
+display name instead of a handle, fully superseded by the real,
+correctly-handled actors that already work.
+
+A cleanup (deleting both malformed file/directory sets, git-tracked and
+trivially revertible, not touching the real live `kizuna`/`wadachi`
+actors at all since they have no static file to touch) has been
+dispatched under the same standing authorization and verify-before-
+deploy discipline as the rest of this thread, with an explicit
+due-diligence instruction to stop rather than proceed if the fixing
+agent's own investigation finds anything contradicting this being safe,
+dead garbage. Outcome not yet known as of this entry.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
