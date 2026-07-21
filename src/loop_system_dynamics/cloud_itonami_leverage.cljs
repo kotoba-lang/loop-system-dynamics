@@ -39,6 +39,16 @@
    confirmation of this ranking's own thesis: the lowest-leverage item was
    also the one that got done without anyone needing to design anything.
 
+   A further correction (same day): `standardize-maturity-declaration`'s
+   774-repo gap turned out to be entirely closeable from data that ALREADY
+   exists -- kotoba-lang/industry and kotoba-lang/occupation's own
+   registry.edn files record :maturity per code already (100% coverage
+   verified against every sampled maturity-unset isic/isco repo), the same
+   class of fix as fix-fleet-audit-content-detection. Documented rather
+   than implemented this cycle, since a concurrent session's own branch
+   (feat/itonami-fleet-maturity-ingest-edn) appears to already be building
+   it.
+
    etzhayyim has had this kind of ranking (etzhayyim-interventions in
    core.cljs) since this repo's very first commit; cloud-itonami never did
    -- every prior cycle OBSERVED cloud-itonami (stocks, structure, age) but
@@ -88,9 +98,9 @@
     :rationale "backlog-age's own finding (every unregistered code was <= 4.53 days old, zero exceptions either direction) is a real, useful invariant -- but it was checked ONCE, by hand, this cycle. Automating it creates a genuinely NEW balancing feedback loop (detect anomaly -> surface alert -> prompt registration) that would catch a FUTURE real stall (not just this cycle's lag) automatically -- band C (feedback loop strength/gain), the loop does not exist yet at all."}
 
    {:id :standardize-maturity-declaration
-    :band :band/B :tractability 0.5
-    :label "Require every new cloud-itonami blueprint.edn to declare :itonami.blueprint/maturity, and backfill the 774/1155 (67%) that currently don't"
-    :rationale "scripts/itonami-fleet-audit.cljs, run 2026-07-21: :by-maturity {:blueprint 23 :implemented 334 :maturity-unset 774 :no-blueprint 24} across all 1155 checked-out repos -- two-thirds of the fleet cannot even answer 'how mature is this' from its own declared metadata, only from re-deriving it externally (as the audit script itself has to). This is the SAME kind of gap as the isic revision-tag finding (a missing self-declaration a template should enforce), at 3x the scale (774 vs 241) -- band B (rules/information-flow: what every future scaffold must declare), moderate tractability (setting the field is mechanical once a real value is decided per repo, but deciding the correct value for 774 repos individually is real work, not a single template edit)."}
+    :band :band/B :tractability 0.75
+    :label "Teach scripts/itonami-fleet-audit.cljs to cross-reference kotoba-lang/industry and kotoba-lang/occupation's own canonical registry.edn as a fallback :maturity source, instead of treating an unset blueprint.edn field as unknown"
+    :rationale "CORRECTED 2026-07-21 (tractability revised up from 0.5): the original framing assumed the 774 maturity-unset repos needed 774 individual fresh judgment calls. Verified against real data instead -- both canonical registries already record :maturity per code (kotoba-lang/industry's :industries, kotoba-lang/occupation's pr-str-blob-encoded :kotoba.occupation/occupations, both real, dated, already-maintained sources cited in ADR-2607121000) -- and EVERY sampled maturity-unset repo has a real entry there: 62/62 maturity-unset isic repos, 216/216 maturity-unset isco repos, both 100%. This is the SAME class of fix as fix-fleet-audit-content-detection (the audit tool consults an incomplete source when a more complete one already exists) -- band B, and genuinely more tractable than first estimated, since it is a mechanical cross-reference of already-known data, not fresh per-repo judgment. NOT implemented this cycle: a concurrent session's own branch (feat/itonami-fleet-maturity-ingest-edn, observed mid-flight, uncommitted) appears to already be building exactly this -- documented here rather than raced to avoid a duplicate/colliding edit to the same script section this session's own fix-fleet-audit-content-detection already landed in."}
 
    {:id :resolve-stub-repo-scope
     :band :band/D :tractability 0.4
