@@ -549,6 +549,29 @@ stays the same: each revision is forced by a genuinely new data point that
 didn't fit the previous story, not by re-reading the same numbers with a
 different mood.
 
+## 4k. A 6th reading breaks "two plateaus" too -- every single-sentence story has now failed once
+
+4j's "two flat plateaus" reading predicted reading-6 would stay near
+38.5-38.8%. It didn't: 622/647/585 (34.90% server-error), a 3.94-point
+drop -- the single largest move in the whole series, and BELOW the floor
+the "second plateau" had just established. The full 6-reading sequence is
+41.07 / 41.05 / 40.80 / 38.52 / 38.84 / 34.90%.
+
+At this point every clean single-sentence characterization this thread has
+tried has been falsified by the very next real reading: "frozen" (broken by
+reading 3), "continuously improving" (broken by reading 5's uptick), "two
+flat plateaus with one step" (broken by reading 6 falling below the second
+plateau's floor). Looked at as a whole rather than reading-to-reading, this
+now reads as a genuine multi-step net decline with real short-term
+reversals superimposed -- 41% down to ~35% over the observation window, but
+unevenly, with real upward ticks along the way (readings 2->3 and 4->5 both
+moved up before the next drop). The only claim that has survived being
+tested against all 6 readings is the least specific one: real, moving, net
+downward, cause still unidentified without Worker logs. This is deliberately
+recorded as an honest failure of narrative-fitting, not smoothed over --
+seven consecutive readings have now taught this thread that whatever
+pattern looks compelling with N points is not safe to extrapolate to N+1.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
@@ -889,11 +912,12 @@ content through more actors alone will not produce it.
   (finding 4c) as a feature-not-shipped-yet explanation, not the same
   pattern. Whether the 3-product pattern has a shared root cause is still an
   open question this loop has surfaced but not answered.
-- The site-reliability thread for etzhayyim specifically (findings 4d-4j)
-  has now revised its conclusion six times (broken -> fixed -> possibly-
+- The site-reliability thread for etzhayyim specifically (findings 4d-4k)
+  has now revised its conclusion seven times (broken -> fixed -> possibly-
   never-actually-measuring-live-health -> real+live but measuring an
   unidentified traffic slice -> real+live and possibly improving over time
-  -> real+live, stepped down once, now plateaued at a new level) and is
+  -> real+live, stepped down once, plateaued -> real+live, net-downward
+  with real short-term reversals, no safe single-sentence story) and is
   explicitly left open rather than forced to a verdict. Settling it needs
   either the actual Cloudflare Worker logs or documentation of how
   `:status-mix` is computed, neither of which
