@@ -1907,6 +1907,41 @@ when it began -- 1 of 2 seed entries fixed at the source, the other
 full known blast radius (seed, compiled snapshot, raw IPFS block) is
 now enumerated rather than partially known.
 
+## 28. Extended finding 4b's checkout-verification method to a 2nd product -- cloud-itonami-saas-product joins cloud-murakumo as a confirmed "working checkout, zero conversions" case, live and dated today
+
+Finding 4b independently confirmed cloud-murakumo's Stripe checkout
+mechanism was fully wired and working, ruling it out as the cause of
+that product's 0% runs->paid conversion. That same verification method
+had never been applied to `cloud-itonami-saas-product`
+(itonami.cloud), whose own funnel entry already recorded 100%
+trial->onboarded but 0% onboarded->paying -- until this cycle.
+
+Fetched `https://itonami.cloud/api/billing/status` and
+`/api/fleet/metrics` live, today (`asOf: 2026-07-21T12:09:53Z`, not a
+cached page): `stripeConfigured: true`, `webhookReady: true`,
+`readyForLiveCheckout: true`, `readyForEntitlement: true`, `mode:
+live`, 0 missing components -- and yet `activeSubscriptions: 0`,
+`seats: 0`, `customerBindings: 0`, `externalPaid: 0` (out of 4
+onboarded orgs). The product's own operators had already built and
+published a live self-diagnostic (`/docs/checkout-preflight.md`) that
+independently reaches the identical verdict -- its own `bottleneck`
+field literally reads "run a real Stripe checkout via /isco-1212/" --
+this cycle re-verified that self-report is accurate and current rather
+than assuming it.
+
+**This is now the 2nd independent product in this portfolio (after
+cloud-murakumo, finding 4b) where a fully-verified-working payment path
+still converts 0% of genuinely engaged users** -- not a hypothesis
+based on one data point anymore. Two different products, two different
+teams' own tooling, the identical shape: checkout infrastructure ready
+and idle, real users reaching the point of engagement, nobody
+completing a purchase. Strengthens finding 4's still-open
+"shared root cause" question with real evidence rather than closing
+it -- what that shared cause actually is (discovery, trust, pricing
+signal, motivation, something else) remains unanswered, but "it's not
+a technical checkout bug, in at least these 2 cases" is now backed by
+2 independent, live, dated verifications rather than 1.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
