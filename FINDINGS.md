@@ -450,6 +450,37 @@ re-analyzing the same numbers, which is the discipline this loop commits to
 maintaining even when it is slower and less satisfying than picking a verdict
 and stopping.
 
+## 4i. A 4th reading: the decline continues and sharpens -- "improving over time" now the leading read
+
+A 5th real observation of etzhayyim's live metrics (next routine tick after
+4h) gives a 4th status-mix reading: 527/711/608 (38.52% server-error),
+continuing the same direction as 4h's move but far more sharply --
+40.80% -> 38.52%, a 2.28-point drop, the single largest move across all 4
+readings. The full sequence is now 41.07% -> 41.05% -> 40.80% -> 38.52%: a
+consistent, monotonic decline, not noise scattered around a fixed level.
+
+This shifts the leading hypothesis again, in the same direction 4h started:
+not just "real, rolling-window, cause unidentified" but **"real,
+rolling-window, and genuinely improving over time"** -- consistent with
+whatever was elevating the error rate being fixed or fading, rolling out of
+a trailing ~24h window gradually rather than resolving in one step. Total
+request volume also dropped this window (1,941 -> 1,846), so it was worth
+checking whether this is just "fewer requests, same bad ratio" -- it isn't:
+the *rate*, not merely the raw error count, fell. Website-uniques-7d also
+posted its first non-monotonic point in this whole investigation, 1,898 ->
+1,810 (the F2 bound loosened slightly as a result, 0.01700% -> 0.01782% --
+a small, honest correction to the earlier claim that the bound "tightens
+monotonically": it tightens only while traffic keeps growing, and a real
+week-to-week dip is real information, not noise to smooth over).
+
+Still not confirmed -- four readings showing a consistent direction is
+suggestive, not proof, and the underlying cause remains unidentified without
+Worker logs -- but if the decline continues over further readings, this
+would become the first real evidence that whatever was elevating the error
+rate is actually resolving, rather than this thread's conclusion merely
+being reclassified again on the same static level. Fifth revision of this
+thread; still driven entirely by new real data points.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
@@ -611,12 +642,13 @@ already-real facts are now askable as data, not just readable as prose.
   (finding 4c) as a feature-not-shipped-yet explanation, not the same
   pattern. Whether the 3-product pattern has a shared root cause is still an
   open question this loop has surfaced but not answered.
-- The site-reliability thread for etzhayyim specifically (findings 4d-4h)
-  has now revised its conclusion four times (broken -> fixed -> possibly-
-  never-actually-measuring-live-health -> probably real+live but measuring
-  an unidentified traffic slice) and is explicitly left open rather than
-  forced to a verdict. Settling it needs either the actual Cloudflare Worker
-  logs or documentation of how `:status-mix` is computed, neither of which
+- The site-reliability thread for etzhayyim specifically (findings 4d-4i)
+  has now revised its conclusion five times (broken -> fixed -> possibly-
+  never-actually-measuring-live-health -> real+live but measuring an
+  unidentified traffic slice -> real+live and possibly improving over time)
+  and is explicitly left open rather than forced to a verdict. Settling it
+  needs either the actual Cloudflare Worker logs or documentation of how
+  `:status-mix` is computed, neither of which
   this loop has access to.
 - None of etzhayyim's 9 candidate interventions have actually been applied
   and measured -- the ranking is entirely ex-ante Meadows-leverage scoring,
