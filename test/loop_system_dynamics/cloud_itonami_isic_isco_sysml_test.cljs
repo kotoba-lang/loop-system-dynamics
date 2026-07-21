@@ -67,3 +67,21 @@
       (is (= 18 (:unregistered (by-div "47"))))
       (is (= (reduce + (map (comp :unregistered second) by-div))
              (:unregistered (get-in decision [:registration :isic])))))))
+
+(deftest role-suffix-satellite-repos-are-correctly-registered-test
+  (testing "regression: an earlier pass truncated role-suffix repo names and mis-flagged these 2 as unregistered; exact-name matching fixes it"
+    (let [obs (sysml-loop/observe)
+          by-repo (into {} (map (juxt :repo identity)) (:codes obs))]
+      (is (true? (:registered (by-repo "cloud-itonami-isic-6611-cryptoexchange"))))
+      (is (true? (:registered (by-repo "cloud-itonami-isic-8129-facade")))))))
+
+(deftest backlog-age-shows-a-pipeline-lag-not-a-permanent-gap-test
+  (testing "every unregistered code is recently created; every code older than the oldest unregistered one is already registered, zero exceptions"
+    (let [obs (sysml-loop/observe)
+          decision (sysml-loop/decide obs)
+          age (:backlog-age decision)]
+      (is (pos? (:oldest-unregistered-age-days age)))
+      (is (pos? (:codes-older-than-that age)))
+      (is (zero? (:of-those-still-unregistered age)))
+      (is (every? (fn [[_ {:keys [total registered]}]] (= total registered))
+                  (filter (fn [[day _]] (> day 5)) (:age-buckets age)))))))

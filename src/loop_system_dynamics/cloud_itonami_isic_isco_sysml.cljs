@@ -21,7 +21,29 @@
       fleet is internally inconsistent about this (undeclared or
       mislabeled in the majority of repos), which the individual-code
       SysML model makes traceable per-repo instead of just as an aggregate
-      percentage."
+      percentage.
+
+   CORRECTION (2026-07-21, same-day follow-up): the first :registered pass
+   matched only the LEADING DIGITS of each GitHub repo name against
+   manifest/west.yml, truncating 2 real 'role-suffix satellite' repos
+   (cloud-itonami-isic-6611-cryptoexchange, cloud-itonami-isic-8129-facade)
+   and mis-flagging both as unregistered when they are, under their own
+   full name. Fixed by exact full-name matching; :registered totals below
+   are 2 lower on the unregistered side than this repo's own prior commit
+   reported. Left uncorrected in the git history (never rewrite a landed
+   finding, per this workspace's own docs/ADR discipline) -- this
+   docstring and the ledger's next entry are the correction record.
+
+   A further real layer this correction cycle added: :age-days (real
+   GitHub :created_at, per code) tests whether the RegisteredInWorkspace
+   backlog is a PERMANENT structural gap or a registration-pipeline LAG
+   behind recent repo creation. Real answer: every one of the 153
+   unregistered codes is <= 4.53 days old, and every one of the other 638
+   codes (all older than that) is already registered -- zero exceptions in
+   either direction. The occupation-group/division skew documented above
+   is a real, sourced pattern in WHICH categories were scaffolded most
+   recently, not evidence that the registration pipeline has permanently
+   deprioritized blue-collar/retail codes."
   (:require ["fs" :as fs]
             ["path" :as path]
             [clojure.edn :as edn]
@@ -146,6 +168,27 @@
        (filter (fn [[_ stats]] (pos? (:unregistered stats))))
        (into (sorted-map))))
 
+(defn backlog-age
+  "Tests whether the RegisteredInWorkspace backlog is a permanent
+   structural gap or a registration-pipeline LAG behind recent repo
+   creation, using each code's real :age-days (from its real GitHub
+   :created-at) -- no external data, nothing beyond what the seed already
+   holds. `oldest-unregistered-age-days` and `older-than-that-still-
+   unregistered` (which should be 0 if the backlog is purely a lag) are
+   the two numbers that distinguish 'catching up' from 'stuck.'"
+  [codes]
+  (let [unregistered (remove :registered codes)
+        oldest-unreg-age (apply max (map :age-days unregistered))
+        older-repos (filter #(> (:age-days %) oldest-unreg-age) codes)]
+    {:oldest-unregistered-age-days oldest-unreg-age
+     :codes-older-than-that (count older-repos)
+     :of-those-still-unregistered (count (remove :registered older-repos))
+     :age-buckets
+     (->> codes
+          (group-by #(int (Math/floor (:age-days %))))
+          (map (fn [[day-bucket cs]] [day-bucket (reg-stats cs)]))
+          (into (sorted-map)))}))
+
 (defn decide
   [{:keys [codes]}]
   (let [by-cat (group-by :category codes)
@@ -164,7 +207,8 @@
       :isco (->> isco (remove :registered) (take 5) (map (juxt :repo :label)))}
      :backlog-concentration
      {:isco-by-major-group (isco-major-group-backlog isco)
-      :isic-by-division (isic-division-backlog isic)}}))
+      :isic-by-division (isic-division-backlog isic)}
+     :backlog-age (backlog-age codes)}))
 
 ;; ---------------------------------------------------------------------------
 ;; act
@@ -200,9 +244,10 @@
          "| mislabeled (borrows ISCO's \"-08\" convention) | " (:mislabeled rev) " | "
          (.toFixed (* 100 (/ (:mislabeled rev) (:total rev))) 1) "% |\n\n"
          "## Backlog concentration — where the unregistered repos actually cluster\n\n"
-         "The 155 unregistered codes are not evenly spread across either classification's own "
-         "structure. Real per-ISCO-08-major-group split (group digit is the code's own real first "
-         "digit; group TITLE is the public ISCO-08 standard's own title, not scraped from any repo):\n\n"
+         "The " (:unregistered (:total reg)) " unregistered codes are not evenly spread across "
+         "either classification's own structure. Real per-ISCO-08-major-group split (group digit is "
+         "the code's own real first digit; group TITLE is the public ISCO-08 standard's own title, "
+         "not scraped from any repo):\n\n"
          "| ISCO-08 major group | title | total | unregistered | share |\n|---|---|---|---|---|\n"
          (str/join "\n"
                     (for [[digit {:keys [title total unregistered]}]
@@ -216,7 +261,25 @@
                     (for [[div {:keys [total unregistered]}]
                           (get-in decision [:backlog-concentration :isic-by-division])]
                       (str "| " div " | " total " | " unregistered " |")))
-         "\n\n## Reads\n\n"
+         "\n\n## Backlog age — is this concentration permanent, or a pipeline lag?\n\n"
+         (let [age (:backlog-age decision)]
+           (str "Every one of the " (:unregistered (:total reg)) " unregistered codes is <= "
+                (.toFixed (:oldest-unregistered-age-days age) 2) " days old (real GitHub "
+                "`created_at`, as of " (:as-of observation) "). Of the other "
+                (:codes-older-than-that age) " codes (everything older than that), "
+                (:of-those-still-unregistered age) " remain unregistered.\n\n"
+                "| age (days since creation) | total | registered | unregistered |\n|---|---|---|---|\n"
+                (str/join "\n"
+                          (for [[day {:keys [total registered unregistered]}] (:age-buckets age)]
+                            (str "| " day " | " total " | " registered " | " unregistered " |")))
+                "\n\n**Read**: the occupation-group/division concentration in the section above is "
+                "real, but it is a concentration in WHICH codes were scaffolded most recently, not "
+                "evidence of a permanent registration gap by occupation/product category -- every "
+                "code past the ~4.5-day mark is registered, with zero exceptions in either "
+                "direction. A prior pass of this same model (before this correction) described "
+                "isco's gap in language closer to 'stuck' -- the age data available now shows a "
+                "pipeline lag, not a stall.\n"))
+         "\n## Reads\n\n"
          "Individual-code SysML modeling surfaces two DIFFERENT compliance stories that a "
          "category-level count (`resources/entities-seed.edn`'s `:cloud-itonami` entity) or a "
          "category-level rate (`cloud_itonami_xmile.cljs`'s Backlog_isic/Backlog_isco) cannot "
@@ -231,7 +294,11 @@
          "while manual/blue-collar groups (Craft/Plant-operator/Elementary, groups 7-9) carry most of "
          "the real gap. ISIC's much smaller unregistered set concentrates hardest in division 47 "
          "(specialized-store retail sub-categories) rather than being spread thin -- both are real, "
-         "checkable structural patterns, not a random residual.\n")))
+         "checkable structural patterns, not a random residual, but (4) the age data above narrows "
+         "what that pattern actually means: it reflects registration-pipeline lag behind THIS "
+         "cycle's most recent creation batch, not a permanent structural gap. This cycle also "
+         "corrected 2 mis-flagged repos (role-suffix satellites truncated by an earlier name-"
+         "matching pass) -- see this namespace's docstring for the correction record.\n")))
 
 (defn act!
   [observation evaluation decision report-path]
