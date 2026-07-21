@@ -131,33 +131,59 @@ nbb --classpath "../org-oasis-open-xmile/src:../dsl-core/src:src" \
 
 Everything above (`core.cljs`, `query.cljs`) scores leverage or answers
 queries over point-in-time stocks; it never actually integrates a stock
-forward through time. `src/loop_system_dynamics/cloud_itonami_xmile.cljs`
-does, for one real sub-system: cloud-itonami's GitHub-repo ->
-`com-junkawasaki/root manifest/west.yml` registration pipeline, per
-name-prefix category (isic/isco/iso/lei/assoc/municipality/...). It builds
-an actual [OASIS XMILE 1.0](https://www.oasis-open.org/standard/xmile1-0/)
-model (via [`kotoba-lang/org-oasis-open-xmile`](https://github.com/kotoba-lang/org-oasis-open-xmile))
-from `resources/cloud-itonami-fleet-xmile-seed.edn` -- one `Backlog_<cat>`
-stock (GitHub total minus west-registered) drained by one `Reg_<cat>` flow
-per category, clamped `MIN(observed-rate, Backlog_<cat> / DT)` so a category
-already at zero backlog can't go negative -- and runs a real fixed-step
-Euler simulation over it, appending results to
-`ledger/cloud-itonami-fleet-xmile-ledger.edn`.
+forward through time. `src/loop_system_dynamics/fleet_registration_xmile.cljs`
+does, for the real shape three different GitHub orgs turned out to share:
+a GitHub-repo -> `com-junkawasaki/root manifest/west.yml` registration
+pipeline, per name-prefix category. It builds an actual
+[OASIS XMILE 1.0](https://www.oasis-open.org/standard/xmile1-0/) model (via
+[`kotoba-lang/org-oasis-open-xmile`](https://github.com/kotoba-lang/org-oasis-open-xmile))
+from a seed file -- one `Backlog_<cat>` stock (GitHub total minus
+west-registered) drained by one `Reg_<cat>` flow per category, clamped
+`MIN(observed-rate, Backlog_<cat> / DT)` so a category already at zero
+backlog can't go negative -- and runs a real fixed-step Euler simulation
+over it, appending results to a per-entity ledger. This generic core is
+entity-agnostic (no cloud-itonami/etzhayyim/kotoba-lang-specific text lives
+in it); three thin wrapper namespaces each supply a seed path and a real
+interpretive `reads-fn`:
 
-The observed registration rate per category comes from two real, git-
-verified `manifest/west.yml` snapshots (not a guess); a category with zero
-registrations in that window gets a real measured rate of 0. First run
-(2026-07-21) found: `lei`/`assoc`/`municipality`/`isic` are actively
-draining and clear on their own within the simulated horizon at their
-currently-observed rate (0.6d/0d/3.8d/21.6d respectively) -- but `isco`
-(the single largest backlog, 124) and `iso` (6) have a measured rate of
-**exactly 0/day** and will never close without a new intervention, no
-matter how much simulated time passes. This is the kind of answer a
-static stock comparison can't give: "biggest gap" (isco) and "actively
-being worked" (lei/assoc/municipality/isic) are different categories, and
-only a real flow measurement -- not just the two point-in-time repo counts
-already in `resources/entities-seed.edn`'s `:cloud-itonami` entity --
-tells them apart.
+- **`loop_system_dynamics/cloud_itonami_xmile.cljs`** (the first instance
+  of this pattern, cloud-itonami's isic/isco/iso/lei/assoc/municipality/...
+  categories). First run (2026-07-21) found `isco` (the single largest
+  backlog, 124) and `iso` (6) measured at **exactly 0/day** -- would never
+  close without a new intervention. A same-day per-code registration pass
+  (see "Model it, one code at a time" below) closed isco AND isic to 0
+  shortly after; re-running this command now with a window spanning that
+  closure shows **zero stalled categories** -- the finding was real and has
+  since changed, which the re-observation now shows rather than hiding.
+- **`loop_system_dynamics/etzhayyim_actors_xmile.cljs`**
+  (`nbb ... bin/run_etzhayyim_actors_xmile.cljs`) -- com-etzhayyim-*'s 613
+  actor repos, modeled as a SINGLE category (the name structure doesn't
+  support a real multi-category split the way cloud-itonami's does, see
+  the seed file for why). Real finding: 67 backlog, ~178.6/day observed
+  rate -- not stalled at all, mid-completion of what reads as a single
+  large batch-registration event (189 -> 546 registered inside one 2-day
+  window). A structurally different shape from cloud-itonami's prior
+  stalled isco/iso.
+- **`loop_system_dynamics/kotoba_lang_xmile.cljs`**
+  (`nbb ... bin/run_kotoba_lang_xmile.cljs`) -- kotoba-lang's 1650 repos
+  split into com/kami/org/kotoba/kotobase/kotodama/other (the org's real
+  prefix structure, partitioning the whole org with zero residual). Real
+  finding: only 27/1650 (1.6%) unregistered, small and distributed rather
+  than concentrated -- `com` (63.6% of the org) and `org` are this org's
+  own stalled categories, but at 1-repo scale, not the 28-124-repo scale
+  cloud-itonami's prior isic/isco showed.
+
+The observed registration rate per category always comes from two real,
+git-verified `manifest/west.yml` snapshots (not a guess); a category with
+zero registrations in that window gets a real measured rate of 0. Read
+together, the three entities this pattern has now been applied to show
+three genuinely different real shapes -- concentrated-and-stalled
+(cloud-itonami's prior isic/isco), large-and-actively-draining
+(etzhayyim-actors), small-and-distributed (kotoba-lang) -- not one
+universal registration-backlog story. This is the kind of answer a static
+stock comparison can't give: only a real flow measurement, re-observable
+over time, tells "stalled" apart from "draining" apart from "already
+mostly done."
 
 ## Simulate + model it (etzhayyim's F2 finding, as a real trajectory and a real structure)
 
@@ -397,19 +423,22 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
   taxonomy, once a resident CI schedule is wanted -- this repo's core stays
   provider-neutral either way.
-- `cloud_itonami_xmile.cljs`'s observed rates come from a single ~1.57-day
-  window (bounded by local shallow-clone depth, see the seed file's
-  `:window :note`) -- re-observing at a later `t1` (a wider, deeper window)
-  would sharpen a "stalled" finding from "zero in this window" toward
-  "durably zero." **The `isco` half of this is now moot**: the per-code
-  model's 153-repo registration pass (see "Model it, one code at a time"
-  above) closed isco's backlog to 0/797 the same day, so there is no
-  longer a stalled isco rate to re-observe. `iso`'s backlog is untouched by
-  that work and this note still applies to it. The same stock-flow pattern
-  (backlog + observed rate, clamped flow) is also not yet applied to any
-  other entity in `resources/entities-seed.edn` (etzhayyim-actors' 613
-  repos and kotoba-lang's 1,649 have the same GitHub-total-vs-west-
-  registered shape).
+- **Done, 2026-07-21**: the stock-flow pattern (backlog + observed rate,
+  clamped flow) is no longer cloud-itonami-only. Its mechanical core moved
+  to `loop_system_dynamics/fleet_registration_xmile.cljs` (entity-agnostic)
+  and now also covers etzhayyim-actors (613 repos, single category) and
+  kotoba-lang (1650 repos, 7 categories) -- see "Simulate it" above for all
+  three findings. `cloud_itonami_xmile.cljs`'s own observed rates were also
+  re-observed at a wider (~2-day) window in the same pass, which is what
+  caught the isic/isco closure (both categories' rate and backlog are now
+  measured post-closure, not left stale at their pre-closure numbers).
+  `iso`'s backlog (6, per this same re-observation) is untouched by that
+  closure work and remains cloud-itonami's largest active category.
+- The DataScript query layer (`query.cljs`) still doesn't ingest these
+  fleet-registration seeds, or a live pull, directly into datoms -- every
+  fleet seed still enters via a human running `gh api` + `git show
+  <sha>:manifest/west.yml` and hand-writing the result, not an automated
+  pipeline.
 
 ## License
 
