@@ -1,5 +1,5 @@
 (ns loop-system-dynamics.core-test
-  (:require [cljs.test :refer [deftest is testing]]
+  (:require [cljs.test :refer [deftest is testing async]]
             ["fs" :as fs]
             ["os" :as os]
             ["path" :as path]
@@ -59,6 +59,36 @@
                                  :website-uniques-7d-history [{:as-of "2026-07-21" :value 1851}]}}]
             refreshed (loop/refresh-from-bmc-metrics entities tmp "2026-07-22")]
         (is (= 1 (count (get-in (first refreshed) [:stocks :website-uniques-7d-history]))))))))
+
+(deftest refresh-from-github-api-updates-tracked-entity-test
+  (testing "a tracked entity's :github-public-repo-count is a real live number fetched from the real GitHub API, with history appended"
+    (async done
+      (let [entities [{:id :kotoba-lang
+                        :stocks {:github-public-repo-count {:value 1 :source "old"}
+                                 :github-public-repo-count-history [{:as-of "2026-07-20" :value 1}]}}]]
+        (-> (loop/refresh-from-github-api entities "2026-07-22")
+            (.then (fn [refreshed]
+                     (let [e (first refreshed)
+                           count (get-in e [:stocks :github-public-repo-count :value])]
+                       ;; a real, live number -- not the fixture's stale 1, and not fabricated
+                       ;; (kotoba-lang's real org repo count is in the thousands, per earlier
+                       ;; observations in this catalog; just assert it moved off the old value)
+                       (is (number? count))
+                       (is (not= 1 count))
+                       (is (= [{:as-of "2026-07-20" :value 1} {:as-of "2026-07-22" :value count}]
+                              (get-in e [:stocks :github-public-repo-count-history]))))
+                     (done)))
+            (.catch (fn [e] (is false (str "refresh-from-github-api rejected: " e)) (done))))))))
+
+(deftest refresh-from-github-api-untracked-passes-through-test
+  (testing "an entity not in github-tracked-entities passes through unchanged, with no fetch attempted"
+    (async done
+      (let [entities [{:id :not-tracked-anywhere :stocks {:foo 1}}]]
+        (-> (loop/refresh-from-github-api entities "2026-07-22")
+            (.then (fn [refreshed]
+                     (is (= entities refreshed))
+                     (done)))
+            (.catch (fn [e] (is false (str "refresh-from-github-api rejected: " e)) (done))))))))
 
 (deftest run-cycle-writes-report-and-appends-ledger-test
   (testing "the full cycle actually writes files -- act and record-evidence are not no-ops"

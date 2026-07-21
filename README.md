@@ -61,6 +61,35 @@ changed. This is in-memory only -- it does not rewrite
 updated snapshot); fold a genuinely new finding back into the seed by hand
 when it is worth keeping permanently, same as every prior cycle.
 
+## Run it with a live GitHub-API pull (direct ingestion, no human copying `gh api` output first)
+
+```bash
+nbb --classpath "../dynamics/src:src" bin/refresh_from_github.cljs <YYYY-MM-DD>
+```
+
+The README "Next" section used to list this as a documented-not-yet-built
+gap: every `entity/*` GitHub fact entered the seed via a human running
+`gh api` and pasting the result into `entities-seed.edn`. `refresh-from-
+github-api` closes that gap for the one GitHub fact simple and unambiguous
+enough to pull mechanically every cycle: `GET api.github.com/orgs/<login>`
+(falling back to `/users/<login>` for personal-account entities like
+com-junkawasaki) -> `.public_repos`, merged into `:github-public-repo-count`
+for every entity in `github-tracked-entities`, with history appended only
+on real change -- same never-fabricate contract as `refresh-from-bmc-
+metrics` (untracked entities and logins the API can't resolve pass through
+unchanged, nothing is guessed). Unlike the BMC refresh (a synchronous local
+file read), this is real network I/O, so `refresh-from-github-api` and
+`run-cycle-with-github-refresh!` return a Promise the caller must
+`.then`/await.
+
+**Deliberately NOT mechanized**: `:github-social-engagement` (this
+catalog's richer per-repo stargazer/fork-provenance finding, see finding 1b
+and the cloud-itonami/kotoba-lang comparison) stays a hand-curated
+snapshot. Telling a genuine external star from an org-member's own star, or
+verifying a fork's owner isn't affiliated, is a real judgment call a single
+API response can't replicate honestly -- faking that verification
+mechanically would be worse than not refreshing it live at all.
+
 ## Query it (real DataScript, not just reading the seed file)
 
 ```bash
@@ -354,12 +383,15 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
 
 ## Next (documented, not yet built)
 
-- The DataScript query layer (`query.cljs`) ingests the seed file and the
-  archetype catalog, but nothing yet ingests a *live* `gh api` pull directly
-  into datoms -- every `entity/*` fact still passes through a human copying
-  `gh api` output into `entities-seed.edn` first. Wiring a live GitHub-API
-  ingestion fn (parallel to `refresh-from-bmc-metrics`, which already does
-  this for the file-based BMC metrics) is the natural next step.
+- **Done, 2026-07-21**: a live GitHub-API ingestion fn now exists
+  (`refresh-from-github-api`, see "Run it with a live GitHub-API pull"
+  above) -- but only for the one fact simple enough to pull mechanically
+  (`:github-public-repo-count`). The DataScript query layer (`query.cljs`)
+  still only ingests the checked-in seed file and the archetype catalog,
+  not a live pull straight into datoms; and every OTHER `entity/*` fact
+  (traffic beyond what `refresh-from-bmc-metrics` covers, the hand-verified
+  `:github-social-engagement` narrative, etc.) still passes through a human
+  copying output into `entities-seed.edn` first.
 - No `kqe` (kotoba-lang/kqe) query source is wired in yet either.
 - A `skill-loop-system-dynamics` (agent-instruction package) and/or
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
@@ -368,11 +400,16 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
 - `cloud_itonami_xmile.cljs`'s observed rates come from a single ~1.57-day
   window (bounded by local shallow-clone depth, see the seed file's
   `:window :note`) -- re-observing at a later `t1` (a wider, deeper window)
-  would sharpen the isco/iso "stalled" finding from "zero in this window"
-  toward "durably zero." The same stock-flow pattern (backlog + observed
-  rate, clamped flow) is not yet applied to any other entity in
-  `resources/entities-seed.edn` (etzhayyim-actors' 613 repos and
-  kotoba-lang's 1,649 have the same GitHub-total-vs-west-registered shape).
+  would sharpen a "stalled" finding from "zero in this window" toward
+  "durably zero." **The `isco` half of this is now moot**: the per-code
+  model's 153-repo registration pass (see "Model it, one code at a time"
+  above) closed isco's backlog to 0/797 the same day, so there is no
+  longer a stalled isco rate to re-observe. `iso`'s backlog is untouched by
+  that work and this note still applies to it. The same stock-flow pattern
+  (backlog + observed rate, clamped flow) is also not yet applied to any
+  other entity in `resources/entities-seed.edn` (etzhayyim-actors' 613
+  repos and kotoba-lang's 1,649 have the same GitHub-total-vs-west-
+  registered shape).
 
 ## License
 

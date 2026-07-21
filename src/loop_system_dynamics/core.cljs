@@ -112,6 +112,93 @@
    entities))
 
 ;; ---------------------------------------------------------------------------
+;; live GitHub API refresh (second partial fulfillment of the README "Next"
+;; item -- direct GitHub-API-to-entity ingestion, no human copying gh api
+;; output into entities-seed.edn first, for the one fact simple/unambiguous
+;; enough to pull mechanically every cycle: an org's real public-repo count.
+;; ---------------------------------------------------------------------------
+
+(def github-tracked-entities
+  "Entity :id -> GitHub login (org or personal account) that
+   refresh-from-github-api knows how to re-observe live. Only :github-public-repo-count is wired here -- richer
+   facts this catalog already holds (:github-social-engagement's per-repo
+   stargazer/fork verification, membership checks) involve real judgment
+   calls (is a stargazer external? is a fork from an org member?) that a
+   single API call cannot replicate honestly; fabricating a mechanical
+   substitute for that verification would be worse than not refreshing it
+   live at all, so it stays a hand-curated snapshot. Extend this map to
+   track more orgs; it is the only place that needs to change."
+  {:etzhayyim "etzhayyim"
+   :kotoba-lang "kotoba-lang"
+   :cloud-itonami "cloud-itonami"
+   :gftdcojp "gftdcojp"
+   :com-junkawasaki "com-junkawasaki"})
+
+(defn- github-api-fetch-opts []
+  (clj->js (if-let [tok (some-> (.-env js/process) (.-GITHUB_TOKEN))]
+             {:headers {:Authorization (str "Bearer " tok)}}
+             {})))
+
+(defn- fetch-public-repos [path]
+  (-> (js/fetch (str "https://api.github.com/" path) (github-api-fetch-opts))
+      (.then (fn [res] (if (.-ok res) (.json res) (js/Promise.resolve nil))))
+      (.then (fn [d] (some-> d .-public_repos)))
+      (.catch (fn [_] nil))))
+
+(defn- fetch-github-public-repo-count
+  "Real `GET https://api.github.com/orgs/<login>` -> `.public_repos`,
+   falling back to `GET .../users/<login>` when the org endpoint 404s (some
+   tracked entities, e.g. com-junkawasaki, are personal accounts, not
+   GitHub Organizations -- the REST API needs the right endpoint shape for
+   each). Returns nil on any failure (404 on both, rate-limit, network) --
+   never fabricates a count for a login it couldn't actually reach.
+   Unauthenticated (60 req/hr/IP, GitHub's own public default) since this is
+   at most 2 scalar calls per tracked entity, not a bulk pull; callers
+   needing a higher rate should set the GITHUB_TOKEN env var, which this
+   reads if present (Authorization header, no other change)."
+  [login]
+  (-> (fetch-public-repos (str "orgs/" login))
+      (.then (fn [count] (if count count (fetch-public-repos (str "users/" login)))))))
+
+(defn refresh-from-github-api
+  "For every entity in github-tracked-entities, fetches its org's real live
+   `public_repos` count from the GitHub REST API and merges it into
+   :github-public-repo-count, appending to
+   :github-public-repo-count-history when the value actually changed.
+   Entities not in github-tracked-entities, or orgs the fetch fails for,
+   pass through unchanged -- same never-fabricate invariant as
+   refresh-from-bmc-metrics and observe itself.
+
+   Returns a Promise of the refreshed entities vector (real network I/O,
+   unlike refresh-from-bmc-metrics's synchronous local-file read) -- callers
+   must .then/await it before evaluate/decide/act. In-memory only, same as
+   refresh-from-bmc-metrics: does not rewrite resources/entities-seed.edn."
+  [entities as-of-today]
+  (-> (js/Promise.all
+       (clj->js
+        (map (fn [entity]
+               (if-let [org (get github-tracked-entities (:id entity))]
+                 (-> (fetch-github-public-repo-count org)
+                     (.then (fn [count]
+                              (if count
+                                (update entity :stocks
+                                        (fn [stocks]
+                                          (-> stocks
+                                              (assoc :github-public-repo-count
+                                                     {:value count
+                                                      :source (str "gh api orgs/" org ", " as-of-today
+                                                                    " (live refresh via refresh-from-github-api)")})
+                                              (assoc :github-public-repo-count-history
+                                                     (append-history-point
+                                                      (:github-public-repo-count-history stocks)
+                                                      {:as-of as-of-today :value count})))))
+                                entity)))
+                     (.catch (fn [_] entity)))
+                 (js/Promise.resolve entity)))
+             entities)))
+      (.then (fn [refreshed] (vec refreshed)))))
+
+;; ---------------------------------------------------------------------------
 ;; evaluate
 ;; ---------------------------------------------------------------------------
 
@@ -246,3 +333,26 @@
     (act! observation evaluation decision report-path)
     (record-evidence! observation decision ledger-path)
     (assoc decision :report-path report-path :ledger-path ledger-path)))
+
+(defn run-cycle-with-github-refresh!
+  "Same cycle as run-cycle!, but observation is refreshed from the live
+   GitHub API (refresh-from-github-api) before evaluate/decide/act/
+   record-evidence run -- the direct-GitHub-API-to-entity ingestion the
+   README 'Next' section asked for, no human copying `gh api` output into
+   entities-seed.edn first. Async (real network I/O): returns a Promise of
+   the same shape run-cycle!/run-cycle-with-live-refresh! return
+   synchronously, so callers must .then/await it."
+  [{:keys [seed-path report-path ledger-path as-of-today]
+    :or {seed-path "resources/entities-seed.edn"
+         report-path "target/loop-system-dynamics-report.md"
+         ledger-path "ledger/loop-system-dynamics-ledger.edn"}}]
+  {:pre [(some? as-of-today)]}
+  (let [raw-observation (observe seed-path)]
+    (-> (refresh-from-github-api (:entities raw-observation) as-of-today)
+        (.then (fn [refreshed-entities]
+                 (let [observation (assoc raw-observation :entities refreshed-entities)
+                       evaluation (evaluate observation)
+                       decision (decide evaluation)]
+                   (act! observation evaluation decision report-path)
+                   (record-evidence! observation decision ledger-path)
+                   (assoc decision :report-path report-path :ledger-path ledger-path)))))))
