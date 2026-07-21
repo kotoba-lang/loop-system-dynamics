@@ -2192,6 +2192,51 @@ been paid is not something this analysis can determine without
 on-chain transaction history for that specific address, which remains
 a genuinely open, not yet investigated, question.
 
+## 31. isekai.network's discoverability fix landed and independently re-verified -- and its own build revealed a real workspace-tooling gap worth keeping precise
+
+The dispatched fix (finding 29) completed exactly as scoped. Its own
+due diligence found the repo's real merge convention (all recent PRs,
+including one merged 2 days before this task, were self-merged by the
+same account with no separate human review and empty `reviewDecision`
+-- confirmed via `gh pr list`/`gh pr view`, not assumed) and merged
+accordingly: PR #267 in `gftdcojp/network-isekai`, squash-merged at
+`45efbe6`. `public/robots.txt` and `public/sitemap.xml` added --
+`sitemap.xml`'s 5 non-homepage routes (`/play`, `/studio`, `/assets`,
+`/dance`, `/generate`) were cross-checked against the app's own nav
+source and verified live 200, not guessed; ops/dev-only dashboards and
+individual game pages were deliberately excluded rather than
+over-included. Deployed via the documented `npm run deploy`, confirmed
+via `wrangler pages deployment list` as a real Production deployment
+matching the merged commit.
+
+Independently re-verified live, not just trusting the report: fresh
+`curl` confirms both `/robots.txt` (`text/plain`, real content) and
+`/sitemap.xml` (`application/xml`, the 6 real URLs) now serve
+correctly -- the fixing agent's own report had honestly flagged a
+transient edge-cache staleness on `sitemap.xml` immediately after
+deploy that it observed self-resolve within seconds; this
+re-verification, run separately afterward, confirms that resolution
+held.
+
+**A real, distinct, worth-recording tooling finding surfaced along the
+way, not directly about this bug:** the isolated worktree this fix ran
+in (correctly separated from the shared `orgs/` checkout, per this
+workspace's own parallel-agent discipline) lacked the ~45 sibling
+`kotoba-lang/*` repos this app's CLJS build resolves via relative
+`:local/root` paths in `deps.edn`/`shadow-cljs.edn` -- a real,
+structural gap between "isolate a fix in its own worktree" and "that
+worktree can actually build a west-managed multi-repo app," not
+specific to this one fix. The agent resolved it pragmatically (cloning
+fresh siblings into a separate directory, never touching the shared
+checkout) rather than blocking or improvising something riskier -- a
+real, reusable data point for how future isolated-worktree fixes on
+CLJS-heavy west-managed apps in this workspace should expect to need
+the same accommodation, not treated as a one-off surprise each time.
+
+With this fix landed, `aozora.app` is now the one remaining
+unfixed discoverability gap this thread has diagnosed (findings
+20/20b) -- its stale-content decision remains genuinely open.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
