@@ -189,6 +189,27 @@ the category-level backlog/rate could show this -- it only exists at the
 per-code structural level, which is exactly what SysML v2's Definition/
 Usage/RequirementUsage traceability is for.
 
+## A different real model SHAPE (proportional decline, not additive accumulation)
+
+```bash
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+    bin/run_aca_marketplace_decline.cljs
+```
+
+Every XMILE model above feeds a stock via an ADDITIVE inflow (a rate times a
+conversion probability, or a registration rate). `aca-marketplace-decline.cljs`
+uses `dynamics.xmile/percentage-rate-model` instead -- `Stock' = Stock *
+Annual_Rate`, PROPORTIONAL/exponential, against the real
+`aca-marketplace-enrollment` archetype's own already-sourced 2025->2026 US
+ACA marketplace figures (24.3M -> 23.1M, a real -4.938%/yr rate, read
+straight from `dynamics.core/loop-archetypes` -- never hardcoded). If that
+single real observed rate held: 14.1M enrollees after 10 years, crossing
+below half the 2025 peak (12.15M) at year 13.1. Using the wrong model shape
+for a real fact (e.g. treating this as an additive-inflow funnel) would be a
+modeling error even though both "run" -- recognizing which real facts are
+levels-changing-proportionally versus flows-feeding-accumulators is itself
+part of doing this honestly.
+
 ## Test
 
 ```bash

@@ -698,6 +698,30 @@ main; this cycle fixed the workflow (adding the `org-oasis-open-xmile`/
 `org-omg-sysmlv2`/pinned-`dsl-core` checkouts) as part of landing its own,
 overlapping dependency needs.
 
+## 11. Model SHAPE matters, not just model existence: a proportional-decline example
+
+Every real XMILE model in this catalog so far (etzhayyim's F2 acquisition,
+cloud-itonami's registration backlog drain) shares one shape: a stock fed by
+an ADDITIVE inflow. `dynamics.xmile` gained a second, genuinely different
+shape this cycle -- `percentage-rate-model`, `Stock' = Stock * Annual_Rate`
+(proportional/exponential, rate may be negative) -- because a real fact
+already in this catalog didn't fit the first shape at all: the
+`aca-marketplace-enrollment` archetype's real 2025->2026 US ACA marketplace
+figures (24.3M -> 23.1M enrollees) describe a LEVEL changing by a percentage,
+not a flow feeding an accumulator. Forcing it into the additive shape would
+have been a modeling error even though the simulator would have happily run
+either way -- recognizing which shape actually fits a given real fact is
+itself part of using these tools honestly, not a detail to skip.
+
+Projected forward (if the single real observed -4.938%/yr rate held, which
+is a real caveat -- one data point, not a multi-year trend): 14.1M
+enrollees after 10 years, crossing below half the 2025 peak at year 13.1.
+Also worth flagging precisely: this integrates the CONTINUOUS exponential
+closed form (`S0 * e^(rt)`), which is NOT the same number as discrete
+annual compounding (`S0 * (1+r)^t`) -- the two diverge (10yr: 14.10 vs
+13.92 in this case) and a caller who wants "compound annually" specifically
+needs to say so, not assume a proportional-rate ODE gives it automatically.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
