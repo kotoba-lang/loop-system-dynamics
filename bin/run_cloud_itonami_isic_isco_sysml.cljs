@@ -8,4 +8,5 @@
   (println "element count:" (:element-count (:evaluation result)))
   (println "registration:" (:registration (:decision result)))
   (println "revision-declaration:" (dissoc (:revision-declaration (:decision result)) :breakdown))
-  (println "backlog-concentration:" (:backlog-concentration (:decision result))))
+  (println "backlog-concentration:" (:backlog-concentration (:decision result)))
+  (println "backlog-age:" (dissoc (:backlog-age (:decision result)) :age-buckets)))

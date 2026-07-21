@@ -190,7 +190,7 @@ per-code structural level, which is exactly what SysML v2's Definition/
 Usage/RequirementUsage traceability is for.
 
 `decide` also derives a third layer straight from each code's own real
-`:code` field -- WHERE the 155 unregistered repos actually concentrate,
+`:code` field -- WHERE the 153 unregistered repos actually concentrate,
 by ISCO-08 major group (all 10 shown) and ISIC division (only the ones
 with a real unregistered repo). This is not a random residual: ISCO's gap
 is almost entirely in manual-labor major groups (Craft 7: 58/66 = 88%
@@ -199,6 +199,19 @@ while white-collar groups (Managers/Professionals/Technicians/Clerical,
 1/2/4) are already 100% registered; ISIC's much smaller gap concentrates
 hardest in division 47 (specialized-store retail sub-categories, 18/25
 unregistered) rather than spreading thin across ~80 divisions.
+
+**Same-day correction + a 4th layer (`:age-days`)**: an earlier pass
+matched only the leading digits of each repo name against
+`manifest/west.yml`, mis-flagging 2 real "role-suffix satellite" repos
+(`cloud-itonami-isic-6611-cryptoexchange`, `cloud-itonami-isic-8129-facade`)
+as unregistered when they are, under their own full name -- fixed by exact
+full-name matching (153 unregistered, not 155). Real GitHub `created_at`
+per code (`:age-days`) then tests whether the occupation-group/division
+concentration above is a PERMANENT gap or a registration-pipeline LAG:
+every one of the 153 unregistered codes is <= 4.53 days old, and every one
+of the other 638 codes (all older than that) is already registered, zero
+exceptions either direction. The concentration pattern is real -- it just
+means "scaffolded most recently," not "permanently deprioritized."
 
 ## A different real model SHAPE (proportional decline, not additive accumulation)
 
