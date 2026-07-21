@@ -1033,6 +1033,81 @@ told them apart -- the same discipline finding 10's shape-matters lesson
 (model SHAPE, not just model existence) already established, now applied
 across entities instead of within one.
 
+## 15. `backfill-revision-tags` investigated and rejected: ISIC Rev.4/Rev.5 are NOT interchangeable for this fleet's own codes -- Path B taken, no backfill attempted
+
+`cloud_itonami_leverage.cljs`'s own ranking left `:backfill-revision-tags`
+(band D: add a real revision declaration to the 239 undeclared + 2
+mislabeled isic repos) deliberately un-implemented, pending one question:
+is it actually POSSIBLE to know, from this workspace's own real data,
+whether an undeclared repo's code is Rev.4 or Rev.5 -- or would backfilling
+a guessed tag be fabrication?
+
+It would be fabrication. Two pieces of already-existing, accepted, real
+evidence settle this (neither required consulting an external ISIC
+standard -- both were already in this workspace's own commit history
+before this investigation):
+
+- **ADR-2607100400** (`cloud-itonami-petroleum-supply-chain-coverage`,
+  accepted 2026-07-09) already recorded a real `:isic-code-mismatch-finding`
+  from when the petroleum fleet was originally built: 3 of 8 actors' codes
+  have NO real ISIC Rev.4 equivalent under the code they were built with,
+  because the SAME real business gets a DIFFERENT numeric code across the
+  two revisions -- fuel wholesale is Rev.5 `4671` but Rev.4 `4661`; pipeline
+  transport is `4950`(built) vs real-Rev.4 `4930`; sea/inland freight water
+  transport is built as one code `5020` but Rev.4 SPLITS it into two
+  (`5012`/`5022`). This is not a hypothetical -- it already caused a real
+  near-duplicate-actor mistake this same ADR documents catching (a
+  candidate `"4923"` actor rejected as redundant with the already-built
+  `4920`, itself a Rev.4/Rev.5 numbering artifact of the same kind, per
+  ADR-2607100600's own `:adr/candidate-selection-5610` note).
+- **A live, direct falsification of "just default to the majority tag"**:
+  `cloud-itonami-isic-4661` -- the real Rev.4 code for fuel wholesale per
+  the finding above -- is ITSELF currently one of this fleet's 239
+  `:undeclared` repos (confirmed live via `gh api
+  repos/cloud-itonami/cloud-itonami-isic-4661 --jq .description`, 2026-07-21:
+  no revision stated). Its own accepted ADR-2680004661 states unambiguously
+  that 4661 IS the Rev.4 code, while the SAME business sits at Rev.5 code
+  4671 elsewhere in the fleet. 190/457 isic repos already say "Rev.5" vs
+  only 26/457 "Rev.4" -- any backfill heuristic that defaults to the
+  majority tag (or infers from isco's own 100%-consistent "ISCO-08"
+  pattern) would tag 4661 "Rev.5" and directly contradict this repo's own
+  accepted, verified ADR record.
+- Checked whether `kotoba-lang/industry`'s own `registry.edn` (the actual
+  registry cloud-itonami blueprints scaffold from) could serve as a
+  per-code revision crosswalk instead: it carries NO revision field at all
+  on any of its entries -- it is a flat `{:id "NNNN" :name ... :repo ...}`
+  list, silent on which revision each code's number came from. It cannot
+  resolve the question either.
+- Also checked for a structural proxy inside the seed data itself: does
+  any code number appear tagged BOTH `:rev4` and `:rev5` across different
+  repos in `cloud-itonami-isic-isco-sysml-seed.edn`? No (0 collisions,
+  190 rev5 codes and 26 rev4 codes are disjoint sets) -- but this is a
+  weak/uninformative check, since this fleet scaffolds exactly one repo
+  per code, so two repos claiming the same code under different revisions
+  was never structurally possible regardless of whether the revisions
+  actually differ. The only 2 codes with more than one repo (`8129`,
+  `6611`) are same-code role-suffix satellites (`-facade`,
+  `-cryptoexchange`), not revision variants, and both share one meaning.
+
+**Decision: Path B.** No backfill was attempted or piloted this cycle --
+not even the bounded 15-20 repo pilot the task allowed, because the
+`cloud-itonami-isic-4661` case shows the failure mode isn't rare/edge-case,
+it is exactly the kind of code this backlog is full of. The honest
+alternative implemented instead: `:fix-revision-tag-template` (the sibling,
+higher-leverage band-B intervention this ranking already ranked above
+`:backfill-revision-tags`) was respecified in `cloud_itonami_leverage.cljs`
+away from "declare Rev.4 or Rev.5" and toward a revision-NEUTRAL phrasing
+standard for future scaffolds -- state the code and the classification
+SOURCE actually used (e.g. "per kotoba-lang/industry registry.edn entry
+NNNN, no revision independently verified"), and reserve an explicit
+"ISIC Rev.N NNNN" assertion for codes that have actually been cross-checked
+against a real crosswalk the way ADR-2607100400 already did for its 8
+codes. This note plus the phrasing standard is also recorded as an
+append-only ledger event against ADR-2607100400 in
+`com-junkawasaki/root`'s `90-docs/adr-ledger/adr-ledger.edn` (that repo's
+own EDN-only ADR convention), rather than hand-editing that already-accepted
+ADR's body.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
