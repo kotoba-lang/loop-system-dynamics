@@ -330,9 +330,13 @@ from an unrelated hourly business-react-loop routine) to the analysis --
 neither pipeline was built for this question, and connecting them is what
 surfaced the cross-product pattern.
 
-**Update (see 4c below): the "4 products, 1 shared cause" framing above is
-now known to overstate at least one of the four.** club-shinshi's zero has a
-more mundane, confirmed explanation than the other three.
+**Update (see 4c and 28d below): the "4 products, 1 shared cause" framing
+above is now known to overstate at least two of the four.** club-shinshi's
+zero (4c) and cloud-manimani's near-zero (28d) both have more mundane,
+confirmed explanations (an unshipped feature / no billing infrastructure
+built yet) than the remaining two -- cloud-murakumo and
+cloud-itonami-saas-product, whose own more nuanced status is tracked
+in 28/28b/28c.
 
 A third shape shows up in `cloud-itonami-saas-product` (itonami.cloud): 74
 human weekly uniques against **34,381 agent runs** in the same window --
@@ -2073,6 +2077,44 @@ real on the checkout-mechanism side but uncertain on the
 population-being-measured side. Not 2 clean confirmations, and not
 back to 1 either -- a more precisely nuanced position than either
 finding 28 or finding 28b alone stated.
+
+## 28d. Extending finding 4c's precedent to a 2nd product: cloud-manimani's low signup count also traces to a feature that doesn't exist yet, not a failed funnel
+
+Finding 4c already found this exact pattern once, for club-shinshi:
+zero conversion turned out to mean "the feature was never shipped,"
+not "real demand failed to convert." Applied the same live-verification
+check to `cloud-manimani` (manimani.cloud), which had never received
+it -- its entity note simply reads "295 weekly uniques vs 1 cumulative
+signup," in the same shape as the products this thread has spent
+several cycles now checking for a technical or population explanation.
+
+`manimani.cloud/llms.txt` (fetched live, real, HTTP 200) is direct and
+unambiguous, no inference required this time: **"Single shared cloud
+account today; per-user DID signup is a designed seam, not yet built."**
+and **"No pricing, no billing: the paid funnel stays 0 by design until
+a billing rail exists."** Confirmed against the product's own live
+`/metrics` endpoint: `{"oss":{"installs":0},"cloud":{"signups":1},
+"conversion":{"oss-active":0,"cloud-paid":0,"pct":0}}` -- matching the
+already-recorded figures exactly, now with the product's own
+documentation explaining why.
+
+**This is not a marketing/discovery/trust failure the way findings 4,
+28, 28b, 28c have been investigating for other products -- it's an
+unbuilt feature, the same shape as finding 4c's club-shinshi
+correction.** Three concrete reasons this product's low numbers don't
+belong in the same bucket as cloud-murakumo/cloud-itonami's checkout-
+verified-but-zero-conversion cases: (1) there is no per-user account
+system at all (a single shared cloud account, not per-visitor
+signup -- "1 cumulative signup" may not even represent a real distinct
+person); (2) there is no billing infrastructure whatsoever, so 0%
+paid conversion is definitionally guaranteed regardless of demand; (3)
+the OSS "installs: 0" figure is opt-in telemetry only (a stock local
+install emits nothing by design), so it undercounts real usage rather
+than measuring it.
+
+Second real instance of the same lesson finding 4c already taught this
+catalog once: before pooling a product's zero into a cross-portfolio
+pattern, check whether the relevant feature was ever actually built.
 
 ## What's still open
 

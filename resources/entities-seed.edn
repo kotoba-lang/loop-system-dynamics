@@ -386,8 +386,12 @@
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 295 :source "90-docs/business/metrics/cloud-manimani.edn, 2026-07-20, manimani.cloud zone"}
             :website-requests-7d {:value 1773}
-            :signups {:value 1 :source "same file: :cloud {:signups 1} -- real cumulative signup count"}}
-   :note "295 weekly uniques vs 1 cumulative signup: the same traffic-without-conversion pattern found on etzhayyim.com, inside the same portfolio"}
+            :signups {:value 1 :source "same file: :cloud {:signups 1} -- real cumulative signup count"}
+            :low-signup-explained {:value {:per-user-signup-built false :billing-infra-exists false :oss-install-telemetry :opt-in-only}
+                                    :evidence "manimani.cloud/llms.txt (HTTP 200, fetched live 2026-07-21) states directly: 'Single shared cloud account today; per-user DID signup is a designed seam, not yet built.' and 'No pricing, no billing: the paid funnel stays 0 by design until a billing rail exists.' Confirmed against the live /metrics endpoint: {oss:{installs:0}, cloud:{signups:1}, conversion:{oss-active:0, cloud-paid:0, pct:0}} -- matches the already-recorded figures exactly, product's own docs now explain why"
+                                    :source "Direct curl against manimani.cloud/llms.txt, /metrics, /health, 2026-07-21"
+                                    :interpretation "Same shape as finding 4c's club-shinshi correction, a 2nd real instance: this is NOT a marketing/discovery/trust conversion failure the way cloud-murakumo/cloud-itonami-saas-product's zeros are (findings 4b/28/28c) -- there is no per-user account system at all (a single SHARED cloud account, so '1 cumulative signup' may not represent a real distinct person), no billing infrastructure whatsoever (0% paid conversion is definitionally guaranteed, not evidence of failed demand), and OSS installs:0 is opt-in-only telemetry (undercounts real usage, doesn't measure it). Before pooling this product's zero into any cross-portfolio pattern, this now needs to be excluded the same way club-shinshi already was"}}
+   :note "295 weekly uniques vs 1 cumulative signup. Initially recorded as 'the same traffic-without-conversion pattern found on etzhayyim.com' -- corrected (finding 28d): the product's own documentation shows per-user signup and billing infrastructure simply don't exist yet, the same explanation finding 4c already found for club-shinshi. This is an unbuilt-feature story, not a funnel-failure story"}
 
   {:id :cloud-itonami-saas-product
    :org "gftdcojp"
