@@ -28,6 +28,17 @@
    `:resolve-stub-repo-scope`'s corrected rationale and the new
    `:fix-fleet-audit-content-detection` below.
 
+   BOTH this ranking's top structural finding (:fix-fleet-audit-content-
+   detection) AND its lowest-leverage item (:clear-current-backlog) have
+   since LANDED (both marked `:status :landed` below, same day): the audit
+   script itself was fixed (com-junkawasaki/root commit 8f33c7772d27,
+   validated fleet-wide: :by-status now {:active 843 :archive 143 :stub
+   169}, confirming the 143-repo false positive is gone and the real gap
+   is 169, not 312), and the 153-repo registration backlog was cleared by
+   an unrelated automated routine (commit e95e81e3f994) -- a live
+   confirmation of this ranking's own thesis: the lowest-leverage item was
+   also the one that got done without anyone needing to design anything.
+
    etzhayyim has had this kind of ranking (etzhayyim-interventions in
    core.cljs) since this repo's very first commit; cloud-itonami never did
    -- every prior cycle OBSERVED cloud-itonami (stocks, structure, age) but
@@ -51,8 +62,9 @@
    grounded in, per this namespace's docstring."
   [{:id :clear-current-backlog
     :band :band/E :tractability 0.9
+    :status :landed
     :label "Register the 153 already-scaffolded, currently-unregistered isic/isco repos into manifest/west.yml"
-    :rationale "cloud_itonami_isic_isco_sysml.cljs's backlog-age finding: this is a known, closed, individually-named list (not a design decision) -- but it only clears an existing buffer/parameter, it does not change how future backlog forms. Band E (constants/parameters/buffers), high tractability."}
+    :rationale "LANDED 2026-07-21 (com-junkawasaki/root commit e95e81e3f994, an automated routine): confirms this item's own thesis exactly -- it was the lowest-leverage item in this ranking and was also the fastest to actually get done automatically, needing no design work, while the higher-ranked band-B/C items above required this session's own analysis and implementation. cloud_itonami_isic_isco_sysml.cljs's backlog-age finding: this was a known, closed, individually-named list (not a design decision) -- but it only cleared an existing buffer/parameter, it did not change how future backlog forms. Band E (constants/parameters/buffers), high tractability."}
 
    {:id :fix-revision-tag-template
     :band :band/B :tractability 0.6
@@ -86,8 +98,9 @@
 
    {:id :fix-fleet-audit-content-detection
     :band :band/B :tractability 0.6
+    :status :landed
     :label "Teach scripts/itonami-fleet-audit.cljs to recognize the 80-data/-based read-only-archive repo pattern (cloud-itonami-lei-*) as real content, not :stub"
-    :rationale "The audit tool itself is part of the information-flow structure this whole ranking depends on -- and it currently misreports 143 real, substantial repos as empty, which is exactly the kind of measurement error that (per this session's earlier registration-status bug) silently distorts every downstream percentage and decision built on top of it. Fixing the tool's own blind spot (band B: the RULE the audit itself applies, not one repo's content) is more tractable than the maturity-declaration backfill above, since it is a single, well-scoped script change (recognize a non-empty 80-data/*.edn or an explicit blueprint.edn 'archive, not actor' declaration as satisfying content), not 774 individual per-repo judgment calls."}
+    :rationale "LANDED 2026-07-21 (com-junkawasaki/root commit 8f33c7772d27): added archive-file-count (real, non-empty files under 80-data/, checked via node:fs statSync -- the nbb-compat io/file shim has no real .length method, unlike java.io.File, a bug caught during implementation) and a new :archive status distinct from :stub. Validated against the full 1155-repo fleet: :by-status now reports {:active 843 :archive 143 :stub 169} (was {:active 843 :stub 312}) -- exactly the 143 lei repos this fix targets moved out of :stub, leaving the real gap (169, not 312) visible on its own. The audit tool itself was part of the information-flow structure this whole ranking depends on, and it was misreporting 143 real repos as empty -- the same class of measurement error (per this session's earlier registration-status bug) that silently distorts every downstream percentage built on top of it."}
 
    {:id :reconsider-fleet-architecture
     :band :band/A :tractability 0.15
@@ -118,12 +131,13 @@
        "(dynamics.core/rank-interventions), same formula and band system as etzhayyim's own "
        "ranking in core.cljs.\n\n"
        "## Ranking\n\n"
-       "| rank | id | band | tractability | score | label |\n|---|---|---|---|---|---|\n"
+       "| rank | id | band | tractability | score | status | label |\n|---|---|---|---|---|---|---|\n"
        (str/join "\n"
                   (map-indexed
-                   (fn [i {:keys [id band tractability base-score label]}]
+                   (fn [i {:keys [id band tractability base-score status label]}]
                      (str "| " (inc i) " | `" (name id) "` | " (name band) " | "
-                          tractability " | " (.toFixed base-score 2) " | " label " |"))
+                          tractability " | " (.toFixed base-score 2) " | "
+                          (if status (name status) "open") " | " label " |"))
                    (:intervention-ranking evaluation)))
        "\n\n## Rationale (per intervention)\n\n"
        (str/join "\n\n"
