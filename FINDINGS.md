@@ -1203,6 +1203,49 @@ entry** -- recorded here as the finding + root cause + fix-in-flight, with
 the outcome to be recorded separately once confirmed, exactly as findings
 1c and 1d were split.
 
+## 16b. The fix landed correctly but only actually changed the live result for 13/102 actors -- reporting the true partial state instead of rounding up to "done"
+
+The dispatched subagent's code change was exactly right: PR #3306 merged in
+`orgs/etzhayyim/root`, both call sites fixed, tests unaffected (122/127,
+same 5 pre-existing unrelated failures before and after), deployed via
+`wrangler deploy` (Version ID `762539fd-ee2e-4c28-8b0c-30ab557a1fc8`). Its
+own post-deploy spot-check of 3 handles found a genuinely mixed result
+(1 fixed, 2 still broken) and it reported that honestly rather than
+declaring success.
+
+Independently re-verified myself -- not just re-checking its 3-handle
+sample, but re-running the fetch-and-check against **all 102** originally-
+affected handles from finding 16, fresh, after the deploy: **13/102 fixed,
+89/102 still serve the false claim, live, right now.**
+
+Root cause of the gap (found by the subagent, confirmed by me): the Worker
+serves `public/actor/<handle>/did.json` as a static Cloudflare asset
+(`wrangler.toml`'s `[assets] directory`) for any handle that has a
+pre-generated, git-committed file at that path -- for those handles the
+fixed `toDidDoc()`/`buildPerActorDidDoc()` code never runs at all, static
+serving intercepts the request before the Worker sees it. 89/102 affected
+handles have such a file; only 13 resolve through the Worker's live path.
+A **third occurrence of the identical bug** exists in
+`scripts/publish-actor-records.cljs` (~line 147, explicitly commented as
+needing to stay in sync with the TS logic) -- almost certainly what
+generated the 89 stale files in the first place. The first subagent
+correctly declined to touch this or the static files, since its authorized
+scope was explicitly the 2 TypeScript files only.
+
+A second, narrowly-scoped follow-up fix (same bug, third location, plus
+regenerating the affected static files) has been dispatched to a fresh
+subagent, carrying forward the exact 89-handle list this independent
+re-check produced. Outcome not yet known as of this entry. The honest state
+right now, mid-fix: **partially fixed and partially deployed is a real,
+distinct state from either "found" or "fixed" -- worth recording precisely
+rather than rounding a 13% live fix rate up to "the bug is fixed."** This
+also surfaces a design tension the fixing subagent flagged but correctly
+did not resolve unilaterally: committed static DID-document shadows can
+permanently freeze stale content ahead of the Worker's live resolution
+chain, in some tension with that same codebase's own stated
+"did:web never goes dark" intent -- a question for the repo owner, not
+something this analysis or its dispatched subagents should decide alone.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
