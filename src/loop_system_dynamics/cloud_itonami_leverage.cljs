@@ -6,7 +6,17 @@
    cloud_itonami_xmile.cljs (per-category backlog/rate),
    cloud_itonami_isic_isco_sysml.cljs (per-code registration + revision-
    declaration + WHERE the backlog concentrates + whether it's a permanent
-   gap or a pipeline lag).
+   gap or a pipeline lag), and com-junkawasaki/root's own pre-existing
+   `scripts/itonami-fleet-audit.cljs` (real per-repo blueprint.edn maturity
+   + git-activity signals across all 1155 checked-out cloud-itonami-* repos
+   -- a MUCH larger, real finding than the registration-status work above:
+   774/1155 (67%) have no maturity declared at all in their own blueprint.edn,
+   and 312/1155 (27%) are literal :stub repos with zero src files, as of
+   2026-07-21). This confirms the fleet-architecture concern already in
+   this list (`:reconsider-fleet-architecture` below) was underselling the
+   scale of the real gap -- registration status (west.yml presence) and
+   actual content maturity are two DIFFERENT axes, and the second one is
+   worse.
 
    etzhayyim has had this kind of ranking (etzhayyim-interventions in
    core.cljs) since this repo's very first commit; cloud-itonami never did
@@ -54,6 +64,16 @@
     :label "Turn cloud_itonami_isic_isco_sysml.cljs's backlog-age check into a recurring, alerting feedback loop (flag any code whose age exceeds the fleet's own typical registration lag and is still unregistered)"
     :rationale "backlog-age's own finding (every unregistered code was <= 4.53 days old, zero exceptions either direction) is a real, useful invariant -- but it was checked ONCE, by hand, this cycle. Automating it creates a genuinely NEW balancing feedback loop (detect anomaly -> surface alert -> prompt registration) that would catch a FUTURE real stall (not just this cycle's lag) automatically -- band C (feedback loop strength/gain), the loop does not exist yet at all."}
 
+   {:id :standardize-maturity-declaration
+    :band :band/B :tractability 0.5
+    :label "Require every new cloud-itonami blueprint.edn to declare :itonami.blueprint/maturity, and backfill the 774/1155 (67%) that currently don't"
+    :rationale "scripts/itonami-fleet-audit.cljs, run 2026-07-21: :by-maturity {:blueprint 23 :implemented 334 :maturity-unset 774 :no-blueprint 24} across all 1155 checked-out repos -- two-thirds of the fleet cannot even answer 'how mature is this' from its own declared metadata, only from re-deriving it externally (as the audit script itself has to). This is the SAME kind of gap as the isic revision-tag finding (a missing self-declaration a template should enforce), at 3x the scale (774 vs 241) -- band B (rules/information-flow: what every future scaffold must declare), moderate tractability (setting the field is mechanical once a real value is decided per repo, but deciding the correct value for 774 repos individually is real work, not a single template edit)."}
+
+   {:id :resolve-stub-repo-scope
+    :band :band/A :tractability 0.2
+    :label "Decide, deliberately, what should happen to the 312/1155 (27%) cloud-itonami repos that are pure :stub (zero src files) -- implement, deprioritize, or retire each"
+    :rationale "scripts/itonami-fleet-audit.cljs, 2026-07-21: 312 repos have :status :stub (src-file-count 0) yet are marked :status/active in west.yml and counted in every coverage percentage this whole analysis (entities-seed.edn's 86.4%, the SysML model's 644/797 registered) as if 'registered' meant 'exists as real content.' Registration and content are different axes; conflating them overstates fleet maturity by exactly this 27%. This is a GOAL-level question (is scaffolding-then-leaving-empty an accepted interim state, or should coverage metrics exclude stubs) -- band A, and honestly low tractability: resolving 312 individual repos' fate is a real product decision, not a mechanical fix, included here so this ranking doesn't hide its largest real gap behind a smaller, easier-sounding one."}
+
    {:id :reconsider-fleet-architecture
     :band :band/A :tractability 0.15
     :label "Reconsider whether 1300+ near-identical per-classification-code blueprint repos is the right architecture at all, vs. e.g. one parameterized template + a registry"
@@ -98,12 +118,20 @@
        "The naive answer to 'where to start' -- just clear the 153-repo registration "
        "backlog, since it's the most visibly finished/tractable item -- ranks LOWEST by "
        "leverage (band E: it only drains an existing buffer, it does not change any rule, "
-       "loop, or goal that produces the NEXT backlog). Wiring live observe and fixing the "
-       "isic revision-tag template both outrank it, because both are band-B changes to the "
-       "information/rule structure that generates every future observation and every future "
-       "repo, not one-off cleanup of what already exists. This is the same distinction "
-       "Meadows' own hierarchy makes formal: a parameter fix helps once, a structure fix "
-       "helps every cycle after.\n"))
+       "loop, or goal that produces the NEXT backlog). The top 3 (wiring live observe, "
+       "fixing the isic revision-tag template, standardizing blueprint.edn's own maturity "
+       "declaration) are all band B for the same reason: each changes the information/rule "
+       "structure that generates every FUTURE observation or repo, not one-off cleanup of "
+       "what already exists. This is the same distinction Meadows' own hierarchy makes "
+       "formal: a parameter fix helps once, a structure fix helps every cycle after.\n\n"
+       "This cycle's own `scripts/itonami-fleet-audit.cljs` run (2026-07-21) revised the "
+       "scale of the real gap upward: 774/1155 (67%) of the fleet has no maturity declared "
+       "at all, and 312/1155 (27%) are pure :stub repos with zero real content -- both "
+       "larger than the 153-repo/241-repo registration and revision-tag gaps this ranking "
+       "started from. `resolve-stub-repo-scope` deliberately ranks low despite that scale, "
+       "because band alone does not make a goal-level decision tractable -- it belongs in "
+       "this ranking precisely so its real cost is visible, not hidden by only listing the "
+       "easier items.\n"))
 
 (defn act!
   [evaluation report-path]
