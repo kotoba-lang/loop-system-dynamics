@@ -91,11 +91,50 @@ results too. Example real query, run against real data:
 ;; => [["kotoba-lang" 3] ["gftdcojp" 23]]
 ```
 
+## Simulate it (real stock-flow ODE, not just a leverage-point score)
+
+```bash
+# from a west workspace where kotoba-lang/org-oasis-open-xmile and
+# kotoba-lang/dsl-core are checked out as siblings:
+nbb --classpath "../org-oasis-open-xmile/src:../dsl-core/src:src" \
+    bin/run_cloud_itonami_xmile.cljs
+```
+
+Everything above (`core.cljs`, `query.cljs`) scores leverage or answers
+queries over point-in-time stocks; it never actually integrates a stock
+forward through time. `src/loop_system_dynamics/cloud_itonami_xmile.cljs`
+does, for one real sub-system: cloud-itonami's GitHub-repo ->
+`com-junkawasaki/root manifest/west.yml` registration pipeline, per
+name-prefix category (isic/isco/iso/lei/assoc/municipality/...). It builds
+an actual [OASIS XMILE 1.0](https://www.oasis-open.org/standard/xmile1-0/)
+model (via [`kotoba-lang/org-oasis-open-xmile`](https://github.com/kotoba-lang/org-oasis-open-xmile))
+from `resources/cloud-itonami-fleet-xmile-seed.edn` -- one `Backlog_<cat>`
+stock (GitHub total minus west-registered) drained by one `Reg_<cat>` flow
+per category, clamped `MIN(observed-rate, Backlog_<cat> / DT)` so a category
+already at zero backlog can't go negative -- and runs a real fixed-step
+Euler simulation over it, appending results to
+`ledger/cloud-itonami-fleet-xmile-ledger.edn`.
+
+The observed registration rate per category comes from two real, git-
+verified `manifest/west.yml` snapshots (not a guess); a category with zero
+registrations in that window gets a real measured rate of 0. First run
+(2026-07-21) found: `lei`/`assoc`/`municipality`/`isic` are actively
+draining and clear on their own within the simulated horizon at their
+currently-observed rate (0.6d/0d/3.8d/21.6d respectively) -- but `isco`
+(the single largest backlog, 124) and `iso` (6) have a measured rate of
+**exactly 0/day** and will never close without a new intervention, no
+matter how much simulated time passes. This is the kind of answer a
+static stock comparison can't give: "biggest gap" (isco) and "actively
+being worked" (lei/assoc/municipality/isic) are different categories, and
+only a real flow measurement -- not just the two point-in-time repo counts
+already in `resources/entities-seed.edn`'s `:cloud-itonami` entity --
+tells them apart.
+
 ## Test
 
 ```bash
 npm install
-nbb --classpath "../dynamics/src:src:test" test/run_tests.cljs
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src:test" test/run_tests.cljs
 ```
 
 ## Extending coverage
@@ -120,6 +159,14 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
   taxonomy, once a resident CI schedule is wanted -- this repo's core stays
   provider-neutral either way.
+- `cloud_itonami_xmile.cljs`'s observed rates come from a single ~1.57-day
+  window (bounded by local shallow-clone depth, see the seed file's
+  `:window :note`) -- re-observing at a later `t1` (a wider, deeper window)
+  would sharpen the isco/iso "stalled" finding from "zero in this window"
+  toward "durably zero." The same stock-flow pattern (backlog + observed
+  rate, clamped flow) is not yet applied to any other entity in
+  `resources/entities-seed.edn` (etzhayyim-actors' 613 repos and
+  kotoba-lang's 1,649 have the same GitHub-total-vs-west-registered shape).
 
 ## License
 
