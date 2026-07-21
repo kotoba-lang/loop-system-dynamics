@@ -1545,6 +1545,56 @@ balance sheet composition), useful as a real-world anchor for what
 "monetized user attention at platform scale" actually looks like in
 audited, dated figures.
 
+## 22. The last of the 4 explicitly-named "What's still open" gaps closed: the first nation-state, chosen to compose with entities already in this catalog rather than added in isolation
+
+"What's still open" originally named 4 unrepresented categories: labor
+unions, central banks, major social platforms, nation-states (plus a
+separate, still-open healthcare/education/insurance line). The first 3
+were closed over the last 3 cycles (AFL-CIO, Bank of Japan, Reddit). This
+cycle closes the 4th with Japan -- deliberately, not an arbitrary choice:
+Japan is the one nation-state whose addition composes with 2 entities
+already in this catalog (`:bank-of-japan`, finding 19, and
+`:japan-religious-corporations-registry`, finding 8) rather than sitting
+in isolation the way a fresh country pick would.
+
+Sourced from 2 real Japanese government primary releases, fetched
+directly: population from the Statistics Bureau of Japan's own 人口推計
+release -- published literally the same calendar day as this entry
+(2026-07-21) -- and central government debt from the Ministry of
+Finance's Central Government Debt page, as of 2026-03-31 (the release
+itself notes this is the 10th consecutive record high).
+
+**Real, dated figures:** total population 122.93 million (2026-07-01
+preliminary) / 122.975 million (2026-02-01 confirmed, benchmarked to the
+2020 Census). Central government debt JPY 1,343,842,600,000,000 (~¥1,344
+trillion) as of 2026-03-31, of which JPY 1,207,218,800,000,000 is
+outstanding government bonds (JGBs) -- both breakdown figures reconciled
+to sum exactly to the stated total, same discipline as findings 17/19.
+
+**A real cross-entity relationship, not 2 more isolated numbers:** BOJ's
+own JGB holding (JPY 517,511,154,658,000, already recorded in finding 19)
+divided by this entity's total outstanding JGBs (JPY
+1,207,218,800,000,000) is 42.87% -- Japan's own central bank holds nearly
+43% of all its government's outstanding bonds. This is computed directly
+from 2 dated primary-source figures already independently verified and
+recorded in this same file, not a new fetch or an estimate. It
+contextualizes finding 19's own fact (JGBs are 81% of the BOJ's balance
+sheet) from the other direction: JGBs are simultaneously the dominant
+asset class on the central bank's own books AND a market where that same
+central bank is the single largest holder by a wide margin -- two real,
+independently-sourced numbers that turn out to describe the same
+underlying structural fact from opposite sides.
+
+**A separate, real, dated divergence recorded in passing:** in the same
+release, Japanese-national population is shrinking (-0.74% YoY) while
+foreign-resident population is growing fast (+12.14% YoY), as of the same
+date. Kept as 2 separate figures rather than collapsed into one
+"population trend" line, since they move in opposite directions.
+
+This closes the 4th of 4 explicitly-named gaps. The healthcare / education
+/ insurance line from the same "What's still open" bullet remains the one
+still open.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1555,13 +1605,13 @@ audited, dated figures.
   human copying `gh api` output, not a live ingestion pipeline. No `kqe`
   (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
   exist yet either.
-- Coverage is still a small, honest sample, not "the whole world": 34
+- Coverage is still a small, honest sample, not "the whole world": 35
   entities, 17 loop archetypes. The schema has no ceiling, but the actual
   instantiation covers a tiny fraction of real-world organizations and
-  systems -- no nation-states or healthcare/education/insurance systems are
-  represented yet (labor unions, central banks, and major social platforms
+  systems -- no healthcare/education/insurance systems are represented yet
+  (labor unions, central banks, major social platforms, and nation-states
   now each have one real instance: finding 17 the AFL-CIO, finding 19 the
-  Bank of Japan, finding 21 Reddit).
+  Bank of Japan, finding 21 Reddit, finding 22 Japan).
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed

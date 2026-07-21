@@ -287,6 +287,25 @@
                                   :source "same 10-Q: 'Free Cash Flow was $311.2 million...as compared to $126.6 million'"}
             :cash-and-marketable-securities-usd {:value 2.8e9 :as-of "2026-03-31" :source "same 10-Q"}}}
 
+  {:id :japan
+   :org "external-reference"
+   :note "Closes the last of the 4 gaps 'What's still open' explicitly named (nation-states; healthcare/education/insurance remains open). Sourced from 2 real Japanese government primary sources, both fetched directly, not aggregated: population from the Statistics Bureau of Japan (総務省統計局) 人口推計 release -- published literally the same day as this entry (2026-07-21) -- and central government debt from the Ministry of Finance's own Central Government Debt page (mof.go.jp), as of 2026-03-31. Deliberately chosen over a generic 'nation-state' placeholder because it composes with 2 entities this catalog already tracks: :bank-of-japan (finding 19) and :japan-religious-corporations-registry (finding 8) -- the BOJ/MOF linkage below is a real, computed cross-entity relationship, not just 2 more isolated numbers"
+   :stocks {:population-total {:value 122930000 :as-of "2026-07-01" :basis "preliminary estimate (概算値)" :yoy-change -440000 :yoy-change-pct -0.35
+                                :source "stat.go.jp/data/jinsui/new.html, published 2026-07-21 (same day as this entry)"}
+            :population-total-confirmed {:value 122975000 :as-of "2026-02-01" :basis "confirmed value (確定値), benchmarked to the 2020 Census (令和2年国勢調査)"
+                                          :breakdown {:under-15 13350000 :age-15-64 73427000 :age-65-plus 36198000 :age-75-plus 21440000
+                                                      :japanese-nationals 119078000 :foreign-nationals 3896000}
+                                          :yoy-change -467000 :yoy-change-pct -0.38
+                                          :source "same Statistics Bureau release"}
+            :foreign-vs-national-population-divergence {:value {:japanese-nationals-yoy-pct -0.74 :foreign-nationals-yoy-pct 12.14}
+                                                          :source "same release, both as of 2026-02-01"
+                                                          :interpretation "Japanese-national population is shrinking (-0.74%/yr) while foreign-resident population is growing fast (+12.14%/yr) in the same period -- both real, dated, same-source figures, a striking real-world divergence worth keeping precise rather than collapsing into a single 'population' trend line"}
+            :central-government-debt-total-jpy {:value 1343842600000000 :as-of "2026-03-31"
+                                                  :breakdown {:government-bonds-jpy 1207218800000000 :borrowings-jpy 44324300000000 :financing-bills-jpy 92299500000000}
+                                                  :source "mof.go.jp/english/policy/jgbs/reference/gbb/e202603.html, 'Central Government Debt (As of March 31, 2026)', published 2026-05-08 -- 10th consecutive record high per the release"}
+            :boj-share-of-outstanding-jgbs-pct {:value 42.87 :derivation "BOJ's :japanese-government-securities-jpy holding (517,511,154,658,000, finding 19) / this entity's :government-bonds-jpy (1,207,218,800,000,000) * 100 = 42.868..."
+                                                 :interpretation "A real, computed cross-entity relationship between 2 entities this catalog already tracks independently: Japan's own central bank holds 42.87% of all outstanding Japanese government bonds -- not an estimate, a direct ratio of 2 dated primary-source figures already recorded in this file. Contextualizes finding 19's 81% JGB-share-of-BOJ-balance-sheet fact from the other direction: JGBs are both the dominant asset on the BOJ's own books AND a market where the BOJ itself is the single largest holder by a wide margin"}}}
+
   {:id :online-gambling-industry
    :org "external-reference"
    :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
