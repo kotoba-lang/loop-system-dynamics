@@ -70,6 +70,36 @@ found a handful of real strangers who noticed it organically; an evangelism
 project whose stated purpose is drawing adherents has found none, by this
 measure, at all.
 
+**Extending to all four tracked GitHub orgs surfaces a real outlier.**
+`cloud-itonami` (1,331 repos, per-ISIC/ISCO-code classification blueprints)
+scores the same as etzhayyim: 0 stars anywhere, checked across its full
+repo set via the search API. But `gftdcojp` breaks the pattern entirely --
+**23 real external stars**, an order of magnitude above kotoba-lang's 3 and
+far above the two zero-orgs. They aren't spread thin: `bpmn-engine-ts` ("BPMN
+2.0 execution engine for Rust", 10 stars, 1 fork) and `rs-jsonnet` (a Rust
+jsonnet implementation, 7 stars, 1 fork, still being pushed to as recently
+as 07-17) account for 17 of the 23 alone. Both are confirmed original work
+(`fork:false`, `source:null`), not inherited stars from a fork chain.
+
+One detail ties this back to the kotoba-lang finding directly: `He-Pin` --
+the same real external Rust/Scala engineer at Taobao who starred
+`kotoba-lang/kotoba-v2025` -- independently also starred `gftdcojp/rs-jsonnet`.
+One real person, unprompted, found and starred content in two different
+orgs of this same workspace. That is a small but genuine cross-org signal
+that this isn't pure noise.
+
+**The pattern across all four orgs**: external validation doesn't track org
+size, repo count, or how central the org is to this workspace's own stated
+goals -- it tracks whether a repo is a narrowly-scoped, immediately-useful
+piece of open-source infrastructure that a developer might find via a
+language ecosystem search (crates.io, an awesome-list) rather than via this
+workspace's own outward content. `gftdcojp`'s BPMN/jsonnet tools fit that
+description; etzhayyim's evangelism repos and cloud-itonami's classification
+blueprints don't, regardless of how much real effort went into either.
+kotoba-lang sits in between: it is infrastructure, but general-purpose-language
+infrastructure competing in a far more crowded space than a narrow BPMN/
+jsonnet tool, which likely explains its smaller (but nonzero) draw.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 16 entries. Ranked by
