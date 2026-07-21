@@ -538,11 +538,55 @@ cycle-time/self-funding/instrumentation/friction parameters from something
 real; a static headcount doesn't have those, and forcing numbers onto it
 would be exactly the kind of fabrication this model exists to avoid.
 
+## 9. A real DataScript query layer now exists over both real datasets
+
+`ADR-2607203000` originally asked for entity/actor data to be "DataScript/
+Datomic query で接続" (connected via DataScript/Datomic query) -- every prior
+cycle answered that in spirit only, by hand-copying `gh api` output into
+`resources/entities-seed.edn`'s nested maps and reading them by eye.
+`src/loop_system_dynamics/query.cljs` closes that gap for real: it ingests
+both the `loop-archetypes` catalog (`kotoba-lang/dynamics`) and a curated
+flat subset of the observed entities into an in-memory DataScript conn
+(npm `datascript`, the same package and JS-interop convention as
+`com-junkawasaki/root`'s own `manifest/edn-query.cljs` -- bare-string
+attributes, `:db/id` as the one colon-prefixed key, real datalog query
+strings), and supports genuine `:find/:where` queries like "which orgs have
+any confirmed external GitHub star" or "which loop archetypes score above
+X" against real data, not fixtures.
+
+Building this against real data immediately surfaced a real inconsistency
+in the hand-curated seed: etzhayyim's `:github-social-engagement` block had
+never gotten a top-level `:org-wide-star-total` field the way kotoba-lang/
+cloud-itonami/gftdcojp's did (it was shaped around root-repo/fork detail
+instead), so a flat query for "entities with 0 stars" silently missed
+etzhayyim even though its actual answer (0) had been established two
+cycles ago. Fixed by adding the missing field (value 0, matching the
+already-established finding) rather than working around it in the query
+layer -- a small, concrete example of why a queryable projection is worth
+building even when the underlying seed is already careful: it catches shape
+drift a human skimming prose would not.
+
+This does not replace the seed as source of truth (see README "Extending
+coverage") -- it is a second, queryable view of the same real facts, and
+every field it exposes traces back to a `:source`-carrying value already in
+the seed. Nothing new was measured to build this; what changed is that the
+already-real facts are now askable as data, not just readable as prose.
+
 ## What's still open
 
-- `observe` still reads a static seed (`resources/entities-seed.edn`), not a
-  live query. Wiring it to `kotoba-lang/kqe` or a live GitHub API pull is
-  documented in the README as a follow-up, not yet done.
+- `observe` still reads a static seed (`resources/entities-seed.edn`) as the
+  source of truth. `src/loop_system_dynamics/query.cljs` now provides a real
+  DataScript `:find/:where` datalog projection over that seed plus the
+  `loop-archetypes` catalog (see README "Query it") -- this is genuine
+  progress on the original ask, but every fact still enters the seed via a
+  human copying `gh api` output, not a live ingestion pipeline. No `kqe`
+  (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
+  exist yet either.
+- Coverage is still a small, honest sample, not "the whole world": 31
+  entities, 17 loop archetypes. The schema has no ceiling, but the actual
+  instantiation covers a tiny fraction of real-world organizations and
+  systems -- no nation-states, central banks, major social platforms, labor
+  unions, or healthcare/education/insurance systems are represented yet.
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed
@@ -553,9 +597,18 @@ would be exactly the kind of fabrication this model exists to avoid.
   (finding 4c) as a feature-not-shipped-yet explanation, not the same
   pattern. Whether the 3-product pattern has a shared root cause is still an
   open question this loop has surfaced but not answered.
-- The site-reliability thread for etzhayyim specifically (findings 4d-4g)
-  has flipped conclusions twice already (broken -> fixed -> possibly-never-
-  actually-measuring-live-health) and is explicitly left open rather than
-  forced to a verdict. Settling it needs either the actual Cloudflare
-  Worker logs or documentation of how `:status-mix` is computed, neither of
-  which this loop has access to.
+- The site-reliability thread for etzhayyim specifically (findings 4d-4h)
+  has now revised its conclusion four times (broken -> fixed -> possibly-
+  never-actually-measuring-live-health -> probably real+live but measuring
+  an unidentified traffic slice) and is explicitly left open rather than
+  forced to a verdict. Settling it needs either the actual Cloudflare Worker
+  logs or documentation of how `:status-mix` is computed, neither of which
+  this loop has access to.
+- None of etzhayyim's 9 candidate interventions have actually been applied
+  and measured -- the ranking is entirely ex-ante Meadows-leverage scoring,
+  not a validated before/after effect.
+- The one clear external-validation success found anywhere in this
+  workspace (gftdcojp's `rs-jsonnet`, finding 1b) has not been compared
+  against any external benchmark -- whether 23 stars / 1 substantive
+  contributor is actually "good" for a project of its kind and age is
+  unassessed, only that it is nonzero where almost everything else is zero.

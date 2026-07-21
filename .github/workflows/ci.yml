@@ -21,4 +21,6 @@ jobs:
           node-version: "20"
       - run: npm install -g nbb
       - working-directory: loop-system-dynamics
+        run: npm install
+      - working-directory: loop-system-dynamics
         run: nbb --classpath "../dynamics/src:src:test" test/run_tests.cljs

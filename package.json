@@ -1,0 +1,8 @@
+{
+  "name": "loop-system-dynamics",
+  "private": true,
+  "description": "npm deps for the DataScript-backed query layer (src/loop_system_dynamics/query.cljs). No runtime JS of its own -- nbb consumes these directly.",
+  "dependencies": {
+    "datascript": "^1.7.8"
+  }
+}

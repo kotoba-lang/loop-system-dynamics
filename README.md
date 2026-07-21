@@ -61,9 +61,40 @@ changed. This is in-memory only -- it does not rewrite
 updated snapshot); fold a genuinely new finding back into the seed by hand
 when it is worth keeping permanently, same as every prior cycle.
 
+## Query it (real DataScript, not just reading the seed file)
+
+```bash
+npm install   # once, pulls in the npm `datascript` package
+nbb --classpath "../dynamics/src:src" bin/query_demo.cljs
+```
+
+`src/loop_system_dynamics/query.cljs` ingests the real `loop-archetypes`
+catalog (from `kotoba-lang/dynamics`) and a curated flat subset of the
+observed entities into an in-memory DataScript conn, using the exact same
+npm `datascript` package and JS-interop convention (bare-string attributes,
+`:db/id` as the one colon-prefixed key, query text is a real datalog
+string) as `com-junkawasaki/root`'s own `manifest/edn-query.cljs` -- so a
+query written for one works unmodified against the other. This is what
+`ADR-2607203000`'s original ask for "DataScript/Datomic query" connectivity
+actually looks like, as opposed to hand-grepping `resources/entities-seed.edn`.
+It is a second, queryable *projection* of the same real facts, not a
+replacement for the seed -- the seed stays the hand-curated, dated, sourced
+source of truth (see "Extending coverage" below); fields never checked for a
+given entity are simply absent from the datoms, never defaulted to 0, so
+"not yet measured" and "measured and zero" stay distinguishable in query
+results too. Example real query, run against real data:
+
+```clojure
+(q/q "[:find ?id ?stars :where [?e \"entity/github-stars\" ?stars]
+                                [?e \"entity/id\" ?id] [(> ?stars 0)]]"
+     conn)
+;; => [["kotoba-lang" 3] ["gftdcojp" 23]]
+```
+
 ## Test
 
 ```bash
+npm install
 nbb --classpath "../dynamics/src:src:test" test/run_tests.cljs
 ```
 
@@ -78,10 +109,13 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
 
 ## Next (documented, not yet built)
 
-- `refresh-from-bmc-metrics` covers the *file-based* half of "live source" --
-  it still only reads local BMC files, not a `kqe` (kotoba-lang/kqe) query or
-  a live GitHub API pull for the repo-count/west-registration stocks. Those
-  remain manual, hand-copied-into-the-seed numbers.
+- The DataScript query layer (`query.cljs`) ingests the seed file and the
+  archetype catalog, but nothing yet ingests a *live* `gh api` pull directly
+  into datoms -- every `entity/*` fact still passes through a human copying
+  `gh api` output into `entities-seed.edn` first. Wiring a live GitHub-API
+  ingestion fn (parallel to `refresh-from-bmc-metrics`, which already does
+  this for the file-based BMC metrics) is the natural next step.
+- No `kqe` (kotoba-lang/kqe) query source is wired in yet either.
 - A `skill-loop-system-dynamics` (agent-instruction package) and/or
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
   taxonomy, once a resident CI schedule is wanted -- this repo's core stays

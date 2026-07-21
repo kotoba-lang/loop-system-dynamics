@@ -23,7 +23,8 @@
                                     :n-estimate-basis "1,898 weekly uniques (4th real observation) x ~9.29 weeks live (did:web:etzhayyim.com resolvable since 2026-05-17T03:25Z per orgs/etzhayyim/root/CLAUDE.md) -- order-of-magnitude only, assumes roughly steady traffic and zero repeat-visitor overlap correction, NOT a verified historical time series. Bound has now tightened across 4 real observations: 0.01816% -> 0.01753% -> 0.01743% -> 0.01700%, monotonically as n grows, which is the statistics behaving correctly, not a construction artifact"
                                     :zero-events "0 organic full-ritual joins observed across all 4 observation windows (the 1 adherent recorded is the founder's own non-organic git-side oath, not a converted visitor)"}
             :github-social-engagement
-            {:value {:root-repo {:stargazers 0 :watchers 0 :forks 1 :open-issues 89}
+            {:value {:org-wide-star-total 0
+                     :root-repo {:stargazers 0 :watchers 0 :forks 1 :open-issues 89}
                      :fork-owner "dir445"
                      :fork-owner-org-membership "dir445 IS listed in `gh api orgs/etzhayyim/members` -- an org insider, not an external adopter"
                      :other-members-checked ["com-junkawasaki" "tanaka4B2"]
