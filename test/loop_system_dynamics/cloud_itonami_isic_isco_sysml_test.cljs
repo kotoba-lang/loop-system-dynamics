@@ -47,3 +47,23 @@
       (is (= 457 (:total rev)))
       (is (< (:correctly-declared rev) (:total rev)))
       (is (pos? (:undeclared rev))))))
+
+(deftest isco-backlog-concentrates-in-manual-occupation-groups-test
+  (testing "real per-major-group split: white-collar groups (1-4) are fully registered; groups 7-9 carry most of the real gap"
+    (let [obs (sysml-loop/observe)
+          decision (sysml-loop/decide obs)
+          by-group (get-in decision [:backlog-concentration :isco-by-major-group])]
+      (is (= 10 (count by-group)))
+      (is (every? #(zero? (:unregistered (by-group %))) ["1" "2" "4"]))
+      (is (> (:unregistered (by-group "7")) (:registered (by-group "7"))))
+      (is (= "Craft and Related Trades Workers" (:title (by-group "7")))))))
+
+(deftest isic-backlog-concentration-omits-fully-registered-divisions-test
+  (testing "only divisions with a real unregistered repo appear -- division 47 (specialized retail) is the largest concentration"
+    (let [obs (sysml-loop/observe)
+          decision (sysml-loop/decide obs)
+          by-div (get-in decision [:backlog-concentration :isic-by-division])]
+      (is (every? (fn [[_ stats]] (pos? (:unregistered stats))) by-div))
+      (is (= 18 (:unregistered (by-div "47"))))
+      (is (= (reduce + (map (comp :unregistered second) by-div))
+             (:unregistered (get-in decision [:registration :isic])))))))

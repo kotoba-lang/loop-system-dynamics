@@ -7,4 +7,5 @@
   (println "ledger entry appended to:" (:ledger-path result))
   (println "element count:" (:element-count (:evaluation result)))
   (println "registration:" (:registration (:decision result)))
-  (println "revision-declaration:" (dissoc (:revision-declaration (:decision result)) :breakdown)))
+  (println "revision-declaration:" (dissoc (:revision-declaration (:decision result)) :breakdown))
+  (println "backlog-concentration:" (:backlog-concentration (:decision result))))
