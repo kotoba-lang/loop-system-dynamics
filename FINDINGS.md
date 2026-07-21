@@ -1711,6 +1711,40 @@ malformed-`did:web`-id bug remain the one deliberately out-of-scope item
 from this entire thread -- a distinct data-quality issue, not part of
 this bug's own closure.
 
+## 25. Corrected a stale reference and precisely scoped a real gap, instead of attempting a rushed implementation of it in the same cycle
+
+"What's still open" had said "No `kqe` (kotoba-lang/kqe) query source"
+since early in this session. Checked whether that was still accurate
+rather than continuing to repeat it: `kotoba-lang/kqe` was retired
+2026-07-05 (ADR-2607050700), its content merged into
+`kotoba-lang/arrangement` as `arrangement.query` + `arrangement.datalog`
+-- both real, tested, working modules (a Datomic-shaped `:find`/`:where`
+conjunctive-join Datalog engine over an in-memory 4-index triple store),
+not a gap in the sense the old sentence implied.
+
+Investigated what actually wiring this into `observe()` would take, to
+turn "someday" into a real next step rather than leave the correction
+half-finished. Result: `arrangement.core`'s namespace transitively
+requires `kotoba-lang/prolly-tree` and `kotoba-lang/ipld` at load time
+(for content-addressed commit machinery this use case wouldn't even need,
+since only `assert-quad`/`query`/`datalog/q` are relevant here), and
+`ipld.core` itself requires `kotoba-lang/multiformats` and
+`kotoba-lang/dag-cbor` -- a real 5-repo dependency chain to clone and
+classpath-wire before a single live-fetched fact could round-trip through
+this workspace's own canonical substrate for exactly this purpose.
+
+Chose to record this precise scoping rather than force a same-cycle
+implementation two ways in one session already has real precedent for
+declining: a rushed integration risks either not finishing cleanly or
+reinventing a smaller bespoke triple-store instead of using the real
+substrate this workspace already built (the same reasoning that kept
+aozora.app/isekai.network's discoverability fixes unforced, findings
+20/20b). Also noted in passing, not yet acted on: `cloud-itonami-live-
+diff.cljs` (a concurrent session's contribution) is the closest existing
+thing to a live pipeline anywhere in this workspace -- a real `gh api`
+fetch diffed against a checked-in seed, for one entity family, not yet
+generalized.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1718,9 +1752,31 @@ this bug's own closure.
   DataScript `:find/:where` datalog projection over that seed plus the
   `loop-archetypes` catalog (see README "Query it") -- this is genuine
   progress on the original ask, but every fact still enters the seed via a
-  human copying `gh api` output, not a live ingestion pipeline. No `kqe`
-  (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
-  exist yet either.
+  subagent/session copying real `gh api` (or, this cycle, primary-source
+  government/SEC-filing) output by hand, not a live ingestion pipeline.
+  `kotoba-lang/cloud-itonami-leverage.cljs`'s `observe-live` (a concurrent
+  session's own contribution) is the closest thing to this that exists --
+  a real, live `gh api` fetch diffed against the checked-in seed for one
+  specific entity family (cloud-itonami's isic/isco repos), not yet
+  generalized to the rest of this file's entities.
+
+  The `kqe` reference this bullet used to carry is now stale, corrected
+  here rather than left wrong: `kotoba-lang/kqe` was retired 2026-07-05
+  (ADR-2607050700), merged into `kotoba-lang/arrangement` as
+  `arrangement.query` (pattern-routed `[s p o]` query) +
+  `arrangement.datalog` (a real Datomic-shaped `:find`/`:where` conjunctive
+  join over it) -- both real, working, already-tested modules, not
+  vaporware. Checked what it would actually take to wire this cycle: the
+  full `arrangement.core` namespace transitively requires
+  `kotoba-lang/prolly-tree` and `kotoba-lang/ipld` at load time (for its
+  `commit!`/content-addressing machinery, even though `assert-quad`/
+  `query`/`datalog/q` don't functionally need them), and `ipld.core` in
+  turn requires `kotoba-lang/multiformats` and `kotoba-lang/dag-cbor` --
+  5 repos deep before a single live `gh api` fact could round-trip through
+  the real substrate this workspace already built for exactly this
+  purpose. Scoped precisely rather than attempted rushed in the same
+  cycle this was discovered: a real next step, not a vague "someday" line
+  anymore.
 - Coverage is still a small, honest sample, not "the whole world": 35
   entities, 17 loop archetypes -- all 5 categories this bullet used to
   name as unrepresented (labor unions, central banks, major social
