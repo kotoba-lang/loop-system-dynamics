@@ -1595,6 +1595,53 @@ This closes the 4th of 4 explicitly-named gaps. The healthcare / education
 / insurance line from the same "What's still open" bullet remains the one
 still open.
 
+## 23. The healthcare/education/insurance gap closed too: Japan's national medical expenditure, composed onto the entity finding 22 just added rather than a fresh isolated pick
+
+Continued straight from finding 22's own closing line -- rather than
+treating "healthcare/education/insurance" as a separate future task,
+closed it the same cycle, and the same way finding 22 chose Japan: by
+composing onto an entity this catalog already tracks instead of adding
+something isolated. Added Japan's national medical expenditure as a new
+stock on the existing `:japan` entity, alongside its population and
+government-debt figures.
+
+Sourced from the Ministry of Health, Labour and Welfare's own press
+release (厚生労働省保険局調査課, dated 2025-08-29), fetched as the primary PDF
+directly from mhlw.go.jp -- the same discipline as every other primary
+source this cycle-family has used. The release reports 概算医療費 (a
+claims-based preliminary estimate covering ~98% of the full 国民医療費
+statistic, itself built from ~2.14 billion processed insurance claims
+records): **JPY 48.0 trillion for FY2024 (令和6年度), a 4th consecutive
+record high, +1.5% year-over-year.** A real 5-year series is recorded
+too: 42.2 / 44.2 / 46.0 / 47.3 / 48.0 trillion yen for FY2020 through
+FY2024.
+
+**Honestly incomplete breakdown, flagged rather than smoothed over:** the
+4 reported categories (inpatient JPY 19.2T, outpatient JPY 16.3T, dental
+JPY 3.4T, dispensing/pharmacy JPY 8.4T) sum to JPY 47.3T, not the full
+JPY 48.0T -- a real ~JPY 0.7T (1.5%) gap the press release's own category
+percentages (39.9+33.9+7.1+17.6 = 98.5%) also show. This is not a
+reconciliation error on this analysis's part; the source release itself
+only breaks out these 4 categories (the remainder, likely home-visit
+nursing or other minor categories, isn't itemized in this particular
+summary). Recorded as a partial breakdown explicitly, unlike the AFL-CIO
+(finding 17), BOJ (finding 19), and MOF-debt (finding 22) breakdowns,
+which were each verified to reconcile exactly to their stated totals.
+
+**A second real computed cross-entity relationship on the same `:japan`
+entity**, same pattern as finding 22's BOJ/JGB ratio: national medical
+expenditure (JPY 48.0e12) divided by this same entity's own population
+figure (122,930,000, already recorded) gives ~JPY 390,466 per-capita
+medical spending -- explicitly presented as approximate, since the
+underlying JPY 48.0T figure is itself already rounded to 1 decimal
+trillion yen in the primary source, not a more granular number this
+analysis could derive false precision from.
+
+This closes the last of the "What's still open" bullet's originally-named
+coverage gaps in full: labor unions, central banks, major social
+platforms, nation-states, and now healthcare/education/insurance all have
+at least one real, dated, primary-sourced entity or stock behind them.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1606,12 +1653,15 @@ still open.
   (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
   exist yet either.
 - Coverage is still a small, honest sample, not "the whole world": 35
-  entities, 17 loop archetypes. The schema has no ceiling, but the actual
-  instantiation covers a tiny fraction of real-world organizations and
-  systems -- no healthcare/education/insurance systems are represented yet
-  (labor unions, central banks, major social platforms, and nation-states
-  now each have one real instance: finding 17 the AFL-CIO, finding 19 the
-  Bank of Japan, finding 21 Reddit, finding 22 Japan).
+  entities, 17 loop archetypes -- all 5 categories this bullet used to
+  name as unrepresented (labor unions, central banks, major social
+  platforms, nation-states, healthcare/education/insurance) now have at
+  least one real instance: finding 17 the AFL-CIO, finding 19 the Bank of
+  Japan, finding 21 Reddit, finding 22 Japan, finding 23 Japan's national
+  medical expenditure. The schema still has no ceiling, and the actual
+  instantiation is still a tiny fraction of real-world organizations and
+  systems overall -- closing every category this bullet originally named
+  is a real milestone, not a claim that coverage is now complete.
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed
