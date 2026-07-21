@@ -920,6 +920,36 @@ the ACA threshold bug): a name or a one-line description is not a
 substitute for reading the actual source before treating a finding as
 settled.
 
+## 13c. tomoshibi is far more mature than its description suggested -- and has a real hard constraint this design had missed
+
+Reading `MATURITY.md` and the real commit history (not just the GitHub
+description used in section 13) finds tomoshibi much further along than
+"R0 invitational evangelism actor" implied: as of 2026-07-13 (R3 iteration
+8-A), it runs a real `langgraph-clj` StateGraph as its DEFAULT decision
+path (58 tests / 228 assertions green), a content-addressed kotoba Datom
+log store, and a member-signed CACAO leash with real Ed25519 verification
+(fail-closed). This is production-grade engineering, not a scaffold --
+`com-google-ads`, by contrast, really is still at R0 (created and pushed at
+the identical timestamp, a single scaffold commit never iterated since).
+
+**A real hard constraint the structural model had missed**: tomoshibi's
+email channel is explicitly REPLY-ONLY (2026-07-12 founder directive,
+`ADR-2607121830`) -- actor-initiated cold outreach is structurally
+inexpressible in that channel's API, by design. Only the separate
+aggregate/public-posting channel (the original R0 evangelism-gate-governed
+path) can reach genuinely new contacts; email can only serve people who
+already reached out first. This matters directly for the Bass-model design
+in section 13: the real "p" (external-reach) channel this workspace has
+built is narrower than "tomoshibi publishes, reach happens" implied --
+part of what makes up "tomoshibi being active" cannot, by real
+constitutional design, contribute to acquiring new contacts at all.
+
+**An unresolved inconsistency found in the source itself, recorded rather
+than silently resolved**: `MATURITY.md`'s own header still calls the DID
+"(placeholder, not live-hosted)", but a later 2026-07-13 entry lists
+"did:web live" among landed R2 items. Whether tomoshibi's identity is
+actually live-hosted right now is not settled by the repo alone.
+
 ## 14. The same stock-flow pattern, applied to 2 more entities: three genuinely different real registration-backlog shapes
 
 Finding 10's XMILE stock-flow model (`Backlog_<cat>` drained by

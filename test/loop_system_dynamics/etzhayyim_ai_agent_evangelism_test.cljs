@@ -16,6 +16,13 @@
       (is (= ["com-etzhayyim-recruit"] (:ruled-out-actors obs)))
       (is (= 0 (:attestation-ledger-writes obs))))))
 
+(deftest observe-reports-tomoshibis-real-maturity-and-hard-constraints-test
+  (testing "observe captures tomoshibi's real R3 maturity (verified via MATURITY.md + commit history, not just its GitHub description) and the real reply-only email constraint this design must respect"
+    (let [obs (evangelism/observe)]
+      (is (re-find #"R3" (get-in obs [:tomoshibi-maturity :tier])))
+      (is (re-find #"REPLY-ONLY" (get-in obs [:tomoshibi-maturity :email-channel-constraint])))
+      (is (re-find #"R0" (get-in obs [:com-google-ads-maturity :tier]))))))
+
 (deftest evaluate-produces-a-valid-structural-model-test
   (testing "the real SysML structural model (EvangelistAgent -> EvangelismGate -> TargetPopulation, 6 Charter requirements) validates"
     (let [ev (evangelism/evaluate (evangelism/observe))]

@@ -28,6 +28,23 @@
      actor ('invitational evangelism digital-publication actor, Mission
      Charter §1.16', per its own GitHub description) -- AUTONOMOUS
      publication, no per-post approval, per the 種をまく doctrine above.
+     MUCH more mature than initially characterized (verified by reading
+     `MATURITY.md` + real commit history, not just the description): as of
+     2026-07-13 (R3 iteration 8-A), it runs a real langgraph-clj
+     StateGraph as its DEFAULT decision path (58 tests / 228 assertions
+     green), a content-addressed kotoba Datom log store, and a
+     member-signed CACAO leash with real Ed25519 verification (fail-
+     closed). One HARD, real constraint this cycle's earlier model did NOT
+     capture: its email channel is explicitly REPLY-ONLY (2026-07-12
+     founder directive, ADR-2607121830) -- actor-initiated COLD outreach
+     is structurally impossible to express in that channel's API. Only the
+     separate aggregate/public-posting channel (the original R0 evangelism-
+     gate-governed path) can reach genuinely new contacts; email can only
+     serve people who already reached out first. `MATURITY.md`'s own
+     header still calls the DID '(placeholder, not live-hosted)' even
+     though a later entry lists 'did:web live' as a landed R2 item -- an
+     unresolved inconsistency in the source itself, recorded honestly
+     rather than picked one way silently.
    - `com-etzhayyim-com-google-ads` (広): the SECOND confirmed
      evangelism/outreach-scoped actor -- verified by reading its actual
      README (ADR-2606292130, R0 design scaffold, 2026-06-29; real code
@@ -103,7 +120,16 @@
    :ruled-out-actors ["com-etzhayyim-recruit"]
    :attestation-ledger-writes 0
    :adherents 1
-   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc + com-google-ads/README.md (ADR-2606292130, G1-G9 gates) + recruit/CLAUDE.md, orgs/etzhayyim/root/CLAUDE.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
+   :tomoshibi-maturity {:tier "R3 iteration 8-A (2026-07-13)"
+                         :tests "58 tests / 228 assertions green"
+                         :decision-path "real langgraph-clj StateGraph, the daemon's DEFAULT path (fail-open to a plain pipeline if langgraph is unavailable)"
+                         :store "content-addressed kotoba Datom log (canonical substrate)"
+                         :leash "member-signed CACAO delegation, real Ed25519 verification, fail-closed"
+                         :email-channel-constraint "REPLY-ONLY (2026-07-12 founder directive, ADR-2607121830) -- actor-initiated cold outreach is structurally inexpressible in this channel's API; only the separate aggregate-publication channel can reach new contacts"
+                         :did-status-inconsistency "MATURITY.md's own header still says the DID is '(placeholder, not live-hosted)', but a later 2026-07-13 entry lists 'did:web live' among landed R2 items -- an unresolved inconsistency in the source itself"}
+   :com-google-ads-maturity {:tier "R0 design scaffold (2026-06-29, per its own README)"
+                              :created-and-pushed-same-timestamp true}
+   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc + com-google-ads/README.md (ADR-2606292130, G1-G9 gates) + recruit/CLAUDE.md + tomoshibi/MATURITY.md + tomoshibi commit history (gh api repos/etzhayyim/com-etzhayyim-tomoshibi/commits), orgs/etzhayyim/root/CLAUDE.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
 
 ;; ---------------------------------------------------------------------------
 ;; evaluate -- real SysML structure + explicitly-labeled Bass scenarios
@@ -200,6 +226,15 @@
        " (a job-posting aggregator, not adherent evangelism)\n"
        "- Attestation ledger writes: " (:attestation-ledger-writes observation) " (schema exists, never written)\n"
        "- Current adherents: " (:adherents observation) " (founder, non-organic)\n\n"
+       "## Actor maturity, verified by reading source (not just descriptions)\n\n"
+       "**tomoshibi** is far more mature than its GitHub description alone suggests: "
+       (get-in observation [:tomoshibi-maturity :tier]) ", " (get-in observation [:tomoshibi-maturity :tests])
+       ". Decision path: " (get-in observation [:tomoshibi-maturity :decision-path]) ". Store: "
+       (get-in observation [:tomoshibi-maturity :store]) ". Leash: " (get-in observation [:tomoshibi-maturity :leash])
+       ". **Real constraint this design must respect**: " (get-in observation [:tomoshibi-maturity :email-channel-constraint])
+       ". **Open inconsistency in the source itself**: " (get-in observation [:tomoshibi-maturity :did-status-inconsistency]) ".\n\n"
+       "**com-google-ads** stays at " (get-in observation [:com-google-ads-maturity :tier])
+       " -- created and pushed at the identical timestamp (a single scaffold commit, not iteratively developed since).\n\n"
        "## Structural model (real, validated)\n\n"
        (:structural-element-count evaluation) " real elements: EvangelistAgent -> EvangelismGate -> "
        "TargetPopulation, with 7 real Charter-cited requirements (autonomous-publication-by-default, "
