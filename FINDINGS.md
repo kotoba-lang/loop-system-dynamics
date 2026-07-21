@@ -121,6 +121,25 @@ examined closely -- a real domain expert found a real bug, was taken
 seriously, and got credited once it was fixed. Low external N does not mean
 low external signal quality when it does arrive.
 
+**But that doesn't generalize -- depth-checking the other 4 starred
+gftdcojp repos finds the opposite for issue/PR activity, while finding a
+different, real signal in the star data itself.** `ontology`, `effect-actor`,
+`bpmn-sdk-rs`, and `gftd` have zero human-authored issues or PRs between
+them -- every non-owner PR across all four is `dependabot[bot]` (automated
+dependency bumps). rs-jsonnet's He-Pin story does not repeat; it was a real
+exception, not the norm even within this one org. What the star data *does*
+show: `Daylyt247` (a real account, 239 public repos, 63 followers, active
+since 2018) independently starred **four separate** gftdcojp repos
+(`bpmn-engine-ts`, `effect-actor`, `bpmn-sdk-rs`, `gftd`) -- not a single
+click, a real person who has repeatedly explored the org over time. One of
+`effect-actor`'s two stargazers, `audionerd`, is also credibly identifiable
+as a real developer (Eric Skogen, prior founder role at Wonder Unit /
+Storyboarder, a known OSS storyboarding tool, per his own bio). So gftdcojp's
+real external interest is now known to come from at least 2 distinct real
+individuals (He-Pin, Daylyt247) rather than being an artifact of one
+lucky match -- while the depth of *engagement* (not just discovery) stays
+concentrated on the one repo where a real bug happened to exist.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 19 entries -- 2 added this cycle
