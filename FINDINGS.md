@@ -2558,6 +2558,52 @@ tracks 3600+ projects). Whether similar staleness exists broadly
 across the rest of the manifest remains a real, unchecked, much larger
 question this single cycle did not attempt to answer.
 
+## 36. The intervention this loop's own scoring has ranked #1 across nearly every cycle has an unstated prerequisite that doesn't yet exist -- verified directly, not assumed
+
+`:reframe-goal-paradigm` ("Lead with SBT governance / multigenerational
+objective function, not religious paradigm, in outward content") has
+been this repo's top-ranked intervention in essentially every cycle's
+`bin/run.cljs` output this whole session, including this one. That
+ranking has been repeated dozens of times without anyone (including
+this analysis, until now) checking whether the thing it asks to
+*reframe* -- existing outward content about etzhayyim's governance
+model -- actually exists to be reframed.
+
+It does not, checked directly against the live site rather than
+assumed. `https://etzhayyim.com/`'s own homepage text explicitly
+claims "its public identity, constitutional record, actor registry,
+donation policy, and live observation surfaces are rooted here" -- but
+none of the obvious candidate URLs for that constitutional record
+resolve to real content: `/charter`, `/about`, `/governance`,
+`/mission`, `/sbt`, `/.well-known/charter`, `/.well-known/charter.json`
+all return real `HTTP 404` (a genuine "no route configured" 404,
+distinct from this session's own earlier-found SPA-shell-fallback bug
+pattern). The `/organism` page (checked directly) is a liveness/
+system-graph visualization, not a Charter text. No dedicated,
+citable, human-readable governance/Charter page exists anywhere on the
+live public site.
+
+**This means the top-ranked intervention, as currently scored and
+recommended by this repo's own tooling, cannot actually be executed as
+stated.** "Reframe X in outward content" presupposes outward content
+about X already exists somewhere to reframe -- and it doesn't, at
+least not as a citable web page a real person or researcher could find
+and reference (it presumably exists only as markdown/EDN inside
+`orgs/etzhayyim/root`'s own repo, referenced constantly via "Charter
+Rider §2" citations throughout every actor's own manifest this session
+has read, but never surfaced publicly).
+
+**Deliberately not treated as "therefore, publish a Charter page" --
+that is a real content decision (what the page should actually say,
+how much of the internal Charter to surface publicly, in what
+language) this analysis has consistently declined to make
+unilaterally throughout this whole catalog (the aozora.app/isekai.
+network content decisions, wadachi's display-name trio, etc.).**
+Recorded instead as a precise, verified, actionable gap in this loop's
+own recommendation machinery: the #1-ranked intervention has a real
+missing prerequisite, worth knowing before acting on that ranking, not
+discovered until this cycle actually checked.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
