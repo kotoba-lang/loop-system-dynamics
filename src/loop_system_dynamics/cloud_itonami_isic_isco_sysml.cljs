@@ -178,11 +178,13 @@
    the two numbers that distinguish 'catching up' from 'stuck.'"
   [codes]
   (let [unregistered (remove :registered codes)
-        oldest-unreg-age (apply max (map :age-days unregistered))
-        older-repos (filter #(> (:age-days %) oldest-unreg-age) codes)]
+        ages (map :age-days unregistered)
+        oldest-unreg-age (when (seq ages) (apply max ages))
+        older-repos (when oldest-unreg-age
+                      (filter #(> (:age-days %) oldest-unreg-age) codes))]
     {:oldest-unregistered-age-days oldest-unreg-age
-     :codes-older-than-that (count older-repos)
-     :of-those-still-unregistered (count (remove :registered older-repos))
+     :codes-older-than-that (when older-repos (count older-repos))
+     :of-those-still-unregistered (when older-repos (count (remove :registered older-repos)))
      :age-buckets
      (->> codes
           (group-by #(int (Math/floor (:age-days %))))
@@ -263,11 +265,15 @@
                       (str "| " div " | " total " | " unregistered " |")))
          "\n\n## Backlog age — is this concentration permanent, or a pipeline lag?\n\n"
          (let [age (:backlog-age decision)]
-           (str "Every one of the " (:unregistered (:total reg)) " unregistered codes is <= "
-                (.toFixed (:oldest-unregistered-age-days age) 2) " days old (real GitHub "
-                "`created_at`, as of " (:as-of observation) "). Of the other "
-                (:codes-older-than-that age) " codes (everything older than that), "
-                (:of-those-still-unregistered age) " remain unregistered.\n\n"
+           (str (if (:oldest-unregistered-age-days age)
+                  (str "Every one of the " (:unregistered (:total reg)) " unregistered codes is <= "
+                       (.toFixed (:oldest-unregistered-age-days age) 2) " days old (real GitHub "
+                       "`created_at`, as of " (:as-of observation) "). Of the other "
+                       (:codes-older-than-that age) " codes (everything older than that), "
+                       (:of-those-still-unregistered age) " remain unregistered.\n\n")
+                  (str "Zero unregistered codes remain as of " (:as-of observation)
+                       " -- the backlog this section used to measure is closed, so there is no "
+                       "'oldest unregistered' age to report.\n\n"))
                 "| age (days since creation) | total | registered | unregistered |\n|---|---|---|---|\n"
                 (str/join "\n"
                           (for [[day {:keys [total registered unregistered]}] (:age-buckets age)]

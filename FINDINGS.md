@@ -771,6 +771,52 @@ annual compounding (`S0 * (1+r)^t`) -- the two diverge (10yr: 14.10 vs
 13.92 in this case) and a caller who wants "compound annually" specifically
 needs to say so, not assume a proportional-rate ODE gives it automatically.
 
+## 12. Per-code SysML model surfaced a real registration gap, concentrated by occupation/product class -- and the gap is now closed
+
+The category-level backlog/rate model in finding 10 could only see `isco`
+and `isic` as two lumps (124/797 and 31/797 unregistered respectively, one
+measured rate each). `loop-system-dynamics.cloud-itonami-isic-isco-sysml`
+went one level deeper, modeling all 797 individual cloud-itonami isic/isco
+repos as their own SysML v2 `PartUsage`s, each with a real per-code
+`RegisteredInWorkspace` `RequirementUsage` traced against
+`com-junkawasaki/root manifest/west.yml`. `decide` then derived a third
+layer straight from each code's own real `:code` field: WHERE the 155
+unregistered repos concentrated. The concentration was not a random
+residual -- it tracked occupation/product class almost exactly: ISCO-08
+white-collar major groups (Managers/Professionals/Technicians/Clerical, 1/2/
+4) were already 100% registered while manual-labor groups carried nearly
+all of the gap (Craft 7: 58/66 = 88% unregistered; Plant-operator 8: 29/40 =
+73%; Elementary 9: 15/25 = 60%); ISIC's much smaller gap concentrated
+hardest in division 47 (specialized-store retail sub-categories, 18/25
+unregistered) rather than spreading thin across ~80 divisions. A real
+`backlog-age` check (each code's real GitHub `created_at`) confirmed this
+was a registration-PIPELINE LAG, not a permanent structural exclusion: every
+unregistered code was recently created, and every code older than the
+oldest unregistered one was already registered with zero exceptions.
+
+Before closing it, this cycle checked the gap wasn't a documented
+DELIBERATE non-registration: `90-docs/adr/2607100*-cloud-itonami-*-
+blueprint.edn` (~35 ADRs, `com-junkawasaki/root`) record that a disjoint set
+of blueprint-only stub repos (README/docs/LICENSE only, no `src/`/`test/`)
+are intentionally left unregistered pending an `:implemented` promotion
+pass. None of the 155 codes in this backlog overlapped that set, and every
+one of them had real, non-empty `src/`/`test/` content (28/155 explicitly
+declared `:itonami.blueprint/maturity :implemented`) -- confirming this was
+a genuine registration gap, not a policy the loop was about to violate.
+
+153 of the 155 (2 turned out to already be registered under role-suffix
+names -- see the regression test below) were registered into
+`manifest/west.yml` via `gen-west-manifest.cljs --entry` (minimal diff,
+GitHub-API pin verification, server-side merge --
+`com-junkawasaki/root@863f58c4`), and this repo's own seed re-checked
+against the new west.yml and re-run: 0/797 unregistered, concentration
+tables now empty, `backlog-age`'s "oldest unregistered" now genuinely
+undefined (fixed a real `apply max` on an empty-seq crash this exposed --
+the loop had never previously observed its own backlog reach zero). This is
+the first finding in this catalog that the loop's own `act` step -- not
+just its `observe`/`decide` -- changed: the registration gap it measured is
+gone because this cycle closed it, not because it was re-measured smaller.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
