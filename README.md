@@ -189,6 +189,17 @@ the category-level backlog/rate could show this -- it only exists at the
 per-code structural level, which is exactly what SysML v2's Definition/
 Usage/RequirementUsage traceability is for.
 
+`decide` also derives a third layer straight from each code's own real
+`:code` field -- WHERE the 155 unregistered repos actually concentrate,
+by ISCO-08 major group (all 10 shown) and ISIC division (only the ones
+with a real unregistered repo). This is not a random residual: ISCO's gap
+is almost entirely in manual-labor major groups (Craft 7: 58/66 = 88%
+unregistered; Plant-operator 8: 29/40 = 73%; Elementary 9: 15/25 = 60%),
+while white-collar groups (Managers/Professionals/Technicians/Clerical,
+1/2/4) are already 100% registered; ISIC's much smaller gap concentrates
+hardest in division 47 (specialized-store retail sub-categories, 18/25
+unregistered) rather than spreading thin across ~80 divisions.
+
 ## A different real model SHAPE (proportional decline, not additive accumulation)
 
 ```bash

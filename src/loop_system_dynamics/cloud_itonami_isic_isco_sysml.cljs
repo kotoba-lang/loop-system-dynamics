@@ -61,6 +61,22 @@
    declaration, not merely the presence of some text near the word ISIC."
   #{:rev4 :rev5})
 
+(def isco-major-group-title
+  "ISCO-08's own 10 major-group titles (ILO/ISCO-08 standard, official and
+   canonical -- NOT scraped from any cloud-itonami repo's own text, unlike
+   every other label in this namespace; cited here purely to make the major-
+   group DIGIT already present in each code's real :code field readable)."
+  {"0" "Armed Forces Occupations"
+   "1" "Managers"
+   "2" "Professionals"
+   "3" "Technicians and Associate Professionals"
+   "4" "Clerical Support Workers"
+   "5" "Service and Sales Workers"
+   "6" "Skilled Agricultural, Forestry and Fishery Workers"
+   "7" "Craft and Related Trades Workers"
+   "8" "Plant and Machine Operators, and Assemblers"
+   "9" "Elementary Occupations"})
+
 (defn build-model
   [{:keys [codes]}]
   (let [members (map (fn [{:keys [repo]}] {:name repo}) codes)
@@ -101,12 +117,38 @@
 ;; decide
 ;; ---------------------------------------------------------------------------
 
+(defn- reg-stats [cs] {:total (count cs)
+                        :registered (count (filter :registered cs))
+                        :unregistered (count (remove :registered cs))})
+
+(defn isco-major-group-backlog
+  "Where ISCO's unregistered backlog concentrates, by ISCO-08 major group
+   (the real first digit of each code's real :code) -- a real, derivable-
+   from-the-seed breakdown, not a guess. All 10 groups are shown (there are
+   only 10; none are noise)."
+  [isco-codes]
+  (->> isco-codes
+       (group-by #(subs (:code %) 0 1))
+       (map (fn [[digit cs]]
+              [digit (assoc (reg-stats cs) :title (isco-major-group-title digit))]))
+       (into (sorted-map))))
+
+(defn isic-division-backlog
+  "Where ISIC's unregistered backlog concentrates, by 2-digit division (the
+   real first 2 chars of each code's real :code) -- only divisions with at
+   least 1 unregistered repo are shown (most ISIC divisions are already
+   fully registered; showing all ~80 would bury the real concentration in
+   noise the same way a category-level rollup does)."
+  [isic-codes]
+  (->> isic-codes
+       (group-by #(subs (:code %) 0 2))
+       (map (fn [[div cs]] [div (reg-stats cs)]))
+       (filter (fn [[_ stats]] (pos? (:unregistered stats))))
+       (into (sorted-map))))
+
 (defn decide
   [{:keys [codes]}]
   (let [by-cat (group-by :category codes)
-        reg-stats (fn [cs] {:total (count cs)
-                             :registered (count (filter :registered cs))
-                             :unregistered (count (remove :registered cs))})
         isic (get by-cat :isic [])
         isco (get by-cat :isco [])
         rev-stats (frequencies (map :revision-tag isic))]
@@ -119,7 +161,10 @@
       :breakdown rev-stats}
      :unregistered-samples
      {:isic (->> isic (remove :registered) (take 5) (map (juxt :repo :label)))
-      :isco (->> isco (remove :registered) (take 5) (map (juxt :repo :label)))}}))
+      :isco (->> isco (remove :registered) (take 5) (map (juxt :repo :label)))}
+     :backlog-concentration
+     {:isco-by-major-group (isco-major-group-backlog isco)
+      :isic-by-division (isic-division-backlog isic)}}))
 
 ;; ---------------------------------------------------------------------------
 ;; act
@@ -154,7 +199,24 @@
          "| undeclared | " (:undeclared rev) " | " (.toFixed (* 100 (/ (:undeclared rev) (:total rev))) 1) "% |\n"
          "| mislabeled (borrows ISCO's \"-08\" convention) | " (:mislabeled rev) " | "
          (.toFixed (* 100 (/ (:mislabeled rev) (:total rev))) 1) "% |\n\n"
-         "## Reads\n\n"
+         "## Backlog concentration — where the unregistered repos actually cluster\n\n"
+         "The 155 unregistered codes are not evenly spread across either classification's own "
+         "structure. Real per-ISCO-08-major-group split (group digit is the code's own real first "
+         "digit; group TITLE is the public ISCO-08 standard's own title, not scraped from any repo):\n\n"
+         "| ISCO-08 major group | title | total | unregistered | share |\n|---|---|---|---|---|\n"
+         (str/join "\n"
+                    (for [[digit {:keys [title total unregistered]}]
+                          (get-in decision [:backlog-concentration :isco-by-major-group])]
+                      (str "| " digit " | " title " | " total " | " unregistered " | "
+                           (.toFixed (* 100 (/ unregistered total)) 0) "% |")))
+         "\n\nReal per-ISIC-division split (division with ≥1 unregistered repo only; ~80 fully-"
+         "registered divisions are omitted, same reasoning as any coarser rollup would apply):\n\n"
+         "| ISIC division | total | unregistered |\n|---|---|---|\n"
+         (str/join "\n"
+                    (for [[div {:keys [total unregistered]}]
+                          (get-in decision [:backlog-concentration :isic-by-division])]
+                      (str "| " div " | " total " | " unregistered " |")))
+         "\n\n## Reads\n\n"
          "Individual-code SysML modeling surfaces two DIFFERENT compliance stories that a "
          "category-level count (`resources/entities-seed.edn`'s `:cloud-itonami` entity) or a "
          "category-level rate (`cloud_itonami_xmile.cljs`'s Backlog_isic/Backlog_isco) cannot "
@@ -162,7 +224,14 @@
          "individually traceable, not just a count), and (2) a genuinely different requirement -- "
          "internal labeling consistency -- where isco is uniform (340/340 declare \"ISCO-08\") but "
          "isic is not (only " (:correctly-declared rev) "/" (:total rev) " correctly declare which "
-         "revision they blueprint), a finding invisible to any of this loop's prior, coarser lenses.\n")))
+         "revision they blueprint), a finding invisible to any of this loop's prior, coarser lenses. "
+         "(3) The backlog concentration above is a third layer no coarser lens shows at all: ISCO's "
+         "unregistered repos are not spread evenly across occupation groups -- white-collar groups "
+         "(Managers/Professionals/Technicians/Clerical, groups 1-4) are essentially fully registered, "
+         "while manual/blue-collar groups (Craft/Plant-operator/Elementary, groups 7-9) carry most of "
+         "the real gap. ISIC's much smaller unregistered set concentrates hardest in division 47 "
+         "(specialized-store retail sub-categories) rather than being spread thin -- both are real, "
+         "checkable structural patterns, not a random residual.\n")))
 
 (defn act!
   [observation evaluation decision report-path]
@@ -179,7 +248,8 @@
   (ensure-dir! ledger-path)
   (let [entry (pr-str {:event/as-of (:as-of observation)
                         :event/registration (:registration decision)
-                        :event/revision-declaration (dissoc (:revision-declaration decision) :breakdown)})]
+                        :event/revision-declaration (dissoc (:revision-declaration decision) :breakdown)
+                        :event/backlog-concentration (:backlog-concentration decision)})]
     (fs/appendFileSync ledger-path (str entry "\n"))
     entry))
 
