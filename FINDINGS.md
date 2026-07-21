@@ -200,6 +200,42 @@ a real, on-topic meta description) -- the bug is fully confined to the
 discoverability-file chain. A concrete, fixable infrastructure bug, not a
 content or traction problem.
 
+## 1d. Fixed and deployed -- the first finding in this catalog where the loop caused a real change, not just measured one
+
+The owner asked directly whether cycles were making fixes, not just
+analysis, and to advance the fix via a subagent. This cycle did: a fresh
+(non-fork), worktree-isolated subagent found the actual underlying
+mechanism (not visible from `curl` alone) -- `/robots.txt`, `/sitemap.xml`,
+and the 2 referenced sitemap files had NO owned route in the
+`etzhayyim-did-web` Cloudflare Worker's router, so every request to them
+fell through to the router's default reverse-proxy branch, which forwards
+to the retired YORO app via an `env.YORO` service binding. etzhayyim.com
+was transparently *proxying* YORO's leftover discovery files, not serving
+its own stale copies.
+
+The fix added the 4 paths as owned static routes serving etzhayyim.com's
+own real content (a correct `robots.txt`; a `sitemap.xml` index over 2 real
+sub-sitemaps; a `static.xml` listing the 8 real top-level pages the router
+actually owns; an `actors/index.xml` pointing at the real `/actors` browse
+page rather than fabricating an exhaustive per-actor sitemap). Landed via
+`orgs/etzhayyim/root` PR #3305 (squash-merged), following that repo's own
+worktree-isolation and PR-only-to-main conventions -- verified before
+deploy (clean build, 11/11 router tests, black-box smoke tests, 122/127
+passing on the wider suite with the 5 failures confirmed pre-existing and
+unrelated), deployed via `wrangler deploy`, and then **independently
+re-verified live with a fresh `curl`** from this analysis after the fixing
+agent's own report, not merely trusting its self-report -- confirmed zero
+`yoro` references remain anywhere in the responses.
+
+This is the first finding in this catalog's etzhayyim-specific work where
+the loop's own action changed the state of the world, not just measured or
+designed against it (the closest prior precedent is cloud-itonami's
+backlog-registration closure, finding #12). What is explicitly NOT yet
+known: whether this changes search-engine indexing behavior or downstream
+F2 conversion -- re-crawl/re-index takes real time this analysis cannot
+fast-forward, and is recorded as a genuinely open future-observation item,
+not claimed as resolved by shipping the fix alone.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 19 entries -- 2 added this cycle
