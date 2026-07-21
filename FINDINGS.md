@@ -1304,6 +1304,55 @@ underlying organizations, funded by an inter-organizational tax rather than
 individual dues. Exactly the shape `labor-union-dues-organizing` was added
 to represent -- it now has its first real number behind it.
 
+## 18. The DID subdomain fix, closed out: the originally-measured 102 are now 100% fixed live -- but the fix's own investigation found the real bug was bigger than what finding 16 had measured
+
+The second follow-up subagent (dispatched to fix the 89-of-102 handles
+static-file-shadowed past the first fix) finished. Its own report was
+precise about scope, not rounded: it fixed the cljs generator (a 3rd
+occurrence of the same bug, `scripts/publish-actor-records.cljs`), then
+used a verified byte-identical-roundtrip transform (not a blind
+regenerate-and-overwrite, which it tested and rejected after confirming
+regeneration would silently reintroduce an unrelated, already-fixed
+`pds.etzhayyim.com` -> `pds.aozora.app` correction from a separate prior
+commit) to patch static files -- 170 total, not 89, because an exhaustive
+sweep of `public/actor/*/did.json` found 231 files with the bug, not the
+89 originally identified. Landed via PR #3307, deployed (Version ID
+`8a1ba515-a7dd-4157-be29-d121f178e6dc`).
+
+Independently re-verified, not just re-reading its report: re-ran the same
+fetch-and-check script against **all 102 originally-measured handles** from
+finding 16 -- **102/102 now fixed, 0 still broken.** The specific,
+quantified claim this catalog made in finding 16 is now fully closed by a
+direct re-measurement, not by trusting either subagent's self-report.
+
+**But the real scope was larger than what finding 16 measured, and that
+remainder is still open, not silently absorbed into "done":** the
+exhaustive sweep found 148 `toritsugi-<jurisdiction>-*` sub-actor DID
+documents (per-country/per-registry identity-verification actors, e.g.
+`toritsugi-ae-federal`, `toritsugi-aus-passport`) carrying the identical
+false claim, live, right now -- independently confirmed via direct curl
+against 3 sampled handles, and the exact count (148) independently
+cross-checked against the real file listing via
+`gh api repos/etzhayyim/root/contents/.../public/actor` (not just quoted
+from the subagent). These were deliberately left unfixed: the same
+byte-identical-roundtrip safety precondition that made the other 170 safe
+to patch mechanically does not hold for these files, and the subagent
+correctly declined to accept the resulting unrelated formatting churn
+rather than force a wider diff than the verified-safe method allowed. 2
+separate corrupted-handle directories (malformed `did:web` ids, traced to
+a pre-existing bad handle string already in the seed data, a distinct
+pre-existing bug) were also left untouched.
+
+Net picture for this whole 3-part thread (16 -> 16b -> 18): a systemic,
+100%-consistent false identity claim was found across the full named-actor
+roster; a first fix correctly changed the code but only reached 13% of
+live documents due to an unanticipated static-asset shadow layer; a second
+fix closed that specific gap completely (102/102) and, in the course of
+doing so rigorously, discovered the true blast radius was substantially
+larger (148 more affected documents in a part of the roster finding 16
+never enumerated) -- which is now the accurately-scoped remaining open
+item, not a new surprise regression.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
