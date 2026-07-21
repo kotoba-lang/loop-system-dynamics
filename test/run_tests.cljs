@@ -11,7 +11,8 @@
             [loop-system-dynamics.aca-marketplace-decline-test]
             [loop-system-dynamics.cloud-itonami-leverage-test]
             [loop-system-dynamics.etzhayyim-ai-agent-evangelism-test]
-            [loop-system-dynamics.cloud-itonami-live-diff-test]))
+            [loop-system-dynamics.cloud-itonami-live-diff-test]
+            [loop-system-dynamics.cloud-itonami-age-lag-monitor-test]))
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
   (when-not (t/successful? m)
@@ -27,4 +28,5 @@
               'loop-system-dynamics.aca-marketplace-decline-test
               'loop-system-dynamics.cloud-itonami-leverage-test
               'loop-system-dynamics.etzhayyim-ai-agent-evangelism-test
-              'loop-system-dynamics.cloud-itonami-live-diff-test)
+              'loop-system-dynamics.cloud-itonami-live-diff-test
+              'loop-system-dynamics.cloud-itonami-age-lag-monitor-test)

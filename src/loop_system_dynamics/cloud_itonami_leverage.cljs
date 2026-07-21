@@ -94,8 +94,9 @@
 
    {:id :automate-age-lag-monitor
     :band :band/C :tractability 0.6
+    :status :landed
     :label "Turn cloud_itonami_isic_isco_sysml.cljs's backlog-age check into a recurring, alerting feedback loop (flag any code whose age exceeds the fleet's own typical registration lag and is still unregistered)"
-    :rationale "backlog-age's own finding (every unregistered code was <= 4.53 days old, zero exceptions either direction) is a real, useful invariant -- but it was checked ONCE, by hand, this cycle. Automating it creates a genuinely NEW balancing feedback loop (detect anomaly -> surface alert -> prompt registration) that would catch a FUTURE real stall (not just this cycle's lag) automatically -- band C (feedback loop strength/gain), the loop does not exist yet at all."}
+    :rationale "LANDED 2026-07-21: cloud_itonami_age_lag_monitor.cljs turns backlog-age's one-off finding (every unregistered code was <= 4.53 days old, zero exceptions either direction) into a real, re-runnable, CI/cron-schedulable check (nonzero exit on a real stall). Deliberately NOT a fixed day-threshold -- self-referential instead: a code is flagged only if unregistered AND older than the youngest currently-registered code, which can distinguish 'the whole pipeline slowed down' from 'this specific code was skipped' where a fixed threshold cannot. First real run: 0 stalls, youngest registered code 1.70 days old. Band C (feedback loop strength/gain) -- the loop did not exist at all before this cycle, and now genuinely does, even though 'on a schedule' still needs external cron infra (same caveat as wire-live-observe)."}
 
    {:id :standardize-maturity-declaration
     :band :band/B :tractability 0.75
