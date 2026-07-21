@@ -322,15 +322,42 @@ doctrine -- etzhayyim actors publish autonomously by default, gated by a
 real, tested content scanner (`evangelism_gate.cljc`, Charter §1.16(a)-(d))
 rather than pre-approved, with a revocable per-actor off-switch (the CACAO
 leash). Of 613 real `com-etzhayyim-*` actors (`gh api orgs/etzhayyim/repos`,
-2026-07-21), exactly 1 -- `com-etzhayyim-tomoshibi` (灯) -- is confirmed
-evangelism-scoped; an attestation-ledger schema exists but has zero real
-writes. This namespace builds the real SysML v2 structure of that
-architecture (`EvangelistAgent -> EvangelismGate -> TargetPopulation`, 6
-real Charter-cited `RequirementUsage`s, all satisfied and valid) and, for
-the DYNAMICS, uses `dynamics.xmile/bass-diffusion-model` (Frank Bass's 1969
-diffusion model, a third real XMILE model shape alongside additive-inflow
-and proportional-decay) under explicitly-labeled illustrative SCENARIOS --
-never fabricated as measured, since the loop has never fired.
+2026-07-21), **2 are confirmed evangelism-scoped, verified by reading their
+actual source, not just their GitHub descriptions** (a 3rd candidate,
+`recruit`, was checked and ruled out -- it's a job-posting aggregator,
+unrelated to adherent evangelism):
+
+- **`com-etzhayyim-tomoshibi` (灯)**: autonomous publication (種をまく, no
+  per-post approval). Far more mature than a name alone suggests -- R3
+  iteration 8-A (2026-07-13), a real `langgraph-clj` StateGraph as its
+  default decision path (58 tests / 228 assertions), a content-addressed
+  kotoba Datom log store, a member-signed CACAO leash with real Ed25519
+  verification. **Real hard constraint**: its email channel is explicitly
+  REPLY-ONLY (2026-07-12 founder directive, `ADR-2607121830`) -- cold
+  outreach is structurally inexpressible in that channel's API; only the
+  separate aggregate-publication channel can reach new contacts. Its own
+  `MATURITY.md` has an unresolved internal inconsistency (DID called both
+  "placeholder, not live-hosted" and, later, "live" -- not settled by the
+  repo alone).
+- **`com-etzhayyim-com-google-ads` (広)**: paid/performance-marketing
+  outreach, still genuinely at R0 (created and pushed at the identical
+  timestamp, never iterated since). Structurally the OPPOSITE governance
+  shape from tomoshibi: a 9-gate architecture (G1-G9) where G1 requires a
+  human finance-DID to sign off before any campaign/spend/creative is
+  published -- this workspace's evangelism actors do not share one
+  autonomy model.
+
+An attestation-ledger schema exists but has zero real writes. This
+namespace builds the real SysML v2 structure of the architecture
+(`EvangelistAgent -> EvangelismGate -> TargetPopulation`, 7 real
+Charter-cited `RequirementUsage`s including both actors' distinct
+governance gates, all satisfied and valid) and, for the DYNAMICS, uses
+`dynamics.xmile/bass-diffusion-model` (Frank Bass's 1969 diffusion model, a
+third real XMILE model shape alongside additive-inflow and proportional-
+decay) under explicitly-labeled illustrative SCENARIOS -- never fabricated
+as measured, since the loop has never fired, and explicitly scoped to
+tomoshibi's aggregate-publication channel only (never its reply-only email,
+which cannot contribute to external reach at all).
 
 **A real modeling bug was caught and fixed while building this**: an early
 draft used the real F2 upper-bound (~0.000178, a per-VISIT probability) as

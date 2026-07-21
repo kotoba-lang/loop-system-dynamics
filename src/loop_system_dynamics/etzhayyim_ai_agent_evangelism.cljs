@@ -146,22 +146,33 @@
    its own assumption so a reader never mistakes a scenario output for a
    real prediction.
 
-   :status-quo-p-only  -- only tomoshibi publishes; q=0 (no agent-to-agent
-     or word-of-mouth channel exists yet, matching what's actually built).
-     p is a small illustrative round number, deliberately NOT derived from
-     F2 (different units, see above).
+   IMPORTANT for a future reader: `p` in every scenario below represents
+   ONLY tomoshibi's aggregate/public-posting channel (the original R0
+   evangelism-gate-governed path) -- NEVER its email channel, which is
+   real but structurally REPLY-ONLY (see namespace docstring) and by
+   constitutional design cannot reach a non-adopter at all, so it
+   contributes nothing to `p`. Do not read 'tomoshibi publishes' below as
+   'everything tomoshibi does counts toward p'.
+
+   :status-quo-p-only  -- only tomoshibi's aggregate-publication channel
+     is active; q=0 (no agent-to-agent or word-of-mouth channel exists
+     yet, matching what's actually built). p is a small illustrative round
+     number, deliberately NOT derived from F2 (different units, see above).
    :larger-fleet-p-only -- same q=0, p scaled 10x AS AN ILLUSTRATIVE
      fleet-participation assumption (not derived from the real 613 actor
      count via any defensible scaling law -- linear scaling in actor count
      is itself an assumption; more actors could plausibly dilute reach
-     into the same finite population rather than multiply it).
+     into the same finite population rather than multiply it; and any
+     newly-active actor's channel would need its own real capability audit
+     before assuming it contributes to p at all -- see the tomoshibi
+     reply-only finding above for why that check matters).
    :agent-to-agent-emerges -- status-quo's same p, PLUS a small illustrative
      nonzero q representing a hypothetical future agent-to-agent or
      evangelized-adherent-to-new-contact channel (not built; the point of
      this scenario is showing what building it would structurally change,
      not claiming it exists)."
-  {:status-quo-p-only {:p 0.0005 :q 0.0 :label "tomoshibi only, no internal-influence channel (matches what's built today) -- illustrative p, not derived from F2"}
-   :larger-fleet-p-only {:p 0.005 :q 0.0 :label "SCENARIO: fleet-participation assumption, p scaled 10x (an illustrative assumption, not derived from the real 613-actor count)"}
+  {:status-quo-p-only {:p 0.0005 :q 0.0 :label "tomoshibi's aggregate-publication channel only (NOT its reply-only email channel, which cannot contribute to p at all), no internal-influence channel -- illustrative p, not derived from F2"}
+   :larger-fleet-p-only {:p 0.005 :q 0.0 :label "SCENARIO: fleet-participation assumption, p scaled 10x (an illustrative assumption, not derived from the real 613-actor count, and not accounting for any per-actor channel constraints like tomoshibi's reply-only email)"}
    :agent-to-agent-emerges {:p 0.0005 :q 0.05 :label "SCENARIO: status-quo p, plus a small illustrative q=0.05 agent-to-agent/adherent-to-contact channel (not built)"}})
 
 (defn evaluate
