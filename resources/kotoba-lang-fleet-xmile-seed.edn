@@ -1,0 +1,59 @@
+;; Real, dated, git-verified input facts for kotoba-lang's GitHub-repo ->
+;; com-junkawasaki/root manifest/west.yml registration pipeline, per
+;; name-prefix category, modeled as an XMILE (OASIS 1.0) stock-flow system
+;; via kotoba-lang/org-oasis-open-xmile. Same shape as
+;; resources/cloud-itonami-fleet-xmile-seed.edn -- see
+;; src/loop_system_dynamics/kotoba_lang_xmile.cljs (a thin wrapper over
+;; loop_system_dynamics/fleet_registration_xmile.cljs, the generic core
+;; this, cloud-itonami's, and etzhayyim-actors' own models all now share).
+;;
+;; Categories -- `gh api orgs/kotoba-lang/repos --paginate .name` grouped by
+;; the first token before `-`: `com` (vendor-integration spec repos, the
+;; 63.6%-of-org-count finding entities-seed.edn's kotoba-lang note already
+;; recorded), `kami` (kami-engine 3D stack), `org` (external
+;; standard/spec-adapter repos, e.g. org-omg-sysmlv2, org-oasis-open-xmile
+;; itself), `kotoba`/`kotobase`/`kotodama` (core substrate), and `other`
+;; (the long tail of ~370 repos with no single prefix large enough to be
+;; its own category -- kept as ONE bucket rather than split further, same
+;; reasoning as cloud-itonami's own residual-exclusion note: a guessed
+;; sub-split would invent structure the data doesn't cleanly have).
+;;
+;; Backlog_<cat> (stock) = github-total - west-registered-t1.
+;; Reg_<cat> rate (flow, repos/day) = (west-registered-t1 - west-registered-t0)
+;;   / days -- a REAL observed average over a REAL dated window, not a guess.
+{:as-of "2026-07-21"
+
+ :window
+ {:t0 "2026-07-19T12:48:56+09:00"
+  :t0-source "com-junkawasaki/root git commit 6765878ea38f601bb8d1c448b7d5fd01a2685ebd (oldest commit in local shallow clone history at observation time), manifest/west.yml as of that commit"
+  :t1 "2026-07-21T12:47:41+09:00"
+  :t1-source "com-junkawasaki/root git commit d912e386e52a064cdf8f7e58777f6425b0297662 (HEAD at observation time), manifest/west.yml"
+  :days 1.9991
+  :note "same window as cloud-itonami-fleet-xmile-seed.edn's re-observation and etzhayyim-actors-fleet-xmile-seed.edn (all three built from the same pair of manifest/west.yml snapshots for a consistent, comparable rate basis). kotoba-lang org's total repo count grew by exactly 1 between the live GitHub-API refresh earlier this session (1650, loop-system-dynamics.core/refresh-from-github-api) and this file's own `gh api orgs/kotoba-lang/repos --paginate` full listing (also 1650) -- effectively unchanged, so west-registered's movement in the window is genuine catch-up registration, not new repo creation diluting the count."}
+
+ ;; :github-total -- `gh api orgs/kotoba-lang/repos --paginate --jq '.[].name'`,
+ ;;   grouped by first token before `-` (com/kami/org/kotoba/kotobase/
+ ;;   kotodama; everything else -> other), run 2026-07-21.
+ ;; :west-registered-t0/:west-registered-t1 -- exact-basename match against
+ ;;   `path: orgs/kotoba-lang/<repo>` in manifest/west.yml, counted at the
+ ;;   two commits above, then grouped by the same rule.
+ :categories
+ [{:id :com      :github-total 1049 :west-registered-t0 1048 :west-registered-t1 1048}
+  {:id :other    :github-total 379  :west-registered-t0 355  :west-registered-t1 366}
+  {:id :kami     :github-total 97   :west-registered-t0 84   :west-registered-t1 89}
+  {:id :org      :github-total 85   :west-registered-t0 84   :west-registered-t1 84}
+  {:id :kotoba   :github-total 25   :west-registered-t0 21   :west-registered-t1 22}
+  {:id :kotobase :github-total 10   :west-registered-t0 8    :west-registered-t1 9}
+  {:id :kotodama :github-total 5    :west-registered-t0 5    :west-registered-t1 5}]
+
+ :reconciliation-note
+ "Category totals sum to exactly 1650/1650 github-total and 1623/1623
+  west-registered (per manifest/west.yml at t1) -- no residual, unlike
+  cloud-itonami's 2-repo meta-repo exclusion, because the 7 categories here
+  (com/other/kami/org/kotoba/kotobase/kotodama) already partition the ENTIRE
+  org rather than tracking a curated subset of named classification
+  prefixes. `com` (1 backlog, rate 0) and `org` (1 backlog, rate 0) are
+  this org's own stalled categories -- structurally the same finding as
+  cloud-itonami's isco/iso before their same-day closure (see FINDINGS.md
+  finding 12), but at a scale 2-3 orders of magnitude smaller (1-13 repos
+  per category here vs. 28-124 there)."}

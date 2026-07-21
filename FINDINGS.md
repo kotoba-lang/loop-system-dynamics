@@ -864,6 +864,53 @@ directive implies, a real agent-to-agent or adherent-to-contact
 propagation channel has to be deliberately built -- publishing more
 content through more actors alone will not produce it.
 
+## 14. The same stock-flow pattern, applied to 2 more entities: three genuinely different real registration-backlog shapes
+
+Finding 10's XMILE stock-flow model (`Backlog_<cat>` drained by
+`Reg_<cat> = MIN(observed-rate, Backlog_<cat> / DT)`) had only ever been
+built for cloud-itonami. Its mechanical core (model-building, simulation,
+depletion/stalled classification, report rendering, ledger append) turned
+out to be fully entity-agnostic already -- nothing in it referenced
+cloud-itonami by name except docstrings and one hardcoded prose paragraph.
+Extracting it to `loop_system_dynamics/fleet_registration_xmile.cljs` and
+re-pointing it at two more real GitHub orgs (com-junkawasaki/root's own
+concurrent registration activity made this timely: etzhayyim-actors and
+kotoba-lang both have the same GitHub-total-vs-west-registered shape
+`entities-seed.edn` already flagged) surfaced three structurally different
+real findings, not one repeated pattern:
+
+- **cloud-itonami (re-observed)**: the prior stalled isco (124 backlog,
+  0/day) and isic categories both closed to 0 within the new ~2-day
+  observation window -- caught mid-flight, because finding 12's per-code
+  registration pass (153 repos, `com-junkawasaki/root@863f58c4`) landed
+  inside that window. Zero categories are stalled now; `iso` (iso3166
+  country codes, 6 backlog) is this org's largest remaining active
+  category and untouched by that closure work.
+- **etzhayyim-actors** (613 `com-etzhayyim-*` repos, modeled as ONE
+  category -- the name structure doesn't support a real multi-category
+  split the way cloud-itonami's isic/isco/iso does, see the seed file):
+  67 backlog, ~178.6/day observed rate. NOT stalled -- west-registered
+  moved 189 -> 546 inside the same 2-day window, reading as a single large
+  batch-registration event already mid-completion, not a
+  structural/prioritization gap the way cloud-itonami's isco was.
+- **kotoba-lang** (1650 repos split into com/kami/org/kotoba/kotobase/
+  kotodama/other -- the org's real prefix structure, partitioning the
+  whole org with zero residual, unlike cloud-itonami's 2-repo meta-repo
+  exclusion): only 27/1650 (1.6%) unregistered. `com` (63.6% of the org)
+  and `org` are this org's own stalled categories (nonzero backlog, zero
+  observed rate) -- structurally the SAME pattern as cloud-itonami's prior
+  isco/iso, but at 1-repo scale, not 28-124-repo scale.
+
+Read together: concentrated-and-was-stalled, large-and-actively-draining,
+small-and-distributed are three real, different shapes a single "apply the
+model to entity X" instruction could have flattened into one story if the
+work had stopped after finding one interesting result and generalized from
+it. Real per-entity measurement, not the pattern-matching intuition that
+"registration backlogs probably all look like cloud-itonami's did," is what
+told them apart -- the same discipline finding 10's shape-matters lesson
+(model SHAPE, not just model existence) already established, now applied
+across entities instead of within one.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

@@ -8,28 +8,40 @@
 ;;   exist on GitHub but are not yet in com-junkawasaki/root's manifest/west.yml).
 ;; Reg_<cat> rate (flow, repos/day) = (west-registered-t1 - west-registered-t0)
 ;;   / days -- a REAL observed average over a REAL dated window, not a guess.
-;;   A category with zero registration events in the window (isco, iso,
-;;   unspsc, cofog, gtin, regulatory, partners, jsic, hygiene) gets rate 0 --
-;;   a measured zero, per dynamics.core's no-fabrication convention (never
-;;   defaulted, always explicitly checked against both snapshots).
+;;   A category with zero registration events in the window (unspsc, cofog,
+;;   gtin, regulatory, jsic, hygiene) gets rate 0 -- a measured zero, per
+;;   dynamics.core's no-fabrication convention (never defaulted, always
+;;   explicitly checked against both snapshots).
+;;
+;; RE-OBSERVED 2026-07-21 (same day, later window): the prior observation's
+;; isic (28 backlog) and isco (124 backlog) both closed to 0 WITHIN this new
+;; window -- loop-system-dynamics.cloud-itonami-isic-isco-sysml's same-day
+;; per-code registration pass (153 repos, com-junkawasaki/root@863f58c4)
+;; landed between the old t1 (2026-07-21T10:42:32) and this file's new t1.
+;; This is not a coincidence the model discovered; it is a real intervention
+;; this session performed, then re-measured -- see FINDINGS.md finding 12.
 {:as-of "2026-07-21"
 
  :window
- {:t0 "2026-07-19T21:02:53+09:00"
-  :t0-source "com-junkawasaki/root git commit fc6c7ec3bfb7d3026fd23f7ccc799bfa711f4fb8 (oldest commit in local shallow clone history at observation time), manifest/west.yml as of that commit"
-  :t1 "2026-07-21T10:42:32+09:00"
-  :t1-source "com-junkawasaki/root git commit 46e9386d420 (HEAD at observation time), manifest/west.yml"
-  :days 1.5692
-  :note "window is bounded by local shallow-clone depth (237 commits), not by when registration activity actually started -- a wider window would need `git fetch --deepen` per com-junkawasaki/root CLAUDE.md's targeted-depth guidance. Org-wide GitHub repo total was independently re-confirmed unchanged (1331) at both 2026-07-20 (entities-seed.edn) and 2026-07-21 (this file's own `gh api` call), so all of `west-registered`'s movement in the window is genuine catch-up registration, not new repo creation diluting the count."}
+ {:t0 "2026-07-19T12:48:56+09:00"
+  :t0-source "com-junkawasaki/root git commit 6765878ea38f601bb8d1c448b7d5fd01a2685ebd (oldest commit in local shallow clone history at observation time), manifest/west.yml as of that commit"
+  :t1 "2026-07-21T12:47:41+09:00"
+  :t1-source "com-junkawasaki/root git commit d912e386e52a064cdf8f7e58777f6425b0297662 (HEAD at observation time), manifest/west.yml"
+  :days 1.9991
+  :note "window is bounded by local shallow-clone depth, not by when registration activity actually started -- a wider window would need `git fetch --deepen` per com-junkawasaki/root CLAUDE.md's targeted-depth guidance. Org-wide GitHub repo total was independently re-confirmed unchanged (1331) across all three 2026-07-2{0,1} observations of this org, so all of `west-registered`'s movement in the window is genuine catch-up registration, not new repo creation diluting the count."}
 
  ;; :github-total -- `gh api orgs/cloud-itonami/repos --paginate --jq '.[].name'`,
- ;;   grouped by `^cloud-itonami-<prefix>`, run 2026-07-21.
- ;; :west-registered-t0/:west-registered-t1 -- `grep '    - name: cloud-itonami-<prefix>' manifest/west.yml`
- ;;   counted at the two commits above.
+ ;;   grouped by `^cloud-itonami-<prefix>` (iso = the iso3166-<code> sub-prefix
+ ;;   specifically, distinct from isic/isco), run 2026-07-21.
+ ;; :west-registered-t0/:west-registered-t1 -- exact-basename match against
+ ;;   `path: orgs/cloud-itonami/cloud-itonami-<prefix>-*` in manifest/west.yml,
+ ;;   counted at the two commits above (same verbatim-match convention as
+ ;;   the isic/isco per-code seed's own header, not the truncated-prefix
+ ;;   grep the original observation of this file used).
  :categories
- [{:id :isic         :github-total 457 :west-registered-t0 427 :west-registered-t1 429}
-  {:id :isco         :github-total 340 :west-registered-t0 216 :west-registered-t1 216}
-  {:id :iso          :github-total 223 :west-registered-t0 217 :west-registered-t1 217}
+ [{:id :isic         :github-total 457 :west-registered-t0 422 :west-registered-t1 457}
+  {:id :isco         :github-total 340 :west-registered-t0 216 :west-registered-t1 340}
+  {:id :iso          :github-total 223 :west-registered-t0 216 :west-registered-t1 217}
   {:id :lei          :github-total 155 :west-registered-t0 109 :west-registered-t1 143}
   {:id :assoc        :github-total 78  :west-registered-t0 49  :west-registered-t1 78}
   {:id :municipality :github-total 59  :west-registered-t0 45  :west-registered-t1 49}
@@ -37,15 +49,15 @@
   {:id :cofog        :github-total 5   :west-registered-t0 5   :west-registered-t1 5}
   {:id :gtin         :github-total 3   :west-registered-t0 3   :west-registered-t1 3}
   {:id :regulatory   :github-total 1   :west-registered-t0 1   :west-registered-t1 1}
-  {:id :partners     :github-total 1   :west-registered-t0 1   :west-registered-t1 1}
+  {:id :partners     :github-total 1   :west-registered-t0 0   :west-registered-t1 1}
   {:id :jsic         :github-total 1   :west-registered-t0 1   :west-registered-t1 1}
   {:id :hygiene      :github-total 1   :west-registered-t0 1   :west-registered-t1 1}]
 
  :reconciliation-note
- "Category totals sum to 1329/1331 github-total and 1149/1150 west-registered
-  (per manifest/west.yml at t1, matching entities-seed.edn's :cloud-itonami
-  :repos 1331 and :west-registered 1150). The residual 2 GitHub repos / 1
-  west-registered entry fall outside these 13 tracked name-prefixes (not
-  further identified -- e.g. the org's own root/meta repo) and are excluded
-  from this model rather than folded into an 'other' bucket with a guessed
-  rate."}
+ "Category totals sum to 1329/1331 github-total and 1301/1303 west-registered
+  (per manifest/west.yml at t1; total registered across ALL cloud-itonami
+  paths, any name, is 1303). The residual 2 GitHub repos / 2 west-registered
+  entries fall outside these 13 tracked name-prefixes (the org's own
+  `.github` config repo and `cloud-itonami.github.io`, neither a
+  classification-blueprint repo) and are excluded from this model rather
+  than folded into an 'other' bucket with a guessed rate."}
