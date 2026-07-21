@@ -140,6 +140,30 @@ individuals (He-Pin, Daylyt247) rather than being an artifact of one
 lucky match -- while the depth of *engagement* (not just discovery) stays
 concentrated on the one repo where a real bug happened to exist.
 
+**A third, independent data source (general web search, not GitHub) finds
+the same thing again for etzhayyim, plus a possible partial explanation for
+F2 itself.** Searching the open web for the exact term "etzhayyim" returns
+zero relevant results -- every hit is an unrelated, pre-existing Jewish
+congregation/synagogue also named "Etz Hayim"/"Etz Chayim" (a common Hebrew
+phrase, Genesis 2:9, "Tree of Life"), none referencing this project.
+`site:etzhayyim.com` returns zero results from the domain itself -- the
+search engine fell back to fuzzy-matching unrelated congregation sites
+instead of finding anything on the actual live domain, suggesting it isn't
+indexed at all despite being live with real weekly traffic. This gives a
+plausible partial explanation for F2's zero organic conversions that hasn't
+been considered before: if ~1,800-1,900 weekly visitors are arriving via
+direct links/referral rather than organic search intent, that's a
+structurally different, lower-intent population than "someone searching for
+Web3-governance-meets-Tree-of-Life spirituality found this" -- and it also
+means the name itself collides with a very common pre-existing religious
+naming convention, which would suppress discoverability even if the site
+were indexed. The 8 real people/orgs named in `ADR-2607202700` as
+philosophically resonant (Vitalik Buterin, E. Glen Weyl/RadicalxChange,
+Audrey Tang, Haudenosaunee Confederacy, Roman Krznaric, David Brin, Quakers,
+Mozilla.ai) were not searched individually this cycle -- given the base term
+returns zero hits anywhere, per-name searches would almost certainly also
+return zero and were judged not worth the additional queries.
+
 ## 2. Structural-strength spans 8+ orders of magnitude, and flow size does not predict it
 
 `dynamics.core/loop-archetypes` now has 19 entries -- 2 added this cycle
