@@ -442,6 +442,28 @@ not yet "on a schedule" (that needs external cron infra this repo doesn't
 own) -- `wire-live-observe` in `cloud_itonami_leverage.cljs` is updated to
 reflect this partial fulfillment.
 
+## Monitor for a real stall (the fulfillment of `:automate-age-lag-monitor`)
+
+```bash
+nbb --classpath src bin/run_cloud_itonami_age_lag_monitor.cljs <superproject-root>
+# exits 1 (CI/cron-schedulable) if a real stall is found, 0 otherwise
+```
+
+`cloud_itonami_isic_isco_sysml.cljs`'s backlog-age finding ("every
+unregistered code was <= 4.53 days old, zero exceptions either direction")
+was real, but checked once, by hand. `cloud_itonami_age_lag_monitor.cljs`
+turns it into a real, re-runnable check -- and deliberately does NOT use a
+fixed day-threshold (e.g. "flag anything older than 7 days"), because that
+can't tell "the whole pipeline slowed down" apart from "this specific code
+was skipped." Instead: a code is flagged only if it is unregistered AND
+older than the YOUNGEST currently-registered code -- self-referential, real
+per current data, not a guessed constant. If registration proceeds in
+roughly age order (the normal shape this session's backlog-age finding
+showed), no unregistered code should ever be older than that; one that is
+was skipped while newer codes cleared, a real anomaly worth investigating
+by name. First real run (2026-07-21): 0 stalls, youngest registered code
+1.70 days old.
+
 ## Test
 
 ```bash
