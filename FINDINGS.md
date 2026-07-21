@@ -1642,6 +1642,39 @@ coverage gaps in full: labor unions, central banks, major social
 platforms, nation-states, and now healthcare/education/insurance all have
 at least one real, dated, primary-sourced entity or stock behind them.
 
+## 24. Returning to the DID subdomain thread's own remaining open item: diagnosed exactly why 148 files failed the safe-fix precondition, and dispatched a fix using a different, still-safe method
+
+Finding 18 left 148 `toritsugi-<jurisdiction>-*` documents deliberately
+unfixed -- round 2's safe patch method required a `JSON.parse` ->
+`JSON.stringify(obj, null, 2)` roundtrip to reproduce the committed file
+byte-for-byte before touching it, and that check failed for these 148,
+so round 2 correctly declined rather than accept unrelated formatting
+churn.
+
+This cycle diagnosed exactly why the check failed, rather than leaving it
+as an unexplained precondition mismatch: fetched several of the 148 files
+directly and found they use a **different JSON pretty-printer** than the
+170 files round 2 successfully fixed -- a space before every colon
+(`"key" : value`) and short arrays kept inline (`[ "x" ]`), the classic
+shape of a Java/Jackson `DefaultPrettyPrinter`, not JavaScript's
+`JSON.stringify(obj, null, 2)` style (no space before colon, always-
+multiline arrays) the other 170 files use. Confirmed this formatting
+difference, not a content difference, is the actual cause by sampling 4
+files (`toritsugi-ae-federal`, `toritsugi-ar-national`,
+`toritsugi-aus-passport`, `toritsugi-bel-passport`) -- all show the exact
+same line shape, `"alsoKnownAs" : [ "did:web:<handle>.etzhayyim.com" ],`.
+
+Because the bug is confined to one predictable line shape, dispatched a
+third fix using **literal text substitution instead of a JSON reparse** --
+replace that exact line with `"alsoKnownAs" : [ ],`, leave every other
+byte untouched, no pretty-printer involved at all. This sidesteps round
+2's precondition failure entirely rather than working around it by
+accepting a bigger diff. Same standing authorization, same
+verify-before-deploy discipline, same PR-and-deploy conventions as rounds
+1 and 2. Outcome not yet known as of this entry -- to be recorded
+separately once confirmed, continuing the same 1c->1d->16->16b->18
+discipline this whole thread has followed throughout.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
