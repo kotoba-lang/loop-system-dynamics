@@ -2474,6 +2474,54 @@ status-mix saga, findings 4d-4l): a genuinely puzzling number is worth
 keeping precise and flagged, not silently smoothed into a confident
 story this analysis cannot actually support from the data available.
 
+## 34b. Correcting finding 34's own framing: the "90 charges, 2020" figure isn't kotobase.net's -- it's a single shared, account-wide Stripe statistic, confirmed by checking the exact same field on a sibling product
+
+Finding 34 described the 90-charges/2020-11-01-timestamp figure as
+part of "kotobase.net's own Stripe integration." Followed its own
+lead (`:active-subscriptions-account-wide 2` suggesting this account
+is shared) rather than leaving that framing as-is: fetched
+`cloud-murakumo.edn`'s own `:stripe` block and found it **identical,
+field for field** -- `:charges-total 90`, `:last-charge-epoch
+1604224274` (2020-11-01), `:active-subscriptions-account-wide 2`, the
+same numbers, verbatim, in a completely different product's metrics
+file.
+
+Checked every other product's metrics file with a real live payment
+mechanism this catalog has verified (`cloud-manimani`, `club-shinshi`,
+`app-aozora`, `network-isekai`) -- none of them have a `:stripe` block
+at all. Only `cloud-murakumo.edn` and `net-kotobase.edn` do, and both
+report the exact same account-level numbers. This confirms: the
+90-charges/2020-stale figure describes the entire shared gftdcojp
+Stripe account's lifetime aggregate history, not any one product's own
+activity -- it's injected identically into whichever products'
+metrics-collection queries happen to also pull account-wide Stripe
+stats, not a per-product measurement at all.
+
+**This is corroborated, not contradicted, by murakumo's own explicit
+product-specific field sitting right next to the shared one:**
+`:murakumo-paid-charges 0` and `:murakumo-paid-amount-minor 0` are
+distinct fields specifically for murakumo's own real activity, and
+both are 0 -- consistent with finding 4b's already-established "0%
+runs->paid" measurement for that product. The shared account-wide
+90/2020 figures sit alongside that real 0, not instead of it.
+`net-kotobase.edn` has no equivalent kotobase-specific paid-charges
+field to perform the same disambiguation, which is itself worth
+noting as a real asymmetry between the two files' completeness.
+
+**What remains genuinely unresolved, corrected in scope rather than
+resolved:** the actual origin of the 90 charges / 2020-11-01 date --
+whether this Stripe account had real, different activity years before
+any of today's tracked gftdcojp products existed, or the timestamp
+field itself is a stale/unrefreshed artifact in the metrics-collection
+pipeline -- is still an open question this analysis cannot answer
+without direct Stripe dashboard/API access, which is correctly outside
+this analysis's own reach (this workspace's own safety floor
+explicitly prohibits exhaustive/speculative credential access for
+exactly this kind of curiosity-driven investigation). Recorded as
+"shared, account-wide, unexplained" rather than "kotobase.net's own,
+puzzling" -- a real correction to the previous entry's scope, same
+discipline as every other self-correction in this catalog.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
