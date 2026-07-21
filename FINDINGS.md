@@ -2026,6 +2026,54 @@ flagged as resting on an unverified assumption (that the 4 tenants are
 real human commercial evaluators) this same cycle's own further
 investigation could not confirm and has real reason to doubt.
 
+## 28c. Applying the same scrutiny to cloud-murakumo finds the opposite result -- no similar complication, and real structural evidence its data point is if anything MORE trustworthy than itonami.cloud's
+
+Directly continued finding 28b's own logic: if agent-executable
+onboarding paths can complicate a "real conversion" number, the same
+check should be run on cloud-murakumo before treating it as the clean
+baseline itonami.cloud's number was compared against. Checked --
+`murakumo.cloud/agent.json` and `/api/status` both 404 (no equivalent
+self-claim manifest), but `murakumo.cloud/llms.txt` (HTTP 200) reveals
+something more nuanced than "no complication found."
+
+`llms.txt`'s own text says this product **is explicitly designed to be
+used by AI agents and coding tools** -- "an OpenAI/Anthropic-compatible
+inference gateway for LLM agents and coding tools that read llms.txt,"
+with documented instructions for pointing `ANTHROPIC_BASE_URL` at it
+from Claude Code directly. On its face this looks like the same
+complication as itonami.cloud (real product usage is agent-driven, not
+human-clicking-a-UI) -- but the onboarding mechanics are structurally
+different in a way that matters: `llms.txt` also states "Upstream
+provisioning is manual today: buy GPU credits or a hardware node via
+the storefront, then the Murakumo team configures your dedicated
+upstream URL out of band. There is no self-service dashboard or
+automated key issuance yet."
+
+**This is the opposite structural shape from itonami.cloud's
+agent-executable passkey self-claim.** Becoming a real murakumo.cloud
+customer requires a real purchase (GPU credits/hardware) AND a manual,
+human-team-mediated provisioning step before any inference request --
+agent-driven, since agents ARE the intended API consumer, but gated
+behind a real commercial transaction and human involvement an
+automated test script could not fabricate on its own. An agent hitting
+the inference API is real usage BY a real, already-paying or
+already-provisioned customer, not a free, autonomous, agent-initiated
+claim the way itonami.cloud's `/isco-1212/agent.json` describes.
+
+**Net effect: this cycle's further digging does not spread doubt
+evenly.** cloud-murakumo's own "0% runs->paid" data point (finding 4b)
+now has an additional, real, structural reason to trust it as
+representing genuine commercial evaluation -- its own onboarding
+mechanics rule out the specific complication found for itonami.cloud.
+itonami.cloud's number remains under real, unresolved doubt (finding
+28b). The honest state of finding 4's "shared root cause" question is
+now: 1 product (cloud-murakumo) solidly confirmed as a real "working
+checkout, zero conversion" case; 1 product (cloud-itonami-saas-product)
+real on the checkout-mechanism side but uncertain on the
+population-being-measured side. Not 2 clean confirmations, and not
+back to 1 either -- a more precisely nuanced position than either
+finding 28 or finding 28b alone stated.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
