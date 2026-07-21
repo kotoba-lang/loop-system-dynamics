@@ -2436,6 +2436,44 @@ block leftovers in finding 27b); and the display-name-ja/display-name
 -en/description trio remains genuinely unfixed, still lacking any
 authoritative source.
 
+## 34. kotobase.net's own funnel data: a 5th real "traffic without conversion" case, plus a genuinely puzzling ~6-year-stale Stripe timestamp recorded honestly rather than smoothed over
+
+Finding 30 verified kotobase.net's x402 payment mechanism works, but
+had not checked whether the product has any real paying customers via
+its OTHER, more conventional payment path (a separate Stripe
+integration). Checked the standard `90-docs/business/metrics/
+net-kotobase.edn` file this session already relies on for every other
+product's funnel data, which had not yet been read for this specific
+entity.
+
+**A 5th real product in this portfolio shows the same traffic-without-
+final-conversion shape** this catalog has investigated extensively
+since finding 4: `:funnel {:visitors 1098 :signups 3 :checkouts 0}` --
+1098 visitors, 3 signups (0.27%), 0 completed checkouts via kotobase.net's
+own Stripe flow (distinct from the separately-verified working x402
+mechanism, finding 30).
+
+**A separate, genuinely puzzling anomaly, recorded precisely rather
+than glossed over:** the same file's `:stripe` block shows `:charges-
+total 90` but `:last-charge-epoch 1604224274` -- converted, that is
+**2020-11-01**, nearly 6 years stale relative to this workspace's 2026
+operating date. Not interpreted confidently either way: it could be a
+real, long-dormant billing history (this Stripe integration predating
+kotobase.net's current form by years), a metrics-pipeline artifact
+pulling a stale or wrong timestamp field, or a genuinely disused
+legacy account still linked in config. Also notable: `:active-
+subscriptions 0` for this specific zone but `:active-subscriptions-
+account-wide 2` -- meaning the underlying Stripe account is shared
+across multiple products in this portfolio, not dedicated to
+kotobase.net alone, so those 2 active subscriptions likely belong to
+a different, already-tracked product in this same catalog.
+
+Recorded as an honest, unresolved, real data point -- exactly the
+discipline this catalog applies throughout (e.g. the etzhayyim
+status-mix saga, findings 4d-4l): a genuinely puzzling number is worth
+keeping precise and flagged, not silently smoothed into a confident
+story this analysis cannot actually support from the data available.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
