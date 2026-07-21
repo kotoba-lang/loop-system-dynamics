@@ -1868,6 +1868,45 @@ folded into "the same fix."
 
 Outcome of the Kizuna fix not yet known as of this entry.
 
+## 27b. Kizuna's seed fix landed, independently re-verified -- plus a bonus find: a 3rd occurrence the original scoping missed
+
+The dispatched fix landed exactly as scoped: `00-contracts/schemas/
+actor-profile-seed.kotoba.edn`'s kizuna entry now reads `:actor/handle
+"kizuna"`, `:actor/did "did:web:etzhayyim.com:actor:kizuna"`, and both
+`:actor/service` ids corrected -- 4 field-value changes, 1 file, nothing
+else touched, `:actor/glyph "絆"` and the wadachi entry both left
+untouched as scoped. Landed via `orgs/etzhayyim/root` PR #3310
+(squash-merged, commit `024a96543c`). Tests unaffected (122/127, same 5
+pre-existing failures). No deploy was needed -- the live site already
+resolved `kizuna` correctly via the independent `infra-actors.ts`
+registry, confirmed by both this fix and the prior cleanup task
+(PR #3309).
+
+Independently re-verified, not just trusting the report: fetched the
+merged file directly from `main` and confirmed the entry now reads
+`:actor/handle "kizuna"`.
+
+**The fixing agent's own due diligence found a 3rd occurrence of the
+malformed string that the original task scoping (and finding 27's own
+diagnosis) had missed**: alongside the seed file (now fixed) and the
+`actors-v1.root.json` compiled snapshot (already known, finding 26b),
+a raw IPFS content-addressed block file under `public/kotoba/blocks/`
+also embeds the malformed string as part of a serialized ProllyTree
+datom -- invisible to a text-only `grep -I` (binary-file-skipping),
+only found via `git grep` without that flag. Correctly left untouched
+(same generated-artifact disposition as the compiled snapshot, not
+hand-maintained, not CI-wired), but reported explicitly rather than
+silently omitted -- exactly the honesty this whole thread has asked of
+every dispatched subagent, demonstrated again here on a finding that
+wasn't even asked for.
+
+Net picture: the malformed-handle root-cause investigation started
+this cycle-family (finding 26) is now substantially further along than
+when it began -- 1 of 2 seed entries fixed at the source, the other
+(wadachi) explicitly scoped as a separate content decision, and the
+full known blast radius (seed, compiled snapshot, raw IPFS block) is
+now enumerated rather than partially known.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1900,18 +1939,20 @@ Outcome of the Kizuna fix not yet known as of this entry.
   purpose. Scoped precisely rather than attempted rushed in the same
   cycle this was discovered: a real next step, not a vague "someday" line
   anymore.
-- Of the 2 malformed-handle seed entries (finding 26b), Kizuna's is a
-  clean single-field-family typo with a dispatched fix (finding 27,
-  outcome not yet known). wadachi's is messier -- multiple fields
-  (glyph, both display-name fields, description) all wrongly hold the
-  same duplicated sentence, not a single mechanically-wrong string --
-  and needs a real content decision (what the correct distinct glyph
-  and display names should actually be) this analysis has deliberately
-  not made. Still open regardless of how Kizuna's fix lands. The
-  compiled snapshot `public/kotoba/actors-v1.root.json` (also flagged
-  in finding 26b as containing the malformed strings) has not yet been
-  checked for whether it's a regeneratable build artifact or something
-  that needs its own fix.
+- Kizuna's seed-data typo is now fixed at the source (finding 27b,
+  independently re-verified). wadachi's is still open and unfixed --
+  multiple fields (glyph, both display-name fields, description) all
+  wrongly hold the same duplicated sentence, not a single
+  mechanically-wrong string -- and needs a real content decision (what
+  the correct distinct glyph and display names should actually be)
+  this analysis has deliberately not made. The generated-artifact
+  copies of the OLD Kizuna string (the compiled snapshot
+  `public/kotoba/actors-v1.root.json` and a raw IPFS content block
+  under `public/kotoba/blocks/`, both found in finding 27b) were left
+  untouched as build artifacts, not hand-maintained data -- they would
+  presumably self-correct the next time whatever generates them from
+  the now-fixed seed actually runs, but that regeneration has not been
+  triggered or confirmed by this analysis.
 - Coverage is still a small, honest sample, not "the whole world": 35
   entities, 17 loop archetypes -- all 5 categories this bullet used to
   name as unrepresented (labor unions, central banks, major social
