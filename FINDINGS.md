@@ -2604,6 +2604,40 @@ own recommendation machinery: the #1-ranked intervention has a real
 missing prerequisite, worth knowing before acting on that ranking, not
 discovered until this cycle actually checked.
 
+## 37. Answering finding 35's own flagged-open question with a real random sample: ~half of a west.yml cross-section is stale, all safely
+
+Finding 35 explicitly left one question open: "whether similar
+staleness exists broadly across the rest of the manifest remains a
+real, unchecked, much larger question this single cycle did not
+attempt to answer" -- it had only checked 6 etzhayyim actor repos this
+session happened to be touching. This cycle took a genuine random
+sample instead of another convenience sample: 25 of the 3612 projects
+in `manifest/west.yml` (seed 20260722, Python `random.sample` over the
+full parsed project list, not hand-picked), checked each pinned SHA
+against its real upstream default branch via `gh api repos/<org>/
+<repo>/compare/<pin>...HEAD`.
+
+Result: 13/25 (52%) were behind upstream by 1-3 commits; 12/25 were
+already current. Every one of the 13 stale entries had `status:
+"ahead"` (a safe fast-forward) and `behind_by: 0` -- zero showed
+`status: "diverged"`, meaning nothing in this sample shows evidence of
+a force-push or history rewrite, the same specific check this
+session's `git-operations` skill and finding 35 both insist on before
+treating a pin gap as safe to advance. Stale entries were not
+clustered in one org: 6/13 kotoba-lang, 5/13 cloud-itonami, 2/13
+etzhayyim.
+
+**Scope, stated precisely**: this is a 0.7% sample, not a census --
+it establishes a real, dated baseline (~52% stale, max 3 commits
+drift, in a 25-repo random draw on 2026-07-22) rather than leaving
+finding 35's question open indefinitely, but it does not claim to
+have swept all 3612 projects. The pattern is consistent with pins
+being advanced opportunistically (only when a session happens to touch
+that repo) rather than on any scheduled cadence -- not itself alarming
+given every observed gap was a small, safe fast-forward, but a
+measured fact about how this workspace's pin-freshness actually
+behaves rather than an assumption.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
