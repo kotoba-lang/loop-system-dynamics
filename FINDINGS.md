@@ -690,6 +690,34 @@ precisely -- not yet evidence of a causal link, and this thread's own
 reading anything into a single favorable data point. Recorded as a 7th
 real reading in an honest, still-unresolved series, not a resolution.
 
+## 4m. The first direct search-index check -- zero indexed pages, exactly as expected, recorded precisely rather than skipped as "nothing happened"
+
+Every prior entry in this discoverability thread has said the same
+honest caveat: whether the robots.txt/sitemap.xml/DID-document fixes
+actually change search-engine indexing behavior "is NOT yet known" and
+"re-crawl/re-index takes real elapsed time this analysis cannot
+fast-forward." That caveat had never actually been tested directly --
+this cycle ran the first real check.
+
+A `site:etzhayyim.com` web search, run today, returns **zero results
+for the actual domain** -- every result returned is an unrelated,
+similarly-named real institution (a Palo Alto synagogue, a Derry NH
+synagogue, a Chania Crete synagogue), none of them `etzhayyim.com`
+itself. Confirmed: as of today, no page on `etzhayyim.com` is indexed
+by this search engine at all.
+
+**This is the expected result, not a surprising or concerning one, and
+is recorded as confirmation of the existing honest framing, not a new
+problem.** The site's own discoverability files were only fixed and
+deployed earlier in this same session -- real search-engine crawl-and-
+index cycles typically take days to weeks, not hours, even for a site
+with no prior indexing history to build on. A negative result checked
+and recorded precisely is more valuable to this catalog than an
+unchecked assumption either way -- this is now a real, dated baseline
+(0 indexed pages as of today) that a future cycle can meaningfully
+compare a later check against, rather than continuing to say "not yet
+known" without ever having actually looked.
+
 ## 5. Rigorously-measured commons/mutual-aid orgs cluster together, regardless of mechanism
 
 sardex-mutual-credit (1.49), givedirectly-ubi (1.17), givewell-effective-altruism
