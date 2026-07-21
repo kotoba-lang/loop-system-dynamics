@@ -178,7 +178,8 @@ its real `manifest/west.yml` registration status) as its own PartUsage,
 each with its own traceable `RequirementUsage`.
 
 Two real, per-code requirements: **`RegisteredInWorkspace`** (all 797
-eligible; 642 satisfied, 155 individually-named unregistered codes) and
+eligible; 797 satisfied as of 2026-07-21's registration pass -- see below,
+first measured at 642/797) and
 **`DeclaresClassificationRevision`** (isic's 457 only -- isco doesn't apply,
 it's uniformly `ISCO-08`-tagged already) -- a real finding this modeling
 surfaced: only 216/457 (47.3%) of isic's own repos correctly declare
@@ -190,14 +191,14 @@ per-code structural level, which is exactly what SysML v2's Definition/
 Usage/RequirementUsage traceability is for.
 
 `decide` also derives a third layer straight from each code's own real
-`:code` field -- WHERE the 153 unregistered repos actually concentrate,
-by ISCO-08 major group (all 10 shown) and ISIC division (only the ones
-with a real unregistered repo). This is not a random residual: ISCO's gap
-is almost entirely in manual-labor major groups (Craft 7: 58/66 = 88%
-unregistered; Plant-operator 8: 29/40 = 73%; Elementary 9: 15/25 = 60%),
-while white-collar groups (Managers/Professionals/Technicians/Clerical,
-1/2/4) are already 100% registered; ISIC's much smaller gap concentrates
-hardest in division 47 (specialized-store retail sub-categories, 18/25
+`:code` field -- WHERE the unregistered repos concentrated, by ISCO-08
+major group (all 10 shown) and ISIC division (only the ones with a real
+unregistered repo). This was not a random residual: ISCO's gap was almost
+entirely in manual-labor major groups (Craft 7: 58/66 = 88% unregistered;
+Plant-operator 8: 29/40 = 73%; Elementary 9: 15/25 = 60%), while
+white-collar groups (Managers/Professionals/Technicians/Clerical, 1/2/4)
+were already 100% registered; ISIC's much smaller gap concentrated hardest
+in division 47 (specialized-store retail sub-categories, 18/25
 unregistered) rather than spreading thin across ~80 divisions.
 
 **Same-day correction + a 4th layer (`:age-days`)**: an earlier pass
@@ -206,12 +207,28 @@ matched only the leading digits of each repo name against
 (`cloud-itonami-isic-6611-cryptoexchange`, `cloud-itonami-isic-8129-facade`)
 as unregistered when they are, under their own full name -- fixed by exact
 full-name matching (153 unregistered, not 155). Real GitHub `created_at`
-per code (`:age-days`) then tests whether the occupation-group/division
-concentration above is a PERMANENT gap or a registration-pipeline LAG:
-every one of the 153 unregistered codes is <= 4.53 days old, and every one
-of the other 638 codes (all older than that) is already registered, zero
-exceptions either direction. The concentration pattern is real -- it just
-means "scaffolded most recently," not "permanently deprioritized."
+per code (`:age-days`) then tested whether the occupation-group/division
+concentration above was a PERMANENT gap or a registration-pipeline LAG:
+every one of the 153 unregistered codes was <= 4.53 days old, and every one
+of the other 638 codes (all older than that) was already registered, zero
+exceptions either direction -- the concentration pattern was real, but it
+meant "scaffolded most recently," not "permanently deprioritized."
+
+**Closed, same day**: before registering, this cycle checked the 153
+against `90-docs/adr/2607100*-cloud-itonami-*-blueprint.edn`
+(`com-junkawasaki/root`, ~35 ADRs) documenting a disjoint set of
+blueprint-only stub repos that are deliberately left unregistered pending
+an `:implemented` promotion -- none of the 153 overlapped that set, and all
+153 had real non-empty `src/`/`test/` content, confirming a genuine gap
+rather than a policy this loop was about to violate. All 153 were then
+registered into `manifest/west.yml` (minimal `--entry` diff, GitHub-API pin
+verification, server-side merge -- `com-junkawasaki/root@863f58c4`), and
+this seed file was re-checked against the result: **0/797 unregistered**.
+Re-running the command above now shows every concentration table empty and
+`backlog-age`'s "oldest unregistered" as `nil` rather than a number --
+`decide`'s `backlog-age` fn had never previously seen its own unregistered
+set reach empty and needed a real fix (`apply max` on `[]` was crashing
+`act`'s report renderer) to represent that state instead of erroring.
 
 ## A different real model SHAPE (proportional decline, not additive accumulation)
 

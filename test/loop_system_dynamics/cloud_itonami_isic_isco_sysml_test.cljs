@@ -24,13 +24,12 @@
       (is (sm/part-usage? (sm/lookup model "cloud-itonami-isic-6419-usage"))))))
 
 (deftest registration-requirement-traces-per-code-test
-  (testing "a registered code satisfies RegisteredInWorkspace with a real SatisfyRequirementUsage; an unregistered one does not"
+  (testing "a registered code satisfies RegisteredInWorkspace with a real SatisfyRequirementUsage; with the 2026-07-21 registration pass closing the backlog to 0/797 unregistered, every real code now satisfies it -- the negative case (an unregistered code lacking the satisfy edge) is no longer exercisable against real data and is not faked here"
     (let [obs (sysml-loop/observe)
-          model (sysml-loop/build-model obs)
-          registered-code (first (filter :registered (:codes obs)))
-          unregistered-code (first (remove :registered (:codes obs)))]
-      (is (some? (sm/lookup model (str (:repo registered-code) "--RegisteredInWorkspace-satisfy"))))
-      (is (nil? (sm/lookup model (str (:repo unregistered-code) "--RegisteredInWorkspace-satisfy")))))))
+          model (sysml-loop/build-model obs)]
+      (is (zero? (count (remove :registered (:codes obs)))))
+      (is (every? #(some? (sm/lookup model (str (:repo %) "--RegisteredInWorkspace-satisfy")))
+                  (:codes obs))))))
 
 (deftest revision-requirement-does-not-apply-to-isco-test
   (testing "DeclaresClassificationRevision is isic-only -- an isco code gets no RequirementUsage for it at all, not a fabricated pass"
@@ -48,25 +47,23 @@
       (is (< (:correctly-declared rev) (:total rev)))
       (is (pos? (:undeclared rev))))))
 
-(deftest isco-backlog-concentrates-in-manual-occupation-groups-test
-  (testing "real per-major-group split: white-collar groups (1-4) are fully registered; groups 7-9 carry most of the real gap"
+(deftest isco-backlog-is-closed-test
+  (testing "the manual-labor concentration this section used to surface (Craft 7: 58/66, Plant-operator 8: 29/40, Elementary 9: 15/25 unregistered) is now zero everywhere -- 153 real west.yml registrations (2026-07-21) closed it"
     (let [obs (sysml-loop/observe)
           decision (sysml-loop/decide obs)
           by-group (get-in decision [:backlog-concentration :isco-by-major-group])]
       (is (= 10 (count by-group)))
-      (is (every? #(zero? (:unregistered (by-group %))) ["1" "2" "4"]))
-      (is (> (:unregistered (by-group "7")) (:registered (by-group "7"))))
-      (is (= "Craft and Related Trades Workers" (:title (by-group "7")))))))
+      (is (every? (fn [[_ stats]] (zero? (:unregistered stats))) by-group))
+      (is (= "Craft and Related Trades Workers" (:title (by-group "7"))))
+      (is (= 66 (:registered (by-group "7")))))))
 
-(deftest isic-backlog-concentration-omits-fully-registered-divisions-test
-  (testing "only divisions with a real unregistered repo appear -- division 47 (specialized retail) is the largest concentration"
+(deftest isic-backlog-concentration-is-now-empty-test
+  (testing "isic-by-division only ever showed divisions with >=1 real unregistered repo -- division 47 (specialized retail, 18/25) was the largest before the 2026-07-21 registration pass closed it, so the map is now empty rather than omitting a subset"
     (let [obs (sysml-loop/observe)
           decision (sysml-loop/decide obs)
           by-div (get-in decision [:backlog-concentration :isic-by-division])]
-      (is (every? (fn [[_ stats]] (pos? (:unregistered stats))) by-div))
-      (is (= 18 (:unregistered (by-div "47"))))
-      (is (= (reduce + (map (comp :unregistered second) by-div))
-             (:unregistered (get-in decision [:registration :isic])))))))
+      (is (empty? by-div))
+      (is (zero? (:unregistered (get-in decision [:registration :isic])))))))
 
 (deftest role-suffix-satellite-repos-are-correctly-registered-test
   (testing "regression: an earlier pass truncated role-suffix repo names and mis-flagged these 2 as unregistered; exact-name matching fixes it"
@@ -75,13 +72,13 @@
       (is (true? (:registered (by-repo "cloud-itonami-isic-6611-cryptoexchange"))))
       (is (true? (:registered (by-repo "cloud-itonami-isic-8129-facade")))))))
 
-(deftest backlog-age-shows-a-pipeline-lag-not-a-permanent-gap-test
-  (testing "every unregistered code is recently created; every code older than the oldest unregistered one is already registered, zero exceptions"
+(deftest backlog-age-has-no-oldest-unregistered-once-closed-test
+  (testing "backlog-age used to confirm the gap was a pipeline lag (every code older than the oldest unregistered one was already registered); with zero unregistered codes left there is no 'oldest unregistered' to compute, and it must report that as nil rather than crash (apply max on an empty seq)"
     (let [obs (sysml-loop/observe)
           decision (sysml-loop/decide obs)
           age (:backlog-age decision)]
-      (is (pos? (:oldest-unregistered-age-days age)))
-      (is (pos? (:codes-older-than-that age)))
-      (is (zero? (:of-those-still-unregistered age)))
+      (is (nil? (:oldest-unregistered-age-days age)))
+      (is (nil? (:codes-older-than-that age)))
+      (is (nil? (:of-those-still-unregistered age)))
       (is (every? (fn [[_ {:keys [total registered]}]] (= total registered))
-                  (filter (fn [[day _]] (> day 5)) (:age-buckets age)))))))
+                  (:age-buckets age))))))
