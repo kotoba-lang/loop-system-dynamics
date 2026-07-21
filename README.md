@@ -391,6 +391,30 @@ and already scoped) and reconsidering the whole many-tiny-repos
 architecture (band A) are included too, so the ranking shows its full
 real shape instead of only the easiest items.
 
+## Detect drift (the first real fulfillment of `:wire-live-observe`)
+
+```bash
+nbb --classpath src bin/run_cloud_itonami_live_diff.cljs <superproject-root>
+```
+
+Every cloud-itonami cycle above hand-refreshed its seed by running `gh api`
++ a `manifest/west.yml` grep once, by hand, then checking the result in.
+`cloud_itonami_live_diff.cljs` runs that SAME real fetch + exact-name
+west.yml match live and diffs it against the checked-in
+`resources/cloud-itonami-isic-isco-sysml-seed.edn` -- three real, never-
+conflated categories: `:new-codes` (live, not yet in the seed),
+`:removed-codes` (in the seed, no longer live), and
+`:registration-flips` (present in both, `:registered` differs). Same
+discipline as `core.cljs/refresh-from-bmc-metrics`: this is a diff/report
+tool, not a silent seed-rewriter -- a real drift finding gets folded back
+into the seed by hand. First real run (2026-07-21) found 0 drift across
+all three categories: the checked-in seed and live reality matched
+exactly, live confirming all 797 isic/isco codes are now registered
+(`clear-current-backlog` landed, see above). This is one CLI invocation,
+not yet "on a schedule" (that needs external cron infra this repo doesn't
+own) -- `wire-live-observe` in `cloud_itonami_leverage.cljs` is updated to
+reflect this partial fulfillment.
+
 ## Test
 
 ```bash
