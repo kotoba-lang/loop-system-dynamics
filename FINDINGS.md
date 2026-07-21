@@ -1353,6 +1353,51 @@ larger (148 more affected documents in a part of the roster finding 16
 never enumerated) -- which is now the accurately-scoped remaining open
 item, not a new surprise regression.
 
+## 19. Second world-scale gap closed: the first central bank in this catalog, with an AI-summarization error caught before it entered the record
+
+"What's still open" also flagged central banks as unrepresented. Closed
+this cycle with the Bank of Japan, sourced directly from its own official
+"Bank of Japan Accounts (Every Ten Days)" release at `boj.or.jp` -- the
+primary legal statement of the central bank's own balance sheet, the same
+tier of source as the AFL-CIO's LM-2 filing (finding 17) rather than a
+financial-data aggregator.
+
+**A second real error was caught before entering the record, distinct from
+finding 17's wrong-organization mixup:** the first fetch used an
+AI-summarizing fetch tool rather than reading the raw page, and its
+returned asset table was missing 2 of the filing's real line items
+("Deposits with agents," "Others") worth a combined ~JPY 1.02 trillion --
+invisible unless you check. It was caught by the same discipline finding
+17 established: never record a number without reconciling it against the
+source's own stated total first. Summing the AI-summarized table's 9 line
+items against the filing's own "Total Assets" figure left an ~JPY 8
+trillion gap (1.3% off) -- too large to be rounding, too small to be
+obviously wrong at a glance. Re-fetched the raw HTML directly (not through
+the summarizing tool) and cross-summed every line item on both the asset
+side and the liability side independently: both now reconcile to within
+JPY 2 thousand of the filing's own stated total (out of a ~JPY 639
+trillion balance sheet) -- exact, not approximate.
+
+**What the real filing (as of 2026-07-10, released 2026-07-14) shows:**
+total assets/liabilities JPY 638,675,186,572,000 (~¥638.7 trillion).
+Japanese government securities alone are JPY 517,511,154,658,000 -- 81.03%
+of the entire balance sheet, the largest single stock recorded anywhere in
+this catalog by a wide margin, and a precisely-dated number for a widely
+-discussed but rarely precisely-cited fact (BOJ's government-bond-heavy
+balance sheet after a decade-plus of large-scale asset purchases). On the
+liability side, banknotes (JPY 114,966,526,908,000) plus current deposits
+(JPY 434,711,265,031,000) together make up the bulk of how that balance
+sheet is funded.
+
+The methodological lesson generalizes beyond this one entity: **a tool that
+summarizes a page with an LLM is not the same guarantee as reading the
+page.** Both this finding and finding 17 now demonstrate the same
+discipline catching two different failure modes at the same checkpoint
+(reconcile against the source's own stated total, or cross-check the
+claimed filer identity, before writing anything down) -- worth keeping as
+standard practice for every future entity this catalog adds, not just
+these two.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -1363,12 +1408,13 @@ item, not a new surprise regression.
   human copying `gh api` output, not a live ingestion pipeline. No `kqe`
   (kotoba-lang/kqe) query source and no direct live-GitHub-API-to-datoms path
   exist yet either.
-- Coverage is still a small, honest sample, not "the whole world": 32
+- Coverage is still a small, honest sample, not "the whole world": 33
   entities, 17 loop archetypes. The schema has no ceiling, but the actual
   instantiation covers a tiny fraction of real-world organizations and
-  systems -- no nation-states, central banks, major social platforms, or
+  systems -- no nation-states, major social platforms, or
   healthcare/education/insurance systems are represented yet (labor unions
-  now has one real instance, finding 17, the AFL-CIO).
+  and central banks now each have one real instance: finding 17, the
+  AFL-CIO, and finding 19, the Bank of Japan).
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed

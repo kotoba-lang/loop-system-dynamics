@@ -242,6 +242,35 @@
                                        :period "07/01/2023-06/30/2024" :source "same LM-2 filing"}
             :total-assets-usd {:start-of-period 124724142 :end-of-period 138199874 :period "07/01/2023-06/30/2024" :source "same LM-2 filing"}}}
 
+  {:id :bank-of-japan
+   :org "external-reference"
+   :note "Fills another explicitly-flagged 'What's still open' gap: no central banks represented yet (labor unions was closed this cycle by :afl-cio above). Sourced directly from the Bank of Japan's own official 'Bank of Japan Accounts (Every Ten Days)' release (boj.or.jp), the primary legal statement of the central bank's own balance sheet -- not a financial-data aggregator. Every line item independently cross-summed against the filing's own stated Total on both the asset side and the liability side (off by JPY 2 thousand on each side, i.e. exact to within rounding) before being recorded, the same reconciliation discipline already applied to the AFL-CIO LM-2 filing. All :value figures below are in whole yen (JPY), converted from the source's native thousand-yen units by multiplying by 1000 -- not rounded or estimated"
+   :stocks {:total-assets-jpy {:value 638675186572000 :as-of "2026-07-10" :released "2026-07-14"
+                                :breakdown {:japanese-government-securities-jpy 517511154658000
+                                            :loans-excl-deposit-insurance-corp-jpy 68037000000000
+                                            :pecuniary-trusts-etf-jpy 37031165733000
+                                            :foreign-currency-assets-jpy 11979500864000
+                                            :corporate-bonds-jpy 1562968727000
+                                            :pecuniary-trusts-reit-jpy 651979898000
+                                            :gold-jpy 441253409000
+                                            :cash-jpy 437945734000
+                                            :deposits-with-agents-jpy 8062211000
+                                            :other-assets-jpy 1014155336000}
+                                :source "https://www.boj.or.jp/en/statistics/boj/other/acmai/release/2026/ac260710.htm, fetched directly 2026-07-21 (raw HTML, not an AI-summarized secondary rendering -- an earlier summarized pass of this same page silently dropped 2 line items worth ~JPY 1.02 trillion, caught by the cross-sum check below before being recorded, not after)"}
+            :total-liabilities-and-net-assets-jpy {:value 638675186572000
+                                                     :breakdown {:current-deposits-jpy 434711265031000
+                                                                 :banknotes-jpy 114966526908000
+                                                                 :other-deposits-jpy 43522769258000
+                                                                 :payables-under-repurchase-agreements-jpy 24449839034000
+                                                                 :provisions-jpy 10956633388000
+                                                                 :deposits-of-the-government-jpy 6072767686000
+                                                                 :legal-and-special-reserves-jpy 3872243310000
+                                                                 :other-liabilities-jpy 123041955000
+                                                                 :capital-jpy 100000000}
+                                                     :as-of "2026-07-10" :source "same BOJ release"}
+            :javgb-share-of-total-assets-pct {:value 81.03 :derivation "517,511,154,658 / 638,675,186,572 * 100 = 81.02884933351943, both thousand yen, from the same filing"
+                                               :interpretation "Japanese government securities alone are 81% of the entire BOJ balance sheet -- the largest single stock in this whole catalog by a wide margin, and a real, precisely-dated number for a widely-discussed but rarely precisely-cited fact (BOJ's government-bond-heavy balance sheet from a decade-plus of large-scale asset purchases). Recorded as a derived ratio, not itself a filed line item"}}}
+
   {:id :online-gambling-industry
    :org "external-reference"
    :note "extractive archetype added for sector diversity beyond adtech/crypto/MLM"
