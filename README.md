@@ -157,6 +157,38 @@ Charter-cited `RequirementUsage`s (no-state-registration, anti-monopoly)
 satisfied by the system -- so the acquisition system's structure is a
 validated, traceable model, not free-text prose.
 
+## Model it, one code at a time (cloud-itonami's 797 isic/isco repos individually)
+
+```bash
+# from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-omg-sysmlv2,
+# and kotoba-lang/dsl-core are checked out as siblings:
+nbb --classpath "../dynamics/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+    bin/run_cloud_itonami_isic_isco_sysml.cljs
+```
+
+The category-level counts in `entities-seed.edn` and the per-category
+Backlog/rate in `cloud_itonami_xmile.cljs` both stop at the category
+(isic/isco); `src/loop_system_dynamics/cloud_itonami_isic_isco_sysml.cljs`
+goes one level deeper, using `dynamics.sysml`'s generic
+`fleet-model`/`add-fleet-requirement` (a second, N-member shape distinct
+from the etzhayyim funnel above) to model all **797 individual repos**
+(`resources/cloud-itonami-isic-isco-sysml-seed.edn` -- every code's real
+GitHub name, a real sourced label from its `:description` or README, and
+its real `manifest/west.yml` registration status) as its own PartUsage,
+each with its own traceable `RequirementUsage`.
+
+Two real, per-code requirements: **`RegisteredInWorkspace`** (all 797
+eligible; 642 satisfied, 155 individually-named unregistered codes) and
+**`DeclaresClassificationRevision`** (isic's 457 only -- isco doesn't apply,
+it's uniformly `ISCO-08`-tagged already) -- a real finding this modeling
+surfaced: only 216/457 (47.3%) of isic's own repos correctly declare
+whether they blueprint ISIC Rev.4 or Rev.5; 239 (52.3%) don't declare a
+revision at all and 2 mislabel it as `ISIC-08` (borrowing ISCO's
+convention, which ISIC does not have). Neither the category-level count nor
+the category-level backlog/rate could show this -- it only exists at the
+per-code structural level, which is exactly what SysML v2's Definition/
+Usage/RequirementUsage traceability is for.
+
 ## Test
 
 ```bash

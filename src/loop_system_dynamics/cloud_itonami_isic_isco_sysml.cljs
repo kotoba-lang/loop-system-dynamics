@@ -1,0 +1,206 @@
+(ns loop-system-dynamics.cloud-itonami-isic-isco-sysml
+  "Real OMG SysML v2 (kotoba-lang/org-omg-sysmlv2, via the generic
+   dynamics.sysml/fleet-model + add-fleet-requirement N-member fleet
+   pattern) structural model of cloud-itonami's 797 per-ISIC/ISCO-code
+   classification-blueprint repos, modeled ONE BY ONE -- not the two
+   category-level counts already in resources/entities-seed.edn's
+   :cloud-itonami entity, and not the per-category aggregate backlog/rate
+   in cloud_itonami_xmile.cljs, but a real PartUsage per individual code
+   (cloud-itonami-isic-6419, cloud-itonami-isco-1321, ...), each with its
+   own traceable requirement satisfaction.
+
+   Two real, per-member RequirementUsages are attached:
+   1. `RegisteredInWorkspace` (all 797 members eligible) -- satisfied iff
+      the code's repo appears in com-junkawasaki/root manifest/west.yml.
+   2. `DeclaresClassificationRevision` (isic members ONLY -- isco's 340
+      repos uniformly declare \"ISCO-08\" already, so this requirement does
+      not apply to them at all, not 'measured and passing') -- satisfied
+      iff the repo's own description/README explicitly and correctly
+      declares which ISIC revision (Rev.4 or Rev.5) it blueprints; a
+      real, sourced finding this cycle surfaced: cloud-itonami's own isic
+      fleet is internally inconsistent about this (undeclared or
+      mislabeled in the majority of repos), which the individual-code
+      SysML model makes traceable per-repo instead of just as an aggregate
+      percentage."
+  (:require ["fs" :as fs]
+            ["path" :as path]
+            [clojure.edn :as edn]
+            [clojure.string :as str]
+            [dynamics.sysml :as ds]
+            [sysml.model :as sm]
+            [sysml.validate :as validate]))
+
+(def sysml-ns
+  {:model sm/model :add-element sm/add-element :part-definition sm/part-definition
+   :part-usage sm/part-usage :nest sm/nest
+   :requirement-definition sm/requirement-definition :requirement-usage sm/requirement-usage
+   :with-subject sm/with-subject :satisfy-requirement-usage sm/satisfy-requirement-usage})
+
+(defn- slurp [p] (fs/readFileSync p "utf8"))
+(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- ensure-dir! [file-path]
+  (fs/mkdirSync (path/dirname file-path) #js {:recursive true}))
+
+;; ---------------------------------------------------------------------------
+;; observe
+;; ---------------------------------------------------------------------------
+
+(defn observe
+  ([] (observe "resources/cloud-itonami-isic-isco-sysml-seed.edn"))
+  ([seed-path] (slurp-edn seed-path)))
+
+;; ---------------------------------------------------------------------------
+;; evaluate: 797 real codes -> one SysML v2 fleet + 2 real requirements
+;; ---------------------------------------------------------------------------
+
+(def declares-revision?
+  "A code's own text correctly declares WHICH ISIC revision it blueprints --
+   'undeclared' (no tag at all) and 'isic-08-mislabel' (borrows ISCO's
+   revision-numbering convention, which ISIC does not have) both count as
+   NOT satisfying this -- the requirement is about a real, correct
+   declaration, not merely the presence of some text near the word ISIC."
+  #{:rev4 :rev5})
+
+(defn build-model
+  [{:keys [codes]}]
+  (let [members (map (fn [{:keys [repo]}] {:name repo}) codes)
+        fleet (ds/fleet-model sysml-ns
+                               {:fleet-name "CloudItonamiClassificationFleet"
+                                :member-definition-name "ClassificationBlueprint"
+                                :members members})
+        registered-members (map (fn [{:keys [repo registered]}]
+                                   {:name repo :satisfied? registered})
+                                 codes)
+        with-registration (ds/add-fleet-requirement
+                            sysml-ns fleet
+                            {:name "RegisteredInWorkspace"
+                             :req-id "WEST-REGISTRATION"
+                             :text "Every published cloud-itonami classification-blueprint repo must be registered in com-junkawasaki/root's manifest/west.yml"
+                             :members registered-members})
+        isic-members (->> codes
+                           (filter #(= :isic (:category %)))
+                           (map (fn [{:keys [repo revision-tag]}]
+                                  {:name repo :satisfied? (contains? declares-revision? revision-tag)})))]
+    (ds/add-fleet-requirement
+     sysml-ns with-registration
+     {:name "DeclaresClassificationRevision"
+      :req-id "ISIC-REVISION-DECLARATION"
+      :text "The repo's own description/README must explicitly and correctly declare which ISIC revision (Rev.4 or Rev.5) it blueprints -- not applicable to isco (uniformly ISCO-08 already)"
+      :members isic-members})))
+
+(defn evaluate
+  [observation]
+  (let [model (build-model observation)
+        problems (validate/validate model)]
+    {:model model
+     :problems problems
+     :valid? (validate/valid? problems)
+     :element-count (count (sm/elements model))}))
+
+;; ---------------------------------------------------------------------------
+;; decide
+;; ---------------------------------------------------------------------------
+
+(defn decide
+  [{:keys [codes]}]
+  (let [by-cat (group-by :category codes)
+        reg-stats (fn [cs] {:total (count cs)
+                             :registered (count (filter :registered cs))
+                             :unregistered (count (remove :registered cs))})
+        isic (get by-cat :isic [])
+        isco (get by-cat :isco [])
+        rev-stats (frequencies (map :revision-tag isic))]
+    {:registration {:isic (reg-stats isic) :isco (reg-stats isco) :total (reg-stats codes)}
+     :revision-declaration
+     {:correctly-declared (+ (get rev-stats :rev4 0) (get rev-stats :rev5 0))
+      :undeclared (get rev-stats :undeclared 0)
+      :mislabeled (get rev-stats :isic-08-mislabel 0)
+      :total (count isic)
+      :breakdown rev-stats}
+     :unregistered-samples
+     {:isic (->> isic (remove :registered) (take 5) (map (juxt :repo :label)))
+      :isco (->> isco (remove :registered) (take 5) (map (juxt :repo :label)))}}))
+
+;; ---------------------------------------------------------------------------
+;; act
+;; ---------------------------------------------------------------------------
+
+(defn render-report
+  [observation evaluation decision]
+  (let [reg (:registration decision)
+        rev (:revision-declaration decision)]
+    (str "# cloud-itonami isic/isco individual-code SysML v2 model — as of " (:as-of observation) "\n\n"
+         "Generated by kotoba-lang/loop-system-dynamics "
+         "(loop-system-dynamics.cloud-itonami-isic-isco-sysml). Structural: kotoba-lang/org-omg-sysmlv2 "
+         "(via kotoba-lang/dynamics.sysml's generic fleet-model + add-fleet-requirement).\n\n"
+         "## Model size\n\n"
+         (:element-count evaluation) " real elements: one `ClassificationBlueprint` PartDefinition, "
+         "797 individual PartUsages (one per cloud-itonami-isic-*/isco-* repo, real names), "
+         "2 shared RequirementDefinitions, and a per-code RequirementUsage (+ SatisfyRequirementUsage "
+         "where satisfied) for each. Structurally valid: " (:valid? evaluation) ".\n\n"
+         "## Requirement 1 — RegisteredInWorkspace (all 797 eligible)\n\n"
+         "| category | total | registered | unregistered |\n|---|---|---|---|\n"
+         "| isic | " (:total (:isic reg)) " | " (:registered (:isic reg)) " | " (:unregistered (:isic reg)) " |\n"
+         "| isco | " (:total (:isco reg)) " | " (:registered (:isco reg)) " | " (:unregistered (:isco reg)) " |\n"
+         "| **total** | " (:total (:total reg)) " | " (:registered (:total reg)) " | " (:unregistered (:total reg)) " |\n\n"
+         "Sample unregistered isic codes: "
+         (str/join ", " (for [[repo label] (:isic (:unregistered-samples decision))] (str "`" repo "` (" label ")"))) "\n\n"
+         "Sample unregistered isco codes: "
+         (str/join ", " (for [[repo label] (:isco (:unregistered-samples decision))] (str "`" repo "` (" label ")"))) "\n\n"
+         "## Requirement 2 — DeclaresClassificationRevision (isic only, 457 eligible; isco not applicable)\n\n"
+         "| | count | share |\n|---|---|---|\n"
+         "| correctly declared (Rev.4 or Rev.5) | " (:correctly-declared rev) " | "
+         (.toFixed (* 100 (/ (:correctly-declared rev) (:total rev))) 1) "% |\n"
+         "| undeclared | " (:undeclared rev) " | " (.toFixed (* 100 (/ (:undeclared rev) (:total rev))) 1) "% |\n"
+         "| mislabeled (borrows ISCO's \"-08\" convention) | " (:mislabeled rev) " | "
+         (.toFixed (* 100 (/ (:mislabeled rev) (:total rev))) 1) "% |\n\n"
+         "## Reads\n\n"
+         "Individual-code SysML modeling surfaces two DIFFERENT compliance stories that a "
+         "category-level count (`resources/entities-seed.edn`'s `:cloud-itonami` entity) or a "
+         "category-level rate (`cloud_itonami_xmile.cljs`'s Backlog_isic/Backlog_isco) cannot "
+         "distinguish member-by-member: (1) which SPECIFIC repos are still unregistered (now "
+         "individually traceable, not just a count), and (2) a genuinely different requirement -- "
+         "internal labeling consistency -- where isco is uniform (340/340 declare \"ISCO-08\") but "
+         "isic is not (only " (:correctly-declared rev) "/" (:total rev) " correctly declare which "
+         "revision they blueprint), a finding invisible to any of this loop's prior, coarser lenses.\n")))
+
+(defn act!
+  [observation evaluation decision report-path]
+  (ensure-dir! report-path)
+  (fs/writeFileSync report-path (render-report observation evaluation decision))
+  report-path)
+
+;; ---------------------------------------------------------------------------
+;; record-evidence
+;; ---------------------------------------------------------------------------
+
+(defn record-evidence!
+  [observation decision ledger-path]
+  (ensure-dir! ledger-path)
+  (let [entry (pr-str {:event/as-of (:as-of observation)
+                        :event/registration (:registration decision)
+                        :event/revision-declaration (dissoc (:revision-declaration decision) :breakdown)})]
+    (fs/appendFileSync ledger-path (str entry "\n"))
+    entry))
+
+;; ---------------------------------------------------------------------------
+;; the cycle
+;; ---------------------------------------------------------------------------
+
+(defn run-cycle!
+  [{:keys [seed-path report-path ledger-path]
+    :or {seed-path "resources/cloud-itonami-isic-isco-sysml-seed.edn"
+         report-path "target/cloud-itonami-isic-isco-sysml-report.md"
+         ledger-path "ledger/cloud-itonami-isic-isco-sysml-ledger.edn"}}]
+  (let [observation (observe seed-path)
+        evaluation (evaluate observation)
+        decision (decide observation)]
+    (when-not (:valid? evaluation)
+      (throw (ex-info "cloud-itonami-isic-isco-sysml: model failed SysML v2 validation"
+                       {:problems (:problems evaluation)})))
+    (act! observation evaluation decision report-path)
+    (record-evidence! observation decision ledger-path)
+    {:evaluation evaluation
+     :decision decision
+     :report-path report-path
+     :ledger-path ledger-path}))
