@@ -427,7 +427,13 @@
   {:id :net-kotobase
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 921 :source "90-docs/business/metrics/net-kotobase.edn, 2026-07-20, kotobase.net zone"}
-            :website-requests-7d {:value 13951}}}
+            :website-requests-7d {:value 13951}
+            :discoverability-check {:value {:robots-txt "correct real content-signals policy, text/plain, matches manimani.cloud/murakumo.cloud's already-confirmed-correct pattern"
+                                             :well-known-did-json "HTTP 200, real content -- id: did:web:kotobase.net, alsoKnownAs: [did:web:kotobase.gftd.ai]"
+                                             :alsoknownas-claim-verified "did:web:kotobase.gftd.ai actually resolves (HTTP 200, real Cloudflare IPs, its own .well-known/did.json also 200s) -- unlike the etzhayyim did:web pattern (findings 16/16b/18/24/24b), this alsoKnownAs claim is genuinely true, not fabricated"
+                                             :absences-not-bugs "well-known/actors.json and sitemap.xml both 404 -- kotobase is a developer-facing Knowledge Graph BaaS product, not an actor-roster site like etzhayyim, so no evidence either was ever intended to exist here; recorded as a checked absence, not asserted as a bug without evidence"}
+                                     :source "Direct curl + dig against the live kotobase.net and kotobase.gftd.ai domains, 2026-07-21, applying the same alsoKnownAs-verification methodology that found the etzhayyim bug"
+                                     :interpretation "A genuine 'checked clean' result, extending the same discoverability-audit methodology (findings 20/20b) to a domain not yet covered. Not every application of this methodology finds a new bug -- this is the 3rd domain (after itonami.cloud, murakumo.cloud) confirmed to be doing this correctly, useful as a real negative-result data point alongside the positive findings"}}}
 
   {:id :network-isekai
    :org "gftdcojp"
