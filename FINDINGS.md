@@ -2116,6 +2116,46 @@ Second real instance of the same lesson finding 4c already taught this
 catalog once: before pooling a product's zero into a cross-portfolio
 pattern, check whether the relevant feature was ever actually built.
 
+## 29. isekai.network's discoverability gap (finding 20/20b) is finally dispatchable -- the deploy-mechanism blocker that kept it unfixed is now resolved
+
+Findings 20 and 20b diagnosed `isekai.network`'s `/robots.txt` and
+`/sitemap.xml` bug (both serve the app's SPA shell instead of real
+content) precisely but deliberately did not dispatch a fix, given 2
+real uncertainties: whether the deploy mechanism was even knowable
+from the repo, and (for `aozora.app`, the sibling finding) a real
+content decision about stale branding. This cycle re-checked
+`isekai.network` specifically and found both blockers resolved for
+this domain.
+
+**Deploy mechanism, fully resolved, not ambiguous:** `wrangler.toml`'s
+own comment in `gftdcojp/network-isekai` states directly -- "Cloudflare
+Pages — static deploy of the built site. Deploy: npm run deploy
+(builds app + Studio and verifies required artifacts first)" -- with
+`pages_build_output_dir = "public"` and `isekai.network` as the bound
+custom domain. No inference needed; the repo names its own deploy
+command.
+
+**No stale-content decision needed, unlike aozora.app:** this is a
+genuinely never-authored gap for a fresh app with no prior brand
+identity to conflict with (confirmed: `llms.txt` and `/api/status` /
+`/api/health` are ALSO served as the SPA shell -- this app has
+literally zero backend API surface of any kind, matching its own
+tagline "No key, no server, no install"). A minimal, universally-safe
+`robots.txt` (`Allow: /`) and a sitemap listing only verified-real
+routes requires no product knowledge or brand judgment call.
+
+Dispatched a narrowly-scoped fix under the same standing authorization
+and verify-before-deploy discipline as every other fix this thread has
+made -- 2 new minimal files only, explicit instruction not to invent
+unverified routes, explicit instruction to check this repo's own
+actual PR/merge convention rather than assume it matches
+`etzhayyim/root`'s (a different org, may have different norms), and to
+leave the PR open for human review rather than self-merge if the
+repo's own practice suggests that's expected. Outcome not yet known as
+of this entry. `aozora.app`'s sibling finding remains genuinely
+unfixed -- its stale-content decision is real and this entry does not
+resolve it.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
