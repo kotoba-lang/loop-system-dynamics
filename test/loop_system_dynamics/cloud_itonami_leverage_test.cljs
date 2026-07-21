@@ -30,3 +30,18 @@
           decision (leverage/decide ev)]
       (is (= 3 (count (:top-3 decision))))
       (is (= (take 3 (:intervention-ranking ev)) (:top-3 decision))))))
+
+(deftest fleet-maturity-standardization-outranks-single-category-revision-backfill-test
+  (testing "standardizing blueprint.edn maturity (774/1155 real repos, band B) outranks a smaller-scale backfill (band D) -- scale alone does not override band"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))]
+      (is (> (:base-score (by-id :standardize-maturity-declaration))
+             (:base-score (by-id :backfill-revision-tags)))))))
+
+(deftest stub-repo-scope-decision-is-band-a-and-included-despite-low-tractability-test
+  (testing "resolving what happens to the 312 stub repos is a goal-level (band A) decision, deliberately kept in the ranking at its honest low tractability rather than omitted"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
+          resolve-stubs (by-id :resolve-stub-repo-scope)]
+      (is (= :band/A (:band resolve-stubs)))
+      (is (< (:tractability resolve-stubs) 0.3)))))
