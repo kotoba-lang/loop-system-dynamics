@@ -2279,6 +2279,60 @@ deployment of the correct custom domain, and report honest live
 verification rather than an assumed "should be fixed now." Outcome not
 yet known as of this entry.
 
+## 32b. aozora.app fixed and independently re-verified live -- but the fixing agent found this entry's own root-cause diagnosis (findings 20/20b) named the wrong repo
+
+The dispatched fix landed, and it's real: `https://aozora.app/robots.txt`
+and `/sitemap.xml` both now return correct content (`text/plain` /
+`application/xml`, the minimal truthful defaults this thread's own
+established pattern calls for), independently re-verified live by
+this analysis, not just trusted from the report. Homepage unaffected.
+
+**But the fixing agent's own due diligence found something this
+catalog got wrong, and it's worth recording precisely rather than
+glossing over:** findings 20/20b identified `gftdcojp/aozora-yoro-ui`'s
+`wrangler.aozora.jsonc` as the live config serving `aozora.app`. It
+was not. That Worker (`aozora-app`) had not been deployed since
+2026-06-20, and its declared entry point (`src/worker.cljc`) has never
+existed in that repo's git history at all -- `wrangler deploy` fails
+locally with a missing-entry-point error. The agent confirmed the
+REAL live Worker by byte-diffing the actual homepage HTML: it's
+`app-aozora-spa`, deployed from a completely different repo,
+`gftdcojp/aozora-appview` (itself extracted from `gftdcojp/app-aozora`,
+which an ADR the agent found -- 2607189100 -- explicitly names as the
+sole owner of Aozora's public runtime/deploy authority, not
+`aozora-yoro-ui` at all).
+
+**This is a real misdiagnosis in this catalog's own prior work, not
+just an execution detail.** Findings 20/20b's live-config
+disambiguation (finding 20b: "disambiguated which of aozora-yoro-ui's
+2 wrangler configs is live") was itself wrong -- neither config in
+that repo was actually live; the correct repo wasn't even on this
+catalog's radar until this cycle's fixing agent found it while trying
+to execute the dispatched fix and discovering the premise didn't hold.
+
+**The agent's handling of this discovery is worth recording as a model
+of the exact judgment this workspace's own delegation discipline asks
+for:** rather than either blindly forcing the (wrong) dispatched plan
+or silently improvising something unexplained, it (1) fixed and
+deployed the REAL live repo (`aozora-appview`, PR #1, self-merged per
+that repo's own confirmed no-review convention, 280 tests / 894
+assertions green before deploy, Version ID `0b42191f-b5d8-40a6-8d1d-
+d14b358784ff`, confirmed the 100%-traffic deployment), (2) also applied
+the identical content fix to the originally-named `aozora-yoro-ui`
+repo for consistency (PR #1 there too, self-merged) but explicitly
+DECLINED to deploy it -- correctly reasoning that forcing a deploy
+there could attempt to reclaim the `aozora.app` custom-domain route
+from the actually-live Worker, a real production regression risk, not
+a fix -- and (3) reported the full discrepancy plainly rather than
+letting a successful-looking "task complete" message paper over that
+the original diagnosis had been wrong.
+
+Corrected here with the same discipline already applied to the
+iso3166, dir445, AFL-CIO/NEA, and itonami.cloud-pooling self-
+corrections in this catalog: the fix stands, real and re-verified; the
+root-cause attribution in findings 20/20b is now known to have named
+the wrong repo, and this entry is the record of that correction.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
