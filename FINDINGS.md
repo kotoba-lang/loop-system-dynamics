@@ -4471,6 +4471,79 @@ consistent with this catalog's own repeated experience that reading a
 primary source directly, rather than assuming what it will say from
 its category, keeps finding real, different things.
 
+## 72. A real strategic optimization model exists for exactly this catalog's own domain (labor-liberation dW/dt across the cloud-itonami/etzhayyim dependency DAG) -- and cross-referencing its dated baseline against this catalog's own already-verified figures reveals the underlying registries have grown far faster than the model's own prioritization input reflects
+
+Checked a previously-unread `90-docs/business/` file:
+`labor-liberation-sd-model.edn` (`com-junkawasaki/root`, `ADR-2607122100`)
+-- a genuinely different kind of artifact from any other product
+document this catalog has read. Not a lean-canvas business model but a
+real, machine-readable **optimization model**: nodes and `:requires`/`:enables`
+dependency edges across the cloud-itonami/etzhayyim ISIC/ISCO rollout,
+loaded via `nbb scripts/labor-liberation-sd.cljs [verify|layers|rank|loops|plan|q]`,
+whose explicit stated objective is `:model/objective "maximize dW/dt --
+W = 解放された人間労働時間ストック"` (maximize the rate of change of W,
+the stock of liberated human labor-hours), scored per node as
+`unlocked-W x automatability-now x wedge x loop-boost x gate-factor`,
+gated behind 2 real named gates (`:gate.robotics`, requiring a live
+robot fleet + accident-free audit ledger; `:gate.trust`, requiring
+operational track record across earlier waves) that zero out any
+node's score while closed.
+
+**A precise, dated baseline this catalog can independently
+cross-check, not take on faith**: `:model/version "2026-07-13.10"`,
+`:model/baseline` records `occupation-registry {:total 436
+:implemented 23 :blueprint 61 :spec 353}` and `industry-registry
+{:total 646 :implemented 131 :spec 494}` and `itonami-cloud {:tenants
+1 :external-registrations 0 :revenue 0}`, all as of 2026-07-13. This
+analysis has ALREADY directly read the live registries this same
+session (finding 67's investigation into `ADR-2607999995`, and a
+fresh re-check just now): `kotoba-lang/occupation`'s
+`resources/kotoba/occupation/registry.edn` currently shows
+**340 implemented / 97 spec / 0 blueprint** (grepped directly, both
+times); `kotoba-lang/industry`'s equivalent registry currently shows
+**458 implemented / 192 spec / 0 blueprint** (grepped directly, just
+now). `itonami-cloud`'s tenants figure is independently already
+recorded in this catalog's own `:cloud-itonami-saas-product` entity as
+4 (`:funnel`, sourced 2026-07-20).
+
+**The real, measured growth this comparison reveals**: in roughly 10
+days (2026-07-13 to now), the ISCO occupation registry's
+`:implemented` count grew **23 -> 340 (~14.8x)** and its `:blueprint`
+holdout count cleared completely (**61 -> 0**, consistent with finding
+67's own observation that a live hardening pass is actively promoting
+and correcting these classifications); the ISIC industry registry's
+`:implemented` count grew **131 -> 458 (~3.5x)**; `itonami-cloud`
+tenants grew 1 -> 4. This is real, substantial, fast execution
+velocity across the exact rollout this model exists to prioritize --
+directly consistent with, and now precisely quantified against, the
+sustained batch-landing activity findings 66-67 already documented in
+detail.
+
+**The gap this reveals in the model itself**: `labor-liberation-sd-model.edn`
+has not been touched with real content since its `2026-07-13.10`
+baseline -- the only later commit (`gh api .../commits?path=...`,
+2026-07-16) is a `fix(main): restore full tree after sparse-worktree
+tree collapse` recovery, not a data update. A model whose entire
+purpose is computing `rank`/`plan` output (which node to prioritize
+next, weighted by `unlocked-W` = labor-hours reachable through that
+node's transitive dependents) is currently running, if invoked today,
+against an `:implemented` count for ISCO that undercounts reality by
+roughly 14.8x and an ISIC count that undercounts by roughly 3.5x --
+inputs precise enough to plausibly change which node actually scores
+highest, since `unlocked-W` depends on which downstream nodes are
+already unlocked (`:implemented`) versus still blocked
+(`:spec`/`:blueprint`).
+
+**Scoped honestly**: this analysis did not clone `kotoba-lang/dynamics`'s
+sibling scripting environment and actually invoke `nbb
+scripts/labor-liberation-sd.cljs rank` to see what output the stale
+baseline currently produces -- the staleness fact itself (dated
+baseline vs. two independently-verified current registry reads) is
+established directly from primary sources without needing to run the
+script, but whether the actual rank ordering the model would emit
+today materially differs from what fresh data would produce is not
+verified, and is a natural next step rather than a claim made here.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
