@@ -3392,6 +3392,59 @@ can't draw organic stars from strangers browsing GitHub. Recorded so a
 future cycle doesn't mistake this for the same kind of "zero external
 traction" signal found elsewhere.
 
+## 52. Correcting finding 51's own overreach: `jk-corp` reveals `jk-luxury` actually houses TWO different legal entities, not one -- and the source code itself has the same confusion this catalog just made
+
+Checking the 3 `jk-luxury` repos finding 51 hadn't examined yet
+(`jk-corp`, `club-shinshi-actor-shinshi`, `club-shinshi-actor-
+magatama`) found something that requires correcting finding 51's own
+claim, not just adding new coverage.
+
+`jk-corp`'s README states plainly, with its own explicit "混同注意"
+(confusion warning) heading: `jk-luxury` currently houses **two
+different legal entities**. `club-shinshi`/`net-babiniku` are operated
+by **JK Inc. (a British Virgin Islands company)**; `jk-corp` itself is
+operated by **JK株式会社 (a Japanese company, formerly COMMONS株式会社)**
+-- corporate/legal/tax administration only, no product code. The
+governing ADR (`90-docs/adr/2607159800-jk-luxury-jk-corp-legal-tax-
+project.edn`, fetched directly) confirms this precisely, citing an
+earlier ADR's 2026-07-06 amendment as the source of the club-
+shinshi/net-babiniku = JK Inc. (BVI) assignment.
+
+**This directly corrects finding 51's own claim.** Finding 51 quoted
+`net-babiniku`'s `wrangler.toml` comment -- "the address is JK株式会社's
+receive treasury... the SAME address club-shinshi's SHINSHI_TREASURY_
+ADDR uses" -- and concluded from it that "jk-luxury is a real
+commercial operating entity... 'JK株式会社.'" Per `jk-corp`'s own
+authoritative, owner-confirmed ADR, that's backwards: `club-shinshi`/
+`net-babiniku`'s real operating entity is JK Inc. (BVI), not JK株式会社.
+**The source code comment in `net-babiniku`'s own `wrangler.toml`
+appears to use the wrong entity name** -- the exact confusion the ADR
+itself was written to prevent (its own text: "この差異はドキュメントで明示す
+る運用でカバー," i.e. document the difference so it doesn't get
+conflated -- which this catalog's own finding 51 then did anyway, by
+trusting a code comment over checking for a governing ADR first).
+
+**Not resolved further, recorded as found**: whether the wrangler.toml
+comment is a simple documentation slip (harmless, since it's a comment
+not affecting the address value itself) or reflects a real
+banking-subsidiary nuance (e.g. a BVI holding company's funds actually
+settling through a Japanese entity's bank rail) is not something this
+analysis can determine from the available sources, and isn't guessed.
+
+**`jk-corp`'s actual content is real, substantive, and sensitive**:
+scanned real tax documents from a real Japanese tax office (京橋税務署),
+a real withholding-tax underpayment penalty notice (整理番号00256104,
+total 74,825円, due date 2026-07-27), for professional-fee withholding
+on a real accountant firm's fees (税理士法人TOTAL, 741,510円 for
+2025 H2) -- correctly distinguished by the ADR's own text from
+employee payroll withholding (a misconception the owner initially had,
+which the ADR explicitly documents and corrects: withholding on
+professional fees under Japan's Income Tax Act Art. 204(1)(2) applies
+regardless of whether the company has employees). Recorded factually
+because it is already a real, committed, owner-authored record in this
+workspace -- not surfaced or editorialized beyond what the source
+itself states.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
