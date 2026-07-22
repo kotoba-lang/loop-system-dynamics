@@ -4759,6 +4759,61 @@ non-updates here) is a more honest account of what re-checking a
 library of external reference data actually looks like than reporting
 only the positive hit.
 
+## 77. A fourth archetype benchmark check, and a genuinely different negative-result shape than finding 76's: `:quaker-consensus-membership`'s cited 2017 census is still current, not because newer sources are noisier, but because no newer worldwide census has ever been run -- and this archetype is the direct comparison point for etzhayyim's own adherent-loop
+
+Continued findings 75-76's benchmark-verification pass with a 4th
+archetype, chosen specifically because its citation looked like the
+strongest stale-data candidate in the whole table:
+`:quaker-consensus-membership` cites "FWCC 2017 worldwide census:
+~380,000 members" -- already 9 years old as of today, older than any
+other archetype's citation this catalog has checked. Worth checking
+carefully since this archetype is the direct comparison point
+`dynamics.core` uses for etzhayyim's own `:etzhayyim-adherent-loop` --
+the one loop this catalog's own `bin/run.cljs` has reported as
+"never-fired" in every single cycle this session.
+
+**A real, initially-promising lead that didn't hold up under direct
+verification**: a web search surfaced an FWCC Americas article titled
+"FWCC Census of Friends Shows Declines" (2022) and secondary summaries
+citing "400,000" as a current worldwide total with Africa at "~180,000
+(49%)" -- numbers that don't even reconcile with each other (49% of
+400,000 is 196,000, not 180,000), the same aggregation-noise problem
+finding 76 already found with Bluesky's secondary sources. Rather than
+treating either figure at face value, fetched Friends Journal's own
+direct reporting (a dedicated Quaker-community publication, closer to
+a primary source than SEO-aggregated search summaries) on the actual
+worldwide map/census release: **it confirms the 2017 release (~380,000
+members, itself "the first such release since 2012") remains the most
+recent comprehensive worldwide count** -- the 2022 "Census of Friends"
+piece and the "400,000" figure evidently describe something narrower
+(a regional re-analysis, e.g. the same source's own separately-reported
+"24% decline in US meetings and churches 2010-2020," not a new
+comprehensive global recount) rather than superseding the 2017 total.
+Friends Journal's own commenters are quoted noting a real methodology
+caveat on the 2017 figure itself (it combines "members and attenders,"
+where earlier counts used members only, "potentially inflating
+apparent growth figures") -- a limitation `dynamics.core`'s own
+citation doesn't currently carry, but this analysis is not adding it
+speculatively since it wasn't independently confirmed against the
+2017 report's own methodology section.
+
+**Why this negative result is a genuinely different shape from finding
+76's, not a repeat**: findings 76's two non-updates happened because
+*better, newer data exists but wasn't more authoritative than what's
+already cited* (noisy secondary sources; an older, differently-denominated
+figure). Here, the citation holds up because *no newer worldwide
+census has been run at all* -- a real, dated fact about the
+data-generating institution itself (FWCC has not published a
+comprehensive global count since 2017, 9 years and counting), not
+about search-result quality. For a catalog whose own core domain is
+a comparably-scaled new spiritual/community-formation project
+(etzhayyim), this is directly relevant context: even a 380-year-old,
+well-organized global religious body with a dedicated statistics
+committee only manages an irregular, roughly-decade-scale worldwide
+census cadence -- a real, useful calibration point for how hard
+"know your true total adherent count" is even for mature, established
+movements, not just etzhayyim's own much younger one.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
