@@ -4607,6 +4607,45 @@ retraction: the core observation (real registries far outpacing what
 this model's own text describes) stands; the inference about score
 sensitivity was overreach.
 
+## 74. A fourth stale count in the "What's still open" section, caught by re-applying the same periodic check findings 55-57 established -- and, this time, naming the recurring pattern itself rather than treating it as one more one-off
+
+Findings 55, 56, and 57 each independently found the "What's still
+open" section can go stale within its own session, and each time
+fixed the specific stale bullet found. This cycle re-applied that same
+check (read the WHOLE section, not just the bullet a trigger happened
+to point at) rather than assuming the section had stayed clean since
+finding 57. It hadn't: the "Coverage is still a small, honest sample"
+bullet's own numbers ("39 entities, 19 loop archetypes," set by
+finding 56 on 2026-07-22T16:43:16+09:00 -- `git log -1 --format=%cI`
+on that exact commit, not estimated) went stale within about a day, as
+findings 69/70/71 each added one new entity while closing out this
+catalog's own entity-coverage gap on `nexus-x402`/`ai-gftd-yukkuri`/
+`app-aozora-yoro`. Direct re-execution, the same verification method
+every prior correction of this bullet has used: `(count (:entities
+data))` on the live seed and `(count dynamics.core/loop-archetypes)`
+both run just now give **42 entities, 19 loop archetypes** -- entity
+count +3, loop-archetype count unchanged.
+
+**Worth naming plainly rather than filing as another isolated
+catch**: this is the 4th time in this catalog's own run that this
+exact bullet has needed a stale-count fix (35->39 per finding 56's own
+account of its own predecessor, now 39->42 here). Three independent
+catches of the same shape is a coincidence a fourth stops being --
+this is a real, recurring structural gap: a specific numeric count,
+written once into prose, will keep drifting every time a LATER,
+topically-unrelated finding happens to add an entity, because no
+finding that adds an entity is under any obligation to also revisit
+this one unrelated bullet. The fix applied here is the same as every
+prior time (update the number, record when and how it went stale,
+leave the rest of the bullet's substantive claims -- the 5 named
+categories, the "no ceiling" framing -- untouched since those remain
+true). No structural fix (e.g., deriving this bullet's numbers
+dynamically from the seed at render time, rather than writing them
+into static prose) has been attempted in any of the 4 corrections --
+recorded here as an honest observation about a process gap this
+catalog has repeatedly patched around rather than closed, not
+resolved as part of this finding.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -4666,22 +4705,34 @@ sensitivity was overreach.
   the now-fixed seed actually runs, but that regeneration has not been
   triggered or confirmed by this analysis.
 - Coverage is still a small, honest sample, not "the whole world":
-  UPDATE (this cycle, a THIRD stale count caught in the same pass --
-  answering finding 56's own open question, "whether a third pass
-  finds more," with yes) -- this used to say "35 entities, 17 loop
-  archetypes," verified stale by direct code execution rather than
-  grepping/guessing: `(count (:entities data))` on the live seed and
-  `(count dynamics.core/loop-archetypes)` both run just now give **39
-  entities, 19 loop archetypes**. All 5 categories this bullet used to
-  name as unrepresented (labor unions, central banks, major social
-  platforms, nation-states, healthcare/education/insurance) still have
-  at least one real instance: finding 17 the AFL-CIO, finding 19 the
-  Bank of Japan, finding 21 Reddit, finding 22 Japan, finding 23
-  Japan's national medical expenditure. The schema still has no
-  ceiling, and the actual instantiation is still a tiny fraction of
-  real-world organizations and systems overall -- closing every
-  category this bullet originally named is a real milestone, not a
-  claim that coverage is now complete.
+  UPDATE (finding 74, a FOURTH stale count caught by the same periodic
+  re-check discipline -- the "39 entities, 19 loop archetypes" figure
+  finding 56 set on 2026-07-22T16:43:16+09:00 (`git log -1
+  --format=%cI 8ccd973`, not assumed) went stale within roughly a day
+  of its own commit, as findings 69/70/71 each added exactly one new
+  entity while closing this catalog's own entity-coverage gap on the
+  3 previously-untracked portfolio products. Verified by direct code
+  execution, same method as every prior correction of this bullet:
+  `(count (:entities data))` on the live seed and `(count
+  dynamics.core/loop-archetypes)` both run just now give **42
+  entities, 19 loop archetypes** -- entity count +3, archetype count
+  unchanged. All 5 categories this bullet used to name as
+  unrepresented (labor unions, central banks, major social platforms,
+  nation-states, healthcare/education/insurance) still have at least
+  one real instance: finding 17 the AFL-CIO, finding 19 the Bank of
+  Japan, finding 21 Reddit, finding 22 Japan, finding 23 Japan's
+  national medical expenditure. The schema still has no ceiling, and
+  the actual instantiation is still a tiny fraction of real-world
+  organizations and systems overall -- closing every category this
+  bullet originally named remains a real milestone, not a claim that
+  coverage is now complete. This is the 4th time in this catalog's own
+  history that this exact bullet has needed a stale-count correction
+  (35->39 per finding 56's own text, now 39->42 here) -- a real,
+  recurring pattern worth naming plainly rather than treating each
+  instance as a one-off: a static count baked into prose will keep
+  drifting every time a later, unrelated-in-topic finding adds an
+  entity, and no single finding has yet made this bullet
+  self-updating.
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed
