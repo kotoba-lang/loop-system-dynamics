@@ -4414,6 +4414,63 @@ batch production) rather than abandonment, and this analysis does not
 claim to know which. What is directly, currently verified is the
 plain fact of the gap itself, not its cause or permanence.
 
+## 71. The last of the 3 previously-uncovered products: `app-aozora-yoro` closes the coverage gap and reveals a genuinely earlier stage than anything else in this catalog -- "no measurement apparatus exists yet," not "traffic without conversion"
+
+Closes the thread findings 69-70 opened: with this entity, all 12
+portfolio products this workspace's own `maturity-scores.edn` tracks
+now have a dedicated entry in this catalog. `app-aozora-yoro`
+("yoro," a Layer-4 messenger feature embedded in `app-aozora`) is a
+different kind of "zero" from any product checked so far. Its own
+`metrics/app-aozora-yoro.edn` (`com-junkawasaki/root`) shows
+`:workers-invocations-7d {}` (empty) and `:signal "zone 無し
+(aozora.app 配下)"` -- literally "no zone, lives under aozora.app" --
+and, unlike finding 70's `ai-gftd-yukkuri`, this is genuinely being
+re-collected daily, not frozen: checked the diff of the 2026-07-22
+`routine(itonami)` commit directly (`46df2cae94`) and a snapshot from
+6 days earlier (2026-07-17) -- both consistently, honestly report the
+same empty result. The routine here is doing its job correctly; there
+is simply nothing to measure yet.
+
+**Why this is a distinct category, not a repeat of finding #4**: the
+business-model doc's own text confirms why -- "yoro child repo 分離"
+(splitting yoro into its own repository) and "MAU テレメトリ" (MAU
+telemetry) are both listed under "Solution" as `準備` (not-yet-done
+preparation items), not shipped features. There is no separate
+deployable surface for this product to attach a zone-level metric to
+in the first place. This is a genuinely earlier stage than "traffic
+without conversion" (finding #4 and its many sub-threads, which
+require real, measured visitor/signup/conversion numbers to show a
+funnel failure) -- it precedes that pattern rather than exemplifying
+it. The product's single tracked hypothesis
+(`:hyp/yoro-aozora-funnel`, "riskiest," status "untested") has literal
+`—` (nothing) recorded as evidence, consistent with there being no
+instrumentation to produce evidence from yet.
+
+**A small, distinct doc-hygiene observation, worth noting precisely
+rather than folding into the main point**: the business-model doc's
+own "Problem" section has 3 stacked "観測 (signal)" bullets from
+different collection cycles that disagree with each other and with
+the current metrics file -- "workers 1673 inv/7d," "workers 806
+inv/7d," and "zone 無し," all three still present in the same
+document's As-of-2026-07-21 text. These read as un-pruned leftovers
+from an earlier period (before zone attribution correctly settled on
+"no zone"), not evidence of a measurement-integrity problem the way
+finding 70's frozen-metrics gap was -- a reader checking only this
+doc's Problem section, without also checking the current metrics
+file directly the way this analysis did, would see 3 conflicting
+numbers with no way to tell which is current.
+
+**Closing the arc**: 39 entities two cycles ago, now 42 -- the 3
+previously-zero-entity products (`nexus-x402`, `ai-gftd-yukkuri`,
+`app-aozora-yoro`) each turned out to need a genuinely different kind
+of finding (an answered open question + a real overclaim; a real,
+independently-verified execution-risk-materializing gap; a
+pre-instrumentation stage distinct from this catalog's most
+established pattern) rather than three variations on the same theme --
+consistent with this catalog's own repeated experience that reading a
+primary source directly, rather than assuming what it will say from
+its category, keeps finding real, different things.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
