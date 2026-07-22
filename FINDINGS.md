@@ -4544,6 +4544,69 @@ script, but whether the actual rank ordering the model would emit
 today materially differs from what fresh data would produce is not
 verified, and is a natural next step rather than a claim made here.
 
+## 73. Following through on finding 72's own flagged next step: the labor-liberation model's tool genuinely runs (a near-miss corrected before publishing), and a real rank output surfaces a THIRD, more precise staleness data point -- while partially correcting finding 72's own speculation about what the staleness actually affects
+
+Finding 72 explicitly scoped out actually invoking `nbb scripts/labor-liberation-sd.cljs rank` -- this cycle did. Worth recording the
+near-miss honestly: a first attempt, from a sparse-checkout worktree
+missing `nbb.edn`, failed with "Could not find namespace:
+clojure.java.shell" -- for a moment this looked like a real bug (a
+tool documented as runnable via plain `nbb` that couldn't resolve a
+JVM-only namespace). Before writing that up, checked further: the
+repo's own root has a local shim (`scripts/nbb_compat/clojure/java/shell.cljs`)
+wired in by `nbb.edn`'s `:paths`, which my sparse-checkout hadn't
+included. Adding `nbb.edn` to the checkout and retrying: the script
+runs correctly -- `verify` reports "nodes: 41 edges: 91 loops: 7
+gates: 2 adrs: 13, DAG acyclic (requires+enables): true, VERIFY: OK."
+No bug; a gap in this analysis's own setup, caught before being
+published as a false finding.
+
+**The real, current `rank` output**: top-scored node is
+`infra.wasm-factory` (score 1.071, status `in-progress`, `:node/labor-share
+0.0` itself but `unlocked-W 0.875` via transitively-reachable dependent
+labor-share and a `loop-boost` of 1.600 from active reinforcing-loop
+participation) -- a pure enabling-infrastructure node, not any of the
+ISCO/ISIC verticals whose real, fast growth findings 66-67/72 already
+documented. `infra.kototama-host` and `infra.murakumo-lattice` follow
+close behind (both score 1.035, status `live`). This is the model's
+actual current recommendation, read directly rather than assumed.
+
+**A more precise, THREE-point staleness timeline, found by reading a
+node's own label text in the real rank output**: `wave2.isco-cognitive`'s
+own `:node/label` embeds "ISCO 全体: impl 144 / bp 0 / spec 292" --
+a third figure, distinct from both finding 72's two already-compared
+points (23 implemented, the 2026-07-13 `:model/baseline` aggregate;
+340 implemented, this catalog's own fresh direct registry check).
+144 sits between them chronologically, undated precisely but evidently
+recorded sometime after the initial baseline and before this catalog's
+own check -- confirming the staleness in this model isn't a single
+frozen snapshot but a genuine, ongoing lag behind a fast-moving real
+registry, visible at multiple points in the file's own history of
+partial updates.
+
+**A partial correction to finding 72's own speculation, made honestly
+rather than left standing uncontested**: finding 72 suggested the
+stale baseline was "precise enough to plausibly change which node
+actually scores highest." Having now actually read the node schema,
+this needs qualifying: `wave2.isco-cognitive`'s score-formula inputs
+are exactly 3 static fields -- `:node/labor-share 0.08`,
+`:node/automatability-now 0.85`, `:node/asset-wedge 0.5` -- and the
+"impl 144" figure lives only in the free-text `:node/label`, not in
+any field the score formula (`unlocked-W x automatability-now x wedge
+x loop-boost x gate-factor`, confirmed from the script's own header
+and matched against the actual rank output's displayed formula)
+touches. The `:model/baseline` block finding 72 compared against is
+similarly a top-level documentary snapshot, not wired into per-node
+scoring inputs anywhere this analysis could find. So: the DISPLAYED
+prose (both the baseline block and this node's label) is genuinely
+stale and misleading to a reader checking status, but whether the
+underlying `labor-share`/`automatability-now`/`asset-wedge` assumption
+values THEMSELVES are stale -- which would actually move the score --
+is a separate, unverified question findings 72 conflated with the
+prose staleness. Recorded honestly as a partial walk-back, not a full
+retraction: the core observation (real registries far outpacing what
+this model's own text describes) stands; the inference about score
+sensitivity was overreach.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
