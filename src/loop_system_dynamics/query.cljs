@@ -8,10 +8,18 @@
    not just read from a static file. Every cycle before this one answered that
    by hand-copying `gh api` output into resources/entities-seed.edn's nested
    maps -- real and sourced, but only queryable by eyeballing the file. This
-   namespace ingests two real, already-sourced datasets --
-   kotoba-lang/dynamics's `loop-archetypes` catalog and a curated flat subset
-   of this repo's own `entities-seed.edn` -- as datoms, so a caller can ask a
-   genuine `:find/:where` datalog question instead of grepping prose.
+   namespace ingests three real, already-sourced datasets --
+   kotoba-lang/dynamics's `loop-archetypes` catalog, a curated flat subset
+   of this repo's own `entities-seed.edn`, and every category from any
+   fleet-registration seed (loop_system_dynamics/fleet_registration_xmile.cljs's
+   observe -- cloud-itonami/etzhayyim-actors/kotoba-lang's own real
+   backlog+rate facts) -- as datoms, so a caller can ask a genuine
+   `:find/:where` datalog question instead of grepping prose OR reading one
+   report at a time. The fleet dataset in particular makes a
+   previously-unaskable question askable directly: 'across every entity
+   this loop has modeled, which categories are stalled right now' used to
+   require opening 3 separate reports; it is now one query (see bin/
+   query_demo.cljs).
 
    This does NOT replace entities-seed.edn as the source of truth: the seed
    stays the hand-curated, dated, sourced snapshot (see README 'Extending
@@ -90,19 +98,51 @@
                       ["entity/server-error-pct" (get-in s [:path-level-status-mix :value :server-error-pct])]
                       ["entity/f2-upper-bound-95pct" (get-in s [:f2-upper-bound-95pct :value])]]))))))
 
+(defn fleet-categories->tx-data
+  "fleets: a vector of {:label \"cloud-itonami\" :observation <a
+   fleet-registration-xmile observation map, i.e. what (fleet/observe
+   seed-path) returns -- :window {:days ...} + :categories [{:id
+   :github-total :west-registered-t0 :west-registered-t1} ...]>}.
+
+   One datom entity per (entity, category) pair -- e.g. (cloud-itonami,
+   isco), (etzhayyim-actors, actor), (kotoba-lang, com) -- with backlog and
+   observed-rate-per-day computed by the SAME formula
+   loop_system_dynamics/fleet_registration_xmile.cljs's own build-model
+   uses (github-total - west-registered-t1; (west-registered-t1 -
+   west-registered-t0) / days), so this can never silently drift from what
+   the XMILE model itself simulates. This is what makes 'which categories
+   are stalled right now, across every entity' a single datalog query
+   instead of reading 3 separate reports."
+  [fleets next-tempid!]
+  (vec
+   (for [{:keys [label observation]} fleets
+         {:keys [id github-total west-registered-t0 west-registered-t1]} (:categories observation)
+         :let [days (get-in observation [:window :days])
+               backlog (- github-total west-registered-t1)
+               rate (/ (- west-registered-t1 west-registered-t0) days)]]
+     {:db/id (next-tempid!)
+      "fleet/entity" label
+      "fleet/category" (name id)
+      "fleet/github-total" github-total
+      "fleet/west-registered-t0" west-registered-t0
+      "fleet/west-registered-t1" west-registered-t1
+      "fleet/backlog" backlog
+      "fleet/observed-rate-per-day" rate})))
+
 (defn ingest!
-  "Transacts both datasets into one fresh in-memory DataScript conn and
+  "Transacts all three datasets into one fresh in-memory DataScript conn and
    returns it. Callers hold the conn and call `q` against it -- no global
    mutable state in this namespace, so tests can build independent confs
    in parallel."
-  [{:keys [archetypes structural-strength-fn entities]}]
+  [{:keys [archetypes structural-strength-fn entities fleets]}]
   (let [conn (.create_conn ds)
         tempid (atom 0)
         next-tempid! (fn [] (swap! tempid dec))
         arch-tx (when (and archetypes structural-strength-fn)
                   (archetypes->tx-data archetypes structural-strength-fn next-tempid!))
         entity-tx (when entities (entities->tx-data entities next-tempid!))
-        all-tx (into-array (map entity-map->js (concat arch-tx entity-tx)))]
+        fleet-tx (when fleets (fleet-categories->tx-data fleets next-tempid!))
+        all-tx (into-array (map entity-map->js (concat arch-tx entity-tx fleet-tx)))]
     (.transact ds conn all-tx)
     conn))
 
