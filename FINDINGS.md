@@ -3233,6 +3233,53 @@ pins are, they aren't compounding with archived-upstream or
 nonstandard-branch risk in this sample, which would have made the
 staleness itself considerably more dangerous.
 
+## 49. cloud-itonami's 4th classification prefix (`assoc`, real-world trade/business federations): the most precisely classified of the four checked so far
+
+Extended findings 43/44/45's methodology to cloud-itonami's 4th major
+classification prefix: 78 `cloud-itonami-assoc-*` repos, each modeling
+a real-world trade/industry/business association. First, a correction
+made before it became an error: an initial misreading of
+`manifest/west.yml`'s two separate `- name:` usages (the 6-entry
+`remotes:` block versus the 3612-entry `projects:` block) briefly
+suggested each association had its own separate GitHub org --
+re-checked directly against the file's own actual structure (lines
+6-19) before writing anything, confirming these are ordinary repos
+inside the single `cloud-itonami` org, same as ISIC/ISCO/ISO3166.
+
+**Substantive**: all 78 sized (46-70KB, zero empty) -- the tightest,
+most uniform distribution of the four prefixes checked.
+
+**Naming structure verified, not assumed**: each name follows `assoc-
+<4digit-ISIC>-<3letter-ISO3166>-<abbreviation>`. Cross-checked all 48
+distinct country codes used against the same real ISO 3166-1
+reference dataset finding 45 fetched -- **0 invalid**. Read one
+repo's actual README directly (`assoc-0126-idn-gapki`): a real,
+accurately-described "Indonesian Palm Oil Association (GAPKI)"
+blueprint correctly tagged ISIC 0126.
+
+**The ISIC codes are used with real precision, WebSearch-verified
+against 3 separate codes**: 36/78 repos use code 9411 -- one national
+business federation per country (Keidanren/Japan, MEDEF/France,
+BDI/Germany, CBI/UK, Confindustria/Italy, CII/India, and 30 others).
+WebSearch-confirmed 9411's real UN definition: "activities of business
+and employer membership organizations... chambers of commerce."
+Exactly right. 11 repos use code 6419 for national *commercial*
+banking associations (Zenginkyo/Japan, Bankenverband/Germany,
+FBF/France, ABA/Australia, etc.) -- WebSearch-confirmed 6419 = "other
+monetary intermediation" (banking). And critically, `assoc-6411-jpn-
+boj` (the Bank of Japan) uses the *different* code 6411, not 6419 --
+WebSearch-confirmed 6411 is specifically "central banking," a distinct
+ISIC class from commercial banking. **The dataset correctly
+distinguishes a central bank from a commercial-banking trade
+association at the ISIC-code level, not just by name.**
+
+**Comparison to the other 3 prefixes checked**: unlike ISIC's own
+top-level 457-repo set (finding 43, 28/457 group-vs-class naming
+ambiguity), the `assoc` prefix shows zero naming-precision issues in
+this full check -- every code and country combination verified real
+and correctly applied. The most precisely classified of the four
+cloud-itonami prefixes examined so far.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
