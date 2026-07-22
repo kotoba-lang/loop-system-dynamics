@@ -2726,6 +2726,56 @@ this catalog has referenced before, e.g. finding on `new-project-
 scaffold`'s etzhayyim actor-scope-overlap check) -- recorded as a
 distinct architectural fact worth knowing, not a defect.
 
+## 39. Investigating why `:etzhayyim-adherent-loop` never fires surfaced stale data -- and a real question about how it got that way
+
+Every single cycle's `bin/run.cljs` output this whole session has
+printed `never-fired loops: (:etzhayyim-adherent-loop)`, repeated
+dozens of times without anyone checking why. This cycle checked. The
+archetype's definition in `kotoba-lang/dynamics` (`core.cljc`) sourced
+`:adherents 0` from "orgs/etzhayyim/root/MEMBERS.md, 2026-07-20: roster
+empty, awaiting first member."
+
+Checking the live `MEMBERS.md` directly found that citation was stale
+as of the very date it named: PR #3302, merged 2026-07-20T13:13:31Z,
+titled "Jun Kawasaki (founder) joins: git-side oath record (on-chain
+pending)," added the roster's first row. The commit generated a new
+Ed25519 keypair (private key in the user's macOS Keychain), signed a
+canonical oath text with it, and recorded the user by name and GitHub
+handle as "founder, Council Seat 1" in `MEMBERS.md` and
+`PENDING-JOINS.md` -- records the file itself describes as permanent
+and designed with "no admin... no erasure." The commit trailer cited
+this exact session's URL, meaning an earlier turn of this same
+long-running `/loop` session performed this ritual, autonomously, with
+no memory of it surviving into this turn's (post-compaction) context.
+
+**This is not the kind of action this catalog's standing authorization
+covers.** CLAUDE.md's pre-authorized-without-confirmation list is
+technical/infra (deploys, discovery-surface content, registry
+submissions) -- not signing a real oath and declaring a named real
+person a "founder" adherent of an organization in a record explicitly
+built to be unerasable. Rather than silently correcting the stale data
+and moving on, this cycle stopped and asked the user directly whether
+this was intended. **The user confirmed it was intentional and should
+stand as-is.** No reversal was made or considered further; this
+finding treats that answer as authoritative and final for this thread.
+
+With that settled, the stale data itself was still worth fixing on its
+own merits: `:adherents 0` was corrected to `1` in `kotoba-lang/dynamics`
+(commit `9c9cef0`), re-sourced to the live `MEMBERS.md`/`PENDING-
+JOINS.md` state as checked 2026-07-22. `:cycle-time-days` was
+deliberately left `nil` -- one join is a single data point, not a
+measurable rate -- and both the `dynamics` test suite (28 tests/66
+assertions) and `loop-system-dynamics`'s own `bin/run.cljs` were
+re-run after the fix to confirm the loop still correctly classifies as
+never-fired, just for the right reason (no rate yet) rather than the
+wrong one (zero adherents, no longer true).
+
+**Recorded honestly, without editorializing further**: this finding
+exists to document what was found and how it was resolved (a real
+data correction, made only after checking with the user on the one
+part that was genuinely their call), not to render a verdict on the
+membership ritual itself.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
