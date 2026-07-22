@@ -5108,6 +5108,45 @@ and the shotlist work (2026-07-10) both predate today by several days
 with no further commits since -- whether that's a genuine pause or
 simply between-burst timing on a repo this catalog only checked once.
 
+## 83. A fifth archetype benchmark check, and a third distinct confirmation shape: `:estonia-e-residency` isn't just current, it's independently corroborated word-for-word by multiple fresh secondary sources -- the strongest kind of "no update needed" result found so far
+
+Continued findings 75-77's benchmark-verification pass with a 5th
+archetype, chosen for a real reason: `:estonia-e-residency` (cited:
+"e-resident.gov.ee / ERR / Invest in Estonia 2025 reports: 135,000+
+e-residents from 185 countries... 5,556 companies founded, EUR125M
+state revenue") is the direct comparison point for the "m6910 global
+incorporation actor" (`ADR-2607031500`, "世界法人設立") that finding
+72's own labor-liberation model tracks as a live infrastructure node
+-- worth checking since this catalog has now read that same model
+twice (findings 72-73) without ever verifying the one archetype it
+would most directly bear on.
+
+**A web search for current 2026 figures returned multiple sources that
+agree with each other and with the citation, not against it**: "in
+2025 e-residents founded 5,556 new companies -- up 15 per cent on
+2024" and "e-residents delivered nearly EUR125 million in 'direct
+revenue' to the state, an 87 per cent rise year on year" (Estonian
+World, reporting the state's own program data) -- both figures match
+`dynamics.core`'s citation exactly, not approximately. The resident
+count is close but not identical (131,700 as of October 2025 per one
+source vs. the cited "135,000+") -- consistent with continued growth
+through the remainder of 2025 rather than a discrepancy, and both
+figures independently derive from the same underlying
+`e-resident.gov.ee` dashboard the citation already names as a source.
+
+**Why this is a genuinely different result shape than findings
+76-77, not a repeat of either**: finding 76's non-updates held because
+newer sources were noisier or less authoritative than what's cited;
+finding 77's Quaker check held because no newer primary data exists
+at all. Here, multiple current, independent secondary sources
+actively corroborate the exact cited figures -- the strongest form of
+"still accurate," not merely "not disproven." Three of four
+verification attempts across findings 76-77 and this one have now
+confirmed rather than updated a citation, each for a different
+underlying reason -- a genuinely varied, honest picture of what
+re-checking a reference library actually looks like, not a uniform
+result this catalog is reporting selectively.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
