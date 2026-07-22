@@ -4342,6 +4342,78 @@ and `:hyp/nexus-x402-external-seller` are both marked "untested"/"speculative"
 plainly, not inflated. The one overclaim found (above) is the
 exception in an otherwise honest document, not the pattern.
 
+## 70. Second of the 3 uncovered products: ai-gftd-yukkuri's own business plan names its biggest execution risk explicitly as a "Problem" -- and this channel's real, live, independently-checked public feed shows that exact risk actively happening right now, unflagged by any internal tracking
+
+Continuing finding 69's thread (3 of 12 portfolio products had zero
+entity in this catalog), read `ai-gftd-yukkuri`'s primary sources:
+`90-docs/business/ai-gftd-yukkuri-business-model.edn` +
+`metrics/ai-gftd-yukkuri.edn` (`com-junkawasaki/root`). A real,
+fully-automated YouTube "yukkuri" (synthesized-narration) content
+channel -- 10-actor generation pipeline (scriptwriter -> voice L/R ->
+character -> illustrator -> sfx -> composer -> editor -> renderer ->
+critic) on `murakumo` text/image/audio inference + VOICEVOX TTS +
+`kami-engine` render + `dougaka` ffmpeg mux -- gated on YouTube's
+Partner Program eligibility (1,000 subscribers + 4,000 watch hours).
+Internal metrics (`:as-of "2026-07-02"`): 3 subscribers, 10.2
+cumulative watch-hours.
+
+**A real staleness gap, precisely checked, not assumed**: this same
+directory's daily `routine(bmc): 運転 ...` commits (one per day,
+`collect=done`) run continuously through 2026-07-21, but
+`metrics/ai-gftd-yukkuri.edn` itself hasn't been touched since
+2026-07-02 (`gh api .../commits?path=...`, 3 commits total, none since
+registration). Read the actual diff of the 2026-07-21 routine commit
+against `ai-gftd-yukkuri-business-model.edn`: 1 line changed, and it's
+only `:doc/as-of \"2026-07-20\"` -> `\"2026-07-21\"` -- the exact
+"登録者 3・総再生 10.2h" sentence carried over byte-identical. The
+daily routine is re-stamping a timestamp, not re-collecting real
+YouTube numbers, for this specific product.
+
+**Independently re-verified the real channel right now, not trusting
+either the internal doc or assuming staleness means stagnation**:
+fetched `https://www.youtube.com/feeds/videos.xml?channel_id=UCTisE2aPQp3i8i6JUVIUoiw`
+directly (YouTube's own live, public RSS feed, no auth needed) --
+confirms the channel is real (`ゆっくりサイバーch`, published
+2026-06-05) and reveals two facts the internal docs don't mention at
+all: (1) each episode is localized into ~10 languages simultaneously
+(the feed's 15 most recent entries include Japanese, English, Tamil,
+Arabic, Bengali, Hindi, German, Portuguese, Chinese, Spanish, and
+French versions of the same "SHIRO & PICO -- Ghost Hacker" episodes 2
+and 3) -- a real, verifiable multi-language strategy the business-model
+doc's own customer-segment framing ("視聴者... JA primary") doesn't
+reflect; (2) individual video view counts are genuinely tiny (0-10
+views each, `media:statistics views=` parsed directly from the feed
+XML) -- consistent with, not contradicting, the internal 3-subscriber
+figure. **Most significantly: every one of the 15 most recent entries
+was published within a 25-hour burst on 2026-06-24/25 -- the channel's
+own live feed shows zero uploads since then, a full 27 days of silence
+as of today.**
+
+**Why this specific gap matters, in the source's own words**: the
+business-model doc's own "Problem" section states plainly: "新規チャンネルは
+冷スタート -- 何のチャンネルか YouTube に学習させる投稿頻度が保てない"
+("new channels face cold-start -- can't sustain the posting frequency
+YouTube needs to learn what the channel is about"), and its own
+"Channels" section names the required cadence explicitly: "週2-3本の
+投稿頻度で YouTube に学習させる" (2-3 videos/week). The document names
+this exact failure mode as its own biggest named risk -- and the
+channel's real, live, independently-checked public feed shows that
+exact risk actively happening (0 videos/week for the past 4 weeks),
+unflagged anywhere in either the daily-touched business-model doc or
+the frozen metrics file. Not a contradiction of anything this catalog
+previously found -- the first documented instance of this specific
+gap shape (a plan names its own risk precisely, and current
+independently-checked reality shows that named risk materializing,
+untracked) in this catalog's whole run.
+
+**Scoped honestly**: the RSS feed shows only the 15 most recent
+entries, so total lifetime upload count and any activity before
+2026-06-24 aren't fully visible from this check alone; a 27-day gap
+could reflect a deliberate production pause (e.g., between-episode
+batch production) rather than abandonment, and this analysis does not
+claim to know which. What is directly, currently verified is the
+plain fact of the gap itself, not its cause or permanence.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
