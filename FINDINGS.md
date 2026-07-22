@@ -2884,6 +2884,39 @@ was confirmed to 301-redirect into the already-covered `app-aozora`
 checked have no live, reachable, consumer-facing surface at all and
 were excluded from this pass's scope.
 
+## 41. The fleet-registration seeds are now real datoms, not just three separate reports
+
+Finding 14's generalized `fleet_registration_xmile.cljs` produced three
+real per-entity reports (cloud-itonami/etzhayyim-actors/kotoba-lang), each
+readable on its own but not queryable together -- "which categories are
+stalled right now, across every entity this loop has modeled" required
+opening all three and eyeballing them. `loop_system_dynamics/query.cljs`
+(finding 9's DataScript layer) now ingests all 3 seeds' categories as real
+datoms (`fleet/entity`, `fleet/category`, `fleet/backlog`, `fleet/
+observed-rate-per-day`, computed by the SAME formula the XMILE models
+themselves simulate, verified by a real test that cross-checks the datoms
+against `decide`'s own output) alongside the existing archetype and entity
+datasets. A real cross-entity query now answers that question directly:
+
+```clojure
+(q/q "[:find ?entity ?cat ?backlog
+       :where [?e \"fleet/entity\" ?entity] [?e \"fleet/category\" ?cat]
+              [?e \"fleet/backlog\" ?backlog]
+              [?e \"fleet/observed-rate-per-day\" 0] [(> ?backlog 0)]]"
+     conn)
+;; => [["kotoba-lang" "com" 1] ["kotoba-lang" "org" 1]]
+```
+
+Confirms finding 14's own read in a genuinely new way: as of this
+observation, kotoba-lang's `com`/`org` are the ONLY stalled categories
+across all three entities combined -- cloud-itonami has zero (post-closure)
+and etzhayyim-actors has zero (its one category is draining fast, not
+stalled). This still isn't a live pipeline: the seed files themselves are
+hand-written from `gh api` + `git show <sha>:manifest/west.yml` output,
+same as before -- what changed is that once written, the three seeds are
+now one connected dataset instead of three separate documents, not that
+writing them got any more automated.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

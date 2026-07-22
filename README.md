@@ -94,30 +94,47 @@ mechanically would be worse than not refreshing it live at all.
 
 ```bash
 npm install   # once, pulls in the npm `datascript` package
-nbb --classpath "../dynamics/src:src" bin/query_demo.cljs
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+    bin/query_demo.cljs
 ```
 
-`src/loop_system_dynamics/query.cljs` ingests the real `loop-archetypes`
-catalog (from `kotoba-lang/dynamics`) and a curated flat subset of the
-observed entities into an in-memory DataScript conn, using the exact same
-npm `datascript` package and JS-interop convention (bare-string attributes,
-`:db/id` as the one colon-prefixed key, query text is a real datalog
-string) as `com-junkawasaki/root`'s own `manifest/edn-query.cljs` -- so a
-query written for one works unmodified against the other. This is what
-`ADR-2607203000`'s original ask for "DataScript/Datomic query" connectivity
-actually looks like, as opposed to hand-grepping `resources/entities-seed.edn`.
-It is a second, queryable *projection* of the same real facts, not a
-replacement for the seed -- the seed stays the hand-curated, dated, sourced
-source of truth (see "Extending coverage" below); fields never checked for a
-given entity are simply absent from the datoms, never defaulted to 0, so
-"not yet measured" and "measured and zero" stay distinguishable in query
-results too. Example real query, run against real data:
+`src/loop_system_dynamics/query.cljs` ingests three real datasets into one
+in-memory DataScript conn: the real `loop-archetypes` catalog (from
+`kotoba-lang/dynamics`), a curated flat subset of the observed entities,
+and (2026-07-22) every category from all 3 real fleet-registration seeds
+(cloud-itonami/etzhayyim-actors/kotoba-lang, see "Simulate it" above) --
+using the exact same npm `datascript` package and JS-interop convention
+(bare-string attributes, `:db/id` as the one colon-prefixed key, query text
+is a real datalog string) as `com-junkawasaki/root`'s own
+`manifest/edn-query.cljs` -- so a query written for one works unmodified
+against the other. This is what `ADR-2607203000`'s original ask for
+"DataScript/Datomic query" connectivity actually looks like, as opposed to
+hand-grepping `resources/entities-seed.edn` or reading one fleet report at
+a time. It is a second, queryable *projection* of the same real facts, not
+a replacement for the seed files -- those stay the hand-curated, dated,
+sourced sources of truth (see "Extending coverage" below); fields never
+checked for a given entity are simply absent from the datoms, never
+defaulted to 0, so "not yet measured" and "measured and zero" stay
+distinguishable in query results too. `fleet/backlog` and
+`fleet/observed-rate-per-day` are computed by the exact same formula
+`fleet_registration_xmile.cljs`'s own `build-model` uses, so this
+projection can never silently drift from what the XMILE model itself
+simulates. Example real queries, run against real data:
 
 ```clojure
 (q/q "[:find ?id ?stars :where [?e \"entity/github-stars\" ?stars]
                                 [?e \"entity/id\" ?id] [(> ?stars 0)]]"
      conn)
 ;; => [["kotoba-lang" 3] ["gftdcojp" 23]]
+
+;; "which fleet-registration categories are stalled, across ALL 3 entities" --
+;; previously required opening 3 separate reports, now one query:
+(q/q "[:find ?entity ?cat ?backlog
+       :where [?e \"fleet/entity\" ?entity] [?e \"fleet/category\" ?cat]
+              [?e \"fleet/backlog\" ?backlog]
+              [?e \"fleet/observed-rate-per-day\" 0] [(> ?backlog 0)]]"
+     conn)
+;; => [["kotoba-lang" "com" 1] ["kotoba-lang" "org" 1]]
 ```
 
 ## Simulate it (real stock-flow ODE, not just a leverage-point score)
@@ -534,33 +551,32 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
 - **Done, 2026-07-21**: a live GitHub-API ingestion fn now exists
   (`refresh-from-github-api`, see "Run it with a live GitHub-API pull"
   above) -- but only for the one fact simple enough to pull mechanically
-  (`:github-public-repo-count`). The DataScript query layer (`query.cljs`)
-  still only ingests the checked-in seed file and the archetype catalog,
-  not a live pull straight into datoms; and every OTHER `entity/*` fact
-  (traffic beyond what `refresh-from-bmc-metrics` covers, the hand-verified
+  (`:github-public-repo-count`). Every OTHER `entity/*` fact (traffic
+  beyond what `refresh-from-bmc-metrics` covers, the hand-verified
   `:github-social-engagement` narrative, etc.) still passes through a human
   copying output into `entities-seed.edn` first.
-- No `kqe` (kotoba-lang/kqe) query source is wired in yet either.
-- A `skill-loop-system-dynamics` (agent-instruction package) and/or
-  `action-loop-system-dynamics` (GitHub Action adapter) per the same
-  taxonomy, once a resident CI schedule is wanted -- this repo's core stays
-  provider-neutral either way.
 - **Done, 2026-07-21**: the stock-flow pattern (backlog + observed rate,
   clamped flow) is no longer cloud-itonami-only. Its mechanical core moved
   to `loop_system_dynamics/fleet_registration_xmile.cljs` (entity-agnostic)
   and now also covers etzhayyim-actors (613 repos, single category) and
   kotoba-lang (1650 repos, 7 categories) -- see "Simulate it" above for all
-  three findings. `cloud_itonami_xmile.cljs`'s own observed rates were also
-  re-observed at a wider (~2-day) window in the same pass, which is what
-  caught the isic/isco closure (both categories' rate and backlog are now
-  measured post-closure, not left stale at their pre-closure numbers).
-  `iso`'s backlog (6, per this same re-observation) is untouched by that
-  closure work and remains cloud-itonami's largest active category.
-- The DataScript query layer (`query.cljs`) still doesn't ingest these
-  fleet-registration seeds, or a live pull, directly into datoms -- every
-  fleet seed still enters via a human running `gh api` + `git show
-  <sha>:manifest/west.yml` and hand-writing the result, not an automated
-  pipeline.
+  three findings.
+- **Done, 2026-07-22**: the DataScript query layer (`query.cljs`) now
+  ingests all 3 fleet-registration seeds directly into datoms too (see
+  "Query it" above) -- "which categories are stalled, across every entity
+  this loop has modeled" is now one datalog query instead of reading 3
+  separate reports. What's still NOT wired into datoms: a *live* pull (the
+  seeds themselves still enter via a human running `gh api` + `git show
+  <sha>:manifest/west.yml` and hand-writing the EDN result -- `query.cljs`
+  ingests whatever `fleet_registration_xmile.cljs/observe` returns, but
+  nothing populates that seed live yet), and `entities-seed.edn`'s own
+  richer facts beyond the curated flat subset `entities->tx-data` already
+  covers.
+- No `kqe` (kotoba-lang/kqe) query source is wired in yet either.
+- A `skill-loop-system-dynamics` (agent-instruction package) and/or
+  `action-loop-system-dynamics` (GitHub Action adapter) per the same
+  taxonomy, once a resident CI schedule is wanted -- this repo's core stays
+  provider-neutral either way.
 
 ## License
 
