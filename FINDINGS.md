@@ -3065,6 +3065,54 @@ correctly-computed aggregate coverage figure -- not as a list of
 specific gaps, which remains a genuine open item rather than something
 quietly skipped.
 
+## 45. cloud-itonami's country coverage has exactly 5 gaps, and all 5 are the world's most heavily sanctioned jurisdictions -- a real, precise, verified pattern, not a guess
+
+Extended findings 43/44's methodology to a third cloud-itonami
+classification prefix: 223 `cloud-itonami-iso3166-*` repos (ISO 3166,
+country codes). This time, an actual machine-readable official code
+list was available (unlike ISIC/ISCO), so the gap could be identified
+exactly rather than left as an aggregate percentage.
+
+**Substantive and cleanly split**: all 223 sized (44-169KB, zero
+empty). 35 have agency-suffixed names (`jpn-meti`, `usa-dhs`, etc.) --
+role-suffix satellites for specific national-government sub-agencies,
+matching the same intentional pattern findings 43 confirmed for ISIC's
+2 suffixed repos. The remaining 188 are clean, unique 3-letter codes.
+
+**Getting the denominator right, learning from finding 43's own
+mistake**: fetched a real ISO 3166-1 reference dataset (`github.com/
+lukes/ISO-3166-Countries-with-Regional-Codes`, 249 entries, matching
+the WebSearch-confirmed official ISO 3166-1 total) and diffed it
+against the 188 covered codes directly -- 0 invalid/non-standard codes
+in cloud-itonami's set, 61 of 249 real ISO entries missing. But 249
+includes non-sovereign territories (Åland, Bermuda, Hong Kong, Puerto
+Rico, etc.), which a "market-entry actor per jurisdiction" business
+model has no obvious reason to cover separately from their sovereign
+parent. WebSearch-confirmed the more meaningful denominator: **193 UN
+member states** (2026). Manually reviewing the 61 missing codes against
+UN membership found the overwhelming majority (56) are indeed
+non-sovereign territories/dependencies -- expected exclusions, not
+gaps. **Coverage against the real, meaningful denominator: 188/193 =
+97.4%.**
+
+**The 5 real gaps form an exact, verified pattern**: the 5 missing
+codes that ARE actual UN member states are `AFG` (Afghanistan), `IRN`
+(Iran), `PRK` (North Korea), `SYR` (Syria), `VEN` (Venezuela).
+WebSearch-verified: all 5 are on the US Treasury OFAC sanctions list,
+and specifically match the subset one source explicitly names "the
+most comprehensively sanctioned jurisdictions" (plus Afghanistan and
+Venezuela). Critically, this is NOT "sanctioned countries excluded" in
+general -- `RUS` (Russia), `BLR` (Belarus), and `CUB` (Cuba), all also
+OFAC-sanctioned but under lesser/targeted rather than comprehensive
+regimes, ARE present in the covered set (directly confirmed by
+grepping the covered-codes list for exactly these 3 codes). **This
+reads as a deliberate, sanctions-compliance-aware business design
+choice** -- exclude comprehensively-sanctioned jurisdictions
+specifically, not sanctioned countries broadly -- **not an oversight**,
+though this analysis did not find or read any explicit ADR/policy
+document stating this as the reason, so it is recorded as a precisely
+verified pattern, not a confirmed policy rationale.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
