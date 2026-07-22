@@ -3030,6 +3030,41 @@ is explicitly retracted here rather than left uncorrected: group-level
 and class-level codes aren't the same unit, so a raw count comparison
 against the 419-class total was never a valid test to begin with.
 
+## 44. Extending finding 43's methodology to cloud-itonami's OTHER classification prefix (ISCO occupations): clean naming this time, and a real, correctly-computed coverage figure against the world standard
+
+Finding 43 checked ISIC (industries). This cycle applied the same two
+checks to cloud-itonami's other major classification prefix, ISCO
+(International Standard Classification of Occupations, ILO): 340
+`cloud-itonami-isco-*` repos.
+
+**Substantive, not hollow**: sized all 340 -- min 23KB, max 122KB,
+mean 65.6KB, median 67KB, zero empty. A tighter, smaller distribution
+than ISIC's (mean 158.9KB), consistent with a lighter per-occupation
+template, but real and populated either way.
+
+**Clean naming this time**: all 340 names parse as proper 4-digit
+codes -- none of ISIC's group-vs-class ambiguity recurred here.
+
+**A real, correctly-computed coverage figure**: WebSearch-verified
+(two independent queries, consistent result) that ISCO-08's own
+official structure -- per ILO's own publication page -- classifies
+occupations into exactly **436 unit groups** at the 4-digit level, the
+same hierarchy depth as these repos' own naming (major group > sub-major
+group > minor group > unit group, 1/2/3/4 digits respectively). Unlike
+finding 43's own initial mistake (comparing repo count against the
+wrong ISIC hierarchy level), this comparison is apples-to-apples: 340
+repos against 436 real unit groups, confirmed via the confirmed-4-digit
+naming check above. **Coverage: 340/436 = 78.0%.**
+
+**Honestly scoped**: identifying which specific 96 unit-group codes
+are the missing ones would need a full official ISCO-08 code list, and
+no readily-available machine-readable source was found this cycle (the
+ILO's own structure document is a 3.65MB PDF, not CSV/JSON; a couple of
+third-party raw-data URLs tried both 404'd). Recorded as a real, dated,
+correctly-computed aggregate coverage figure -- not as a list of
+specific gaps, which remains a genuine open item rather than something
+quietly skipped.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
