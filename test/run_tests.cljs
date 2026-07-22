@@ -2,6 +2,7 @@
   (:require [cljs.test :as t]
             [loop-system-dynamics.core-test]
             [loop-system-dynamics.query-test]
+            [loop-system-dynamics.arrangement-query-test]
             [loop-system-dynamics.fleet-registration-xmile-test]
             [loop-system-dynamics.cloud-itonami-xmile-test]
             [loop-system-dynamics.etzhayyim-actors-xmile-test]
@@ -19,6 +20,7 @@
     (js/process.exit 1)))
 
 (t/run-tests 'loop-system-dynamics.core-test 'loop-system-dynamics.query-test
+              'loop-system-dynamics.arrangement-query-test
               'loop-system-dynamics.fleet-registration-xmile-test
               'loop-system-dynamics.cloud-itonami-xmile-test
               'loop-system-dynamics.etzhayyim-actors-xmile-test
