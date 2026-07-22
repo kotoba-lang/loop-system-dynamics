@@ -5006,6 +5006,55 @@ own already-independently-verified assoc-repo family exactly) was
 treated as sufficient primary-source grounding, the same standard
 applied to finding 78's kotobase storage ADR.
 
+## 81. First direct, first-person read of the hourly `itonami react+growth` routine's own commit body -- confirms finding 66's third-party-sourced "stuck" pattern is still live, unchanged, hour after hour, as of this exact hour today
+
+Findings 66-67 learned about cloud-itonami's stuck growth-loop
+automation (the advisor re-proposing the same duplicate funnel action,
+the governor correctly rejecting it every time) entirely through a
+different session's own narrative log (`cloud-itonami-maturity-loop.md`).
+This cycle read the routine's own commit body directly for the first
+time -- PR #1074, "routine(itonami): react+growth 2026-07-22 19時"
+(merged 2026-07-22T19:33:06Z, this exact hour) -- a first-person
+primary source rather than a third party's account of it.
+
+**It confirms the exact same pattern is still live today, not a
+days-old artifact**: `gftd react loop --product cloud-itonami --max-ticks 4`
+returned 0 proposals, "dry で即収束" (converges immediately, dry).
+`gftd funnel analyze --product cloud-itonami` returned "0 approved, 2
+rejected (governor: duplicate item -- 前回runと同一提案のため重複拒否。
+正常な挙動)" -- explicitly characterized by the routine's own text as
+correct, expected behavior, not a malfunction. The funnel numbers
+quoted verbatim: "trial org: 4 -> onboarded org: 4 -> 外部有償 org:
+**0**... 転換率: trial->onboarded 100%... onboarded->外部有償 0%
+⚠ bottleneck" -- byte-identical to this catalog's own already-recorded
+`:cloud-itonami-saas-product` `:funnel` stock (sourced 2026-07-20),
+now independently reconfirmed unchanged 2 days later by the routine's
+own real-time run.
+
+**Genuinely new detail this catalog hadn't recorded before, read
+directly rather than inferred**: the routine's own real Cloudflare +
+Stripe data-collection step ("collect: done") runs across all 11
+tracked products every cycle, explicitly states no secrets are ever
+included in output/logs/PRs, and gates any change to the base
+datoms/`maturity-facts.edn` behind human review (only `metrics/*.edn`
+and an append-only `canvas-ledger.edn` entry are auto-updated). Its
+own verification step: `nbb 70-tools/bmc/run-tests.cljs`, 31 tests /
+161 assertions, 0 failures. And an explicit zero-fabrication
+disclosure, quoted verbatim: "kotobase-graph-arpu 等、他の gate 項目
+はこの product に紐づく登録なし（無いものは「無い」と記載。捏造ゼロ）"
+("...no registration tied to this product for other gate items --
+what doesn't exist is recorded as not existing. Zero fabrication").
+
+**Why this is worth its own entry rather than folding silently into
+an existing stock**: not a new discovery about cloud-itonami's
+business state (that's been established since findings 63-67) but a
+methodological upgrade -- moving from a third party's narrative
+account of the automation's behavior to this catalog's own direct
+read of its output, and extending the confirmed duration of the
+"stuck, but the automation correctly recognizes it's stuck" state by
+independently reconfirming the identical numbers 2 days after this
+catalog's own prior recording of them.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
