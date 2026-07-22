@@ -2917,6 +2917,54 @@ same as before -- what changed is that once written, the three seeds are
 now one connected dataset instead of three separate documents, not that
 writing them got any more automated.
 
+## 42. Closing finding 40's open question: `magatama-sh1n5h1x` is confirmed to be shinshi.club's own worker, not gftd.ai's -- plus a real gap in the org's own official product-tracking system
+
+Finding 40 left one question explicitly open: whether the metrics
+file's `magatama-sh1n5h1x` worker (10,055 seven-day invocations,
+against `ai-gftd-chat-shell`'s own worker at just 1) was actually
+serving gftd.ai, based only on a plausible naming-pattern hypothesis.
+This cycle fetched the actual file directly: `gftdcojp/ai-gftd-shinshi/
+appview/ai-gftd-wasm-shinshi-sh1n5h1x/wrangler.jsonc` declares
+`"name": "magatama-sh1n5h1x"` with a single route, `shinshi.club`
+(`custom_domain: true`) -- and a comment in that same file records
+that its prior `gftd.ai`-adjacent routes (`shinshi.gftd.ai/*`,
+`sh1n5h1x.gftd.ai/*`) were deliberately removed 2026-06-02 ("owner
+directive: consolidate to shinshi.club only"). **Confirmed, not just
+plausible**: `magatama-sh1n5h1x` is shinshi.club's own worker, has no
+route on the gftd.ai zone at all, and the `:workers-invocations-7d`
+field in `ai-gftd-apex.edn` is an account-wide Workers stat, not
+zone-scoped -- resolving finding 40's open question cleanly in favor
+of the hypothesis it had declined to assert without checking.
+
+**A second, independently useful fact fell out of the same check**:
+10,055 worker invocations over 7 days is real, dated evidence that
+shinshi.club is a genuinely high-traffic live product -- likely busier
+than several products this catalog already tracks in more detail.
+Checking whether it's part of the org's own official product-tracking
+system (`90-docs/business/canvas-ledger.edn`, the canonical BMC Lean
+Loop portfolio per skill `bmc-lean-loop-tracking`) found it is not:
+the ledger's own `:product` tags list exactly 12 distinct products
+(`ai-gftd-apex`, `ai-gftd-yukkuri`, `app-aozora`, `app-aozora-yoro`,
+`cloud-itonami`, `cloud-manimani`, `cloud-murakumo`, `club-shinshi`,
+`etzhayyim`, `net-kotobase`, `network-isekai`, `nexus-x402`) --
+`ai-gftd-shinshi`/shinshi.club is absent. Notably, `club-shinshi` (the
+unrelated `jk-luxury`-org product this catalog already covers) IS
+tracked there, and `ai-gftd-yukkuri` (which finding 40 flagged as
+"confirmed live but not yet added as a full entity" in *this* catalog)
+already IS part of the org's own official portfolio -- two separate,
+easily-conflated tracking systems this analysis is careful to keep
+distinct: this repo's own `entities-seed.edn`, and the org's
+independently-maintained `canvas-ledger.edn`.
+
+**Recorded factually, without speculating why**: this analysis does
+not know whether shinshi.club's absence from the official 12-product
+portfolio is a deliberate policy choice (e.g. adult-content products
+being handled outside the standard BMC governance track) or a genuine
+tracking gap -- no evidence either way was found, and none was
+invented. What's real and dated: a live, high-traffic, revenue-integrated
+product exists outside the org's own systematic tracking as of
+2026-07-22.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
