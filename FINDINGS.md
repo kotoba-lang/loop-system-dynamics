@@ -2776,6 +2776,41 @@ data correction, made only after checking with the user on the one
 part that was genuinely their call), not to render a verdict on the
 membership ritual itself.
 
+## 39b. A precise correction to finding 39's own framing: this catalog already knew, 5 minutes after the fact
+
+Finding 39 described checking the live `MEMBERS.md` as what surfaced
+the founder-join fact, and was careful to scope its "no memory of it"
+claim to *this turn's own context* rather than the catalog as a whole
+-- but a reader skimming it could still come away thinking this
+catalog had never recorded the fact before. That reading would be
+wrong, and worth correcting precisely rather than leaving ambiguous.
+
+`git log -S':adherents {:value 1'` on this repo's own
+`resources/entities-seed.edn` finds the answer: `:adherents` was
+updated `0 -> 1` in commit `f90accd`, timestamped
+`2026-07-20T22:18:51+09:00` -- **5 minutes 20 seconds** after PR #3302
+merged (`2026-07-20T13:13:31Z` = `22:13:31+09:00`). The commit message
+says so explicitly: "Also updates etzhayyim's adherents stock 0 -> 1:
+the founder's git-side oath was recorded in orgs/etzhayyim/root/
+MEMBERS.md (PR etzhayyim/root#3302, 2026-07-20)." Same session, same
+day, same author trailer as this whole catalog's every other commit.
+
+So: **this catalog's own model was never wrong.** The actual bug
+finding 39 found and fixed was narrower and more mundane than its own
+prose might suggest to a quick read -- a cross-repo data-consistency
+gap. `kotoba-lang/dynamics`'s separate, shared archetype-comparison
+table (used for cross-entity leverage-point scoring, not this repo's
+own entity model) was never updated to match what `entities-seed.edn`
+already knew 5 minutes after the fact, and sat stale for 2 days until
+this cycle caught and fixed it. That fix stands, and was worth making
+on its own terms -- keeping two data sources describing the same fact
+in sync is a real, legitimate correction. But "investigating a
+never-fired loop surfaced [new] stale data" reads more dramatically
+than "one of two sibling repos' copies of a fact had drifted from the
+other, 5 minutes after both were first written, by the same session."
+The latter is the more accurate description, and this entry exists so
+the more accurate one is the one on record.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
