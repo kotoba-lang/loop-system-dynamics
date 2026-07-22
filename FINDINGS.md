@@ -3937,6 +3937,57 @@ problem; it's this catalog's own independent, external-style checks
 landing on the same conclusion the product's own internal audit
 already reached and published.
 
+## 64. Extending finding 63's methodology beyond cloud-itonami: the whole tracked portfolio's own scoring document names exactly ONE confirmed real revenue event, and precisely reconciles a thread this catalog had left open since finding 4c
+
+Finding 63 read cloud-itonami's own *within-product* maturity ledger.
+This cycle found and read the broader, portfolio-wide sibling: `90-
+docs/business/maturity-facts.edn` (`com-junkawasaki/root`,
+`ADR-2607021700`), the real SSoT scoring input across all 12 tracked
+products (`cloud-murakumo`, `ai-gftd-apex`, `net-kotobase`, `cloud-
+itonami`, `app-aozora`, `app-aozora-yoro`, `cloud-manimani`,
+`etzhayyim`, `network-isekai`, `club-shinshi`, `ai-gftd-yukkuri`,
+`nexus-x402`), as-of 2026-07-20. Its own header states the discipline
+plainly: "全次元 0-5。捏造ゼロ: 実測・実装の裏付けがない次元は低く付ける"
+("all dimensions 0-5. Zero fabrication: dimensions without real
+measurement/implementation evidence get scored low") -- the exact
+"never fabricate" principle this catalog itself has followed
+throughout.
+
+**Extracted every product's `:revenue` score** (0 none / 1 billing
+wired / 3 first $ / 5 repeatable, per the document's own legend):
+`cloud-murakumo` 0, `ai-gftd-apex` 0, `net-kotobase` 1, `cloud-itonami`
+1, `app-aozora` 0, `app-aozora-yoro` 0, `cloud-manimani` 0, `etzhayyim`
+0, `network-isekai` 0, `club-shinshi` **3**, `ai-gftd-yukkuri` 0,
+`nexus-x402` 0. **Across the entire 12-product tracked portfolio,
+exactly one product has ever confirmed real, live revenue** -- and its
+own note names the mechanism precisely: "ExoClick ad が gftd 唯一の
+:live 収益" ("ExoClick ad is gftd's ONLY :live revenue source"),
+citing `ADR-2606130000`.
+
+**Precisely reconciles, rather than contradicts, an earlier thread
+this catalog left open**: finding 4c/finding 51 recorded club-
+shinshi's creator GMV/payout as 0 across 7+ observations. This
+document's own note for club-shinshi makes the exact distinction that
+resolves any apparent tension: "creator 課金(サブスク/PPV)は PSP 制約で
+未解禁(pricing 2)" ("creator billing/subscription/PPV remains blocked
+by PSP constraints, pricing stays at 2") -- the revenue=3 score is
+*specifically and only* the ExoClick ad-revenue stream (already
+independently confirmed in finding 42), not creator payout, which
+really does remain 0 exactly as this catalog already found. Two real,
+distinct revenue lines for the same product, correctly kept separate
+by the source document itself, and correctly kept separate in this
+catalog's own prior findings -- nothing to correct here, just
+confirmed consistent.
+
+**Scoped precisely**: `:as-of "2026-07-20"`, 2 days before this check
+-- close enough to treat as current, but stated for the record rather
+than assumed identical to today. This is a *scoring input* document
+(subjective 0-5 axis assignments backed by cited real measurements),
+not itself the raw metrics -- the underlying real numbers it cites
+(club-shinshi's 29,397 req/7d, 3,859 pageviews, 540 uniques, "8th of 8
+products by traffic") were themselves already independently verified
+elsewhere in this catalog's own prior club-shinshi checks.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
