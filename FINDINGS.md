@@ -3334,6 +3334,64 @@ all), `municipality` (this finding, clean and unexpectedly
 well-sourced). All 5 substantive; naming/classification precision
 varies by prefix but is never hollow.
 
+## 51. `jk-luxury` has 6 repos, not just `club-shinshi` -- and one of them is literally the same worker as gftdcojp's shinshi.club, maintained in parallel across two orgs
+
+This catalog had only ever checked `club-shinshi` within `jk-luxury`.
+`gh api orgs/jk-luxury/repos` shows 6: `club-shinshi`, `net-babiniku`
+(340,756 KB -- by far the largest), `jk-corp`, `club-shinshi-actor-
+shinshi`, `club-shinshi-actor-magatama`, `club-shinshi-app`. All 6 are
+private.
+
+**`net-babiniku` is a genuinely new, real, live product**: confirmed
+`https://net-babiniku.pages.dev` returns HTTP 200, title "babiniku --
+chat with AI VTuber characters." Its own README describes a live-3D-
+VRM-avatar AI chat product sharing the `kami-engine` render substrate
+with `network-isekai` (matching CLAUDE.md's own mandatory 3D-stack
+rule), with a real, structural safety architecture: a `governor`
+gating every LLM-proposed dialogue/emotion/motion turn before it can
+render, a monetization module that "HARD-holds, on purpose" because no
+payment rail is contracted yet (an explicit no-fake-checkout
+invariant, the same discipline this catalog itself follows when
+declining to invent content), and a physical-embodiment gate
+(`kotoba.robotics/gate`) preventing any LLM proposal from reaching a
+real robot's joints without human-designed safety review.
+
+**A real, verified cross-org connection, not a guess**: `jk-luxury/
+club-shinshi-app`'s own tree contains the identical path `appview/
+ai-gftd-wasm-shinshi-sh1n5h1x/wrangler.jsonc` already seen in finding
+42's investigation of `gftdcojp/ai-gftd-shinshi`. Fetched both files
+directly: **same worker name** (`magatama-sh1n5h1x`), **same two D1
+database IDs** (`6188f976-...`, `74520e41-...`), **same declared
+route** (`shinshi.club`, `custom_domain: true`) -- but different build
+tooling (`cljs/dist/worker/worker.js` in jk-luxury's copy vs. `svelte/
+.svelte-kit/cloudflare/_worker.js` in gftdcojp's). This is literally
+the same product/backend, with two differently-built frontend
+implementations maintained in two separate GitHub organizations.
+Checked which is more recently touched: `jk-luxury`'s copy of this
+exact file was last committed 2026-07-15, `gftdcojp`'s 2026-06-30 --
+but `gftdcojp/ai-gftd-shinshi` as a whole was still pushed to as
+recently as 2026-07-19, so both repos are being actively worked on in
+parallel, not one clearly abandoned in favor of the other.
+
+**Explains the real-world relationship, sourced directly**:
+`net-babiniku`'s own `wrangler.toml` states its crypto-tip treasury
+address is deliberately "the SAME address club-shinshi's
+SHINSHI_TREASURY_ADDR uses (one operating entity, one receive
+address)," naming that entity "JK株式会社." This confirms `jk-luxury`
+is a real commercial operating entity distinct from `gftdcojp` (the
+platform/dev org), running its own consumer products (`club-shinshi`,
+`net-babiniku`) partly built on shared `gftdcojp`-originated
+infrastructure -- not a coincidental naming overlap.
+
+**A caveat this catalog hasn't needed before**: all 6 `jk-luxury`
+repos show 0 GitHub stars/forks (checked via `gh api search/
+repositories?q=org:jk-luxury`), but unlike the public-repo star
+comparisons in findings 1b/46, this number isn't meaningfully
+comparable -- all 6 repos are private, and private repos structurally
+can't draw organic stars from strangers browsing GitHub. Recorded so a
+future cycle doesn't mistake this for the same kind of "zero external
+traction" signal found elsewhere.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
