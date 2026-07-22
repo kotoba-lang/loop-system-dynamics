@@ -5421,6 +5421,35 @@ the 100.0 score holds today, 10 days later -- it verified the fix
 commit's real content directly, which is a different and narrower
 claim than confirming the score is still 100.0 now.
 
+## 89. A 6th archetype benchmark check, closing out this thread for now: `:givewell-effective-altruism` also checks out exactly, extending the sample of confirmed-accurate citations to 3 of 6
+
+Continued findings 75-77/83's benchmark-verification pass with a 6th
+archetype: `:givewell-effective-altruism` (cited: "GiveWell 2025
+grantmaking year (Feb 2025-Jan 2026): $418M approved, 131 grants to
+69 orgs; 2024 metrics year: 30,000+ donors"). GiveWell's own official
+blog post ("GiveWell's 2025 Grantmaking: Record Grants, Expanded
+Reach, Crisis Response," blog.givewell.org) states, verbatim: "GiveWell
+approved $418 million in grants... between February 1, 2025, and
+January 31, 2026, GiveWell approved 131 grants to 69 organizations."
+An exact match, not approximate -- the same primary-source pattern
+already found for `:estonia-e-residency` (finding 83).
+
+**Closing out this thread for now, with an honest tally**: 6
+archetype benchmarks checked across findings 75-77/83 and this
+finding -- 1 real, measurable update found (`:speculative-crypto-derivatives`,
+finding 75), 2 correctly-declined non-updates (`:bluesky-atproto-growth`/
+`:optimism-retropgf`, finding 76), 1 confirmed-current-because-no-newer-
+primary-data-exists (`:quaker-consensus-membership`, finding 77), and
+now 2 confirmed-exact-via-independent-corroboration
+(`:estonia-e-residency`, `:givewell-effective-altruism`). A genuinely
+varied set of outcomes across a real sample, not a uniform result --
+worth ending the systematic sweep here rather than continuing to check
+archetypes with diminishing marginal likelihood of a new finding shape,
+and returning to this only if a future cycle surfaces a specific
+reason to check a particular one (the way `:quaker-consensus-membership`
+and `:estonia-e-residency` were both chosen for specific, on-topic
+reasons rather than arbitrarily).
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
