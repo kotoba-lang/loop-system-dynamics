@@ -3205,6 +3205,34 @@ through `arrangement.datalog` as `(not [?e "fleet/backlog" "0"])` instead
 verifies both independently-implemented engines agree exactly on the same
 real facts: `#{["kotoba-lang" "com"] ["kotoba-lang" "org"]}`.
 
+## 48. Extending finding 37's manifest-health sampling to two new risk classes: a real, clean result, checked rather than assumed
+
+Finding 37 sampled `manifest/west.yml` for pin staleness (52% stale by
+small drift, all safe fast-forwards). This cycle drew a fresh random
+sample -- 60 of 3612 projects, seed `20260722001`, same
+`random.sample`-over-the-full-parsed-list method -- and checked two
+different risk classes finding 37 didn't cover: whether any pinned
+upstream repo has been **archived** on GitHub (a stale pin pointing at
+a now-frozen/abandoned upstream), and whether any uses a **non-`main`
+default branch** (a real risk to this workspace's own pin-verification
+tooling, which assumes `origin/main` reachability per the
+`git-operations` skill and `verify-west-pins.cljs`).
+
+Both checked via direct `gh api repos/<org>/<repo>` calls (not
+inferred): **0/60 archived, 60/60 on `main`.** A clean result across
+both risk classes, in the same random-sample methodology finding 37
+already established as sound.
+
+**Recorded honestly as what it is**: a real, dated, sampled absence of
+two specific problems, not proof they don't exist anywhere in the
+remaining 3552 unsampled projects (a 1.7% sample this time, larger
+than finding 37's 0.7% but still a sample). Combined with finding 37's
+own staleness result, this narrows what the earlier ~52%
+pin-drift figure could mean in the worst case: whatever those stale
+pins are, they aren't compounding with archived-upstream or
+nonstandard-branch risk in this sample, which would have made the
+staleness itself considerably more dangerous.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
