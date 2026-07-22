@@ -3625,6 +3625,53 @@ either way. Recorded because the whole point of setting up the
 baseline was to have a real answer ready whenever enough time has
 actually passed, not to let the caveat go unchecked indefinitely.
 
+## 58. Following up on finding 53's Charter Rider exclusion: confirmed the governance system is real and extensively tooled, but the specific decision log still isn't found -- including one honest dead end
+
+Finding 53 found a self-documented Charter Rider v2.0 §2 exclusion in
+`jk-luxury/club-shinshi-actor-shinshi`, but couldn't locate
+`_working_actors_decisions.md` (cited for "the specific clause") or
+confirm whether other actors had been similarly excluded. This cycle
+checked further.
+
+**GitHub code search proved unreliable for this** -- `search/code`
+queries for `"Charter Rider"` scoped to `org:etzhayyim` or even
+`repo:etzhayyim/root` directly returned 0 hits, despite this exact
+phrase being extensively used in that repo (confirmed by direct tree
+listing instead: real files under `50-infra/*/CHARTER-RIDER.md`,
+`70-tools/*/CHARTER-RIDER.md`, dozens of `90-docs/adr/*charter*.edn`
+entries, and a working `70-tools/charter-rider-applicator/` tool).
+Recorded as a real limitation of this catalog's search tooling for
+this specific repo, not evidence the phrase doesn't exist.
+
+**Confirmed real, not just a naming convention**: `70-tools/charter-
+rider-applicator/verify.sh`, read directly, is a working hash-
+verification script checking every Apache-2.0 sub-repo has a
+`CHARTER-RIDER.md` matching the current version, auto-tracking version
+bumps. The version has evolved since finding 53's v2.0 citation: v3.0
+(`ADR-2606062100`) then v3.1 (`ADR-2606082400`) -- meaning the specific
+clause that excluded the shinshi-profiling actor was written under a
+now-superseded version of the Charter, not necessarily still worded
+the same way today.
+
+**One honest dead end, recorded rather than silently dropped**: a
+search for "20-actor" (the exclusion notice's own phrasing, "20-actor
+SDK") turned up `90-docs/adr/2605265201-kami-engine-sdk-20-actors-
+legacy-duplicate-retirement.edn` -- fetched and read in full, and it
+is **unrelated**: a pure engineering cleanup (retiring a duplicate npm
+package declaration between `20-actors/kami-engine-sdk/` and
+`40-engine/kami-engine/kami-engine-sdk/`), coincidentally matching on
+"20-actors" because that's this repo's own directory name for
+religious-corp actors, not the specific "20-actor SDK" migration
+finding 53's exclusion notice referred to.
+
+**Net result, stated precisely**: `_working_actors_decisions.md`
+remains not found, and this cycle did not determine whether other
+actors were excluded alongside the shinshi-profiling one. What was
+gained: independent confirmation that Charter Rider is a real,
+actively-versioned, tooled governance system (not just a citation in
+one file), which strengthens finding 53's own reading without
+resolving its open question.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
