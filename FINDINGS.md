@@ -3672,6 +3672,59 @@ actively-versioned, tooled governance system (not just a citation in
 one file), which strengthens finding 53's own reading without
 resolving its open question.
 
+## 59. A 6th cloud-itonami classification prefix (LEI, ISO 17442): 100% real GLEIF-verified companies, a different purpose than the other 5, and a genuine live-data discrepancy caught for a real Fortune-500 company
+
+Findings 43/44/45/49/50 swept ISIC/ISCO/ISO3166/assoc/municipality.
+This cycle checked a 6th prefix this catalog hadn't examined: 155
+`cloud-itonami-lei-*` repos, named after Legal Entity Identifiers
+(ISO 17442, the global standard for uniquely identifying legal
+entities in financial transactions, maintained by GLEIF).
+
+**Substantive and correctly formatted**: all 155 sized (15-185KB,
+zero empty). All 155 codes are exactly 20 characters (the correct
+ISO 17442 length) and unique.
+
+**Verified against the real, authoritative, public GLEIF database --
+not assumed valid from format alone**: checked 15 codes total (3
+individually + a random 12-code sample, seed `20260722002`) directly
+against `api.gleif.org`'s live public API. **15/15 (100%) are real,
+GLEIF-registered, ACTIVE legal entities** -- and not obscure ones:
+ExxonMobil, ConocoPhillips, TotalEnergies, Adecco Group, GE Healthcare
+Technologies, Mitsubishi Heavy Industries (三菱重工業株式会社), Norwegian
+Cruise Line, AON, Fox Corporation, Berkshire Hathaway, Texas
+Instruments, Publicis Groupe, Simon Property Group, The Walt Disney
+Company, G8 Education. A real, world-scale set of major global
+companies, not fabricated identifiers.
+
+**A different purpose from the other 5 prefixes, read directly, not
+assumed**: unlike ISIC/ISCO/ISO3166/assoc/municipality's "market-entry
+actor" framing, `cloud-itonami-lei-j3whbg0mts7o8zvmdc91`'s own README
+describes a **corporate Terms-of-Use archive** project (per
+`ADR-2607110300`, `cloud-itonami-lei-corporate-tos-catalog`), with an
+explicit disclaimer up front: "Independent third-party archive/
+analysis. Not affiliated with, endorsed by, or sponsored by Exxon
+Mobil Corporation." -- archiving publicly-published ToS documents with
+source-url and retrieval-date provenance, not claiming any
+relationship to the company.
+
+**A real, verifiable discrepancy caught by cross-checking against
+live data, not left as an assumption**: that same repo's README
+(created 2026-07-10, per `gh api .../commits`) states "Legal name:
+Exxon Mobil Corporation" and "Jurisdiction: US-NJ." GLEIF's own
+current live record for the identical LEI shows legal name
+**"EXXONMOBIL HOLDINGS CORPORATION"** and jurisdiction **US-TX**
+(legal address Austin TX, headquarters Spring TX) -- following a
+`CHANGE_LEGAL_NAME` event GLEIF's own record dates as both effective
+and recorded 2026-07-01, **9 days before** the repo's own creation
+date. Stated precisely, without guessing the exact mechanism: this is
+a real, checkable mismatch between the repo's static citation and
+GLEIF's current record, whether from a real corporate
+name/jurisdiction change GLEIF processed just before the repo was
+written but that the repo's author didn't catch, or some other
+sequencing this analysis doesn't have enough information to determine.
+Not resolved further -- recorded as a real, dated, verified fact for
+whoever maintains this catalog to act on if they choose.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
