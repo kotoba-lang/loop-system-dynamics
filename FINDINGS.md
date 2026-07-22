@@ -4881,6 +4881,54 @@ itself, the same way this catalog has treated other rich internal
 documents (e.g. cloud-itonami-vertical-maturity.md, finding 63)
 without demanding independent re-execution of every cited number.
 
+## 79. A fast, precise follow-up: the exact P1 gap finding 78 quoted as fully open has been partially narrowed within hours -- and the same live document now explicitly cautions that the benchmark numbers finding 78 cited are architecture gates, not product-performance claims
+
+Re-checked `ADR-2607201600` (`com-junkawasaki/root`, the same
+kotobase Merkle-LSM storage-engine document finding 78 read a few
+hours ago) after noticing its own commit history had continued past
+that read -- the most recent commit ("Record bounded Datalog refresh
+vertical," 2026-07-22T18:19:11Z) touches this exact file again.
+
+**The precise, named `:bounded-host-refresh` gap finding 78 quoted
+verbatim as fully open** ("Replace host full visible-DB hydration and
+full bundle-chain reconstruction with arrangement/block-level delta
+reads, bounded memory, resumable execution, and spill") now carries a
+real `:implemented` field alongside its `:gap` field, read directly
+from the current live document: "Single positive clause: exact
+touched-entity MVCC slice plus candidate-key Range GET membership."
+The remaining gap text has been correspondingly narrowed to
+multi-clause joins, bundle-metadata bounding, and resumable
+execution/spill specifically -- real, dated (within hours), verifiable
+progress on the exact item this catalog had just finished
+documenting as untouched.
+
+**A genuinely important, newly-added caveat this analysis had not
+seen when writing finding 78**: the document's `:remaining_gaps`
+field now includes a new P1 entry, `:comparative-scale-evidence`:
+"Run 10^5/10^7 datoms and 1/32/321 writers on real R2, including
+materialized refresh backlog, then compare Datomic, Neo4j, and
+PostgreSQL using the same dataset, query, and consistency contract.
+**Current numbers are architecture gates, not product-performance
+claims.**" This directly and explicitly qualifies the same 20.81x
+wall-time / 63.5x CAS-attempt-reduction figures finding 78 reported
+as headline facts -- the source itself, in its own most recent
+update, is now clarifying those numbers demonstrate the architecture
+works as designed under a specific micro-benchmark, not that the
+system is proven at product scale or superior to comparable systems.
+Not a retraction of finding 78's own numbers (they're read correctly,
+still present unchanged in the current document), but an honest
+addendum this catalog should carry alongside them going forward.
+
+**Worth noting as a real, live-tracking discipline of its own**: this
+catalog checking back on a source document within the same session,
+specifically to see whether something flagged as "open" had moved,
+and finding both real progress AND a self-imposed caution the source
+added on its own initiative (not prompted by this catalog) -- a
+genuine instance of the underlying engineering effort exhibiting the
+same honest, undersell-rather-than-oversell discipline finding 78
+already characterized it by, now confirmed a second time in the same
+document's own subsequent revision.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
