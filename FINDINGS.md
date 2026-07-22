@@ -4217,6 +4217,74 @@ running this, and whether the same audit-ledger bug exists in any of
 the other ~34 ISCO repos this catalog hasn't checked, are both left
 open rather than guessed.
 
+## 68. A different angle this cycle: not cloud-itonami's business substance, but a genuine, checkable instance of the workspace's own repo-wide SD-methodology rule being skipped -- by a real, otherwise well-executed system dynamics model, in the same domain this catalog itself works in
+
+Findings 63-67 all read cloud-itonami's own maturity/business documents.
+This cycle checked a different, previously-unread document in the same
+directory that turned out to be directly on this catalog's own home
+turf: `90-docs/business/cloud-itonami-energy-systemdynamics-estimate.md`
++ its companion `-model.cljs` (`com-junkawasaki/root`, dated
+2026-07-18, governed by `ADR-2607181800`) -- a real system dynamics
+model estimating what share of world electricity demand cloud-itonami's
+speculative energy verticals (ISIC 3510/3511/3512) could plausibly
+cover, IF they grew.
+
+**The model itself is genuinely well-built and honest**, worth reading
+on its own merits before the compliance point below: real, cited
+2024/2025 baselines (Ember *Global Electricity Review*, IEA
+*Electricity 2025* and *Energy and AI*, Energy Institute's *Statistical
+Review*) for world electricity demand (30,000 TWh, crossing 1% in
+~2037 under the model's own numbers); explicitly labeled as
+"Illustrative estimate -- NOT a business commitment, NOT measured
+cloud-itonami telemetry (none exists)"; models 3 ISIC verticals as
+independent Bass-diffusion adoption curves constrained by an
+onboarding-capacity stock, correctly identifying the classic SD
+"Limits to Growth / growth-and-underinvestment" archetype (an uncapped
+"Aggressive" policy shows *higher* modeled revenue only because it
+ignores a capacity constraint the document itself calls not
+operationally credible -- flagged as a cautionary counter-example, not
+a real option, rather than cherry-picked as the headline number); a
+"Known limitations" section that states plainly every input except the
+world-demand baseline is a judgment call, not measured data. This is
+the same self-critical discipline findings 63-66 found in cloud-itonami's
+other internal documents, applied here to a hypothetical rather than a
+measurement.
+
+**The compliance gap, directly checked, not inferred**: this
+workspace's own CLAUDE.md carries a repo-wide mandatory rule (ADR-2607203000,
+"system dynamics loop 分析 ... 全 entity 対象") that "計算そのものは
+`kotoba-lang/dynamics`... を使う。ゼロから再発明しない" (the computation
+itself uses kotoba-lang/dynamics; do not reinvent from scratch) --
+exactly the toolkit this catalog's own `bin/run.cljs` uses via
+`dynamics.core`. Read `cloud-itonami-energy-systemdynamics-model.cljs`
+directly: its entire `:require` clause is `(:require [\"fs\" :as
+fs])` -- zero reference to `dynamics.core` or any part of
+`kotoba-lang/dynamics`, anywhere in the file or in its governing ADR
+(grepped both directly). Every primitive -- the Bass diffusion
+recurrence, the capacity-constrained stock accumulation, the 3-policy
+comparison -- is hand-rolled as raw arithmetic in an isolated script,
+not composed from shared primitives. This was structurally avoidable,
+not a missing-dependency problem: `kotoba-lang/dynamics` is itself a
+west-registered project in this same superproject (`orgs/kotoba-lang/dynamics`,
+checked directly in `manifest/west.yml`), reachable from
+`90-docs/business/` by the same kind of relative classpath this
+catalog's own test suite already uses for its sibling repos.
+
+**Precisely scoped, not overclaimed**: `dynamics.core` does not itself
+expose a named Bass-diffusion primitive (grepped directly, no
+"bass"/"diffusion" hits) -- so this is not "a ready-made function sat
+unused," it's that the general stock/flow/loop-archetype computation
+substrate this rule mandates was never engaged with at all, for a
+model whose own text explicitly names a standard SD loop archetype it
+could have scored using that substrate the way this catalog's own
+`bin/run.cljs` does. Whether other similarly-isolated SD scripts exist
+elsewhere in this workspace was not established either way: `gh api
+search/code` returned 0 hits for both `"Bass diffusion"` and `"system
+dynamics" extension:cljs` scoped to this repo -- given this catalog's
+own prior, repeated experience that this search tool produces false
+negatives (finding 58), that 0 is recorded as inconclusive, not as
+evidence this is the only instance.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
