@@ -4041,6 +4041,108 @@ low when unproven" discipline finding 64 already found in the sibling
 input document, carried through into how the generated output
 describes itself.
 
+## 66. A completely independent Claude Code `/loop` session, run by cloud-itonami itself against its own portfolio, reached the exact same "no code-side lever" conclusion this catalog kept finding indirectly -- plus a real deploy-architecture gap and a large, honestly-audited execution effort alongside the flat score
+
+Following finding 63-65's read of `cloud-itonami-vertical-maturity.md`
+/ `maturity-facts.edn` / `maturity-scores.edn` to their sibling in the
+same directory found `90-docs/business/cloud-itonami-maturity-loop.md`
+(`com-junkawasaki/root`) -- not a static tracking document but a
+749-line **session log of a separate, real, owner-launched Claude Code
+`/loop` (charter `ADR-2607189200`, dynamic-then-cron self-pacing, near
+identical discipline to this analysis's own: dated "Did" / honest "Did
+NOT" per iteration, `curl`-verified rather than agent-self-report
+trusted). It ran 17 iterations 2026-07-18 through 2026-07-20, entirely
+independent of this catalog and never citing it.
+
+**Its own 3-angle-converged conclusion, read in full**: iteration 1
+picked "missing pricing CTA" as the lever, wrote a charter, and found
+the automation stuck (`itonami-react-growth-hourly`'s advisor
+re-proposing an identical duplicate string for 10+ hours, governor
+correctly rejecting each time). Iteration 2 opened with **"⚠ CHARTER
+INVALIDATION"**: fetching the real cockpit code showed the pricing CTA
+was already fully built (Stripe Checkout button, wired nudge-email
+automation, a live Payment Link) -- the premise was wrong, and the
+charter was explicitly revised rather than carried forward on a false
+premise. Its own live read of `/api/fleet/metrics` (2026-07-18T14:16:31Z):
+`externalTotal=4, externalPaid=0, stripe.activeSubscriptions=0,
+customerBindings=0, agentRuns7d=34357, bottleneck="run Stripe checkout
+via /isco-1212/"`. Iteration 3 found the daily nudge-scan cron itself
+had never fired (`gh api .../actions/permissions` -> `enabled:false`)
+but judged this moot -- checkout preflight was green on every path but
+the paid one. Verdict, quoted: **"portfolio 成熟度を上げる唯一のものは
+owner の first paid checkout... agent 側 code lever は存在しない"**
+("the only thing that raises portfolio maturity is the owner's first
+paid checkout... no agent-side code lever exists").
+
+**Independent corroboration of this catalog's own already-recorded
+data, 2 days apart, different session, different method**: this
+catalog's `:cloud-itonami-saas-product` entity already records
+`:funnel {:trial-orgs 4 :onboarded-orgs 4 :paying-orgs 0}` (source
+`canvas-ledger.edn`, 2026-07-20T17:08:26Z) and `:checkout-mechanism-verified`
+with the live status page's own bottleneck text "run a real Stripe
+checkout via /isco-1212/" (this analysis's own direct curl,
+2026-07-21). The maturity-loop session's independently-read
+`externalTotal=4/externalPaid=0` and near-identical bottleneck
+sentence, captured 2026-07-18 by a different actor working from a
+different vantage point (live API read vs this catalog's own curl two
+days later), is a genuine second, independent confirmation the number
+is real and stable -- not this catalog's own single data point restated.
+
+**A genuinely new fact this catalog hadn't found**: iteration 8
+diagnosed why the `POST /approve` endpoint (built iteration 5 in
+`isic-5820`'s `crm/http.clj`, to resume the CRM's human-in-the-loop
+escalation graph) can never actually run in production. `isic-5820`
+is a self-host-only OSS repo whose only public face is its own GitHub
+Pages (static Jekyll build); the cockpit worker (`gftdcojp/cloud-itonami`)
+has **zero dependency on isic-5820** in its `deps.edn` and does not
+list it in its own vertical registry (`functions/api/open-business/[isic].js`).
+The "live face" the vertical-maturity ledger (finding 63) credited to
+5820 is just a marketplace.json link-out to that static Pages demo --
+which structurally cannot run a Clojure HTTP server. Bumping the west
+pin and redeploying the cockpit, the session's own iteration 6 had
+assumed would make the endpoint live, changes nothing. This is a real,
+specific instance of the Impl-product-vs-live gap finding 63's cohort
+table already showed in aggregate (146/165 "actor without storefront"),
+now traced to its exact architectural cause for one flagship.
+
+**A large, honestly-audited execution effort continued regardless**,
+on the ISCO (occupation classification, distinct from the ISIC repos
+findings 43/49/59 covered) side: from a starting backlog of 126
+no-demo repos (of 216 ISCO repos total, per `cloud-itonami-flagship-checklist-scan.edn`'s
+own `:item2/classification "unknown-no-demo"` count), 9 iterations of
+solo-then-batch (1/1/3/6/8/10/5/4 repos) landed **39 real, 4-stage-verified
+demo consoles** (idempotent build, clean-clone byte-match, live
+`workflow_dispatch` success, live GitHub Pages re-checked by `curl` --
+the session's own words, "本セッションが curl で再検証", the same
+"don't trust the agent's own report" discipline this catalog applies
+to its own dispatches), reducing the backlog to 87. Along the way it
+found and root-cause-fixed **3 real production bugs** with regression
+tests added (not just screened out): `isco-2111`'s advisor silently
+dropping `:finalized?`/`:novel?` from every request (plus a second,
+independent bug in the test that was supposed to catch it); `isco-8343`
+and `isco-9329`'s `commit-node` never calling `store/add-record!`, so
+each repo's own advertised "append-only audit ledger" had been
+recording nothing at all. The session also hit a real cross-session
+`west.yml` PUT 409 (a concurrent writer race, recovered by re-fetching)
+-- an independent, differently-shaped confirmation of the same class of
+problem this catalog's own findings 60/61 hit twice as a silent pin
+regression rather than a 409 -- and paused honestly mid-task at a real
+Claude weekly usage limit, verifying via GitHub (not the dying agent's
+last self-report) exactly which of the last batch had actually landed
+before continuing.
+
+**Scope, precisely**: this finding read the full session log (all 17
+iterations) but did not re-verify any of its `curl`/sha256/commit
+claims independently -- unlike this catalog's own practice elsewhere,
+those checks were taken on trust from a document that itself
+repeatedly demonstrates (in its own text, across 9 iterations) the
+same verify-before-trusting discipline this catalog requires of its
+own dispatches. The 39 landed ISCO repos and 3 fixed bugs are not
+reflected in this catalog's own entity list; only the portfolio-lever
+conclusion and the isic-5820 architecture gap were added as new
+stocks, since the ISCO rollout is execution volume already covered in
+kind (if not in this exact count) by finding 63's cohort statistics.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
