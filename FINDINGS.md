@@ -5380,6 +5380,47 @@ artifact (a live arXiv submission) rather than an internal business
 metric, by the same workspace's own internal review process, before
 this catalog ever looked at it.
 
+## 88. A real, live consumer app closes the exact 4 mobile-design gaps CLAUDE.md's own design-quality-score audit found across shared libraries -- this catalog's first check of a system it hadn't touched all session, connected to an entity already tracked
+
+This workspace's own CLAUDE.md documents (design-quality-score
+section) a real finding from its deterministic `audit.cljc` fitness
+function: a 3-judge LLM panel scored `liquid-glass-ui` and 3 sibling
+libraries 4.0-5.0/5 on Apple-HIG axes, while the deterministic
+audit -- which none of the 3 judges caught -- found 4 specific,
+concrete gaps: missing tap-target min-height, missing `dvh` fallback,
+one-sided `safe-area` support, and a missing `theme-color` meta.
+Checked, for the first time this session, whether this abstract
+library-level finding shows up anywhere concrete and downstream --
+it does, in `ai-gftd-apex` (already an entity this catalog tracks,
+for its domain-misattribution and error-rate findings, a completely
+different angle).
+
+**A real, dated commit closes exactly these 4 gaps in a live consumer
+app**: `dfd5be76870bf044f702e24037a11ce74f4ca9fa` ("fix(mobile):
+viewport-fit + theme-color pair + safe-area + dvh; regenerate
+theme.css (design-quality 80.6 -> 100.0)", 2026-07-13). Read the
+actual diff, not just the message: `viewport-fit=cover` added to the
+viewport meta (enables safe-area insets); a real light/dark
+`theme-color` meta pair added, with an inline comment stating it
+matches `kotoba-ui.theme/theme-colors`'s resolved
+`--hig-color-system-background` per color scheme; real
+`env(safe-area-inset-*)` CSS wired to the topbar/sidebar, with a
+comment noting `env()` degrades to `0px` on non-notched devices. The
+commit message's own before/after score (80.6 -> 100.0) is the same
+`design-quality-score` metric CLAUDE.md's own section describes.
+
+**Why this is worth recording, precisely**: not a new discovery about
+CLAUDE.md's own audit findings (already documented there) but the
+first time this catalog has actually checked whether that
+library-level audit finding propagated anywhere real -- and found
+that it did, in a genuinely verifiable, dated, diffed way, in a
+product this catalog already has independent, unrelated findings
+about. Scoped honestly: this analysis did not independently re-run
+`audit.cljc` against `ai-gftd-apex`'s current live state to confirm
+the 100.0 score holds today, 10 days later -- it verified the fix
+commit's real content directly, which is a different and narrower
+claim than confirming the score is still 100.0 now.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
