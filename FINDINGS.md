@@ -4143,6 +4143,80 @@ conclusion and the isic-5820 architecture gap were added as new
 stocks, since the ISCO rollout is execution volume already covered in
 kind (if not in this exact count) by finding 63's cohort statistics.
 
+## 67. A brand-new, currently-running hardening pass across cloud-itonami's ISCO repos, caught live: it independently found the exact bug pattern finding 66's source session checked for, in a repo that session had certified clean
+
+Finding 66 explicitly scoped out re-verifying the maturity-loop
+session's 39 landed ISCO repos, on the reasoning that the source
+document itself repeatedly demonstrated a verify-before-trusting
+discipline. Following up on that scope gap -- not by re-checking old
+claims, but by asking "is anything still moving here right now" --
+found something genuinely new: `cloud-itonami-maturity-loop.md`'s own
+narrative log hasn't been touched since iteration 17 (commit
+`2eb4c3240ea5`, 2026-07-20T01:08:06Z), but `orgs/cloud-itonami`'s
+actual repos are not quiet. `gh api orgs/cloud-itonami/repos
+?sort=pushed` shows 5 `cloud-itonami-isco-*` repos (`isco-0110`,
+`isco-5311`, `isco-2145`, `isco-2654`, `isco-3511`) pushed to as
+recently as **~2 hours before this finding was written**
+(2026-07-22T10:11:22Z-10:19:25Z, this same day) -- real, current
+activity the session log gives no indication of.
+
+**What that activity actually is, read from the commits themselves,
+not inferred**: each of the 5 repos got 3 real commits today: (1) a
+`blueprint.edn` `:itonami.blueprint/maturity` field added or
+corrected, gated on the same real-test-execution discipline as
+`ADR-2607999995` (a related but distinct, earlier 2026-07-16 ADR
+covering a different 5-repo holdout batch in this same registry) --
+plus a previously-missing `.github/workflows/ci.yml` added to every
+one of the 5; (2) for 3 of the 5, a genuine cross-platform bug fix
+("Fix cljs-incompatible read-string in advisor response parser"); (3)
+a "DatomicStore backend (Store injection boundary completion)" added
+to all 5. All these commits' own CI runs show `conclusion: success`
+(checked directly via `gh api .../actions/runs`, not assumed from the
+commit message), and `manifest/west.yml`'s pins for all 5 already
+match each repo's live `main` HEAD exactly -- this activity has
+already fully closed its own loop (fix -> CI green -> pin advance),
+faster than several of this catalog's own or the maturity-loop
+session's cycles.
+
+**The one fact worth recording precisely**: `isco-0110`'s fix commit
+(`f8e21ac93d`, message "Declare blueprint maturity, wire audit ledger
+into commit path, add CI") documents, in its own commit body,
+*exactly* the bug finding 66's source session's iteration 15 explicitly
+screened its whole 10-repo batch for and found in 2 siblings
+(`isco-8343`/`isco-9329`: `commit-node` accepted a `store` parameter
+but never called `store/add-record!`, so the advertised append-only
+audit ledger recorded nothing). Iteration 15's own text named
+`isco-0110` as one of the same 10-repo batch and reported it clean --
+only the 2 siblings were flagged as buggy. Today's commit shows
+`isco-0110` had the identical bug, missed by that screening, caught 3
+days later by whatever process is running now. This isn't a
+contradiction of finding 66 (the source session never claimed
+exhaustive bug coverage, and this catalog explicitly declined to
+re-verify its claims) -- it's a real, concrete instance of exactly the
+kind of gap that scope caveat anticipated, now found and already
+fixed with a regression test (`test/officer_admin/store_contract_test.cljc`,
+48 lines, added in the same commit).
+
+**A second, distinct fact**: `isco-5311`'s commit ("Correct blueprint
+maturity to :blueprint (not :implemented); add CI") went the *other*
+direction -- an existing `:implemented` self-declaration (this repo
+predates the maturity-loop console rollout; it's not in any of that
+session's 17 iterations) was found, on real test execution, to be
+overstated and was corrected down. Direct, dated evidence that
+"already implemented" labels in this ecosystem are not reliable
+without actually running the tests -- consistent with, and a fresh
+instance of, the Impl-vs-live gap finding 63's cohort table showed in
+aggregate and finding 66's isic-5820 architecture gap showed for one
+flagship.
+
+**Scope, precisely**: only these 5 repos were checked (found via
+recency sort, not a systematic sweep); no governing ADR was found
+specifically for this batch (only the adjacent, earlier
+`ADR-2607999995` covering a different 5 repos) -- who or what is
+running this, and whether the same audit-ledger bug exists in any of
+the other ~34 ISCO repos this catalog hasn't checked, are both left
+open rather than guessed.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
