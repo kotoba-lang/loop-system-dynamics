@@ -4698,6 +4698,67 @@ observation rather than a dispatched fix, since the loop-archetypes
 table is a shared reference library outside this catalog's own scope
 of direct edits.
 
+## 76. Extending finding 75's benchmark-verification methodology to 2 more of dynamics.core's 19 loop archetypes: a genuine negative/mixed result, worth recording precisely rather than forcing a false update or quietly dropping the check
+
+Finding 75 checked one of `kotoba-lang/dynamics`'s 19 real, cited
+loop-archetype reference benchmarks (`:speculative-crypto-derivatives`)
+and found a genuine, measurable decline in the underlying 2026 data
+relative to the cited 2025 figure. This cycle applied the same check
+to 2 more archetypes, precisely to see whether that pattern would
+repeat -- it didn't, and that outcome is itself worth recording, the
+same discipline finding 59 already established ("not every application
+of this methodology finds a new bug").
+
+**`:bluesky-atproto-growth`** (cited: "Bluesky 2025 Transparency
+Report: 13M->40.2M users Oct 2024-Nov 2025... 3.5M DAU"): a web search
+for current 2026 figures returned 8 results, none from Bluesky's own
+official reporting -- all secondary marketing/SEO-content sites
+(sociallyin.com, adamconnell.me, proxidize.com, sproutsocial.com,
+backlinko.com, resourcera.com, limelightdigital.co.uk,
+getskyscraper.com). These sources actively disagree with each other on
+the same metric for similar time windows -- MAU estimates for
+early-2026 ranging from "12-15 million" to "27.5 million" in the same
+search results, DAU figures split across "3.5M," "3.68M," and "4.5M"
+depending on source. One figure (43M total registered users, "early
+2026") is at least directionally consistent with the cited trajectory
+(40.2M as of Nov 2025, growing at ~17,280/day would add ~1.5-2.8M over
+the intervening months) -- but given the primary source already cited
+(Bluesky's own Transparency Report) is more authoritative than any of
+these secondary aggregators, and none of them clearly supersedes it,
+this analysis did NOT update this benchmark. Correctly declining to
+patch a primary-sourced citation with noisier secondary data is the
+right call, not an incomplete check.
+
+**`:optimism-retropgf`** (cited: "$100M+ distributed across 4 rounds
+as of Aug 2025, $1.3B reserved for future rounds"): a search initially
+surfaced a headline that looked like a dramatic, decisive update --
+"Optimism's $3 Billion Retroactive Funding Round" (Unchained Crypto).
+Fetched the actual article directly rather than treating the headline
+number at face value: published **March 2024**, describing 850M OP
+tokens allocated for Round 4, valued at the March 2024 OP price
+($3.61/token) -- a token-denominated allocation, not a cumulative
+distributed total, and over a year OLDER than dynamics.core's own
+already-cited Aug 2025 figure. The $3B is an artifact of pricing a
+large token allocation at a specific historical token price, not
+evidence the existing citation is stale -- if anything, dynamics.core's
+own Aug 2025 citation (a real dollar-distributed total, "$100M+ across
+4 rounds") is the MORE current and more precisely-denominated of the
+two data points this analysis found. Also independently confirmed the
+program's real branding change (RPGF/RetroPGF -> "Retro Funding," made
+unilaterally by the Optimism Foundation in Round 4 and criticized by
+community members for dropping "public goods" from the name) -- this
+happened at essentially the same point the existing citation already
+covers, not a subsequent unlogged rename.
+
+**Why this is worth a finding rather than being dropped silently**:
+a benchmark-verification pass that always "finds" an update, whether
+or not the new data is actually better, would be worse than one that
+sometimes correctly concludes the existing citation still holds.
+Two-for-three (1 real update in finding 75, 2 correctly-declined
+non-updates here) is a more honest account of what re-checking a
+library of external reference data actually looks like than reporting
+only the positive hit.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
