@@ -3528,6 +3528,39 @@ the agent left the English nickname parenthetical untouched per the
 strict "only the entity-name label" boundary, even though the
 juxtaposition reads oddly. Recorded as-is, not smoothed over.
 
+## 55. A "still open" bullet went stale within its own session -- caught by applying this catalog's own staleness-check discipline to itself
+
+Re-reading the full "What's still open" section (not just the
+newest findings) found a bullet that had itself become exactly the
+kind of stale claim this catalog exists to catch elsewhere. A
+paragraph committed 2026-07-21 19:42 (`f2e31c1`) scoped wiring
+`arrangement.datalog` into this repo's query layer as deliberately
+deferred: "a real next step... not attempted rushed in the same cycle
+this was discovered." A later cycle -- finding 47, committed 2026-07-22
+13:10 (`2eb6717`), nearly 18 hours after -- went ahead and did exactly
+that: navigated the same 5-deep dependency chain the bullet had only
+scoped, and landed a genuine second, working query engine. The
+"still open" bullet was never updated to reflect this, so it sat in
+the file actively describing completed work as merely planned.
+
+**Verified the timeline directly, not assumed**: `git log -S "5 repos
+deep before a single live" -- FINDINGS.md` found the exact commit that
+introduced the stale bullet; `git log -1 --format=%cI` on both that
+commit and finding 47's own gave the precise 18-hour gap.
+
+**Why this matters as its own finding, not just a silent edit**: this
+catalog has repeatedly applied a discipline of re-checking earlier
+claims against current reality (etzhayyim's site-reliability thread
+revised 7 times; finding 39/39b; finding 45's retracted comparison)
+-- but that discipline had only ever been applied to numbered
+findings, never to the "What's still open" section itself, even
+though it makes exactly the same kind of dated, falsifiable claims.
+Fixed by rewriting the stale paragraph in place (not deleting it) to
+point at finding 47's real, completed result, with the staleness
+itself left on record as a lesson: a "still open" list needs the same
+"is this still true, checked, not assumed" discipline as every other
+claim in this file.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -3543,23 +3576,24 @@ juxtaposition reads oddly. Recorded as-is, not smoothed over.
   specific entity family (cloud-itonami's isic/isco repos), not yet
   generalized to the rest of this file's entities.
 
-  The `kqe` reference this bullet used to carry is now stale, corrected
-  here rather than left wrong: `kotoba-lang/kqe` was retired 2026-07-05
-  (ADR-2607050700), merged into `kotoba-lang/arrangement` as
-  `arrangement.query` (pattern-routed `[s p o]` query) +
-  `arrangement.datalog` (a real Datomic-shaped `:find`/`:where` conjunctive
-  join over it) -- both real, working, already-tested modules, not
-  vaporware. Checked what it would actually take to wire this cycle: the
-  full `arrangement.core` namespace transitively requires
-  `kotoba-lang/prolly-tree` and `kotoba-lang/ipld` at load time (for its
-  `commit!`/content-addressing machinery, even though `assert-quad`/
-  `query`/`datalog/q` don't functionally need them), and `ipld.core` in
-  turn requires `kotoba-lang/multiformats` and `kotoba-lang/dag-cbor` --
-  5 repos deep before a single live `gh api` fact could round-trip through
-  the real substrate this workspace already built for exactly this
-  purpose. Scoped precisely rather than attempted rushed in the same
-  cycle this was discovered: a real next step, not a vague "someday" line
-  anymore.
+  UPDATE (this cycle, correcting a bullet that went stale within its own
+  session): the paragraph that used to sit here scoped the `arrangement.
+  datalog` wiring as "a real next step... not attempted rushed in the same
+  cycle this was discovered" (committed 2026-07-21 19:42). That framing is
+  now wrong, not because the scoping was bad, but because a later cycle
+  (finding 47, committed 2026-07-22 13:10 -- confirmed via `git log
+  -S`/`git log -1 --format=%cI` on both commits, not assumed) went ahead
+  and did exactly what this bullet described as deferred: wired
+  `arrangement.datalog` in as a genuine 2nd query engine, navigating the
+  same 5-deep dependency chain (`arrangement` -> `prolly-tree` + `io-ipld`
+  -> `io-multiformats` + `org-ietf-cbor`) this bullet had only scoped.
+  `bin/arrangement_query_demo.cljs` now runs real cross-engine-parity
+  queries against real fleet-registration facts (see finding 47's own
+  entry, and README "Query it a SECOND way"). Left as a lesson rather than
+  silently deleted: a "still open" bullet needs the same staleness check
+  every dated fact in this catalog gets, not an assumption that unfinished
+  work stays unfinished just because the bullet describing it hasn't been
+  revisited.
 - Kizuna's seed-data typo is now fixed at the source (finding 27b,
   independently re-verified). wadachi's handle/did/glyph fields have a
   fix dispatched (finding 33), sourced from that actor's own dedicated
