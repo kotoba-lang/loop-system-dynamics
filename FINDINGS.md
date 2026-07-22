@@ -2965,6 +2965,71 @@ invented. What's real and dated: a live, high-traffic, revenue-integrated
 product exists outside the org's own systematic tracking as of
 2026-07-22.
 
+## 43. cloud-itonami's 457 ISIC repos aren't hollow scaffolds -- but 30 of their names encode ISIC *group* codes, not *class* codes, and a couple genuinely can't be told apart from their siblings by name alone
+
+Pivoted away from etzhayyim/gftdcojp this cycle toward `cloud-itonami`'s
+own world-scale coverage claim: 457 repos prefixed `cloud-itonami-isic-`,
+each nominally a "market-entry actor" for one ISIC (International
+Standard Industrial Classification) code. Two real questions, checked
+directly rather than assumed: are these substantive or hollow, and do
+they actually correspond to real ISIC codes?
+
+**Substantive, not hollow**: `gh api orgs/cloud-itonami/repos` sizes
+for all 457 -- min 35KB, max 729KB, mean 159KB, median 162KB, **zero
+empty repos**. A tight, uniform distribution consistent with real,
+templated-but-populated content (confirmed by reading one repo's own
+README directly: real domain-scope prose, an explicit Governor
+"HARD check" architecture, not a stub).
+
+**But 30 of 457 names don't parse as 4-digit ISIC class codes**:
+`561`, `562`, `563`, `649`, `750`, `791`, `851`-`855`, `861`, `862`,
+`869`, `871`-`873`, `879`, `889`, `900`, `920`, `931`, `932`, `941`,
+`942`, `949`, `952`, `960` are all 3 digits, not 4. Two more --
+`6611-cryptoexchange`, `8129-facade` -- have descriptive suffixes.
+
+Checked the suffixed pair first, since they were easy to resolve
+cleanly: both are explicit, well-documented "role-suffix satellite"
+repos of their own separately-existing base 4-digit repos
+(`cloud-itonami-isic-6611`, `cloud-itonami-isic-8129` both exist),
+matching this workspace's own documented naming convention (CLAUDE.md
+"Repo naming -- no `-clj` suffix... use a role suffix when the short
+name is taken"). **Not an error.**
+
+The 28 three-digit names are real ISIC *group*-level codes (one level
+above *class* in the ISIC hierarchy: section > division > group >
+class), not truncated class codes as first suspected. Whether this
+matters depends on the group: WebSearch-verified two representative
+cases directly against UN Statistics Division's own classification
+detail pages (not assumed from memory) --
+- Group **561** ("Restaurants and mobile food service activities") has
+  exactly **one** child class, `5610`, with the identical name. Using
+  the bare group code here is harmless: it's unambiguous.
+- Group **562** ("Event catering and other food service activities")
+  has **two** distinct child classes: `5621` (event catering) and
+  `5629` (other food service activities, e.g. industrial catering,
+  stadium concessions). The `cloud-itonami-isic-562` repo's own README
+  titles itself "Event Catering Operations Coordination Actor" --
+  language that maps more specifically to `5621` alone, while the repo
+  name and header prose ("ISIC-562") claim the whole group, without
+  disambiguating that `5629`'s distinct scope (industrial catering,
+  concessions) isn't separately represented anywhere. **A real,
+  verified naming/scope ambiguity**, not present in the 561 case.
+
+**Honestly scoped, not overclaimed**: only these two of the 28 were
+individually verified against the real ISIC hierarchy. This finding
+does not claim to know how many of the remaining 26 are 561-style
+(harmless, single-class groups) versus 562-style (genuinely ambiguous,
+multi-class groups) -- that would need 26 more individual lookups
+against UN Statistics Division's own classification detail pages, not
+attempted this cycle. What's established: this is a real, mixed bag
+requiring case-by-case verification, not a uniform pattern in either
+direction. The earlier back-of-envelope comparison this cycle
+initially reached for -- "457 repos vs. 419 official ISIC Rev.4
+classes, so cloud-itonami over-covers by 38" -- was itself invalid and
+is explicitly retracted here rather than left uncorrected: group-level
+and class-level codes aren't the same unit, so a raw count comparison
+against the 419-class total was never a valid test to begin with.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
