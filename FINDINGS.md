@@ -4929,6 +4929,83 @@ same honest, undersell-rather-than-oversell discipline finding 78
 already characterized it by, now confirmed a second time in the same
 document's own subsequent revision.
 
+## 80. A fresh, real, exhaustive 356-repo census directly extends this catalog's own extensive cloud-itonami classification-repo work with a dimension it hadn't checked: language-migration compliance against this workspace's own repo-wide Kotoba-first rule -- and a concrete, well-evidenced engineering blocker explains why most of it hasn't started
+
+Followed up on a commit spotted earlier ("docs(adr): retire 13
+kotoba-lang repos (7 stale-matrix + 6 empty-shell)") to
+`90-docs/adr/2607202200-kotoba-sovereign-source-and-cljc-fleet-migration.edn`
+(`com-junkawasaki/root`, accepted 2026-07-20) -- the master ADR
+governing this whole workspace's `.cljc` -> `.kotoba` sovereign-source
+migration, the same effort behind CLAUDE.md's own repo-wide "kotoba
+wasm runtime > clojurewasm > ClojureScript > nbb, JVM/bb降格" runtime
+priority and "Kotoba is safe application language" sections this
+catalog has operated under all session without ever having read the
+underlying primary source directly.
+
+**The retirement itself, precisely**: 7 repos (`app`, `bridge`, `demo`,
+`kami-app`, `kami-usd-native`, `pbrt`, `rtx-native`) were already
+merged-and-empty on GitHub but had never been formally retired from
+the local tracking matrix -- fresh-cloned at their recorded merge
+heads, confirmed zero tracked CLJC, retired. 6 more
+(`kami-engine-{core,engine,io,render,script-runtime,web}`) had
+ns-only empty-shell CLJC in packages already documented as archived
+placeholders elsewhere, migrated via a "verified-empty-shell-retirement
+pattern" (individual PR/CI/merge per repo, all green), then retired.
+Real bookkeeping hygiene, not a content deletion.
+
+**The genuinely catalog-relevant discovery, buried in the same
+document's `:session-closeout`**: a fresh, exhaustive census, dated
+2026-07-22 (yesterday), of cloud-itonami's entire classification-repo
+landscape -- "isic-*/isco-*/lei-*/iso3166-*/unspsc-*/cofog-*/gtin-*
+families: full census (356 repositories, every one queried live via
+GitHub API..., zero API errors)." **294 of 356 still carry production
+CLJC and zero Kotoba**: isic 133 repos/997 files, isco 68 repos/264
+files, iso3166 81 repos/777 files, unspsc 5 repos/37 files, cofog 5
+repos/37 files, gtin 2 repos/8 files -- 2,120 production CLJC files
+total, none migrated. 62 repos (lei 46, iso3166 15, gtin 1) correctly
+scoped OUT as pure-data/scaffold-only with no `src/` at all. **One
+family is fully done**: "all 37 cloud-itonami-assoc-* repositories...
+now carry a sole production `src/association_facts.kotoba` with zero
+tracked CLJC" -- the exact same 37-repo family this catalog's own
+finding 45 already checked for real-world classification precision
+(28 unique ISIC codes, 48 countries, 0 invalid country codes). Finding
+45 verified this family's business content was accurate; this ADR
+independently confirms, from a completely different angle, that the
+same family has also fully completed its language-sovereignty
+migration -- two orthogonal quality dimensions on the same 37 repos,
+both real, both checked, neither contradicting the other.
+
+**A concrete, well-evidenced reason the other 294 haven't started,
+not neglect**: `review-source-semantics` ran on two real exemplars
+(`cloud-itonami-isco-8114` mineralplant and its origin template
+`cloud-itonami-isco-7211` foundrycoord, full-file read) and found the
+whole class "NOT YET ACTIONABLE": these are `langgraph.graph`
+Advisor/Governor actor repos requiring the `kotoba/app` capability
+profile (the exact application-profile gate CLAUDE.md's own "Kotoba
+is safe application language" section names), which "has not passed."
+More specifically: `mineralplant.governor`'s safety-critical
+defense-in-depth check does case-folded substring search over free
+text, and `kotoba-lang/compiler`'s current string-operations primitive
+set (byte-length/`=?`/concat/replace-all/keyword-from-string/keyword-name)
+has **no substring-search or case-fold primitive** -- so even a
+narrow, bounded migration of just the pure decision function (the
+minimal recommended slice) would have to silently drop that safety
+layer, which the document states plainly is "forbidden by :policy."
+Filed formally as a `:dispositions` entry
+(`:retain-cljc-pending-application-profile-and-string-search-gates`)
+in a separate ledger, with an explicit, honest caveat: the other 292
+unreviewed repos are only "expected (not proven) to share this shape"
+-- not asserted as confirmed.
+
+**Scope, precisely**: this analysis read the ADR directly but did not
+independently re-verify the 356-repo census figures against a fresh
+GitHub API sweep of its own, nor inspect `kotoba-cljc-project-gap-dispositions.edn`
+or the canonical admission matrix JSON directly -- the ADR's own
+internally-consistent, dated, sourced detail (matching this catalog's
+own already-independently-verified assoc-repo family exactly) was
+treated as sufficient primary-source grounding, the same standard
+applied to finding 78's kotobase storage ADR.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
