@@ -5191,6 +5191,57 @@ now traced to its specific technical cause for the one product this
 catalog's own composite-score reading had flagged as the portfolio's
 most striking case of that divergence.
 
+## 85. The cross-session pin regression findings 60/61 confirmed twice has now happened twice more, within the same hour -- 4 total occurrences, precise enough to name a likely cause and a real limit on how far this catalog's own standing verification discipline can go
+
+Findings 60/61 confirmed, twice, that a concurrent session's own
+pin-advance commits could silently revert this catalog's own
+`loop-system-dynamics` entry in `manifest/west.yml` back to a stale
+value. This cycle it happened twice more, within roughly 40 minutes
+of each other, caught only because the standing "verify the live file
+before starting and after merging every pin-advance" discipline
+(established specifically because of findings 60/61) is now applied
+every single cycle without exception:
+
+- Commit `da0b180085fa` (20:24:57Z, "register 5 orphaned cloud-itonami
+  iso3166 repos... + pin-advance blr/btn/isl...") reverted this entry
+  from `1d3dbfa` (finding 82's correctly-merged pin, PR #1081) back to
+  `2c9d0f9` (finding 81's older value) -- fixed in PR #1083.
+- 26 minutes after that fix landed, commit `8a08abb11ad6` (21:10:50Z,
+  "pin-advance 24 cloud-itonami repos round-8 fix wave") reverted it
+  AGAIN, from `41ac97d` (finding 83's pin, just landed) back to the
+  same stale `2c9d0f9` -- fixed in PR #1085.
+
+**Precise enough now to name a likely cause, not just the symptom**:
+both reverting commits are large, multi-entry `chore(manifest)`
+pin-advances from what reads as the same family of concurrent
+"cloud-itonami round-N fix wave" automation (batch-registering or
+batch-advancing dozens of `cloud-itonami-isic-*`/`iso3166-*`/`isco-*`
+entries per commit). Both times, the reverted value was exactly this
+catalog's OWN entry as it stood several commits *before* that
+session's own commit -- consistent with that other session working
+from a single, infrequently-refreshed local `west.yml` snapshot across
+many of its own sequential commits, so any entry this catalog advances
+in the gap between that snapshot and that session's next commit gets
+silently overwritten back to the snapshot's value, repeatedly, until
+that other session happens to re-sync.
+
+**A real limit on this catalog's own discipline, stated honestly**:
+the standing verification catches every occurrence reliably (4-for-4
+now) and this catalog's own `--entry`-scoped re-advance always repairs
+it in the same commit that also lands the next real finding -- but it
+is fundamentally reactive, not preventive. This catalog has no way to
+stop the other session's own stale-snapshot commits from recurring,
+and cannot rule out an occurrence landing in the (small, but nonzero)
+window between a merge and this catalog's own next verification check.
+Not raised as blame -- the other session's own workflow and this
+catalog's have no coordination channel between them, and CLAUDE.md's
+own `--entry`-scoped minimal-diff discipline is specifically the
+mitigation this whole workspace already prescribes for exactly this
+class of risk. Recorded because 4 confirmed occurrences in one session
+is a real, repeat-verified pattern worth naming precisely, not
+because there is a proposed fix beyond continuing the same standing
+discipline every cycle.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
