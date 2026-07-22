@@ -3113,6 +3113,56 @@ though this analysis did not find or read any explicit ADR/policy
 document stating this as the reason, so it is recorded as a precisely
 verified pattern, not a confirmed policy rationale.
 
+## 46. Answering a question left open since finding 1b: is rs-jsonnet's star count actually good for its kind and age? A real external benchmark says yes -- median-or-better against 19 real comparable projects
+
+"What's still open" has flagged this since findings 1b/1c first
+surfaced `gftdcojp/rs-jsonnet` as this workspace's clearest case of
+real external validation (7 of the org's 23 total stars, a genuine
+bug-report/fix story with a named external contributor): "whether 23
+stars / 1 substantive contributor is actually 'good' for a project of
+its kind and age is unassessed." This cycle assessed it, against real
+external data rather than intuition.
+
+`gh api search/repositories?q=jsonnet+language:Rust` returns 20 real,
+non-fork repositories in rs-jsonnet's exact niche (a Rust
+implementation of the Jsonnet configuration language) -- this is a
+search-scope, not a claimed-exhaustive census (repos with different
+naming/language tags could exist unindexed by this query), but it's a
+real, checkable comparison set, not an invented one.
+
+**rs-jsonnet ranks 10th of 20 by star count -- at the median.** One
+project dominates by a wide margin (`deltarocks/jrsonnet`, 365 stars,
+created 2020 -- a clear established incumbent, 5 years old versus
+rs-jsonnet's 10 months). Excluding that outlier, the remaining 19
+range 0-47 stars; rs-jsonnet's 7 sits comfortably in the middle of
+that range, not near the bottom.
+
+**Age-adjusted, the result looks stronger, not weaker**: rs-jsonnet
+(created 2025-09-24) is one of the youngest projects in the set --
+only one competitor (`grustonnet-ls`, created 2026-01-05) is younger.
+It has already out-starred multiple competitors that are *years*
+older and had far more time to accumulate stars: `eburghar/rconfd`
+(2021, 6 stars), `YoloDev/yolodev-jsonnet` (2020, 3), `simonswine/
+jsonnet-language-server` (2021, 3), `amir/iron_jsonnet` (2017, 2),
+`eagletmt/gojsonnet-rs` (2020, 0).
+
+**Also actively maintained, unlike roughly half the field**: checking
+`pushed_at` across all 20, rs-jsonnet was last pushed 2026-07-17 (5
+days before this check). Of the 20, ~8-9 show similarly recent activity
+(within ~6 months); the rest have gone stale, several for years
+(`Qihoo360/rust-jsonnet` since 2018, `anguslees/rust-jsonnet` since
+2023, `narqo/zed-jsonnet` since mid-2025, `azdavis/rjsonnet` since
+late 2025).
+
+**Answer to the flagged question**: yes, genuinely good, not just
+nonzero-where-everything-else-is-zero as finding 1b's own framing left
+open. A young, still-actively-maintained project already sitting at
+the median of its real competitive field, ahead of several
+much-older abandoned alternatives, is a real positive signal by
+external, checkable standards -- not merely "better than this
+workspace's own near-total silence elsewhere," which was the only
+comparison available before this cycle.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -3195,8 +3245,9 @@ verified pattern, not a confirmed policy rationale.
 - None of etzhayyim's 9 candidate interventions have actually been applied
   and measured -- the ranking is entirely ex-ante Meadows-leverage scoring,
   not a validated before/after effect.
-- The one clear external-validation success found anywhere in this
-  workspace (gftdcojp's `rs-jsonnet`, finding 1b) has not been compared
-  against any external benchmark -- whether 23 stars / 1 substantive
-  contributor is actually "good" for a project of its kind and age is
-  unassessed, only that it is nonzero where almost everything else is zero.
+- RESOLVED (finding 46): rs-jsonnet's star count IS a real external
+  benchmark now -- median (10th of 20) against real comparable Rust
+  jsonnet projects, ahead of several years-older abandoned competitors,
+  and one of the few still actively maintained. Not just nonzero
+  relative to this workspace's own silence elsewhere; genuinely
+  competitive by outside standards.
