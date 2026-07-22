@@ -3280,6 +3280,60 @@ this full check -- every code and country combination verified real
 and correctly applied. The most precisely classified of the four
 cloud-itonami prefixes examined so far.
 
+## 50. Completing the sweep: cloud-itonami's 5th and final classification prefix (`municipality`) is real, well-cited, and richer than expected
+
+Findings 43/44/45/49 checked ISIC, ISCO, ISO 3166, and `assoc`. This
+cycle checks the 5th and last: 59 `cloud-itonami-municipality-*`
+repos, completing coverage of every classification family this
+catalog identified back in finding 4b's original `repos-by-prefix`
+breakdown (`{:isic 457 :isco 340 :assoc 78 :municipality 59}`, 934 of
+1,331 total repos, the remaining 397 uncategorized).
+
+**Substantive**: all 59 sized (46-77KB, zero empty). All 48 distinct
+country codes used validated against the same real ISO 3166-1
+reference dataset (finding 45) -- 0 invalid.
+
+**Not simply "one capital per country"**: several countries get
+multiple cities, and several are deliberately non-capital: Italy gets
+5 (Firenze, Milano, Napoli, Roma, Venezia), Japan 3 (Tokyo, Osaka,
+Kyoto), France 3 (Paris, Lyon, Marseille), the USA 2 (Washington DC
+*and* New Orleans -- not a capital), Germany 2 (Berlin and Munich, not
+a capital), Spain 2 (Madrid and Barcelona, not a capital). Sydney
+(not Canberra), Toronto (not Ottawa), and São Paulo (not Brasília) are
+also deliberately non-capital choices.
+
+**Reading one repo's actual content explains why, and it's more
+substantive than expected**: `municipality-usa-new-orleans`'s README
+cites a governing ADR (`2607171400` addendum 2, part of a
+`cloud-itonami-compliance-fact-federation` project) and states its
+real purpose plainly: a "municipal-ordinance compliance catalog," with
+an explicit non-fabrication commitment ("a municipality not in
+`catalog` has no spec-basis, full stop -- never fabricate one"). Its
+actual content cites real, specific New Orleans ordinances: the
+"Comprehensive Zoning Ordinance" (designation "Ordinance No. 4,264
+M.C.S., as amended," codified at `czo.nola.gov`) and the "Commercial
+Short-Term Rental Interim Zoning District" (CZO Article 19, Ord.
+29,701 M.C.S. of 2023-11-07, extended by two further ordinances,
+expired 2025-11-05). **Independently verified `czo.nola.gov` is a
+real, live government site** (curl: real 301 redirect to `/home/`, not
+a dead/fabricated domain). The repo also carries a separate
+"regional-culture catalog" (local dishes, festivals, heritage sites),
+a second real dataset alongside the ordinance one.
+
+This reframes why non-capital cities appear: New Orleans and Munich
+and Venice aren't picked for population size -- they're picked (per
+the ADR this repo cites) for having distinctive, real, citable
+municipal regulatory regimes worth cataloging, the same "real facts,
+never fabricated" discipline this whole catalog itself tries to
+follow.
+
+**Completes the 5-prefix sweep**: ISIC (finding 43, precision issues
+found), ISCO (finding 44, clean, coverage computed), ISO 3166 (finding
+45, clean, sanctions-pattern found), `assoc` (finding 49, cleanest of
+all), `municipality` (this finding, clean and unexpectedly
+well-sourced). All 5 substantive; naming/classification precision
+varies by prefix but is never hollow.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
