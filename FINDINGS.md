@@ -3813,6 +3813,73 @@ manifest commits is not determined here -- would need checking whether
 other entries have been similarly regressed, which this cycle did not
 attempt.
 
+## 62. A 7th cloud-itonami classification prefix (JSIC, Japan's national industrial classification) -- found via a same-day owner ADR that independently confirms finding 43's own discovery pattern, plus real-world event modeling verified against actual news coverage
+
+A fresh ADR (`2607221000`, dated today, deciders: Jun Kawasaki)
+registered a new `cloud-itonami-jsic-4113` repo minutes before this
+cycle started -- worth checking directly rather than waiting for a
+future cycle, since it's directly on this catalog's own established
+methodology (findings 43/44/45/49/50/59/60/61).
+
+**A real, owner-authored self-correction that independently confirms
+finding 43's own discovery pattern**: the ADR's own problem statement
+explains that an earlier ADR (`2607023000`) had assigned animeka
+(anime production) to ISCO-08 code 2166 ("Graphic and Multimedia
+Designers"), but 2026-07-22 verification found that code already
+belonged to a completely unrelated, fully-implemented business (an
+"Independent Graphic Design Studio" built around print-proofing
+robots) with zero animeka/animation references anywhere in its own
+README or `blueprint.edn`. The ISIC alternative (5911, Motion
+Picture/Video/TV Production) was *also* already occupied by an
+unrelated generic actor. **This is precisely the class of problem
+finding 43 found independently** (ISIC group-vs-class naming
+ambiguity) -- confirmed here from the source's own governance record
+as a real, known, actively-managed category of issue, not just this
+catalog's own external observation.
+
+**The fix, and a 7th prefix this catalog hadn't examined**: JSIC
+(Japan Standard Industrial Classification, a real national standard
+distinct from international ISIC) adopted as a supplementary axis
+specifically for gaps ISIC/ISCO can't cleanly represent -- following a
+precedent set by an earlier entry, `cloud-itonami-jsic-4721`
+(`ADR-2607177500`). Only 2 JSIC repos exist so far.
+
+**Both verified real, not assumed**: WebSearch against Japan's
+official e-Stat government statistics portal confirms JSIC 4113 is the
+real code for "アニメーション制作業" (Animation Production Industry),
+correctly nested under Major G / Middle 41 / Small 411, and correctly
+distinguished from adjacent codes 4111 (film/video) and 4112 (TV
+excluding animation). `cloud-itonami-jsic-4721`'s own README goes
+further than any other prefix checked so far -- it proactively warns
+readers that "ISIC's own numeric code '4721' means something unrelated
+(food/beverage/tobacco retail) -- never confuse the two '4721's,"
+self-documented disambiguation this catalog's own checks haven't found
+volunteered anywhere else in this org.
+
+**`cloud-itonami-jsic-4113` initially showed `size: 0` via `gh api`**
+-- checked directly rather than flagged as hollow: created/pushed only
+minutes before this check, and its real tree (20 files: full actor/
+advisor/governor/store architecture, CI workflow, docs, tests) shows
+this was a GitHub metadata-cache lag right after creation, not an
+empty repo.
+
+**Real-world event modeling, independently verified against actual
+news coverage, not taken on faith**: `cloud-itonami-jsic-4721`'s
+README states it models "the 2026-07 Nichirei cold-storage
+cyber-incident case study end to end... ~4-day in/outbound stoppage
+and ~5,000-client fan-out." WebSearch across multiple independent news
+sources (SecurityWeek, The Record, TipRanks) confirms this is a real,
+major, recent incident: Nichirei Corporation disclosed a cyberattack
+on 2026-07-13 disrupting cold-chain logistics for ~5,000 customers,
+affecting KFC Japan (1,300+ restaurants), Kura Sushi, Ezaki Glico, and
+Aeon supermarkets, with gradual recovery from 2026-07-17 -- an exact
+4-day span matching the repo's own "~4-day" description precisely --
+and a real data-breach filing with Japan's Personal Information
+Protection Commission. This project isn't modeling generic/
+hypothetical business scenarios; it's grounding at least this actor in
+a real, independently-verifiable, very recent (9 days before this
+check) major incident.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
