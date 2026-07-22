@@ -4646,6 +4646,58 @@ recorded here as an honest observation about a process gap this
 catalog has repeatedly patched around rather than closed, not
 resolved as part of this finding.
 
+## 75. This model's own "strongest archetype" -- checked directly, for the first time this session: `:speculative-crypto-derivatives` is a real, cited, external reference benchmark baked into `kotoba-lang/dynamics` itself, not entity-specific data -- and current 2026 numbers show it measurably declining from the figure this catalog's own headline output has been citing
+
+Every single run of `bin/run.cljs` this whole session has printed
+"strongest archetype: `:speculative-crypto-derivatives`" as a
+headline fact, without this catalog ever having checked what that
+actually means or whether it's grounded in real, current data. Looked
+directly at `kotoba-lang/dynamics`'s own `loop-archetypes` table (a
+sibling repo this catalog's tests already require, `src/dynamics/core.cljc`)
+-- **the 19 loop archetypes are not derived from this catalog's own
+entities at all; they are a separate, pre-built library of real-world
+reference benchmarks, each with its own cited external source**,
+against which this catalog's entities' loops are presumably compared
+(digital ad spend at $750-800B/yr per eMarketer/Statista/Precedence
+Research; MLM at $207-223B/yr + 180M participants per WFDSA; and 16
+others). `:speculative-crypto-derivatives` specifically cites
+"CoinGlass 2025 Crypto Derivatives Outlook: $85.7T annual volume,
+$264.5B/day avg."
+
+**Checked whether that citation is still current, via a live web
+search rather than assuming a "2025" label means still-accurate**:
+CoinGlass's own more recent reporting (Q1 2026, cross-referenced via
+`thecryptobasic.com`/`cryptotimes.io` coverage of the same CoinGlass
+data) shows derivatives volume at **$209.3B/day average and $18.63T
+for the quarter** -- both measurably lower than the 2025 full-year
+figures `dynamics.core` cites ($264.5B/day, implying the citation
+itself is accurate for what it claims, just now a year stale). The
+daily-average figure alone is down roughly 21% from the cited 2025
+baseline; a naive annualization of the Q1 2026 quarterly figure
+(x4 = ~$74.5T) would sit roughly 13% below the cited $85.7T, though
+this analysis does not claim a real full-year 2026 total since the
+source material itself only reports Q1 and notes the quarter's own
+trend was declining month-over-month (January highest, March the
+quarter's low) -- extrapolating a full-year figure from that pattern
+would overclaim precision the source doesn't offer.
+
+**Scoped precisely, not overstated**: this is a real, measurable,
+directionally consistent decline in the external benchmark this
+catalog's own "strongest archetype" line has been citing all
+session, checked directly rather than assumed stale by default. It
+does NOT establish that crypto derivatives has stopped being the
+largest-scale archetype in the table (at $18.63T/quarter it is still
+almost certainly larger than every other cited flow by a wide margin,
+e.g. digital ad spend's ~$750-800B/yr) -- only that the specific cited
+figure is a year out of date and the real trend it's meant to
+represent is moving down, not flat. Whether `kotoba-lang/dynamics`'s
+own maintainers should update this citation is a real, live question
+this analysis raises but does not resolve by editing that sibling
+repo directly this cycle -- recorded here as a dated, sourced
+observation rather than a dispatched fix, since the loop-archetypes
+table is a shared reference library outside this catalog's own scope
+of direct edits.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
