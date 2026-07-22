@@ -633,10 +633,21 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
   SECOND way" above) -- `arrangement_query.cljs` wires it in as a genuinely
   different second engine over the same real facts, verified to agree with
   DataScript's own answer on the real stalled-category finding.
-- A `skill-loop-system-dynamics` (agent-instruction package) and/or
-  `action-loop-system-dynamics` (GitHub Action adapter) per the same
-  taxonomy, once a resident CI schedule is wanted -- this repo's core stays
-  provider-neutral either way.
+- **Done, 2026-07-22**: both adapters now exist --
+  [`kotoba-lang/skill-loop-system-dynamics`](https://github.com/kotoba-lang/skill-loop-system-dynamics)
+  (agent-instruction package: which real command to run for which question,
+  how to read its real output, never a re-derivation of this repo's own
+  domain logic) and
+  [`kotoba-lang/action-loop-system-dynamics`](https://github.com/kotoba-lang/action-loop-system-dynamics)
+  (a real, locally-tested composite GitHub Action -- pinned checkouts of
+  this repo + `kotoba-lang/dynamics`, runs a real `bin/*.cljs` cycle
+  unmodified, fails the check on a non-zero exit). Neither existed as a
+  role anywhere in `kotoba-lang` before this (see ADR-2607220100,
+  `com-junkawasaki/root`) -- both are the first real instances of the
+  `skill-*`/`action-*` taxonomy. This repo's core still stays
+  provider-neutral: creating `action-loop-system-dynamics` does not itself
+  turn on any resident schedule anywhere -- that stays an explicit opt-in
+  in whichever repo's workflow references it.
 
 ## License
 
