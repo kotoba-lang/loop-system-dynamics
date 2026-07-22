@@ -590,7 +590,7 @@ by name. First real run (2026-07-21): 0 stalls, youngest registered code
 
 ```bash
 npm install
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src:test" test/run_tests.cljs
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljs
 ```
 
 ## Extending coverage

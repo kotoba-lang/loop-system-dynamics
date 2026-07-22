@@ -33,6 +33,26 @@ jobs:
           # org-oasis-open-xmile/org-omg-sysmlv2's own deps.edn still pin,
           # which still carries the working .cljc.
           ref: ac8554fe4c29dc55fc78a850044888dfcc4e1e8b
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/arrangement
+          path: arrangement
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/prolly-tree
+          path: prolly-tree
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/io-ipld
+          path: io-ipld
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/io-multiformats
+          path: io-multiformats
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/org-ietf-cbor
+          path: org-ietf-cbor
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -40,4 +60,4 @@ jobs:
       - working-directory: loop-system-dynamics
         run: npm install
       - working-directory: loop-system-dynamics
-        run: nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src:test" test/run_tests.cljs
+        run: nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljs
