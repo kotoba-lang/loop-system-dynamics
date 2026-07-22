@@ -3880,6 +3880,63 @@ hypothetical business scenarios; it's grounding at least this actor in
 a real, independently-verifiable, very recent (9 days before this
 check) major incident.
 
+## 63. cloud-itonami's own internal business-maturity ledger, read directly: an honest, self-critical portrait of a huge portfolio that has never cleared "zero paid customers" on any vertical -- independently converging with this catalog's own findings from a completely different, authoritative source
+
+Following the isic-851 flagship-promotion ADR from finding 62 back to
+its source found `90-docs/business/cloud-itonami-vertical-maturity.md`
+(`com-junkawasaki/root`) -- a real, actively-maintained,
+owner-authored internal business status document this catalog hadn't
+read directly before. Worth reading in full rather than inferring from
+adjacent ADRs, since it's exactly the kind of primary-source maturity
+tracking this analysis has repeatedly had to approximate indirectly.
+
+**Real, precise, self-reported fleet numbers**: of 165 local
+`cloud-itonami-isic-*` checkouts, 127 score a full 6/6 on "module
+completeness" (all of operation/governor/store/phase/sim/facts
+present) but only **2** (isic-6399, isic-6310) reach the top
+"product-score" of 5/5 (live demo + operator-quickstart + CI regen +
+pricing docs); **146 of 165 (88.5%) sit at product-score 1-2 --
+"actor without storefront."** Separately, the org-wide `kotoba-lang/
+industry` registry (a different, larger scope than the local
+checkouts) shows 286 `:implemented` and 345 `:spec` -- more than half
+the full registry hasn't even reached implementation.
+
+**The Business axis (0-5) has never exceeded 2, on any vertical, in
+this entire portfolio** -- and 2 specifically means "Stripe Payment
+Link live, zero paid customers," not partial revenue. The cohort
+table lists this explicitly for every flagship checked: 6399, 6310,
+7810, 5820 (CRM), and now 851 (Primary Education, this cycle's own
+finding 62 subject) -- all Business=2, all "no paid org yet." Most
+other verticals (insurance/finance, real estate, health/hospital, the
+remaining 13 education repos, manufacturing/auto) sit at Business=0 --
+no storefront at all. The one exception with real usage numbers is a
+separate product, the "itonami.cloud cockpit": 4 free tenants,
+~22,000 agent runs over 7 days, Stripe checkout technically live --
+still Business=2, still no paid org.
+
+**Real self-auditing rigor, not just self-reported success**: the
+document's own 2026-07-18 gap audit (`ADR-2607189300`) found the 5820
+CRM flagship's "build-time-generated demo" checklist item was NOT
+actually met -- its demo page was hand-authored in a single commit
+with unfilled placeholder text ("maturity unknown", a literal
+`governor` name never replaced) and **a broken CTA link pointing to
+the wrong repo entirely** (isco-1212 instead of 5820). Per an explicit
+"rollout guardrail" policy, this was flagged for human review rather
+than auto-demoting the vertical's own maturity score -- a real,
+sensible governance safety valve, not silently corrected or hidden.
+
+**Independently converges with this catalog's own findings from a
+completely different source**: the "traffic without conversion"
+pattern (finding #4, multiple products with real visits and zero
+conversions), the F2 upper-bound-never-observed thread (findings
+throughout this catalog), and finding 43's own ISIC precision
+concerns are all corroborated here, at portfolio scale, by the
+product's own internal, owner-maintained tracking -- not contradicted
+or explained away. This isn't this catalog discovering a hidden
+problem; it's this catalog's own independent, external-style checks
+landing on the same conclusion the product's own internal audit
+already reached and published.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
