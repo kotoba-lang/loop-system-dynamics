@@ -3493,6 +3493,41 @@ flagging (alongside `:club-shinshi`/`:ai-gftd-shinshi` already noted
 in finding 51) so a future cycle checking "shinshi" doesn't conflate
 three unrelated systems under one name.
 
+## 54. Finding 52's operating-entity mislabel: dispatched, fixed, and independently re-verified -- 9 occurrences, not 1
+
+Finding 52 found `net-babiniku`'s `wrangler.toml` comment mislabeling
+the club-shinshi/net-babiniku operating entity as "JK株式会社" when the
+authoritative ADR says "JK Inc." (BVI). Dispatched a fresh,
+worktree-isolated agent to fix it -- scoped strictly to entity-name
+label text, explicitly barred from touching any address/config/logic.
+
+The agent found the mislabel was NOT a single occurrence: 9 total
+across 2 repos -- 5 in `net-babiniku` (`wrangler.toml`, `functions/
+api/pay/config.js`, `src/babiniku/monetization.cljc`, `src/babiniku/
+settlement.cljc`, `90-docs/user-stories.edn`) and 4 in `club-shinshi-
+app` (3 `ui/views/*.cljs` files + `worker/x402.cljs`). It correctly
+matched each repo's own existing git convention rather than assuming
+one pattern for both: PR+merge for `net-babiniku` (#171), direct push
+to main for `club-shinshi-app` (matching that repo's own established
+practice).
+
+**Independently re-verified, not trusted from the report alone**:
+fetched both merge/push commits directly via `gh api .../commits/<sha>`
+-- confirmed exactly 1 addition/1 deletion per touched file (5 + 4 = 9
+files, matching the agent's count exactly), and read the actual patch
+content for two representative files (`wrangler.toml`,
+`support.cljs`) confirming only the entity-name text changed, nothing
+functional. Cloned both repos fresh to a scratch location and grepped
+directly: 0 remaining occurrences of the mislabel in either repo, 9
+files now correctly say "JK Inc." -- exactly matching the agent's own
+claimed count, independently reproduced rather than assumed correct.
+
+One judgment call the agent flagged rather than resolved silently:
+`settlement.cljc` contains the phrase `JK Inc. ('Shinshi Inc.')` --
+the agent left the English nickname parenthetical untouched per the
+strict "only the entity-name label" boundary, even though the
+juxtaposition reads oddly. Recorded as-is, not smoothed over.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
