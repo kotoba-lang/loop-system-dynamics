@@ -3725,6 +3725,45 @@ sequencing this analysis doesn't have enough information to determine.
 Not resolved further -- recorded as a real, dated, verified fact for
 whoever maintains this catalog to act on if they choose.
 
+## 60. Finding 59's ExxonMobil discrepancy wasn't a fluke: 2 of 6 individually-checked LEI repos have jurisdiction citations that don't match GLEIF's live data -- a real pattern, dispatched for a fix
+
+Extended finding 59's single ExxonMobil check to 5 more of the 15
+already-validated LEI codes, fetching each repo's own README citation
+and comparing directly against GLEIF's live record for the identical
+LEI:
+
+| Repo | Repo says | GLEIF says | Match? |
+|---|---|---|---|
+| Adecco Group AG | CH | CH | yes |
+| GE HealthCare Technologies | **US-WI** | **US-DE** | **no** |
+| Mitsubishi Heavy Industries | JP (English name) | JP (三菱重工業株式会社) | yes (language variant only) |
+| NCL Corporation Ltd. | BM | BM | yes |
+| AON Global Holdings PLC | GB | GB | yes |
+
+**A second real discrepancy found, verified independently rather than
+assumed**: GE HealthCare Technologies' repo cites jurisdiction
+"US-WI" (Wisconsin); GLEIF's live record says "US-DE" (Delaware).
+WebSearch against real SEC filings (not GLEIF alone, for independent
+corroboration) confirms GE HealthCare Technologies Inc. **is
+incorporated in Delaware** -- Wisconsin/Milwaukee is a real
+operational/historical headquarters location for GE Healthcare's
+medical-imaging business, not its legal jurisdiction. This reads as a
+genuine sourcing error (conflating headquarters state with
+incorporation state), a different root cause than ExxonMobil's likely
+timing-related staleness (findings 59), not just a repeat coincidence.
+
+**2 of 6 (33%) individually-checked repos have a real jurisdiction
+error** -- a rate too high to dismiss as noise from this small sample,
+though not yet extended to all 155 LEI repos (that full sweep is
+explicitly not attempted this cycle, left as a real next step).
+
+**Dispatched a fix for the 2 confirmed cases**, scoped narrowly:
+correct only the `Jurisdiction:` field in each repo's README to match
+GLEIF's current live record (ExxonMobil -> US-TX, GE HealthCare ->
+US-DE), citing GLEIF as the source, explicitly barred from touching
+any other content, the archived ToS text, or inventing a corporate-
+history narrative neither repo's own scope calls for.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
