@@ -3764,6 +3764,55 @@ US-DE), citing GLEIF as the source, explicitly barred from touching
 any other content, the archived ToS text, or inventing a corporate-
 history narrative neither repo's own scope calls for.
 
+## 61. Finding 60's LEI fix landed, independently re-verified -- plus a real cross-session pin regression caught and fixed in the same cycle
+
+**The LEI fix**: independently re-verified both commits via `gh api
+.../commits/<sha>`, not just trusted the fixing agent's report.
+`cloud-itonami-lei-j3whbg0mts7o8zvmdc91` (ExxonMobil): 7
+insertions/2 deletions -- `Jurisdiction: US-NJ` -> `US-TX`, `Legal
+name: Exxon Mobil Corporation` -> `ExxonMobil Holdings Corporation`,
+plus a new explanatory paragraph the agent added (not originally
+instructed in detail, its own reasonable judgment call) noting GLEIF's
+`CHANGE_LEGAL_NAME` event and that the archived Terms of Use documents
+correctly retain the original "ExxonMobil" branding, untouched.
+`cloud-itonami-lei-549300oi9j7xowzmun85` (GE HealthCare): exactly 1
+insertion/1 deletion -- `Jurisdiction: US-WI` -> `US-DE`, nothing
+else. Both diffs read in full and confirmed to touch only what was
+authorized.
+
+**A real, separate discovery made while doing the routine pin-advance
+for this same cycle**: `manifest/west.yml`'s live `loop-system-
+dynamics` entry, checked directly via `gh api repos/com-junkawasaki/
+root/contents/manifest/west.yml`, showed revision `e3bb5de` (finding
+58's commit) -- not `787d078` (finding 59's commit, which had already
+landed and been confirmed merged via PR #1017 earlier this same
+session). Traced the cause via `gh api .../commits?path=manifest/
+west.yml`: a concurrent session's commit `6a7ef3f914`
+("chore(manifest): pin-advance cloud-itonami-iso3166-dji/mli," an
+unrelated entry) had, in its own diff, silently reverted the `loop-
+system-dynamics` line from `787d078` back to `e3bb5de` -- confirmed by
+reading that commit's own patch directly, not inferred. This is
+exactly the "pin regression trap" this workspace's own `git-
+operations` skill documents: a wholesale/stale-base regeneration
+rolling back an unrelated entry when the regenerating process's local
+checkout predates a pin-advance someone else already landed.
+
+**Fixed as a side effect, not a separate remediation**: this cycle's
+own routine `--entry loop-system-dynamics` pin-advance targeted the
+current, correct local HEAD (`0922290`, finding 60's commit) rather
+than replaying the regressed intermediate state, so pushing it also
+corrected the regression. Verified directly against the live file
+after merge: `manifest/west.yml` now correctly shows `0922290`.
+
+**Not investigated further, recorded as a real, dated incident
+worth knowing about**: this is the first time in this session a
+confirmed cross-session pin regression was caught and traced to its
+exact cause. Whether this reflects a one-off race or a recurring
+pattern in how the concurrent itonami-loop session generates its own
+manifest commits is not determined here -- would need checking whether
+other entries have been similarly regressed, which this cycle did not
+attempt.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
