@@ -389,7 +389,32 @@
   {:id :ai-gftd-apex
    :org "gftdcojp"
    :stocks {:website-uniques-7d {:value 5049 :source "90-docs/business/metrics/ai-gftd-apex.edn, 2026-07-20, gftd.ai zone"}
-            :website-requests-7d {:value 482034}}}
+            :website-requests-7d {:value 482034}
+            :repo-domain-misattribution-CORRECTED
+            {:value {:repo-serves-gftd-ai false :actual-serving-repo :ai-gftd-chat-shell}
+             :evidence "gftdcojp/ai-gftd-apex's own wrangler.jsonc contains an explicit comment: 'this is a separate Pages project from whatever currently serves gftd.ai (a different, Vite-built bundle) -- no custom domain route is attached here'. gftdcojp/ai-gftd-chat-shell's own wrangler.jsonc declares routes for BOTH gftd.ai/* and chat.gftd.ai/* on the gftd.ai zone. Confirmed live: both https://gftd.ai and https://chat.gftd.ai return HTTP 200 with identical <title>Gftd Chat</title>, matching ai-gftd-chat-shell's own self-description"
+             :source "gh api repos/gftdcojp/ai-gftd-apex/contents/wrangler.jsonc + repos/gftdcojp/ai-gftd-chat-shell/contents/.../wrangler.jsonc (path ai-gftd-chat-shell/wrangler.jsonc within its own repo) + direct curl, 2026-07-22"
+             :interpretation "The metrics file `90-docs/business/metrics/ai-gftd-apex.edn` genuinely describes the gftd.ai Cloudflare zone (zone-level analytics are domain-scoped regardless of which repo/Worker answers them, so the traffic numbers themselves -- 482034 req/7d, 5049 uniques/7d as of 2026-07-20 -- are real), but the file's own name and this catalog's entity id both imply the ai-gftd-apex REPO is what's being measured. It is not -- its own config says so. The live product is ai-gftd-chat-shell. Same pattern as findings 20b->32b's aozora.app misdiagnosis: a metrics/tracking artifact named after a domain concept, silently misattributed to the wrong same-org repo. NOT independently re-derived: the same metrics file's :workers-invocations-7d field shows a worker named 'magatama-sh1n5h1x' at 10055 7-day invocations vs ai-gftd-chat-shell's own worker at just 1 -- likely NOT zone-scoped (the naming pattern 'magatama-<slug>.jsonld' was found inside gftdcojp/ai-gftd-shinshi's own appview directory, suggesting this is an account-wide worker-invocation stat unrelated to gftd.ai specifically, not contrary evidence about who serves the zone) but this is a plausible hypothesis, not confirmed via Cloudflare's own dispatch/binding topology, and left explicitly open rather than asserted as fact"}
+            :apex-zone-error-rate-2607
+            {:value {:error-5xx-pct 91 :probe-4xx-pct 5 :window "24h" :as-of "2026-07-22"}
+             :evidence "90-docs/business/metrics/ai-gftd-apex.edn, :traffic-quality {:probe-4xx-pct 5, :error-5xx-pct 91}, :paths :status-mix {:client-error 867 :ok 641 :server-error 15585} (24h window) -- the org's own apex domain currently shows ~91% of requests resulting in a server error"
+             :source "Metrics file as fetched 2026-07-22 (this analysis did not independently re-derive the aggregate error-rate figure -- no direct Cloudflare analytics/log access, the same access limitation already flagged for etzhayyim's own site-reliability thread in 'What's still open'). Spot-checked instead: https://gftd.ai/ returns HTTP 200 (55ms), and 2 of the metrics file's own listed 'ok' probe paths (/application.yml, /config.env -- automated credential-scanner probe paths, not real user traffic) also return HTTP 200 directly, consistent with the SPA-shell-fallback-returns-200 pattern this catalog documented for other gftdcojp properties (findings 20b/29) rather than evidence the domain is actually down"
+             :interpretation "A real, dated, sourced signal worth recording precisely rather than either alarming or dismissing: the metrics file's own numbers say the apex domain's 24h request mix is dominated by server errors, and its 'top ok paths' are automated vulnerability-scanner probe traffic (/wp-der.php, /.git-credentials, /storage/logs/laravel.log), not real visitor page views -- but this analysis's own direct spot-checks found the domain live and responding 200, and could not independently confirm the 91% aggregate figure from outside Cloudflare's own log access. Left open rather than resolved, matching this catalog's established practice for reliability claims it cannot fully verify from outside"}}}
+
+  {:id :ai-gftd-chat-shell
+   :org "gftdcojp"
+   :stocks {:live-status {:value {:gftd-ai 200 :chat-gftd-ai 200} :source "Direct curl, 2026-07-22: both routes return HTTP 200, identical <title>Gftd Chat</title>, matching this repo's own wrangler.jsonc route declarations (gftd.ai/*, chat.gftd.ai/*, zone gftd.ai)"}
+            :zone-traffic-attributed-from-ai-gftd-apex-metrics
+            {:value {:requests-7d 482034 :uniques-7d 5049 :as-of "2026-07-20"}
+             :source "90-docs/business/metrics/ai-gftd-apex.edn's own :zone stock, re-attributed here per the repo-domain-misattribution-CORRECTED finding on the :ai-gftd-apex entity -- this traffic is zone-level (gftd.ai), and this repo is the one whose own wrangler.jsonc claims that zone's routes, not ai-gftd-apex"
+             :interpretation "This is the org's actual live apex-domain traffic, not ai-gftd-apex's. Not a new observation, the same underlying Cloudflare zone data this catalog already had -- corrected to the right entity rather than re-measured"}}}
+
+  {:id :ai-gftd-shinshi
+   :org "gftdcojp"
+   :stocks {:live-status {:value 200 :source "Direct curl, 2026-07-22: https://shinshi.club returns HTTP 200, real SvelteKit page, <title>Shinshi -- AI キャラクター & 1:1 チャット -- Shinshi</title>"}
+            :product-description {:value "AI-character adult chat/content platform (18+), D1-backed token ledger, documented live ExoClick ad-revenue integration per the repo's own commit history ('verified live 2026-06-14')"
+                                    :source "gftdcojp/ai-gftd-shinshi repo README/config, checked 2026-07-22 via a research subagent, independently spot-checked live (this analysis, direct curl of shinshi.club, 200 confirmed)"}
+            :distinct-from-club-shinshi {:value true :note "Not the same entity as :club-shinshi (org jk-luxury, already covered in this catalog) -- same 'shinshi' word, unrelated org/repo/product. A real naming collision this catalog is recording explicitly to avoid future confusion, not an error to fix"}}}
 
   {:id :app-aozora
    :org "gftdcojp"

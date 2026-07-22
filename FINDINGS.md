@@ -2811,6 +2811,79 @@ other, 5 minutes after both were first written, by the same session."
 The latter is the more accurate description, and this entry exists so
 the more accurate one is the one on record.
 
+## 40. The org's own apex-domain metrics were misattributed to the wrong repo -- the same pattern as the aozora.app misdiagnosis, found by extending coverage rather than re-checking a known bug
+
+This catalog had covered 8 `gftdcojp`-family products. A research-only
+subagent surveyed the ~56 `ai-gftd-*` repos in `manifest/west.yml` not
+yet covered, to find real, live, user-facing products among them
+(distinct from internal/backend-only automation actors). Its findings
+were independently re-verified rather than trusted as reported --
+every live-domain claim was re-curled directly by this analysis.
+
+**Confirmed, real misattribution**: `90-docs/business/metrics/
+ai-gftd-apex.edn` -- and this catalog's own `:ai-gftd-apex` entity,
+which cites it -- describe themselves as gftd.ai's traffic. But
+`gftdcojp/ai-gftd-apex`'s own `wrangler.jsonc` contains an explicit
+comment: "this is a separate Pages project from whatever currently
+serves gftd.ai (a different, Vite-built bundle) -- no custom domain
+route is attached here." `gftdcojp/ai-gftd-chat-shell`'s own
+`wrangler.jsonc` declares routes for both `gftd.ai/*` and
+`chat.gftd.ai/*` on the `gftd.ai` zone. Directly confirmed:
+`https://gftd.ai` and `https://chat.gftd.ai` both return HTTP 200 with
+the identical `<title>Gftd Chat</title>`, matching `ai-gftd-chat-shell`'s
+own self-description. **This is the same pattern as findings 20b->32b's
+aozora.app misdiagnosis**: a metrics artifact named after a domain
+concept, silently attributed to the wrong same-org repo. The zone-level
+traffic numbers themselves (482,034 requests/7d, 5,049 uniques/7d as
+of 2026-07-20) are real Cloudflare zone data and don't need
+re-measuring -- they were just filed under the wrong entity. Corrected
+by adding a new `:ai-gftd-chat-shell` entity and re-attributing the
+traffic there, with a `:repo-domain-misattribution-CORRECTED` note left
+on `:ai-gftd-apex` rather than silently deleting the old citation.
+
+**Left explicitly open, not resolved**: the same metrics file's
+`:workers-invocations-7d` field shows a worker named `magatama-
+sh1n5h1x` at 10,055 seven-day invocations against `ai-gftd-chat-shell`'s
+own worker at just 1. The naming pattern `magatama-<slug>.jsonld` was
+found inside `gftdcojp/ai-gftd-shinshi`'s own appview directory,
+suggesting `magatama-sh1n5h1x` is actually the shinshi.club product's
+own worker and this field is an account-wide Workers stat unrelated to
+the gftd.ai zone specifically -- a plausible, evidenced hypothesis, but
+not confirmed against Cloudflare's actual dispatch/binding topology, so
+recorded as open rather than asserted.
+
+**Also recorded, same access-limitation caveat as the etzhayyim
+reliability thread**: the metrics file reports gftd.ai's own 24h
+request mix at ~91% server error, with its "top ok paths" dominated by
+automated credential-scanner probes (`/wp-der.php`, `/.git-credentials`,
+`/storage/logs/laravel.log`), not real visitor traffic. This analysis
+spot-checked the domain directly -- `https://gftd.ai/` returns a real
+200 in 55ms, and 2 of the specific probe paths listed also return 200
+(consistent with the SPA-shell-fallback-returns-200 pattern documented
+in findings 20b/29, not evidence of an actual outage) -- but could not
+independently reproduce the aggregate 91% figure without direct
+Cloudflare log/analytics access, the same limitation already flagged
+for etzhayyim's own unresolved reliability thread. Recorded as what the
+metrics file says, clearly labeled as unverified at the aggregate
+level, not resolved either way.
+
+**New coverage, not a correction**: the same survey confirmed
+`ai-gftd-shinshi` (`shinshi.club`, HTTP 200, a live AI-character adult
+chat/content platform with a documented ExoClick ad-revenue
+integration) as a genuinely new, real, live gftdcojp product this
+catalog had never tracked -- explicitly distinct from the
+already-covered `:club-shinshi` (org `jk-luxury`), a real naming
+collision recorded so it doesn't cause future confusion. Also
+confirmed live but not yet added as full entities: `ai-gftd-yukkuri`
+(`yukkuri.gftd.ai`, 200, plus a separate real-but-tiny YouTube channel
+metric: 3 subscribers, 10.2 watch-hours as of 2026-07-02) and
+`ai-gftd-animeka` (`animeka.gftd.ai`, 200, self-labeled "temporary,
+non-authoritative"). `ai-gftd-mangaka`'s domain (`mangaka.gftd.ai`)
+was confirmed to 301-redirect into the already-covered `app-aozora`
+(`/studio`), so it isn't a separate subject. 11 other `ai-gftd-*` repos
+checked have no live, reachable, consumer-facing surface at all and
+were excluded from this pass's scope.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
