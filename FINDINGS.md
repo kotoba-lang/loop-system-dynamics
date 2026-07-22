@@ -4814,6 +4814,73 @@ census cadence -- a real, useful calibration point for how hard
 "know your true total adherent count" is even for mature, established
 movements, not just etzhayyim's own much younger one.
 
+## 78. A completely new angle on a product this catalog already tracks: net-kotobase's own core storage engine is under real, dated (today), rigorously-benchmarked reconstruction -- including a measured 20.8x wall-time speedup verified against live Cloudflare R2
+
+Every prior finding touching `net-kotobase` (findings on its funnel,
+x402 mechanism, discoverability, Stripe anomaly) looked at it as a
+business/product surface. This cycle found something structurally
+different: `90-docs/adr/2607201600-kotobase-merkle-lsm-istore-retirement.edn`
+(`com-junkawasaki/root`, `:adr/last_verified "2026-07-23"` -- today) is
+a real, technically deep architecture-decision record for net-kotobase's
+own persistent storage layer, and it's under active, dated, heavily-tested
+reconstruction right now: migrating from a "full-snapshot Prolly Tree +
+novelty fold" index to an immutable-sorted-run **Merkle-LSM** (log-
+structured merge tree), explicitly superseding an earlier ADR
+(`adr-2607032430-kotoba-datom-log-structured-engine-redesign`).
+
+**Not aspirational documentation -- a real, multi-PR effort with
+concrete, dated test/benchmark evidence for each named component**,
+all stamped `:date "2026-07-23"` (today) across peer-PRs 39-46 and
+host-PRs 44-46: R2 orphan garbage-collection (real run against live R2
+-- "heads 2, reachable 4, candidates 1, deleted 1, live-after 4,
+orphan-after false, wall-ms 571"); a retention-root registry
+(reader/replication/legal-hold/release lease kinds, CAS-based release,
+real R2 run: "legal-hold-candidates 0, after-cas-release-candidates 1,
+deleted 1"); a production compaction scheduler (fenced against stale
+renewals and active contenders, real R2 run: "p50-ms 91, p95-ms 138");
+durable CDCI ingress and a generic datom-ingress HTTP route (`POST
+/v1/kotobase/transact`, admission-controlled: max 32 requests / 4096
+datoms / 1024 datoms-per-request); atomic multi-artifact publication
+(receipt + MVCC base + statistics + view bundles + root, all immutable
+before exactly one R2 ETag HeadCAS); root-aware compaction; and a
+Datalog delta-refresh kernel with a durable host.
+
+**The single most concrete, headline-worthy fact**: the hot-head
+batching component's own real-R2 benchmark reports a measured
+**20.81x wall-time improvement** (515ms vs. a 10,717ms baseline,
+same 32 logical writes) and a **63.5x reduction in CAS-attempt count**
+(8 vs. 508) from batching one head-CAS per wave instead of
+per-write-per-head contention -- both numbers read directly from the
+ADR's own `:adr/hot_head_status` field, not estimated or rounded by
+this analysis.
+
+**An honest completion-status disclosure, in the source's own words**:
+the top-level `:adr/implementation_status` field's own `:qualification`
+states plainly: "All P0 storage, compaction, hot-head batching, and
+durable generic ingress gaps are implemented and verified; the
+remaining work is P1 query/materialization/scale evidence and P2 S3
+parity." A separate `:adr/remaining_gaps` field lists specific,
+named P1 items still open (e.g. "Replace host full visible-DB
+hydration... with arrangement/block-level delta reads, bounded
+memory, resumable execution, and spill" -- the current implementation
+is explicitly described as "correct but not scale-final"). Consistent
+with the same undersell-rather-than-oversell discipline this catalog
+has found throughout cloud-itonami's own internal documents (findings
+63-68) and now confirmed in a completely different product's core
+infrastructure, not a business-facing document at all.
+
+**Scope, precisely**: this analysis read the ADR directly but did not
+independently re-run any of these R2 benchmarks or verify the cited
+merge SHAs against the actual PR history -- unlike this catalog's
+practice for smaller, single-fact checks, the sheer density of dated,
+cross-referenced, self-consistent technical detail in this one
+document (peer-PR numbers climbing sequentially 39->46, merge SHAs
+present for every claimed component, real numeric R2 timings rather
+than round numbers) was treated as a coherent primary source in
+itself, the same way this catalog has treated other rich internal
+documents (e.g. cloud-itonami-vertical-maturity.md, finding 63)
+without demanding independent re-execution of every cited number.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
