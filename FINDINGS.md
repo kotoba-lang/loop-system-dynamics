@@ -5242,6 +5242,61 @@ is a real, repeat-verified pattern worth naming precisely, not
 because there is a proposed fix beyond continuing the same standing
 discipline every cycle.
 
+## 86. Characterizing finding 85's "cloud-itonami round-N fix wave" directly: real substance, including a self-caught fabrication of real-world legal citations, principled rejection of a half-measure fix, and a genuine architectural correction landing today
+
+Finding 85 identified a real, currently-active "cloud-itonami round-N
+fix wave" as the likely source of the repeated pin regressions, but
+only characterized it by its side effects. This cycle checked what
+it's actually doing directly: `orgs/cloud-itonami/repos?sort=pushed`
+shows genuinely live activity as recent as `2026-07-22T21:29:09Z` --
+literally minutes before this check -- sweeping across
+iso3166/isic/isco/lei repos.
+
+**One repo's fix, read in full, is a real, well-documented, self-caught
+fabrication correction**: `cloud-itonami-isic-4912` (RailFreight-LLM,
+an ISIC 4912 rail-freight actor) shipped a dedicated ADR
+(`docs/adr/0002-remove-fabricated-jurisdiction-catalog.md`, accepted
+today) explaining that its own `railfreight.facts` module had a
+hardcoded catalog asserting **real jurisdictions' official rail-safety
+regulator names and specific legal citations as fact** -- Japan's
+鉄道事業法, US 49 C.F.R. Parts 200-299, UK ROGS 2006, Germany's AEG,
+plus real government URLs -- as if the codebase itself were an
+authoritative source of regulatory law, when this is an internal
+operations-coordination actor whose own design brief explicitly
+forbids asserting real-world regulatory content it cannot verify. The
+fix removes the catalog entirely rather than softening it: shipment
+records now carry an operator-supplied, opaque `:spec-basis` string
+the actor never validates against any hardcoded "official" list, and
+demo fixtures were rewritten from real government URLs/statute names
+to clearly-labeled `operator-submitted-sms-registration-JPN-NNNN`-style
+placeholders.
+
+**A principled, explicitly-reasoned rejection of a half-measure,
+worth quoting directly**: the ADR considered and rejected "keep the
+jurisdiction catalog but strip only the specific citations, replacing
+them with generic-but-still-hardcoded placeholder 'official' entries,"
+reasoning that "any codebase-level catalog claiming to know what's
+'official' for a jurisdiction is the actual failure mode, independent
+of whether today's placeholder text happens to look real -- the fix
+has to move the knowledge to the operator, not just re-word it." The
+same commit also closed a real, separately-tracked scope gap: the
+repo's own `docs/business-model.md` Trust Controls already promised 2
+structural checks (hazmat-transport-scope validation,
+inspection-before-serviceable) the original 4-op R0 build hadn't
+delivered -- 3 new ops were added, growing the closed op/action
+allowlist from 4 to 8 members (1:1, matching the existing discipline),
+with dedicated new test coverage for each.
+
+**Why this matters beyond one repo**: it gives real, positive
+substance to the fix wave finding 85 could previously only describe
+by its side effects on this catalog's own pin -- the wave is doing
+genuine, disciplined quality work (not just registering new repos),
+including catching exactly the kind of fabrication risk this catalog's
+own repo-wide "zero fabrication" discipline (quoted verbatim in
+findings 64/81) is built to guard against, this time caught and fixed
+by the source repo's own review process rather than by this catalog's
+external checking.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
