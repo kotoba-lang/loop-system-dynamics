@@ -3163,6 +3163,48 @@ external, checkable standards -- not merely "better than this
 workspace's own near-total silence elsewhere," which was the only
 comparison available before this cycle.
 
+## 47. `kqe` is retired -- wiring in its real successor (`arrangement.datalog`) surfaced a genuine current limitation worth documenting, not hiding
+
+The README's "Next" section had asked for `kotoba-lang/kqe` to be wired in
+as a query source since this repo's earliest cycles. Investigating it
+before writing any code found `kqe` itself is retired: a pure `[s p o]`
+triple-pattern router with no storage of its own, merged into
+`kotoba-lang/arrangement` (`arrangement.query`/`arrangement.datalog`) --
+the repo's own README says so directly. The real successor is a
+substantially MORE capable query engine than DataScript (negation,
+aggregation, recursive rules via semi-naive fixpoint, `visible?` threaded
+as a first-class effect per ADR-2607050500), not a like-for-like swap.
+
+Getting it loading at all required chasing a real 5-deep dependency chain
+(arrangement -> prolly-tree + io-ipld -> io-multiformats + org-ietf-cbor
+[formerly `dag-cbor`, GitHub-redirected] -> the npm package `@noble/hashes`)
+and one genuine dead end along the way: `io-multiformats`'s own
+`package.json` declares a broken dependency (`"hashes": "2.0.1"`, a
+different, nonexistent package from the `@noble/hashes` its own source
+actually imports) that makes `npm install` fail if run FROM that repo's own
+directory. This doesn't block this integration -- nbb resolves npm
+requires against the CALLING repo's `node_modules` (this repo's own, not
+`io-multiformats`'s), so adding the correctly-scoped `@noble/hashes` to
+`loop-system-dynamics`'s own `package.json` sidesteps the broken
+declaration entirely -- but it's worth recording precisely, both as a real
+result of this investigation and because "the dependency graph superficially
+looks broken" was nearly mistaken for "this integration isn't worth doing"
+before checking exactly where the breakage actually lived.
+
+**A real, current limitation surfaced and respected, not hidden**:
+`arrangement`'s triples only support opaque STRING values today ("general
+typed values are a follow-up," per its own README) -- there is no native
+number type. `"9" > "67"` is true lexicographically, false numerically,
+which would silently misorder real multi-digit backlog values (cloud-
+itonami's own historical isco backlog was 124, iso's was 6). Every query
+built here sticks to equality/inequality for exactly this reason. The
+stalled-category finding (nonzero backlog, zero rate) that DataScript
+answers with a numeric `[(> ?backlog 0)]` comparison is re-expressed
+through `arrangement.datalog` as `(not [?e "fleet/backlog" "0"])` instead
+-- string inequality, not ordering -- and a real cross-engine-parity test
+verifies both independently-implemented engines agree exactly on the same
+real facts: `#{["kotoba-lang" "com"] ["kotoba-lang" "org"]}`.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

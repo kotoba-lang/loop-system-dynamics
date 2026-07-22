@@ -137,6 +137,62 @@ simulates. Example real queries, run against real data:
 ;; => [["kotoba-lang" "com" 1] ["kotoba-lang" "org" 1]]
 ```
 
+## Query it a SECOND way (arrangement.datalog -- negation, aggregation, real rules)
+
+```bash
+# from a west workspace where kotoba-lang/arrangement, prolly-tree, io-ipld,
+# io-multiformats, org-ietf-cbor, org-oasis-open-xmile, dsl-core are siblings:
+nbb --classpath "../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+    bin/arrangement_query_demo.cljs
+```
+
+The README's "Next" section used to ask for `kotoba-lang/kqe` to be wired in
+as a query source. `kqe` itself is retired -- its `[s p o]` triple-pattern
+router was merged into
+[`kotoba-lang/arrangement`](https://github.com/kotoba-lang/arrangement)
+(`arrangement.query`/`arrangement.datalog`) because a pure routing function
+with no storage of its own didn't need a separate repo (see the `kqe` repo's
+own README). `src/loop_system_dynamics/arrangement_query.cljs` ingests the
+SAME real fleet-registration facts `query.cljs` does into this genuinely
+different engine -- a `[s p o]` triple store with a Datomic-shaped
+`:find`/`:where` join that supports negation, aggregation, and recursive
+rules (`arrangement.datalog`), none of which `query.cljs`'s DataScript layer
+here exposes. `visible?` is required on every call (`arrangement.query`'s
+own design, ADR-2607050500 "Query as first-class effect") -- `(constantly
+true)` is the correct choice for this domain, since every fact here is
+already a published, public finding with no access-control boundary to
+enforce.
+
+**A real constraint this integration respects rather than hides**:
+arrangement's triples currently only support opaque STRING values ("general
+typed values are a follow-up" per its own README) -- there is no native
+number type yet. Every fleet fact is stored as its `str` form, which is
+safe for equality/inequality but NOT for numeric ordering (`"9" > "67"` is
+true lexicographically, false numerically -- exactly the kind of gap
+between cloud-itonami's real 6-vs-124 backlog range). Every query in this
+integration (and its tests) sticks to equality/inequality for exactly this
+reason. A cross-engine-parity test verifies both engines agree exactly on
+the same real stalled-category finding DataScript's own numeric `>` query
+answers:
+
+```clojure
+;; the SAME real "which categories are stalled" finding, via negation
+;; instead of a >0 numeric comparison (arrangement's own limitation, see
+;; above) -- verified by test to match DataScript's answer exactly:
+(aq/q db {:find '[?entity ?cat]
+          :where '[[?e "fleet/entity" ?entity] [?e "fleet/category" ?cat]
+                   [?e "fleet/observed-rate-per-day" "0"]
+                   (not [?e "fleet/backlog" "0"])]}
+      (constantly true))
+;; => #{["kotoba-lang" "com"] ["kotoba-lang" "org"]}
+
+;; real aggregation -- not available in query.cljs's DataScript layer here:
+(aq/q db {:find '[?entity (count ?cat)]
+          :where '[[?e "fleet/entity" ?entity] [?e "fleet/category" ?cat]]}
+      (constantly true))
+;; => #{["cloud-itonami" 13] ["kotoba-lang" 7] ["etzhayyim-actors" 1]}
+```
+
 ## Simulate it (real stock-flow ODE, not just a leverage-point score)
 
 ```bash
@@ -572,7 +628,11 @@ too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
   nothing populates that seed live yet), and `entities-seed.edn`'s own
   richer facts beyond the curated flat subset `entities->tx-data` already
   covers.
-- No `kqe` (kotoba-lang/kqe) query source is wired in yet either.
+- **Done, 2026-07-22**: `kqe` is retired (merged into `kotoba-lang/
+  arrangement`'s `arrangement.query`/`arrangement.datalog`, see "Query it a
+  SECOND way" above) -- `arrangement_query.cljs` wires it in as a genuinely
+  different second engine over the same real facts, verified to agree with
+  DataScript's own answer on the real stalled-category finding.
 - A `skill-loop-system-dynamics` (agent-instruction package) and/or
   `action-loop-system-dynamics` (GitHub Action adapter) per the same
   taxonomy, once a resident CI schedule is wanted -- this repo's core stays
