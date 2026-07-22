@@ -5147,6 +5147,50 @@ underlying reason -- a genuinely varied, honest picture of what
 re-checking a reference library actually looks like, not a uniform
 result this catalog is reporting selectively.
 
+## 84. Finding 65's own flagged puzzle -- why cloud-manimani has the portfolio's highest BMC score but 10th-of-12 YC-bench -- gets a concrete, technical answer this catalog hadn't checked: real, substantial engineering breadth with near-zero real-world adoption
+
+Finding 65 flagged, without explaining, that `cloud-manimani` "has the
+single highest BMC score in the whole portfolio (88) but one of the
+lowest YC-bench scores (43.3, 10th of 12)." Checked `gftdcojp/cloud-manimani`'s
+own repo directly for the first time to see what's actually behind
+that gap -- not the metrics (this catalog already independently
+verified those live, finding 28d: `oss.installs 0, cloud.signups 1,
+conversion 0%`) but the product's real scope.
+
+**A genuinely substantial, real product, read from its own README and
+commit history**: `cloud-manimani` is a Cloudflare Worker syncing a
+"Decision Ledger" between an OSS desktop/CLI triage app (`manimani`,
+local-first, JSONL+git) and a shared cloud copy on `kotobase.net`.
+Its commit history shows a real, concentrated 2026-07-16 engineering
+burst adding webhook ingest for **7 separate messaging platforms in
+one day**: LINE, WhatsApp, Messenger, Instagram, Viber, Teams, and
+Feishu/Lark -- each with its own real HTTP route, its own
+platform-specific verification scheme (HMAC-SHA256 for Viber, plain
+token-compare for Feishu with an explicit rationale for why that's
+the more trustworthy of Feishu's two paths, per-platform GET/POST
+handshake differences), and its own honest gap disclosure where
+relevant ("**Unverified against live Feishu infrastructure** -- same
+disclosed gap as this Worker's Teams route," quoted verbatim from the
+README).
+
+**This is the concrete explanation for finding 65's own flagged
+divergence, not previously connected**: BMC (completeness/hypothesis/
+grounding-weighted) scores this high because the underlying
+engineering genuinely is broad and complete -- 7 real platform
+integrations, a real cross-device sync architecture, honest
+disclosure of what's unverified rather than silent gaps. YC-bench
+(traction-weighted) scores low for the same reason findings 28d/64
+already independently verified: `oss.installs: 0` (the free,
+no-signup channel has zero adoption ever recorded) and `cloud.signups: 1`
+(a single shared account, not necessarily one distinct person).
+Building 7 messaging-platform integrations did not move adoption at
+all -- a real, precise instance of the general pattern this catalog
+has repeatedly found (breadth/completeness of engineering and
+real-world traction are genuinely independent axes, not correlated),
+now traced to its specific technical cause for the one product this
+catalog's own composite-score reading had flagged as the portfolio's
+most striking case of that divergence.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
