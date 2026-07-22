@@ -5450,6 +5450,56 @@ reason to check a particular one (the way `:quaker-consensus-membership`
 and `:estonia-e-residency` were both chosen for specific, on-topic
 reasons rather than arbitrarily).
 
+## 90. A new depth on network-isekai this catalog hadn't touched: real, careful trust-and-safety engineering with a self-caught enforcement gap, honest scope limits, and a rollout discipline that refuses to flip a switch affecting 100% of existing accounts without a staffing plan
+
+Every prior finding on `network-isekai` (this catalog's own
+discoverability-bug thread, finding 31) looked at SEO/discovery
+plumbing. Checked the repo's own recent activity for the first time
+this cycle and found real, careful trust-and-safety engineering: PR
+#266 ("account age tier + publish gate close-out," merged
+2026-07-20, `ADR-0005 Phase 0`/`ADR-0069`).
+
+**A real, self-caught security gap, found by reading the actual live
+code rather than a stale status table**: the PR's own summary states
+`POST /api/fork` "checked no safety state at all -- an
+operator-revoked `publish` sanction (already supported by ADR-0040's
+trust & safety platform) silently had no effect on this endpoint,"
+and `account_tiers` "didn't exist anywhere -- `isekai.moderation/can-publish?`
+(ADR-0009 §1) was a pure predicate with no persistence, signup
+capture, or server-side enforcement behind it." Both are real
+enforcement holes in already-decided policy, closed here (not new
+policy).
+
+**Honest scope limits, stated plainly rather than implied by
+omission**: the PR explicitly names what this does NOT do -- "no real
+identity/age verification, no ToS/privacy authoring, no chat safety --
+all still owner+counsel territory per ADR-0005." Self-declared
+account tiers (minor/teen/adult) are exactly that: self-report only,
+audited append-only, not verified identity -- the same discipline
+this catalog's own etzhayyim founder-oath episode (findings 39/39b)
+required of this analysis itself (real identity/legal-status
+decisions are not something to unilaterally assert).
+
+**A genuinely careful rollout discipline, worth recording precisely**:
+the tier gate and new-creator publish-probation both ship behind
+`env.SAFETY_PHASE0_ENFORCE`, explicitly default OFF and not flipped
+on in this PR, because "100% currently have no declared tier" --
+flipping the flag would change behavior for every existing account at
+once, so the PR holds it back pending a review-queue staffing plan
+rather than shipping a safety feature that could lock out its entire
+user base on day one. The production D1 schema migration is also
+explicitly flagged as NOT run automatically ("touches the live
+database -- flagging for explicit review/execution rather than
+running it from here"), separate from the code merge itself. Real
+test coverage backs the change: 38 new tests passing, the full
+existing 75-test suite shows no regressions.
+
+**Scope, precisely**: this analysis read the PR's own summary and did
+not independently verify whether `env.SAFETY_PHASE0_ENFORCE` has since
+been flipped on, or whether the flagged D1 migration has since been
+applied to the live database -- both are explicitly left as
+follow-up items in the PR's own text, not resolved by this finding.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
