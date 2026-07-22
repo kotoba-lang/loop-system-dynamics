@@ -3608,6 +3608,23 @@ least 3 times in one file" -- still not resolved with a process fix
 this cycle (that would be a real workflow-design decision, not
 attempted here), but no longer a one-off suspicion either.
 
+## 57. The etzhayyim.com search-indexing baseline (finding 36), re-checked a day later: still 0, exactly as expected
+
+Finding 36 set up a real, dated baseline (0 indexed pages,
+2026-07-21) specifically for a future cycle to compare against. This
+cycle re-ran the identical `site:etzhayyim.com` WebSearch, ~1 day
+later: still zero results for the real domain, the same set of
+unrelated similarly-named institutions returned. Recorded as a second
+point in `entities-seed.edn`'s new `:search-engine-indexing-history`
+array (was a single `-baseline` value, now a proper dated series).
+
+Not treated as either good or bad news -- 1 day is well within the
+days-to-weeks range real crawl-and-index cycles take, especially for a
+domain with no prior indexing history, so no conclusion is drawn
+either way. Recorded because the whole point of setting up the
+baseline was to have a real answer ready whenever enough time has
+actually passed, not to let the caveat go unchecked indefinitely.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
