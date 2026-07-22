@@ -3561,6 +3561,53 @@ itself left on record as a lesson: a "still open" list needs the same
 "is this still true, checked, not assumed" discipline as every other
 claim in this file.
 
+## 56. A second stale "still open" claim, caught by continuing the same check: wadachi's fix landed 2 findings ago, but the bullet still said "outcome not yet known"
+
+Extending finding 55's own lesson rather than treating it as a
+one-off: re-read the rest of "What's still open" for other claims that
+might have gone stale the same way. Found one immediately -- the
+Kizuna/wadachi bullet said wadachi's dispatched fix (finding 33) had
+"outcome not yet known." That was wrong, and had been wrong since
+finding 33b, already sitting in this exact file (just earlier in
+document order): the fix landed (`orgs/etzhayyim/root` PR #3311,
+commit `f9c3df7480b4`), independently re-verified at the time by
+fetching the merged file directly and confirming `:actor/handle
+"wadachi"`.
+
+**Same root cause as finding 55, worth naming precisely**: this
+catalog writes "still open" claims once, at the moment they're true,
+and then narrates *new* findings without looping back to check
+whether an OLDER "still open" bullet was quietly resolved by
+something written since. Finding 33b resolved this specific claim over
+20 findings ago; the "still open" section was never revisited to
+match.
+
+Fixed the same way as finding 55: rewritten in place (not deleted),
+citing finding 33b directly, and precisely restating what genuinely
+remains open per finding 33b's own text (the display-name-ja/en/
+description trio, still unfixed for lack of any authoritative source;
+the 2 stale `wire/identity/*.json` files, correctly left untouched)
+rather than the vaguer "outcome not yet known."
+
+**A real process question this raises, left open rather than
+resolved**: two stale "still open" claims found in the same cycle
+suggests this might not be a one-off oversight but a structural gap --
+nothing in this catalog's own workflow currently prompts a check of
+older "still open" bullets against newer findings before adding a new
+one. Whether a third pass finds more, or whether these two were the
+only ones, is not yet known and not claimed either way.
+
+**Answered within the same cycle, not left hanging**: a third pass did
+find more -- the "Coverage is still..." bullet's own entity/archetype
+counts ("35 entities, 17 loop archetypes") were also stale, verified
+by running `(count (:entities data))` and `(count dynamics.core/loop-
+archetypes)` directly rather than trusting the old numbers (39 and 19
+respectively, as of this cycle). Fixed in place the same way. This
+raises the structural-gap question above from "maybe" to "confirmed at
+least 3 times in one file" -- still not resolved with a process fix
+this cycle (that would be a real workflow-design decision, not
+attempted here), but no longer a one-off suspicion either.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
@@ -3595,14 +3642,22 @@ claim in this file.
   work stays unfinished just because the bullet describing it hasn't been
   revisited.
 - Kizuna's seed-data typo is now fixed at the source (finding 27b,
-  independently re-verified). wadachi's handle/did/glyph fields have a
-  fix dispatched (finding 33), sourced from that actor's own dedicated
-  repo's canonical manifest.edn rather than invented -- outcome not yet
-  known. Even once that lands, the display-name-ja/display-name-en/
-  description trio (all 3 currently holding the same duplicated
-  sentence) will remain genuinely unfixed -- no authoritative source
-  provides a distinct value for those, and inventing one would still
-  be a real content decision this analysis has deliberately not made.
+  independently re-verified). UPDATE (this cycle, another stale claim
+  caught the same way finding 55 caught the arrangement.datalog one):
+  this bullet used to say wadachi's dispatched fix had "outcome not
+  yet known" -- wrong, and had been wrong since finding 33b (already
+  in this same file, just earlier) recorded the fix landing (`orgs/
+  etzhayyim/root` PR #3311, commit `f9c3df7480b4`) and this analysis
+  independently re-verifying it by fetching the merged file directly.
+  The genuinely still-open remainder, per finding 33b's own text: the
+  display-name-ja/display-name-en/description trio (all 3 still
+  holding the same duplicated sentence -- no authoritative source
+  provides a distinct value, and inventing one would still be a real
+  content decision this analysis has deliberately not made), and the 2
+  stale `wire/identity/*.json` generated-projection files in wadachi's
+  own repo (confirmed isolated to just those 2 files, not the whole
+  repo, and correctly left untouched since no safe regeneration path
+  exists -- same disposition as Kizuna's own leftover artifacts below).
   The generated-artifact
   copies of the OLD Kizuna string (the compiled snapshot
   `public/kotoba/actors-v1.root.json` and a raw IPFS content block
@@ -3611,16 +3666,23 @@ claim in this file.
   presumably self-correct the next time whatever generates them from
   the now-fixed seed actually runs, but that regeneration has not been
   triggered or confirmed by this analysis.
-- Coverage is still a small, honest sample, not "the whole world": 35
-  entities, 17 loop archetypes -- all 5 categories this bullet used to
+- Coverage is still a small, honest sample, not "the whole world":
+  UPDATE (this cycle, a THIRD stale count caught in the same pass --
+  answering finding 56's own open question, "whether a third pass
+  finds more," with yes) -- this used to say "35 entities, 17 loop
+  archetypes," verified stale by direct code execution rather than
+  grepping/guessing: `(count (:entities data))` on the live seed and
+  `(count dynamics.core/loop-archetypes)` both run just now give **39
+  entities, 19 loop archetypes**. All 5 categories this bullet used to
   name as unrepresented (labor unions, central banks, major social
-  platforms, nation-states, healthcare/education/insurance) now have at
-  least one real instance: finding 17 the AFL-CIO, finding 19 the Bank of
-  Japan, finding 21 Reddit, finding 22 Japan, finding 23 Japan's national
-  medical expenditure. The schema still has no ceiling, and the actual
-  instantiation is still a tiny fraction of real-world organizations and
-  systems overall -- closing every category this bullet originally named
-  is a real milestone, not a claim that coverage is now complete.
+  platforms, nation-states, healthcare/education/insurance) still have
+  at least one real instance: finding 17 the AFL-CIO, finding 19 the
+  Bank of Japan, finding 21 Reddit, finding 22 Japan, finding 23
+  Japan's national medical expenditure. The schema still has no
+  ceiling, and the actual instantiation is still a tiny fraction of
+  real-world organizations and systems overall -- closing every
+  category this bullet originally named is a real milestone, not a
+  claim that coverage is now complete.
 - The F2 upper bound is still a bound, not a rate -- it will stay that way
   until at least one organic conversion is observed. The
   `instrument-trackable-first-step` intervention (finding #7) is the proposed
