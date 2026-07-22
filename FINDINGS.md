@@ -3445,6 +3445,54 @@ because it is already a real, committed, owner-authored record in this
 workspace -- not surfaced or editorialized beyond what the source
 itself states.
 
+## 53. A THIRD, unrelated "shinshi": a self-excluded, already-frozen public-figure-profiling actor design -- recorded precisely, not amplified
+
+Checking the last 2 unexamined `jk-luxury` repos (`club-shinshi-actor-
+shinshi`, `club-shinshi-actor-magatama`) found something requiring
+careful, precise handling: `club-shinshi-actor-shinshi` contains a
+file named `NOT-MIGRATED-CHARTER-VIOLATION.md.edn`, whose entire
+content reads: "This 20-actor SDK was classified as EXCLUDE during
+2026-05-21 migration due to Charter Rider v2.0 §2 violation. See
+`_working_actors_decisions.md` for the specific clause."
+
+Its `actor-manifest.jsonld` explains why this reads as plausible: this
+is a **third, entirely separate "shinshi"** -- 紳士録 ("gentleman's
+register" / public-person intelligence), distinct from both `club-
+shinshi`/`ai-gftd-shinshi` (the adult-content chat platform already
+tracked, findings 40/42/51/52) and distinct from `magatama` (the
+worker-naming pattern, findings 42/49). Its own description: an agent
+profiling "politicians, executives (corporate officers), celebrities,
+judges, lawyers" -- named real public figures -- citing GDPR Art.
+6.1.f (journalism legitimate interest) and Japan's personal
+information law's press exception as its compliance basis, with
+stated rules limiting it to public-domain sourced facts and a
+"Right of Reply" correction mechanism.
+
+**What this finding does NOT do**: speculate about the specific
+Charter Rider §2 clause violated. `_working_actors_decisions.md` (the
+file the exclusion notice itself cites for "the specific clause") was
+searched for directly -- `gh api search/code` across this workspace
+and a direct tree check of every related repo (`jk-luxury/club-
+shinshi`, `club-shinshi-app`, `club-shinshi-actor-magatama`,
+`gftdcojp/ai-gftd-shinshi`) -- and not found anywhere accessible.
+Nor does it speculate about current operational status beyond the
+repo's own words: it is self-marked **NOT MIGRATED**, excluded from a
+2026-05-21 migration, meaning this design is not part of any live,
+running system as far as this repo's own record shows.
+
+**What is factual and worth recording precisely**: the workspace's own
+governance process (Charter Rider v2.0) already identified and
+excluded a real-public-figure-profiling actor design before this
+analysis ever looked -- this is evidence the governance mechanism
+this catalog has referenced throughout (etzhayyim's G1/G2/G3-style
+actor gates, the `new-project-scaffold` skill's explicit warning about
+actors that "実在の政府主体を名指しする／格付けする／監査する") is not
+purely theoretical; it produced a real exclusion decision, on record,
+in this exact repo. Recorded as a third naming collision worth
+flagging (alongside `:club-shinshi`/`:ai-gftd-shinshi` already noted
+in finding 51) so a future cycle checking "shinshi" doesn't conflate
+three unrelated systems under one name.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
