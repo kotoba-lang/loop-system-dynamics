@@ -5297,6 +5297,89 @@ findings 64/81) is built to guard against, this time caught and fixed
 by the source repo's own review process rather than by this catalog's
 external checking.
 
+## 87. A genuinely new depth on cloud-murakumo this catalog hadn't touched: a real, live arXiv submission held back from production and publicity by its own rigorous, self-critical peer-review-style ADR, with real experiments substantiating what does hold up
+
+Every prior finding on `cloud-murakumo` (this catalog's own funnel/
+checkout-mechanism facts, findings 4b/28c) looked at business surface.
+This cycle found real, substantial ML systems research: the repo's
+own recent commits (2026-07-17/18/19) show real experiments on
+"sqrt-space-kv," a memory-efficient LLM inference KV-cache technique,
+with real benchmarks (Modal A100 GPU, real models including a
+deployed Qwen3-VL-30B-A3B, mlx_lm.KVCache on real Macs) and a
+governing document, `ADR-2607182800`, that is genuinely unusual in
+its rigor for an internal repo document.
+
+**A real, live external artifact with real stakes**: sqrt-space-kv is
+an actual arXiv submission (draft 7807366, cs.CL, submitted
+2026-07-10) claiming "90-97% KV-storage reduction with exact
+attention," explicitly building on `arXiv:2502.17779` (Williams,
+*Simulating Time With Square-Root Space*, STOC 2025 Best Paper) and
+`arXiv:1604.06174` (Chen et al., sublinear-memory checkpointing) --
+real, cited, external academic literature, with a real HuggingFace
+Papers dataset entry and a real `arxiv-status.edn` tracking file.
+
+**The ADR's own problem statement names 5 real weaknesses in the
+submission as it stood, before any of this cycle's own review**: (1)
+comparison baselines were only full-KV and "recompute nobody actually
+uses," not the real competing eviction/quantization/depth-share/offload-
+tiering literature; (2) the reduction metric measured only a
+device-resident byte snapshot, never actual host-paging bandwidth/
+latency/throughput; (3) no downstream task-accuracy verification
+(LongBench/RULER); (4) the Williams STOC 2025 theoretical lineage was
+overstated -- the actual sqrt(N) checkpoint-and-recompute pattern is
+established prior art (Griewank's checkpointing theory, Chen 2016),
+and Williams' own novel mechanisms (Tree Evaluation, Cook-Mertz) are
+not used at all in the implementation; (5) 2026's industry mainstream
+for KV reduction is architecture-native MLA (Multi-head Latent
+Attention -- DeepSeek-V2/V3, Kimi K2, GLM-5, achieving 70-93%
+compression with zero runtime paging cost), against which
+sqrt-space-kv's added value was unverified.
+
+**Real experiments run to substantiate what DOES hold up, not just
+criticism**: capacity unlock demonstrated and measured, not estimated
+-- GLM-4-9B-Chat-1M (native 1,048,576-token context) uses only 6.1%
+of that context on a naive 16GB-Mac implementation; sqrt-space-kv's
+resident set stays O(sqrt(S)) (tens of MB) regardless, with real
+measured figures (weights 7.73GB, 80KB/token). Correctness proven via
+a real `Cache` subclass wired into a real `generate()` loop with
+exact token-match against baseline `DynamicCache`, full-scale
+multi-layer multi-step, not a single-tensor delta check. Cost
+honestly quantified: 2.2-3.7x decode slowdown, cross-validated by 2
+independent measurement methods on real Modal A100 hardware --
+explicitly reframed as "the price of capacity expansion," not hidden
+as a defect. A real competitive data point: within sqrt-space-kv's
+own ~90% compression range, NVIDIA kvpress's StreamingLLM/Knorm/SnapKV
+get **0% needle-retrieval accuracy**, while sqrt-space-kv is exact by
+construction but pays the latency tax -- a genuine, quantified
+tradeoff, not a one-sided comparison. A specific, non-obvious Apple
+Silicon finding: naive CPU eviction (write+delete) does NOT free RAM
+under unified memory (RSS actually *increases*) -- only `np.memmap`
+actually works (RSS change +0.1MB for 6.3GB of non-resident data).
+
+**The decision holds the line rather than declaring victory**:
+production promotion (`cloud-murakumo`'s own `:kv-policy` default)
+and external publicity (the HF Papers announcement) are both
+explicitly withheld until 4 named gates land -- real decode
+throughput/latency measurement, a head-to-head kvpress-harness
+comparison against H2O/StreamingLLM/SnapKV/InfLLM/NEO, downstream
+task accuracy on LongBench or RULER, and a real composability
+experiment against an actual small MLA model (e.g. DeepSeek-V2-Lite).
+The Williams STOC 2025 claim is explicitly walked back to "merely
+inspired the checkpoint-width choice," with Griewank/Chen properly
+credited as the real primary prior art. The MLA-composability claim
+("axes are orthogonal, so composable in theory") is recorded
+explicitly as an unverified hypothesis, not asserted as a working
+result.
+
+**Why this is worth recording precisely**: this is the most rigorous,
+most technically sophisticated instance this whole session has found
+of the "don't let an impressive number go out unqualified" discipline
+this catalog has repeatedly documented elsewhere (findings 63-68/81/86)
+-- applied here to a real, external, reputationally-consequential
+artifact (a live arXiv submission) rather than an internal business
+metric, by the same workspace's own internal review process, before
+this catalog ever looked at it.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
