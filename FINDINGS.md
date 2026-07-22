@@ -4285,6 +4285,63 @@ own prior, repeated experience that this search tool produces false
 negatives (finding 58), that 0 is recorded as inconclusive, not as
 evidence this is the only instance.
 
+## 69. First coverage of `nexus-x402`, a real payment facilitator this catalog had zero entity for -- and it directly answers a question finding 34b's sibling entry left explicitly open, while its own "validated" hypothesis doesn't survive a direct check against evidence this catalog already had
+
+Checked which of the 12 portfolio products this catalog still had no
+dedicated entity for: `app-aozora-yoro`, `ai-gftd-yukkuri`, and
+`nexus-x402` (0 hits each in `resources/entities-seed.edn`, `grep
+":id :<product>"`). Read `nexus-x402`'s primary sources directly
+(`90-docs/business/nexus-x402-business-model.edn` + `metrics/nexus-x402.edn`,
+`com-junkawasaki/root`) -- a real, live, keyless payment facilitator
+(Cloudflare Worker at `x402.nexus`, `kotoba-lang/pay`'s `pay.facilitator`,
+Apache-2.0) consolidating x402 micropayment verification for exactly
+3 internal sellers this catalog already separately tracks:
+`club-shinshi` (L0 PPV gate, $0.50/request), `cloud-murakumo` (L1
+inference, $0.01/request), `net-kotobase` (L2 storage GET, $0.001/request)
+-- all 3 registered live since 2026-07-10.
+
+**A real, direct answer to a question this catalog explicitly left
+open**: `net-kotobase`'s own entity entry (`:x402-payment-mechanism-verified`)
+already recorded that its x402 endpoint was correctly configured but
+"whether it has ever actually been paid is NOT determinable... without
+on-chain transaction history... explicitly left as an open,
+uninvestigated question." `nexus-x402`'s own metrics file
+(`:as-of "2026-07-22"`) records a live `SETTLEMENTS_KV` ledger (deployed
+2026-07-10, per the business-model doc's own text) showing, across all
+3 sellers combined: `:count 0, :usd-total 0`. Real, current, and
+precisely scoped: this is settlements recorded through THIS gateway
+specifically, over the ~12 days since that ledger existed -- not proof
+no payment has ever reached kotobase's endpoint by any other path, and
+not a claim this catalog is now making beyond what the source states.
+
+**A real methodological gap, found by cross-checking this catalog's
+own prior, independent verification against a claim in the source
+document itself**: the business-model doc's hypothesis table marks
+`:hyp/nexus-x402-adoption` **"validated"** -- claim: "sellers actually
+stop vendoring their own individual payment gate and migrate to nexus
+delegation" ("個別ゲートの vendor をやめて nexus 委譲へ移行する"). Its
+own stated gate, though, is just "3 sellers registered in nexus's
+catalog" (`nexus /catalog 登録 seller 数 = 3`) -- which is true from
+the moment all 3 first registered, and doesn't itself test whether any
+seller actually stopped running its own gate. Direct, current
+evidence against the plain claim: this analysis independently `curl`ed
+`kotobase.net/.well-known/x402` right now (2026-07-22) and got HTTP
+200 -- the exact same live, independently-operating endpoint this
+catalog's own `net-kotobase` entity verified directly against
+`kotobase.net` (not through `x402.nexus`) weeks earlier. `net-kotobase`
+has NOT stopped running its own gate; it runs both simultaneously. The
+hypothesis's gate measures registration, not migration, and the
+"validated" label reads as stronger than the evidence supports.
+
+**Worth noting on its own merits**: the same self-critical hypothesis-tracking
+discipline findings 63-68 found throughout cloud-itonami's own
+documents is present here too, in a completely different product
+(`club-shinshi`/`cloud-murakumo`/`net-kotobase`'s shared infrastructure
+layer, not a cloud-itonami document at all) -- `:hyp/nexus-x402-agent-demand`
+and `:hyp/nexus-x402-external-seller` are both marked "untested"/"speculative"
+plainly, not inflated. The one overclaim found (above) is the
+exception in an otherwise honest document, not the pattern.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
