@@ -5055,6 +5055,59 @@ read of its output, and extending the confirmed duration of the
 independently reconfirming the identical numbers 2 days after this
 catalog's own prior recording of them.
 
+## 82. Following the exact repo name from finding 80's own quote back to its source connects it to finding 70's real YouTube channel -- and reveals that channel's 27-day publishing silence coincides with real forward production work and a flagship engineering role, not abandonment
+
+Finding 80 quoted, in passing, that "the doc's own named proving
+slice, gftdcojp/ai-gftd-ghosthacker-shiropico, has migrated exactly
+one pure decision function" as the canonical example for kotoba-lang's
+whole `kotoba/app` capability-profile gate. "Shiropico" is exactly
+"SHIRO & PICO" -- the same characters from finding 70's real YouTube
+channel investigation (`ゆっくりサイバーch`, the "SHIRO & PICO --
+Ghost Hacker" series, found gone silent for 27+ days as of that
+finding). Followed this thread back to `90-docs/migration/kotoba-cljc-project-gap-dispositions.edn`
+(`com-junkawasaki/root`) and directly to the repo itself
+(`gftdcojp/ai-gftd-ghosthacker-shiropico`) to check whether this is
+really the same content, and what state it's actually in.
+
+**Confirmed real and precise, independently, not taken on the
+ledger's word alone**: `clj/src/shiropico/publish_decision.kotoba`
+exists (found via the repo's own git tree, after an initial wrong
+path guess 404'd -- the correct path has a `clj/` prefix the
+disposition entry's shorthand omitted). The 6 files the disposition
+claims remain CLJC are all still present exactly as named:
+`advisor.cljc`, `operation.cljc`, `phase.cljc`, `policy.cljc`,
+`render.cljc`, `store.cljc`. Real commit history matches the
+disposition's account precisely: 3 real PRs merged 2026-07-20 ("migrate
+publish decision to Kotoba," "run publish operation through kotoba,"
+"author publish decision with kotoba cond") -- the one pure function
+this whole fleet's flagship application-profile proving slice has
+migrated so far.
+
+**What this adds to finding 70's picture, checked directly rather
+than assumed**: the repo's own commit history shows real work on
+**episode 11 and 12 shotlists**, in the same multi-language pattern
+already observed on the YouTube channel (files for `ar`/`bn`/`de`/`en`/`es`
+and more languages found directly in the tree) -- dated 2026-07-10,
+after the channel's last published episode (3, uploaded 2026-06-24/25)
+but well before this catalog's own check. The publishing silence
+finding 70 found is real, but it is not the whole story: the same
+underlying pipeline has continued producing forward content (shotlists
+for 2 unreleased episodes) and receiving serious, current engineering
+investment (being the one named example repo the whole
+`kotoba/app`-capability-profile gate hinges its readiness assessment
+on, per finding 80). A channel that looks dormant from its own upload
+feed is, underneath, mid-production and mid-migration, not
+abandoned -- though whether or when episode 11/12 actually publish
+remains genuinely unknown and not claimed here.
+
+**Precisely scoped**: this analysis did not read the content of
+`publish_decision.kotoba` or the 6 remaining CLJC files, did not
+check whether episodes 11/12 shotlists are complete or merely
+scaffolded, and does not know why the Kotoba-migration burst (2026-07-20)
+and the shotlist work (2026-07-10) both predate today by several days
+with no further commits since -- whether that's a genuine pause or
+simply between-burst timing on a repo this catalog only checked once.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
