@@ -6403,6 +6403,55 @@ completely different product, now confirmed here too.
 
 **Interpretation**: a genuinely different technical register from finding 91's own subject (a production incident and its root-cause fix) -- this is proactive, methodical protocol-conformance engineering, verified against BOTH the team's own test suite AND an independent, standard-compliant third-party validator, with an explicit refusal to declare an externally-observable milestone complete until externally observed. The reverse-topology-walk structure itself is worth noting as a real, applied instance of a planning pattern this workspace's own business documents also use, here repurposed for technical verification sequencing rather than business-metric sequencing -- the same underlying discipline (don't claim the leaf outcome until every real dependency on the path to it is proven, not assumed) showing up in two different domains of this same workspace.
 
+## 107. Real, verifiable evidence that CLAUDE.md's own named "first vertical proving slice" for the Kotoba application-profile effort is actually happening, not just described in policy
+
+CLAUDE.md's own "Kotoba is safe application language" section names a
+specific, concrete first target for the broader `.kotoba` application-profile
+effort (the shift from narrow pure-function `.kotoba` to a full
+`kotoba/app` capability profile for real product logic): "最初の
+vertical proving slice は shiropico の state → LLM/ComfyUI effect →
+result event → governor → UI → checkpoint とする" (the first proving
+slice is shiropico's state -> LLM/ComfyUI effect -> result event ->
+governor -> UI -> checkpoint chain). Checked `gftdcojp/ai-gftd-ghosthacker-shiropico`
+(the actor CLAUDE.md itself names) for the first time and found real,
+merged, dated engineering matching this description precisely, not
+just referenced in passing.
+
+**PR #4 ("migrate publish decision to Kotoba", merged 2026-07-20)**:
+"adds the first shiropico application decision authored in `.kotoba`
+... preserves the existing CLJC policy/phase code as a compatibility
+oracle ... verifies six hold/escalate/commit scenarios against the
+legacy semantics ... compiles the source to a real wasm32-browser
+artifact." Independently confirmed the source file itself exists:
+`clj/src/shiropico/publish_decision.kotoba` is a real path in the
+repo's git tree. Could NOT independently confirm a checked-in compiled
+`.wasm` binary (none found anywhere in the tree) -- the wasm32
+compilation claim rests on the PR's own `clojure -M:dev:test`
+verification step rather than an inspectable binary artifact, an
+honest scope limit on this analysis's own verification, not a claim
+that the PR is wrong.
+
+**PR #5 ("WIP: run publish operation through Kotoba", merged
+2026-07-20)** goes further: makes the compiled `.kotoba` decision
+AUTHORITATIVE in the canonical JVM operation host (not a parallel
+experiment) -- the old CLJC logic demoted to "a portability oracle and
+fallback" -- and adds "a least-authority atomic checkpoint capability
+that fails before SSoT mutation," directly matching the governor/
+checkpoint stages CLAUDE.md's own proving-slice description names
+specifically. **PR #6 ("author publish decision with Kotoba cond",
+merged 2026-07-20)** is a small (8/10 line) honest follow-up: once the
+compiler matured enough to safely lower `cond` and binary `not=`, the
+decision logic was restored from an implementation-shaped nested `if`
+workaround back to natural `cond` notation -- a real, dated signal
+that the underlying `.kotoba` compiler itself was actively maturing
+during this same window, not a one-shot migration.
+
+**Evidence**: `gh pr view {4,5,6} --repo gftdcojp/ai-gftd-ghosthacker-shiropico` (full bodies) + independent `gh api repos/gftdcojp/ai-gftd-ghosthacker-shiropico/git/trees/main?recursive=true` (confirming `clj/src/shiropico/publish_decision.kotoba` is a real path; confirming no `.wasm` artifact is checked in anywhere in the tree), 2026-07-23.
+
+**Source**: `gftdcojp/ai-gftd-ghosthacker-shiropico` PRs #4/#5/#6 (all merged 2026-07-20), cross-referenced against CLAUDE.md's own repo-wide "Kotoba is safe application language" section.
+
+**Interpretation**: this is meaningfully different from most of this catalog's earlier `.kotoba`-migration findings (which have generally been about narrow-slice pure-function ports of existing repos), because CLAUDE.md itself specifically pre-named shiropico as THE proving slice for the broader kotoba/app profile shift -- this is the one place in the whole workspace where checking "is the policy document's own named next step actually happening" has a single, precise, falsifiable target. It is happening, dated within the same week the ADR-2607231400/2607231900 findings (101/102) also landed, with real safety-relevant care taken (compatibility-oracle parity testing before promotion to authoritative, least-authority checkpoint capability, fail-closed-before-SSoT-mutation) rather than a rushed swap. The one thing this analysis could not verify -- a checked-in compiled wasm binary -- is recorded honestly as a verification gap rather than glossed over or assumed resolved.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
