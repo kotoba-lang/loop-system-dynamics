@@ -6799,6 +6799,78 @@ quorum arithmetic, not an invented approximation.
 
 **Interpretation**: a genuinely satisfying convergence for this catalog's own recent work -- two findings verified independently, in two completely different repos, on two completely different days within this same cycle (AWAI Network LLC's formation record in an ADR-ledger; the ENGI kernel's design in an etzhayyim actor repo) turn out to be load-bearing pieces of a THIRD product's own real, substantially-implemented system, each cross-reference independently confirmed rather than assumed from the ADR's own claims alone. The honesty discipline holds here too: extensive real implementation (8 tested namespaces, correct BFT quorum math, a real prior end-to-end browser-inference proof cited in the doc's own Context section) paired with an explicit 9-item gate list keeping mainnet issuance, EVM bridging, and any exchange/liquidity claim off the table until each is actually done -- not a single claim of "MCC is live" anywhere in the document. This is the same "no-privileged-mint, no-fabricated-progress" discipline findings 64/81/86/91/92/93/98/99/100/108/110 have each found in a different product; here it appears in a real cross-repo economic-infrastructure system spanning etzhayyim, cloud-murakumo, and the AWAI Network operator entity all at once.
 
+## 114. kotobase's Merkle-LSM production-gap-closure ADR has grown far past findings 99/100's last read: the 10M-row R2 streaming compaction gate has now actually completed with exact row counts, and a full namespace-aware database disaster restore vertical slice landed, surfacing two more real production bugs via live Cloudflare testing
+
+Checking `gftdcojp/local-murakumo` (the same "host" repo behind
+findings 98/99/100's earlier coverage of this ADR) for fresh activity
+found 4 new merged PRs (#84-87) in the last hour alone, and re-reading
+`90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn`
+in full shows it has grown from the 436 lines finding 100 last read to
+cover a long chain of dated addenda finding 100 never saw: resumable
+cancellation (peer PR #87, host PR #78), bounded dead-letter inspection
+(host PR #79), bounded backlog/lease-loss alerts (host PR #80), cron
+dispatch SLO measurement plus **live Cloudflare cron alert
+qualification** (host PR #81-84), authenticated GC delete rollback plus
+a live R2 restore drill (host PR #85), and a full **namespace-aware
+database disaster restore** vertical slice (peer PR #88-89, host PR
+#86).
+
+**Two more real production bugs found and fixed via live testing, same
+discipline as findings 99/100's own latency-chase and safe-epoch work**:
+(1) the live Cloudflare cron alert drill's first real `ScheduledEvent`
+succeeded at dispatch measurement and structured alerting but then
+failed delivery because "Cloudflare edge が Fetch `redirect: "error"`
+を未実装として拒否した" (Cloudflare's edge doesn't implement
+`redirect: "error"`) — fixed in host PR #82 by switching to
+`redirect: "manual"` with the existing 2xx-only gate now also rejecting
+3xx. (2) the real disaster-restore drill against production data found
+that assuming every IPLD Link is a decodable DAG-CBOR node under
+`blocks/` fails for materialized pack CIDs — fixed in peer PR #89 by
+recording `[namespace CID]` pairs and only decoding/traversing
+`blocks/` entries, storing `objects/` entries as CID-verified opaque
+bytes instead, with restore now failing closed if the post-restore
+reachable set doesn't exactly match the inventory.
+
+**The 10M-row gate this catalog has now watched grow incrementally
+across findings 98-100 (100 last saw a resumed head at 253,952 rows) has
+actually completed**: a fresh bench receipt
+(`local-murakumo/bench/results/2026-07-23-r2-streaming-compaction-10m.edn`,
+committed 12:26 UTC today) reports `:outcome :succeeded`, resume from
+253,952 to a full 10,000,000 datoms, `:exact-index-row-counts true`
+across EAVT/AEVT/AVET, 31,200 reused copy-on-write pages, and the same
+careful `:claim` field explicitly disclaiming what it does NOT cover
+(seed wall time, full-corpus value equivalence, multi-region
+qualification, billed-operation counts, zero-total-memory backup/
+restore) — but the ADR document's own text, as of this same read, still
+shows its last addendum's progress note frozen at "7,856,128/10,000,000
+... 途中値をscale完了とは扱わず" (an intermediate value, not treated as
+scale-completion) from BEFORE this final receipt landed. The formal
+`:production-partial` -> `:production-ready` decision the ADR's own
+"Consequences" section reserves for a future separate decision has
+still not been made even though the specific numeric gate that decision
+was waiting on has now been hit — the document simply hasn't caught up
+to the receipt yet.
+
+**The disaster-restore drill itself stayed honestly scoped**: a real
+Cloudflare R2 isolated-prefix drill deleted a mutable head plus 11
+blocks and 2 opaque objects (13 entries, 12,886 bytes), restored all 13
+in 1,773ms with exact reachable-set match, confirmed idempotent
+re-restore (0 restored / 13 already-present) and durable replay of the
+same transaction (289.992ms) — but the ADR's own text is explicit that
+"未完了はbackup bucketを別account/regionへ分離したcopy、large
+inventoryのpaged/resumable streaming、production RTO/RPO、汎用on-disk
+query完成後のquery corpus equivalence" (cross-account/region backup
+separation, paged/resumable streaming for large inventories, production
+RTO/RPO, and post-general-query corpus equivalence remain unfinished) —
+the same explicit not-done-yet disclosure pattern this catalog has
+tracked in this exact product across findings 98/99/100.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (full re-read, now substantially longer than finding 100's last read) + `gh api repos/gftdcojp/local-murakumo/commits/629765e9d76e4860eb4e32a52f676a294d5aef24` and `gh api repos/kotoba-lang/kotobase-peer/commits/b4b96171c476c36378d6ec4d5408406c3b7070a4` (both independently re-fetched, dates/messages match the ADR's own citations exactly) + `gh api repos/gftdcojp/local-murakumo/contents/bench/results/2026-07-23-r2-streaming-compaction-10m.edn` (full receipt read directly, confirming exact 10,000,000-row completion), 2026-07-23.
+
+**Source**: `90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (com-junkawasaki/root) + `gftdcojp/local-murakumo` PRs #78-87 + `kotoba-lang/kotobase-peer` PRs #87-89 + `local-murakumo/bench/results/2026-07-23-r2-streaming-compaction-10m.edn`, 2026-07-23.
+
+**Interpretation**: a direct continuation of findings 98/99/100's own tracked subject, not a duplicate — new dated evidence that the SAME gap-closure effort has kept moving in the hours since finding 100's last read, hitting the exact numeric milestone (10M rows, exact counts, 3 indices) that ADR's own "Consequences" section names as the trigger for a future `:production-ready` decision, while that decision itself has explicitly not yet been made and the document hasn't even been updated to note the milestone was reached. This is a subtly different flavor of the same honesty discipline found throughout this catalog: it is not just that the team declines to claim done when something isn't finished (findings 64/81/86/91/92/93/98/99/100/108/110/113), but that here, even a genuine completion sits unclaimed for at least an hour past the evidence landing -- the gap between "the milestone happened" and "the document was updated to say so" is itself a small, honest, verifiable data point about how this team paces its own claims relative to its own evidence.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
