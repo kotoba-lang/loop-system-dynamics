@@ -28,6 +28,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2017", :value 191407113.2443966}
+     {:as-of "2018", :value 198074728.57440796}
+     {:as-of "2019", :value 226306243.7292583}
+     {:as-of "2020", :value 279576954.92519325}
+     {:as-of "2021", :value 278250788.014927}),
     :defense-spending-share-of-gdp-pct
     {:value 1.8279338562169984,
      :as-of "2021",
@@ -63,6 +69,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 973942251.7568969}
+     {:as-of "2022", :value 1623340728.8142903}
+     {:as-of "2023", :value 1247846345.0851743}
+     {:as-of "2024", :value 924256506.0599262}
+     {:as-of "2025", :value 1459150446.303329}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3968300022016407,
      :as-of "2025",
@@ -98,6 +110,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 222874806.80061826}
+     {:as-of "2022", :value 228659049.02322286}
+     {:as-of "2023", :value 399980128.1732823}
+     {:as-of "2024", :value 535225686.3657517}
+     {:as-of "2025", :value 623614024.5729697}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0325031435452803,
      :as-of "2025",
@@ -152,6 +170,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2010", :value 17504697072.838665}
+     {:as-of "2011", :value 19181756296.800545}
+     {:as-of "2012", :value 19024098025.86794}
+     {:as-of "2013", :value 23561061946.902657}
+     {:as-of "2014", :value 22755071477.195374}),
     :defense-spending-share-of-gdp-pct
     {:value 5.643651352470238,
      :as-of "2014",
@@ -187,6 +211,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3073433322.8081255}
+     {:as-of "2022", :value 4338261310.308717}
+     {:as-of "2023", :value 4882352998.999768}
+     {:as-of "2024", :value 4179838656.990005}
+     {:as-of "2025", :value 3875750072.354246}),
     :defense-spending-share-of-gdp-pct
     {:value 0.5631741127021983,
      :as-of "2025",
@@ -222,6 +252,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 619435471.7100929}
+     {:as-of "2022", :value 795201580.0497068}
+     {:as-of "2023", :value 1326245679.3866892}
+     {:as-of "2024", :value 1418264456.4968297}
+     {:as-of "2025", :value 1725213042.6808634}),
     :defense-spending-share-of-gdp-pct
     {:value 6.093545985205533,
      :as-of "2025",
@@ -281,6 +317,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 32718066816.816814}
+     {:as-of "2022", :value 32445330432.014027}
+     {:as-of "2023", :value 32387989797.745953}
+     {:as-of "2024", :value 34231448067.172024}
+     {:as-of "2025", :value 35326559811.29522}),
     :defense-spending-share-of-gdp-pct
     {:value 1.9178730836910949,
      :as-of "2025",
@@ -316,6 +358,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 4196428571.4285717}
+     {:as-of "2022", :value 3612733177.951484}
+     {:as-of "2023", :value 4452227950.61387}
+     {:as-of "2024", :value 5294393827.606575}
+     {:as-of "2025", :value 6353360557.723981}),
     :defense-spending-share-of-gdp-pct
     {:value 1.1006335138112955,
      :as-of "2025",
@@ -351,6 +399,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2703176470.5882354}
+     {:as-of "2022", :value 2991035294.117647}
+     {:as-of "2023", :value 3561670588.2352943}
+     {:as-of "2024", :value 3777088235.294118}
+     {:as-of "2025", :value 4939000000}),
     :defense-spending-share-of-gdp-pct
     {:value 6.465505956276998,
      :as-of "2025",
@@ -386,6 +440,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 68376397.13578308}
+     {:as-of "2022", :value 101434221.21516499}
+     {:as-of "2023", :value 145168021.65114814}
+     {:as-of "2024", :value 171829784.5782581}
+     {:as-of "2025", :value 226615473.53087303}),
     :defense-spending-share-of-gdp-pct
     {:value 3.242394814929607,
      :as-of "2025",
@@ -421,6 +481,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 6240137875.968892}
+     {:as-of "2022", :value 6898521628.404703}
+     {:as-of "2023", :value 7635702793.333476}
+     {:as-of "2024", :value 8566824934.062508}
+     {:as-of "2025", :value 14531958576.811136}),
     :defense-spending-share-of-gdp-pct
     {:value 2.008893871208229,
      :as-of "2025",
@@ -456,6 +522,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 97451777.5716807}
+     {:as-of "2022", :value 109994281.29097663}
+     {:as-of "2023", :value 149056229.6838394}
+     {:as-of "2024", :value 167317204.23996866}
+     {:as-of "2025", :value 216913737.3598404}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8900779239346037,
      :as-of "2025",
@@ -491,6 +563,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 458279098.4448859}
+     {:as-of "2022", :value 562583349.170273}
+     {:as-of "2023", :value 827153018.8618231}
+     {:as-of "2024", :value 1023776390.198433}
+     {:as-of "2025", :value 891556029.4421132}),
     :defense-spending-share-of-gdp-pct
     {:value 3.3002993564528182,
      :as-of "2025",
@@ -526,6 +604,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 4849144939.531103}
+     {:as-of "2022", :value 4290027254.2516575}
+     {:as-of "2023", :value 3687662512.810081}
+     {:as-of "2024", :value 3747468058.077603}
+     {:as-of "2025", :value 3826632299.58464}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8105876769470378,
      :as-of "2025",
@@ -561,6 +645,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1275264168.3421264}
+     {:as-of "2022", :value 1436449732.7712548}
+     {:as-of "2023", :value 1991192024.9129412}
+     {:as-of "2024", :value 2192669896.4234595}
+     {:as-of "2025", :value 2589155424.306569}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0063745774838693,
      :as-of "2025",
@@ -596,6 +686,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1437500000}
+     {:as-of "2022", :value 1598069148.93617}
+     {:as-of "2023", :value 1622393617.0212765}
+     {:as-of "2024", :value 1383973404.255319}
+     {:as-of "2025", :value 1468151595.744681}),
     :defense-spending-share-of-gdp-pct
     {:value 3.1054670025549735,
      :as-of "2025",
@@ -655,6 +751,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 209721886.3361548}
+     {:as-of "2022", :value 184484799.33661622}
+     {:as-of "2023", :value 216813173.1471897}
+     {:as-of "2024", :value 216037769.45090792}
+     {:as-of "2025", :value 231395167.75581536}),
     :defense-spending-share-of-gdp-pct
     {:value 0.7283302900341615,
      :as-of "2025",
@@ -690,6 +792,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 951248190.4930722}
+     {:as-of "2022", :value 1201466052.3209321}
+     {:as-of "2023", :value 1397442931.4845297}
+     {:as-of "2024", :value 1503722053.7912405}
+     {:as-of "2025", :value 1938589500.4900749}),
     :defense-spending-share-of-gdp-pct
     {:value 2.3973873975455793,
      :as-of "2025",
@@ -725,6 +833,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 26703375}
+     {:as-of "2022", :value 27805037.5}
+     {:as-of "2023", :value 32490299.999999996}
+     {:as-of "2024", :value 35184762.5}
+     {:as-of "2025", :value 33317349.999999996}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9956591792927614,
      :as-of "2025",
@@ -760,6 +874,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 535704001.57308245}
+     {:as-of "2022", :value 428311004.1128798}
+     {:as-of "2023", :value 588704775.6874096}
+     {:as-of "2024", :value 570911722.1418234}
+     {:as-of "2025", :value 688306801.7366136}),
     :defense-spending-share-of-gdp-pct
     {:value 1.214532355175434,
      :as-of "2025",
@@ -795,6 +915,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 19187122475.44932}
+     {:as-of "2022", :value 20542063567.371616}
+     {:as-of "2023", :value 21788291072.488297}
+     {:as-of "2024", :value 20963641605.747772}
+     {:as-of "2025", :value 23949869705.559586}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0544932096497133,
      :as-of "2025",
@@ -854,6 +980,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2020", :value 436548223.3502538}
+     {:as-of "2021", :value 453337798.6157625}
+     {:as-of "2022", :value 435857351.15960217}
+     {:as-of "2023", :value 449232494.8451928}
+     {:as-of "2024", :value 560266733.7424988}),
     :defense-spending-share-of-gdp-pct
     {:value 3.6521337602160164,
      :as-of "2024",
@@ -908,6 +1040,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 536630400.9054821}
+     {:as-of "2022", :value 512727689.05482155}
+     {:as-of "2023", :value 349640590.6963012}
+     {:as-of "2024", :value 519369295.1972763}
+     {:as-of "2025", :value 614353516.2293174}),
     :defense-spending-share-of-gdp-pct
     {:value 3.1078158759045635,
      :as-of "2025",
@@ -943,6 +1081,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 55515012.09693412}
+     {:as-of "2022", :value 42001802.656465866}
+     {:as-of "2023", :value 62527021.81344471}
+     {:as-of "2024", :value 71181660.75698854}
+     {:as-of "2025", :value 74185526.58732888}),
     :defense-spending-share-of-gdp-pct
     {:value 2.33213316567201,
      :as-of "2025",
@@ -978,6 +1122,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 24698524102.87081}
+     {:as-of "2022", :value 25122741481.581306}
+     {:as-of "2023", :value 28878130615.24938}
+     {:as-of "2024", :value 30617562312.508774}
+     {:as-of "2025", :value 37494244642.3716}),
     :defense-spending-share-of-gdp-pct
     {:value 1.627447396350995,
      :as-of "2025",
@@ -1013,6 +1163,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5486155122.809739}
+     {:as-of "2022", :value 5650938777.220089}
+     {:as-of "2023", :value 6311589444.51246}
+     {:as-of "2024", :value 6536271129.330101}
+     {:as-of "2025", :value 7591405901.0693865}),
     :defense-spending-share-of-gdp-pct
     {:value 0.7569245382939775,
      :as-of "2025",
@@ -1048,6 +1204,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5194059174.297632}
+     {:as-of "2022", :value 4649295736.329366}
+     {:as-of "2023", :value 5470078568.904183}
+     {:as-of "2024", :value 5506745657.449898}
+     {:as-of "2025", :value 5327885653.379976}),
     :defense-spending-share-of-gdp-pct
     {:value 1.5202086436351594,
      :as-of "2025",
@@ -1083,6 +1245,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 286064630570.9759}
+     {:as-of "2022", :value 291568533678.9456}
+     {:as-of "2023", :value 296256209139.08484}
+     {:as-of "2024", :value 311900350600.8155}
+     {:as-of "2025", :value 335524155624.44}),
     :defense-spending-share-of-gdp-pct
     {:value 1.724723316575711,
      :as-of "2025",
@@ -1123,6 +1291,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 637656912.8174989}
+     {:as-of "2022", :value 607245699.5565702}
+     {:as-of "2023", :value 682177111.3492144}
+     {:as-of "2024", :value 658420212.9945459}
+     {:as-of "2025", :value 759441425.3284721}),
     :defense-spending-share-of-gdp-pct
     {:value 0.7748750663545787,
      :as-of "2025",
@@ -1158,6 +1332,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 443336832.00567675}
+     {:as-of "2022", :value 416638021.6402023}
+     {:as-of "2023", :value 456569091.8880268}
+     {:as-of "2024", :value 534906432.48810226}
+     {:as-of "2025", :value 627467840.6823967}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0582867226575212,
      :as-of "2025",
@@ -1193,6 +1373,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 306078782.5606135}
+     {:as-of "2022", :value 371081599.8508202}
+     {:as-of "2023", :value 794244598.0722746}
+     {:as-of "2024", :value 899187778.4038358}
+     {:as-of "2025", :value 1225252134.1519628}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3751452231075287,
      :as-of "2025",
@@ -1228,6 +1414,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 313056395.870817}
+     {:as-of "2022", :value 265847975.28725484}
+     {:as-of "2023", :value 284994429.6640487}
+     {:as-of "2024", :value 182061515.62628844}
+     {:as-of "2025", :value 204916764.11914426}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3092720148724422,
      :as-of "2025",
@@ -1263,6 +1455,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 10180134292.076586}
+     {:as-of "2022", :value 9661013161.746454}
+     {:as-of "2023", :value 10779238341.591625}
+     {:as-of "2024", :value 13876037183.895292}
+     {:as-of "2025", :value 14502706852.6697}),
     :defense-spending-share-of-gdp-pct
     {:value 3.202105085963565,
      :as-of "2025",
@@ -1317,6 +1515,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 11213723.429355867}
+     {:as-of "2022", :value 10250668.273218632}
+     {:as-of "2023", :value 14353938.320532246}
+     {:as-of "2024", :value 16829866.56200942}
+     {:as-of "2025", :value 20076627.568532564}),
     :defense-spending-share-of-gdp-pct
     {:value 0.6575158855219908,
      :as-of "2025",
@@ -1352,6 +1556,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 0}
+     {:as-of "2022", :value 0}
+     {:as-of "2023", :value 0}
+     {:as-of "2024", :value 0}
+     {:as-of "2025", :value 0}),
     :defense-spending-share-of-gdp-pct
     {:value 0,
      :as-of "2025",
@@ -1387,6 +1597,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2014", :value 125638766.51982379}
+     {:as-of "2015", :value 118370044.05286343}
+     {:as-of "2016", :value 123658947.44865882}
+     {:as-of "2017", :value 122552919.00664084}
+     {:as-of "2018", :value 128609126.95598048}),
     :defense-spending-share-of-gdp-pct
     {:value 2.876207372450721,
      :as-of "2018",
@@ -1422,6 +1638,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 541804635.7615894}
+     {:as-of "2022", :value 532512389.87942487}
+     {:as-of "2023", :value 558878310.8111027}
+     {:as-of "2024", :value 596022335.1527699}
+     {:as-of "2025", :value 663312501.4101031}),
     :defense-spending-share-of-gdp-pct
     {:value 1.605310961570736,
      :as-of "2025",
@@ -1457,6 +1679,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3918412534.8853426}
+     {:as-of "2022", :value 3887785246.3929443}
+     {:as-of "2023", :value 4536247498.845628}
+     {:as-of "2024", :value 6511697690.612424}
+     {:as-of "2025", :value 7051481133.0233755}),
     :defense-spending-share-of-gdp-pct
     {:value 1.835646969402079,
      :as-of "2025",
@@ -1492,6 +1720,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 56520202567.82855}
+     {:as-of "2022", :value 56126481485.75903}
+     {:as-of "2023", :value 68584873364.29147}
+     {:as-of "2024", :value 86148285078.5157}
+     {:as-of "2025", :value 113585948604.56197}),
     :defense-spending-share-of-gdp-pct
     {:value 2.268510925145227,
      :as-of "2025",
@@ -1527,6 +1761,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2004", :value 37355742.99041756}
+     {:as-of "2005", :value 44847260.59385216}
+     {:as-of "2006", :value 49515814.11313238}
+     {:as-of "2007", :value 34518711.91361741}
+     {:as-of "2008", :value 36274835.275516115}),
     :defense-spending-share-of-gdp-pct
     {:value 2.627582524627982,
      :as-of "2008",
@@ -1581,6 +1821,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5273695928.7531805}
+     {:as-of "2022", :value 5469774011.299435}
+     {:as-of "2023", :value 8142235123.367199}
+     {:as-of "2024", :value 9637155297.532656}
+     {:as-of "2025", :value 14948790190.933384}),
     :defense-spending-share-of-gdp-pct
     {:value 3.252852051205041,
      :as-of "2025",
@@ -1616,6 +1862,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 611467713.1144669}
+     {:as-of "2022", :value 773360376.5162561}
+     {:as-of "2023", :value 946425773.18119}
+     {:as-of "2024", :value 1012070260.3424604}
+     {:as-of "2025", :value 1037253440.08817}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8023020922876147,
      :as-of "2025",
@@ -1651,6 +1903,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 9112461105.348942}
+     {:as-of "2022", :value 9145810174.207281}
+     {:as-of "2023", :value 18263967968.26213}
+     {:as-of "2024", :value 21811242555.03127}
+     {:as-of "2025", :value 25438789692.334564}),
     :defense-spending-share-of-gdp-pct
     {:value 8.83062559516761,
      :as-of "2025",
@@ -1686,6 +1944,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2408810000}
+     {:as-of "2022", :value 2586480000}
+     {:as-of "2023", :value 2692000000}
+     {:as-of "2024", :value 2882200000}
+     {:as-of "2025", :value 2735600000}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0957782267652623,
      :as-of "2025",
@@ -1721,6 +1985,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5165445626.552845}
+     {:as-of "2022", :value 4645922047.5088}
+     {:as-of "2023", :value 3167150125.913561}
+     {:as-of "2024", :value 2398424389.2725844}
+     {:as-of "2025", :value 2501747815.2309613}),
     :defense-spending-share-of-gdp-pct
     {:value 0.6055802166128685,
      :as-of "2025",
@@ -1756,6 +2026,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "1999", :value 272856734.57522297}
+     {:as-of "2000", :value 230670129.87012988}
+     {:as-of "2001", :value 166550245.3689376}
+     {:as-of "2002", :value 150764425.21241996}
+     {:as-of "2003", :value 181583668.99891195}),
     :defense-spending-share-of-gdp-pct
     {:value 20.865745309381094,
      :as-of "2003",
@@ -1786,6 +2062,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 19970305108.798485}
+     {:as-of "2022", :value 20722199550.68281}
+     {:as-of "2023", :value 24837317038.38791}
+     {:as-of "2024", :value 25199837644.766747}
+     {:as-of "2025", :value 40211754089.114494}),
     :defense-spending-share-of-gdp-pct
     {:value 2.128921138284213,
      :as-of "2025",
@@ -1821,6 +2103,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 748674616.2790577}
+     {:as-of "2022", :value 819271840.4669302}
+     {:as-of "2023", :value 1236971309.8039448}
+     {:as-of "2024", :value 1424412696.8750012}
+     {:as-of "2025", :value 1575931232.0916905}),
     :defense-spending-share-of-gdp-pct
     {:value 3.374417800792759,
      :as-of "2025",
@@ -1856,6 +2144,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 440163204.27790076}
+     {:as-of "2022", :value 1024031605.9777563}
+     {:as-of "2023", :value 1227084920.1552186}
+     {:as-of "2024", :value 700351865.4291887}
+     {:as-of "2025", :value 528111206.3192609}),
     :defense-spending-share-of-gdp-pct
     {:value 0.49373916341119917,
      :as-of "2025",
@@ -1891,6 +2185,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3832078604.651101}
+     {:as-of "2022", :value 4454922263.618699}
+     {:as-of "2023", :value 5926831253.9138365}
+     {:as-of "2024", :value 6502950515.293756}
+     {:as-of "2025", :value 8081582925.343501}),
     :defense-spending-share-of-gdp-pct
     {:value 2.5711701623670273,
      :as-of "2025",
@@ -1926,6 +2226,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 68726851.85185187}
+     {:as-of "2022", :value 67772925.47472017}
+     {:as-of "2023", :value 73051026.79480769}
+     {:as-of "2024", :value 77454073.53524666}
+     {:as-of "2025", :value 81159432.22357386}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3300334824945277,
      :as-of "2025",
@@ -1961,6 +2267,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 58741980240.309135}
+     {:as-of "2022", :value 54743786501.94579}
+     {:as-of "2023", :value 59541138239.216805}
+     {:as-of "2024", :value 63574699212.50005}
+     {:as-of "2025", :value 68007580714.301834}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0266296920856375,
      :as-of "2025",
@@ -2020,6 +2332,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 311454928.6354286}
+     {:as-of "2022", :value 277674768.99056864}
+     {:as-of "2023", :value 265385802.63187867}
+     {:as-of "2024", :value 319128392.2923394}
+     {:as-of "2025", :value 356111990.0942423}),
     :defense-spending-share-of-gdp-pct
     {:value 1.6619472806552955,
      :as-of "2025",
@@ -2055,6 +2373,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 65148595797.79919}
+     {:as-of "2022", :value 64015768189.40256}
+     {:as-of "2023", :value 73609224258.37167}
+     {:as-of "2024", :value 89814565861.93602}
+     {:as-of "2025", :value 88977496940.39256}),
     :defense-spending-share-of-gdp-pct
     {:value 2.3532641541251778,
      :as-of "2025",
@@ -2095,6 +2419,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 300489434.4313238}
+     {:as-of "2022", :value 401381726.1846843}
+     {:as-of "2023", :value 506476827.70211416}
+     {:as-of "2024", :value 538084625.4219339}
+     {:as-of "2025", :value 657878727.0171082}),
     :defense-spending-share-of-gdp-pct
     {:value 1.745828116359766,
      :as-of "2025",
@@ -2130,6 +2460,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 304373288.32009923}
+     {:as-of "2022", :value 249289686.1853876}
+     {:as-of "2023", :value 301979736.0805605}
+     {:as-of "2024", :value 274377098.10539705}
+     {:as-of "2025", :value 506651717.200633}),
     :defense-spending-share-of-gdp-pct
     {:value 0.4768161807193156,
      :as-of "2025",
@@ -2165,6 +2501,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 244558590.41580293}
+     {:as-of "2022", :value 441260169.7261931}
+     {:as-of "2023", :value 504667180.28627545}
+     {:as-of "2024", :value 562455950.4996824}
+     {:as-of "2025", :value 600539642.4306408}),
     :defense-spending-share-of-gdp-pct
     {:value 2.027963292300796,
      :as-of "2025",
@@ -2200,6 +2542,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 15882447.947414417}
+     {:as-of "2022", :value 15563929.975828327}
+     {:as-of "2023", :value 14420505.399032434}
+     {:as-of "2024", :value 14674916.178744012}
+     {:as-of "2025", :value 14738181.34045069}),
     :defense-spending-share-of-gdp-pct
     {:value 0.569750931440142,
      :as-of "2025",
@@ -2235,6 +2583,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 25596417.43902417}
+     {:as-of "2022", :value 18698075.09719314}
+     {:as-of "2023", :value 18266819.268467024}
+     {:as-of "2024", :value 23221751.789816413}
+     {:as-of "2025", :value 22360184.357157595}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8870465553036184,
      :as-of "2025",
@@ -2270,6 +2624,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 162807132.6712182}
+     {:as-of "2022", :value 156791634.919832}
+     {:as-of "2023", :value 162192394.152675}
+     {:as-of "2024", :value 114534738.33118764}
+     {:as-of "2025", :value 120731065.55685492}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8976364300556501,
      :as-of "2025",
@@ -2305,6 +2665,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 8300944592.247928}
+     {:as-of "2022", :value 8755994121.206268}
+     {:as-of "2023", :value 7020677198.039348}
+     {:as-of "2024", :value 7391576221.093757}
+     {:as-of "2025", :value 8388421361.369943}),
     :defense-spending-share-of-gdp-pct
     {:value 2.9888142525625296,
      :as-of "2025",
@@ -2359,6 +2725,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 337815983.29365855}
+     {:as-of "2022", :value 441493596.53276324}
+     {:as-of "2023", :value 437629124.79814357}
+     {:as-of "2024", :value 453461751.00655246}
+     {:as-of "2025", :value 632872273.9811586}),
     :defense-spending-share-of-gdp-pct
     {:value 0.5231496438573953,
      :as-of "2025",
@@ -2394,6 +2766,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 76789448.441247}
+     {:as-of "2022", :value 88515539.56834532}
+     {:as-of "2023", :value 110598561.15107913}
+     {:as-of "2024", :value 206620652.27817747}
+     {:as-of "2025", :value 247643803.40654925}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9913924529825313,
      :as-of "2025",
@@ -2429,6 +2807,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 421666541.9587796}
+     {:as-of "2022", :value 460576131.5591221}
+     {:as-of "2023", :value 524224662.37444794}
+     {:as-of "2024", :value 547330352.4805732}
+     {:as-of "2025", :value 580246011.6353736}),
     :defense-spending-share-of-gdp-pct
     {:value 1.463472194373829,
      :as-of "2025",
@@ -2464,6 +2848,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1360346003.4644794}
+     {:as-of "2022", :value 1282110612.8046985}
+     {:as-of "2023", :value 1408809814.996478}
+     {:as-of "2024", :value 1730736363.4200215}
+     {:as-of "2025", :value 2101617670.2840512}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0185583436731753,
      :as-of "2025",
@@ -2499,6 +2889,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 29316357.78581701}
+     {:as-of "2022", :value 12889784.459732922}
+     {:as-of "2023", :value 11786377.442106629}
+     {:as-of "2024", :value 19781061.318649925}
+     {:as-of "2025", :value 39144696.97650407}),
     :defense-spending-share-of-gdp-pct
     {:value 0.12116192286238739,
      :as-of "2025",
@@ -2534,6 +2930,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2410401106.1965175}
+     {:as-of "2022", :value 3255307471.232236}
+     {:as-of "2023", :value 4358422113.446591}
+     {:as-of "2024", :value 4732680839.23351}
+     {:as-of "2025", :value 5001983632.200585}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0368010224634183,
      :as-of "2025",
@@ -2569,6 +2971,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 8798276063.573387}
+     {:as-of "2022", :value 10130672035.309675}
+     {:as-of "2023", :value 11258797569.510035}
+     {:as-of "2024", :value 12012394513.002398}
+     {:as-of "2025", :value 15025416115.28609}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0446886384200043,
      :as-of "2025",
@@ -2604,6 +3012,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 76253500470.49722}
+     {:as-of "2022", :value 79887011269.03249}
+     {:as-of "2023", :value 82262171563.15779}
+     {:as-of "2024", :value 85597083119.10968}
+     {:as-of "2025", :value 92057013588.1601}),
     :defense-spending-share-of-gdp-pct
     {:value 2.2951791793515173,
      :as-of "2025",
@@ -2644,6 +3058,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1267738883.6329234}
+     {:as-of "2022", :value 1164312098.7488115}
+     {:as-of "2023", :value 1269225284.246827}
+     {:as-of "2024", :value 1333276261.4062512}
+     {:as-of "2025", :value 1551113417.4130812}),
     :defense-spending-share-of-gdp-pct
     {:value 0.21912979177091935,
      :as-of "2025",
@@ -2679,6 +3099,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5699580109.499255}
+     {:as-of "2022", :value 7459331830.845906}
+     {:as-of "2023", :value 7390861136.377818}
+     {:as-of "2024", :value 7891903306.818182}
+     {:as-of "2025", :value 7396057109.81132}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0915792291092736,
      :as-of "2025",
@@ -2714,6 +3140,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 4765369655.172414}
+     {:as-of "2022", :value 4724206896.551724}
+     {:as-of "2023", :value 5726552380.952381}
+     {:as-of "2024", :value 6335846153.846154}
+     {:as-of "2025", :value 6447958100.793245}),
     :defense-spending-share-of-gdp-pct
     {:value 2.4473493526667367,
      :as-of "2025",
@@ -2749,6 +3181,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 0}
+     {:as-of "2022", :value 0}
+     {:as-of "2023", :value 0}
+     {:as-of "2024", :value 0}
+     {:as-of "2025", :value 0}),
     :defense-spending-share-of-gdp-pct
     {:value 0,
      :as-of "2025",
@@ -2784,6 +3222,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 23596704277.743336}
+     {:as-of "2022", :value 22772600916.336258}
+     {:as-of "2023", :value 27102928006.16771}
+     {:as-of "2024", :value 45921467209.91868}
+     {:as-of "2025", :value 48281256782.26126}),
     :defense-spending-share-of-gdp-pct
     {:value 7.8090640879594035,
      :as-of "2025",
@@ -2824,6 +3268,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 35038552507.09555}
+     {:as-of "2022", :value 33664291063.299877}
+     {:as-of "2023", :value 35508165478.97373}
+     {:as-of "2024", :value 37849546135.62503}
+     {:as-of "2025", :value 48143627462.04002}),
     :defense-spending-share-of-gdp-pct
     {:value 1.8887272002891593,
      :as-of "2025",
@@ -2859,6 +3309,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 214992885.62241092}
+     {:as-of "2022", :value 220561019.10560656}
+     {:as-of "2023", :value 230360218.3609181}
+     {:as-of "2024", :value 276169950.1811271}
+     {:as-of "2025", :value 286646045.6699049}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3682967070821952,
      :as-of "2025",
@@ -2894,6 +3350,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2176760563.380282}
+     {:as-of "2022", :value 2334573239.4366198}
+     {:as-of "2023", :value 2462070422.5352116}
+     {:as-of "2024", :value 2533239436.6197186}
+     {:as-of "2025", :value 2555352112.6760564}),
     :defense-spending-share-of-gdp-pct
     {:value 4.556810203270063,
      :as-of "2025",
@@ -2929,6 +3391,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 53616495862.24865}
+     {:as-of "2022", :value 43144132919.70693}
+     {:as-of "2023", :value 48096463028.63076}
+     {:as-of "2024", :value 54245069554.999214}
+     {:as-of "2025", :value 62158093812.44194}),
     :defense-spending-share-of-gdp-pct
     {:value 1.4116699864430389,
      :as-of "2025",
@@ -2964,6 +3432,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1614904644.787894}
+     {:as-of "2022", :value 1166798865.6242867}
+     {:as-of "2023", :value 1164938125.4589896}
+     {:as-of "2024", :value 1167683983.2609217}
+     {:as-of "2025", :value 1308552096.598493}),
     :defense-spending-share-of-gdp-pct
     {:value 0.43033841553141866,
      :as-of "2025",
@@ -2999,6 +3473,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1191035199.1616182}
+     {:as-of "2022", :value 1155179523.0193985}
+     {:as-of "2023", :value 1053795572.2424295}
+     {:as-of "2024", :value 1256429906.0494156}
+     {:as-of "2025", :value 1469684195.8712654}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0677992140784136,
      :as-of "2025",
@@ -3034,6 +3514,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 262700662.31498778}
+     {:as-of "2022", :value 352443311.10073805}
+     {:as-of "2023", :value 483259416.6505281}
+     {:as-of "2024", :value 511262078.70020586}
+     {:as-of "2025", :value 601125601.9789898}),
     :defense-spending-share-of-gdp-pct
     {:value 2.9171251904690747,
      :as-of "2025",
@@ -3069,6 +3555,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 626024283.2458104}
+     {:as-of "2022", :value 616669100.4225858}
+     {:as-of "2023", :value 667917036.3864883}
+     {:as-of "2024", :value 720582946.0204235}
+     {:as-of "2025", :value 738950217.7180358}),
     :defense-spending-share-of-gdp-pct
     {:value 1.4501226624683072,
      :as-of "2025",
@@ -3142,6 +3634,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 50873788105.29169}
+     {:as-of "2022", :value 46365420707.415726}
+     {:as-of "2023", :value 47801863038.87874}
+     {:as-of "2024", :value 47604584211.97396}
+     {:as-of "2025", :value 47770908937.46307}),
     :defense-spending-share-of-gdp-pct
     {:value 2.6014689512730267,
      :as-of "2025",
@@ -3177,6 +3675,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 9024335548.172758}
+     {:as-of "2022", :value 8244121401.265984}
+     {:as-of "2023", :value 7755031935.6276655}
+     {:as-of "2024", :value 7798626273.546721}
+     {:as-of "2025", :value 8088284947.007522}),
     :defense-spending-share-of-gdp-pct
     {:value 4.687972209290038,
      :as-of "2025",
@@ -3212,6 +3716,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2009", :value 13981328.900693607}
+     {:as-of "2010", :value 15364973.958370676}
+     {:as-of "2011", :value 19011708.603770174}
+     {:as-of "2012", :value 20330148.289477844}
+     {:as-of "2013", :value 22755619.35899148}),
     :defense-spending-share-of-gdp-pct
     {:value 0.18989518178094128,
      :as-of "2013",
@@ -3247,6 +3757,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 171587395.95719382}
+     {:as-of "2022", :value 218747731.99617326}
+     {:as-of "2023", :value 286217317.801811}
+     {:as-of "2024", :value 635471571.9063545}
+     {:as-of "2025", :value 828299104.1556169}),
     :defense-spending-share-of-gdp-pct
     {:value 2.5096134166182504,
      :as-of "2025",
@@ -3282,6 +3798,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 29723000}
+     {:as-of "2022", :value 52198000}
+     {:as-of "2023", :value 62518000}
+     {:as-of "2024", :value 33825000}
+     {:as-of "2025", :value 44210000}),
     :defense-spending-share-of-gdp-pct
     {:value 0.853145503666538,
      :as-of "2025",
@@ -3317,6 +3839,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2012", :value 2987413407.73267}
+     {:as-of "2013", :value 3964690154.136521}
+     {:as-of "2014", :value 3755652496.3509293}
+     {:as-of "2022", :value 1212526035.309333}
+     {:as-of "2023", :value 1572965616.59158}),
     :defense-spending-share-of-gdp-pct
     {:value 3.572490337924884,
      :as-of "2023",
@@ -3390,6 +3918,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1523905320.675489}
+     {:as-of "2022", :value 1005425134.7838832}
+     {:as-of "2023", :value 1107556531.1877759}
+     {:as-of "2024", :value 1263856682.8764129}
+     {:as-of "2025", :value 1390730987.1518633}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3111912838068853,
      :as-of "2025",
@@ -3425,6 +3959,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 37044054.95026054}
+     {:as-of "2022", :value 34668499.89755181}
+     {:as-of "2023", :value 34422816.785270005}
+     {:as-of "2024", :value 36702087.872313865}
+     {:as-of "2025", :value 39909364.883225515}),
     :defense-spending-share-of-gdp-pct
     {:value 1.6290959098571718,
      :as-of "2025",
@@ -3460,6 +4000,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1306764427.6253548}
+     {:as-of "2022", :value 1815359243.3969727}
+     {:as-of "2023", :value 2261226183.119347}
+     {:as-of "2024", :value 2688633084.3750024}
+     {:as-of "2025", :value 2952191864.2691154}),
     :defense-spending-share-of-gdp-pct
     {:value 3.079753664717059,
      :as-of "2025",
@@ -3495,6 +4041,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 353488647.1144749}
+     {:as-of "2022", :value 461336844.85094285}
+     {:as-of "2023", :value 583524919.9441662}
+     {:as-of "2024", :value 618785007.7992193}
+     {:as-of "2025", :value 855409155.5174514}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8510505050505052,
      :as-of "2025",
@@ -3530,6 +4082,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 823084200.5676442}
+     {:as-of "2022", :value 856142771.7990358}
+     {:as-of "2023", :value 1253796439.9462404}
+     {:as-of "2024", :value 1440648403.9062512}
+     {:as-of "2025", :value 1731606615.0756943}),
     :defense-spending-share-of-gdp-pct
     {:value 3.6077210002989015,
      :as-of "2025",
@@ -3565,6 +4123,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5325480901.054676}
+     {:as-of "2022", :value 4993737492.086391}
+     {:as-of "2023", :value 5189111532.393438}
+     {:as-of "2024", :value 5516970248.606503}
+     {:as-of "2025", :value 6330727244.328332}),
     :defense-spending-share-of-gdp-pct
     {:value 3.5431055025931677,
      :as-of "2025",
@@ -3619,6 +4183,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 50739612.45158631}
+     {:as-of "2022", :value 54362580.92699525}
+     {:as-of "2023", :value 92204676.22171827}
+     {:as-of "2024", :value 109201330.96754056}
+     {:as-of "2025", :value 113287334.34316091}),
     :defense-spending-share-of-gdp-pct
     {:value 0.5603007679420097,
      :as-of "2025",
@@ -3654,6 +4224,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 98807098.86252332}
+     {:as-of "2022", :value 98947388.6527819}
+     {:as-of "2023", :value 102379927.76993495}
+     {:as-of "2024", :value 121981920.82157841}
+     {:as-of "2025", :value 119676668.15152624}),
     :defense-spending-share-of-gdp-pct
     {:value 0.6188718289447978,
      :as-of "2025",
@@ -3708,6 +4284,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 8680832593.469467}
+     {:as-of "2022", :value 10057300141.349957}
+     {:as-of "2023", :value 11845743357.956654}
+     {:as-of "2024", :value 20594947698.31146}
+     {:as-of "2025", :value 13647711360.169912}),
     :defense-spending-share-of-gdp-pct
     {:value 0.7368094923746283,
      :as-of "2025",
@@ -3762,6 +4344,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 196249067.73695728}
+     {:as-of "2022", :value 207274879.93544415}
+     {:as-of "2023", :value 280294770.16938096}
+     {:as-of "2024", :value 299528947.43165886}
+     {:as-of "2025", :value 374751246.9719014}),
     :defense-spending-share-of-gdp-pct
     {:value 1.9664112754277916,
      :as-of "2025",
@@ -3797,6 +4385,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 652883353.2865036}
+     {:as-of "2022", :value 582017552.5434124}
+     {:as-of "2023", :value 785265008.4672228}
+     {:as-of "2024", :value 932976642.5676745}
+     {:as-of "2025", :value 952899497.8331155}),
     :defense-spending-share-of-gdp-pct
     {:value 3.8741279168859823,
      :as-of "2025",
@@ -3832,6 +4426,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 87950567.64427625}
+     {:as-of "2022", :value 79422526.44155931}
+     {:as-of "2023", :value 85237917.07901002}
+     {:as-of "2024", :value 93626992.92734383}
+     {:as-of "2025", :value 124657626.96568373}),
     :defense-spending-share-of-gdp-pct
     {:value 0.4488288390428941,
      :as-of "2025",
@@ -3867,6 +4467,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2020", :value 2491431852.602906}
+     {:as-of "2021", :value 2642725508.603255}
+     {:as-of "2022", :value 2489905986.687779}
+     {:as-of "2023", :value 2493486451.342482}
+     {:as-of "2024", :value 5011272415.126733}),
     :defense-spending-share-of-gdp-pct
     {:value 6.604805119117459,
      :as-of "2024",
@@ -3902,6 +4508,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 91137653.73699148}
+     {:as-of "2022", :value 98011519.01183875}
+     {:as-of "2023", :value 114260526.09971435}
+     {:as-of "2024", :value 150126171.01562512}
+     {:as-of "2025", :value 176544908.96374342}),
     :defense-spending-share-of-gdp-pct
     {:value 1.8899844431515032,
      :as-of "2025",
@@ -3937,6 +4549,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 97194681.71341199}
+     {:as-of "2022", :value 89801313.74453363}
+     {:as-of "2023", :value 111467041.98602068}
+     {:as-of "2024", :value 179446877.91700476}
+     {:as-of "2025", :value 221316703.29112354}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8826504651376376,
      :as-of "2025",
@@ -3972,6 +4590,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 309038417.4749866}
+     {:as-of "2022", :value 417039192.91056}
+     {:as-of "2023", :value 404045758.71019936}
+     {:as-of "2024", :value 483865112.2760347}
+     {:as-of "2025", :value 468062039.7932007}),
     :defense-spending-share-of-gdp-pct
     {:value 1.8654788323732445,
      :as-of "2025",
@@ -4007,6 +4631,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 229313245.21674854}
+     {:as-of "2022", :value 225544876.1337485}
+     {:as-of "2023", :value 275956082.0060754}
+     {:as-of "2024", :value 275398669.54109156}
+     {:as-of "2025", :value 321759024.9932787}),
     :defense-spending-share-of-gdp-pct
     {:value 2.7484162249529906,
      :as-of "2025",
@@ -4042,6 +4672,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 19667978.93127722}
+     {:as-of "2022", :value 17902904.468992725}
+     {:as-of "2023", :value 23681593.02895196}
+     {:as-of "2024", :value 19011371.872777384}
+     {:as-of "2025", :value 23839838.912924312}),
     :defense-spending-share-of-gdp-pct
     {:value 0.14553642153844237,
      :as-of "2025",
@@ -4077,6 +4713,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 90399282.32751016}
+     {:as-of "2022", :value 115992333.3675376}
+     {:as-of "2023", :value 146475712.81243345}
+     {:as-of "2024", :value 117589994.54490587}
+     {:as-of "2025", :value 162819193.4042492}),
     :defense-spending-share-of-gdp-pct
     {:value 1.1454969663418304,
      :as-of "2025",
@@ -4112,6 +4754,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3675489012.3158655}
+     {:as-of "2022", :value 3673788247.833662}
+     {:as-of "2023", :value 3925419274.8900867}
+     {:as-of "2024", :value 4377622927.886969}
+     {:as-of "2025", :value 4933177367.160248}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0360232333830477,
      :as-of "2025",
@@ -4147,6 +4795,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 400154276.3475075}
+     {:as-of "2022", :value 365821522.66542697}
+     {:as-of "2023", :value 338933671.0100537}
+     {:as-of "2024", :value 367985199.8623292}
+     {:as-of "2025", :value 410522284.1614994}),
     :defense-spending-share-of-gdp-pct
     {:value 2.766332216825979,
      :as-of "2025",
@@ -4182,6 +4836,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 202404477.20290214}
+     {:as-of "2022", :value 242507046.3237587}
+     {:as-of "2023", :value 331917310.3256951}
+     {:as-of "2024", :value 435924878.18784016}
+     {:as-of "2025", :value 488890417.555204}),
     :defense-spending-share-of-gdp-pct
     {:value 2.1357835044651523,
      :as-of "2025",
@@ -4217,6 +4877,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 4444998080.811497}
+     {:as-of "2022", :value 3088672239.2026057}
+     {:as-of "2023", :value 3061714448.9270244}
+     {:as-of "2024", :value 1134847529.1713035}
+     {:as-of "2025", :value 2101677527.9642794}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9094449270720074,
      :as-of "2025",
@@ -4252,6 +4918,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 77037864.03672355}
+     {:as-of "2022", :value 84174180.48503262}
+     {:as-of "2023", :value 98890831.41305245}
+     {:as-of "2024", :value 108627332.12648433}
+     {:as-of "2025", :value 116367344.16423084}),
     :defense-spending-share-of-gdp-pct
     {:value 0.5648029028638283,
      :as-of "2025",
@@ -4287,6 +4959,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 14395695364.23841}
+     {:as-of "2022", :value 13632443393.606907}
+     {:as-of "2023", :value 16625360305.270937}
+     {:as-of "2024", :value 23577493750.78127}
+     {:as-of "2025", :value 28944340410.17079}),
     :defense-spending-share-of-gdp-pct
     {:value 2.1945445152637935,
      :as-of "2025",
@@ -4322,6 +5000,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 8435121610.613291}
+     {:as-of "2022", :value 8697821939.022533}
+     {:as-of "2023", :value 8799400441.779768}
+     {:as-of "2024", :value 10792089957.347843}
+     {:as-of "2025", :value 17033643852.490572}),
     :defense-spending-share-of-gdp-pct
     {:value 3.2784814370343565,
      :as-of "2025",
@@ -4357,6 +5041,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 447957094.8624906}
+     {:as-of "2022", :value 456108205.3134187}
+     {:as-of "2023", :value 455134849.16605556}
+     {:as-of "2024", :value 436038010.9625339}
+     {:as-of "2025", :value 428290814.1303412}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9657444785825284,
      :as-of "2025",
@@ -4411,6 +5101,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2905571074.9646397}
+     {:as-of "2022", :value 2828419756.739341}
+     {:as-of "2023", :value 3034580169.0786705}
+     {:as-of "2024", :value 3000998602.9645457}
+     {:as-of "2025", :value 2855732604.4604692}),
     :defense-spending-share-of-gdp-pct
     {:value 1.1022496023962065,
      :as-of "2025",
@@ -4446,6 +5142,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5783615084.525357}
+     {:as-of "2022", :value 5783485045.513654}
+     {:as-of "2023", :value 5851755526.657997}
+     {:as-of "2024", :value 5988296488.946684}
+     {:as-of "2025", :value 5988296488.946684}),
     :defense-spending-share-of-gdp-pct
     {:value 5.682376091700867,
      :as-of "2025",
@@ -4481,6 +5183,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 11616638136.7664}
+     {:as-of "2022", :value 10336494224.143536}
+     {:as-of "2023", :value 8626157588.370106}
+     {:as-of "2024", :value 10303476993.983778}
+     {:as-of "2025", :value 11871380866.105368}),
     :defense-spending-share-of-gdp-pct
     {:value 2.9136125148539924,
      :as-of "2025",
@@ -4521,6 +5229,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 0}
+     {:as-of "2022", :value 0}
+     {:as-of "2023", :value 0}
+     {:as-of "2024", :value 0}
+     {:as-of "2025", :value 0}),
     :defense-spending-share-of-gdp-pct
     {:value 0,
      :as-of "2025",
@@ -4556,6 +5270,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 2635892706.071547}
+     {:as-of "2022", :value 2797976204.750041}
+     {:as-of "2023", :value 3307201195.7674475}
+     {:as-of "2024", :value 2543287408.394404}
+     {:as-of "2025", :value 2596241408.393085}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8124447472562586,
      :as-of "2025",
@@ -4591,6 +5311,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5544109841.345862}
+     {:as-of "2022", :value 5322508900.535686}
+     {:as-of "2023", :value 5142164484.0301485}
+     {:as-of "2024", :value 5493422960.788397}
+     {:as-of "2025", :value 6378758229.620545}),
     :defense-spending-share-of-gdp-pct
     {:value 1.295336952280744,
      :as-of "2025",
@@ -4645,6 +5371,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 86089950.00000004}
+     {:as-of "2022", :value 133068892.69708085}
+     {:as-of "2023", :value 101055995.38801199}
+     {:as-of "2024", :value 91516962.02800432}
+     {:as-of "2025", :value 106480682.7655668}),
     :defense-spending-share-of-gdp-pct
     {:value 0.35026033136118667,
      :as-of "2025",
@@ -4680,6 +5412,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 15280029346.395384}
+     {:as-of "2022", :value 15335286233.177748}
+     {:as-of "2023", :value 26459281579.573433}
+     {:as-of "2024", :value 34459549418.665535}
+     {:as-of "2025", :value 46760133894.597916}),
     :defense-spending-share-of-gdp-pct
     {:value 4.4969375748071325,
      :as-of "2025",
@@ -4715,6 +5453,11 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2015", :value 869629629.6296296}
+     {:as-of "2016", :value 912592592.5925926}
+     {:as-of "2017", :value 961481481.4814816}
+     {:as-of "2018", :value 1604444444.4444444}),
     :active-military-personnel
     {:value 1469000,
      :as-of "2020",
@@ -4745,6 +5488,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3880558183.538316}
+     {:as-of "2022", :value 3484311762.1816287}
+     {:as-of "2023", :value 3528938941.4911776}
+     {:as-of "2024", :value 4524133883.281254}
+     {:as-of "2025", :value 5861290977.596282}),
     :defense-spending-share-of-gdp-pct
     {:value 1.7112082110627345,
      :as-of "2025",
@@ -4780,6 +5529,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 366835001.9429498}
+     {:as-of "2022", :value 365463195.8775128}
+     {:as-of "2023", :value 397579485.36256003}
+     {:as-of "2024", :value 413826923.44755065}
+     {:as-of "2025", :value 421095331.4693742}),
     :defense-spending-share-of-gdp-pct
     {:value 0.8755943179888046,
      :as-of "2025",
@@ -4815,6 +5570,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2008", :value 2317500000}
+     {:as-of "2009", :value 1948351648.3516483}
+     {:as-of "2010", :value 1876758241.7582417}
+     {:as-of "2021", :value 11593406593.406593}
+     {:as-of "2022", :value 15412087912.087912}),
     :defense-spending-share-of-gdp-pct
     {:value 6.500205652723034,
      :as-of "2022",
@@ -4850,6 +5611,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 5294902353.530304}
+     {:as-of "2022", :value 5186547864.710807}
+     {:as-of "2023", :value 5624980188.189436}
+     {:as-of "2024", :value 8315372278.25047}
+     {:as-of "2025", :value 9725350362.953861}),
     :defense-spending-share-of-gdp-pct
     {:value 2.281166438721189,
      :as-of "2025",
@@ -4885,6 +5652,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 65918129750.65288}
+     {:as-of "2022", :value 104402512815.16519}
+     {:as-of "2023", :value 109203624738.37859}
+     {:as-of "2024", :value 149401873965.45108}
+     {:as-of "2025", :value 190416640325.2106}),
     :defense-spending-share-of-gdp-pct
     {:value 7.501484654936362,
      :as-of "2025",
@@ -4925,6 +5698,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 167381496.90697145}
+     {:as-of "2022", :value 177569665.35725504}
+     {:as-of "2023", :value 179433009.47733137}
+     {:as-of "2024", :value 175324351.92239714}
+     {:as-of "2025", :value 191192499.02185458}),
     :defense-spending-share-of-gdp-pct
     {:value 1.2862046757969887,
      :as-of "2025",
@@ -4960,6 +5739,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 63194666666.666664}
+     {:as-of "2022", :value 70920000000}
+     {:as-of "2023", :value 77765333333.33333}
+     {:as-of "2024", :value 80330666666.66667}
+     {:as-of "2025", :value 83181333333.33333}),
     :defense-spending-share-of-gdp-pct
     {:value 6.482319949446061,
      :as-of "2025",
@@ -4995,6 +5780,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2017", :value 4357538723.037514}
+     {:as-of "2018", :value 995839891.7970445}
+     {:as-of "2019", :value 722965611.4214766}
+     {:as-of "2020", :value 936698808.2232705}
+     {:as-of "2021", :value 369443039.163841}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9253772479845654,
      :as-of "2021",
@@ -5030,6 +5821,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 483224913.09553003}
+     {:as-of "2022", :value 421013743.846819}
+     {:as-of "2023", :value 448993705.877196}
+     {:as-of "2024", :value 638824014.514267}
+     {:as-of "2025", :value 566873602.7515048}),
     :defense-spending-share-of-gdp-pct
     {:value 1.5554365077066412,
      :as-of "2025",
@@ -5065,6 +5862,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 11013608902.231789}
+     {:as-of "2022", :value 11995013297.872396}
+     {:as-of "2023", :value 13973388277.93369}
+     {:as-of "2024", :value 15325841295.183014}
+     {:as-of "2025", :value 17438486492.276382}),
     :defense-spending-share-of-gdp-pct
     {:value 3.0462464248483068,
      :as-of "2025",
@@ -5119,6 +5922,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 43010030.36662229}
+     {:as-of "2022", :value 41451773.67959256}
+     {:as-of "2023", :value 38681287.53303146}
+     {:as-of "2024", :value 51318582.859967604}
+     {:as-of "2025", :value 32182766.10896686}),
     :defense-spending-share-of-gdp-pct
     {:value 0.3702657177202906,
      :as-of "2025",
@@ -5154,6 +5963,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 351578000}
+     {:as-of "2022", :value 458494000}
+     {:as-of "2023", :value 454766666.6666667}
+     {:as-of "2024", :value 490600000}
+     {:as-of "2025", :value 490000000}),
     :defense-spending-share-of-gdp-pct
     {:value 1.3392735124497772,
      :as-of "2025",
@@ -5208,6 +6023,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 111029000}
+     {:as-of "2022", :value 118661000}
+     {:as-of "2023", :value 138896000}
+     {:as-of "2024", :value 201854000}
+     {:as-of "2025", :value 199468000}),
     :defense-spending-share-of-gdp-pct
     {:value 1.541007416563659,
      :as-of "2025",
@@ -5243,6 +6064,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1805530300.1187267}
+     {:as-of "2022", :value 1451293371.8682184}
+     {:as-of "2023", :value 1796105480.5788682}
+     {:as-of "2024", :value 2403556797.527364}
+     {:as-of "2025", :value 2781295696.285387}),
     :defense-spending-share-of-gdp-pct
     {:value 2.7553912788627777,
      :as-of "2025",
@@ -5278,6 +6105,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 64287301.4623849}
+     {:as-of "2022", :value 101385636.98054875}
+     {:as-of "2023", :value 148535600.40523446}
+     {:as-of "2024", :value 168803668.08123168}
+     {:as-of "2025", :value 178422465.6947426}),
     :defense-spending-share-of-gdp-pct
     {:value 3.4247465689702814,
      :as-of "2025",
@@ -5351,6 +6184,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1984626300.8514664}
+     {:as-of "2022", :value 2066522503.7232745}
+     {:as-of "2023", :value 2304765320.8067384}
+     {:as-of "2024", :value 2786518021.4308906}
+     {:as-of "2025", :value 3118330513.254371}),
     :defense-spending-share-of-gdp-pct
     {:value 2.0319797041979113,
      :as-of "2025",
@@ -5386,6 +6225,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 762771996.2157048}
+     {:as-of "2022", :value 775156293.3856134}
+     {:as-of "2023", :value 909676276.2477258}
+     {:as-of "2024", :value 980625608.8321246}
+     {:as-of "2025", :value 1221658206.42978}),
     :defense-spending-share-of-gdp-pct
     {:value 1.544164824980395,
      :as-of "2025",
@@ -5421,6 +6266,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 7582054935.587188}
+     {:as-of "2022", :value 7721175892.371102}
+     {:as-of "2023", :value 8785446082.735712}
+     {:as-of "2024", :value 12046970085.44414}
+     {:as-of "2025", :value 16473477206.496712}),
     :defense-spending-share-of-gdp-pct
     {:value 2.4711848495400415,
      :as-of "2025",
@@ -5456,6 +6307,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 82792515.39554714}
+     {:as-of "2022", :value 83200580.48067726}
+     {:as-of "2023", :value 83071859.89317617}
+     {:as-of "2024", :value 83157552.26336753}
+     {:as-of "2025", :value 93361425.00097848}),
     :defense-spending-share-of-gdp-pct
     {:value 1.6021843061389713,
      :as-of "2025",
@@ -5486,6 +6343,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 36587936.18244782}
+     {:as-of "2022", :value 23445303.538943607}
+     {:as-of "2023", :value 29281406.66063926}
+     {:as-of "2024", :value 27628250.2823607}
+     {:as-of "2025", :value 28380338.884222656}),
     :defense-spending-share-of-gdp-pct
     {:value 1.2443069628920844,
      :as-of "2025",
@@ -5521,6 +6384,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2007", :value 1599033723.0650306}
+     {:as-of "2008", :value 1732416847.9019933}
+     {:as-of "2009", :value 2181974581.1918025}
+     {:as-of "2010", :value 2346021283.012365}
+     {:as-of "2011", :value 2494887483.1483974}),
     :defense-spending-share-of-gdp-pct
     {:value 4.056141736095851,
      :as-of "2010",
@@ -5556,6 +6425,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 330998078.1919861}
+     {:as-of "2022", :value 331746766.04946756}
+     {:as-of "2023", :value 372751855.72335935}
+     {:as-of "2024", :value 557767993.1147088}
+     {:as-of "2025", :value 648809933.2737154}),
     :defense-spending-share-of-gdp-pct
     {:value 3.1851802790340176,
      :as-of "2025",
@@ -5591,6 +6466,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 198773240.63523203}
+     {:as-of "2022", :value 336608323.29771304}
+     {:as-of "2023", :value 276349076.6788107}
+     {:as-of "2024", :value 212949035.13112321}
+     {:as-of "2025", :value 204947549.4411006}),
     :defense-spending-share-of-gdp-pct
     {:value 1.873993929415102,
      :as-of "2025",
@@ -5626,6 +6507,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 7112638314.490867}
+     {:as-of "2022", :value 6026999779.168331}
+     {:as-of "2023", :value 5743151742.763099}
+     {:as-of "2024", :value 5519714389.471606}
+     {:as-of "2025", :value 5983978404.684055}),
     :defense-spending-share-of-gdp-pct
     {:value 1.0376759596338476,
      :as-of "2025",
@@ -5661,6 +6548,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 89611233.67981714}
+     {:as-of "2022", :value 202591315.89622954}
+     {:as-of "2023", :value 285028620.43289125}
+     {:as-of "2024", :value 184082738.46222812}
+     {:as-of "2025", :value 246931888.3215365}),
     :defense-spending-share-of-gdp-pct
     {:value 1.4735834768823544,
      :as-of "2025",
@@ -5696,6 +6589,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "1995", :value 135612612.6126126}
+     {:as-of "1996", :value 48549386.503067486}
+     {:as-of "1997", :value 106190591.07358263}
+     {:as-of "1998", :value 87510040.16064256}
+     {:as-of "1999", :value 111923076.92307691}),
     :defense-spending-share-of-gdp-pct
     {:value 3.113964686998395,
      :as-of "1999",
@@ -5731,6 +6630,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 39222000}
+     {:as-of "2022", :value 44311000}
+     {:as-of "2023", :value 55111000.00000001}
+     {:as-of "2024", :value 43423000}
+     {:as-of "2025", :value 47916000}),
     :defense-spending-share-of-gdp-pct
     {:value 2.2548705882352937,
      :as-of "2025",
@@ -5785,6 +6690,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 207696790.54306412}
+     {:as-of "2022", :value 218284994.0405729}
+     {:as-of "2023", :value 244542346.242869}
+     {:as-of "2024", :value 238062319.87068883}
+     {:as-of "2025", :value 229899160.50605452}),
     :defense-spending-share-of-gdp-pct
     {:value 0.9393365273659585,
      :as-of "2025",
@@ -5820,6 +6731,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1231004127.2037628}
+     {:as-of "2022", :value 1146732826.395154}
+     {:as-of "2023", :value 1207275849.1173499}
+     {:as-of "2024", :value 1315226310.9623647}
+     {:as-of "2025", :value 1484859113.7612534}),
     :defense-spending-share-of-gdp-pct
     {:value 2.4949611547812554,
      :as-of "2025",
@@ -5855,6 +6772,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 15240338328.718565}
+     {:as-of "2022", :value 15047270052.334324}
+     {:as-of "2023", :value 19233041584.17685}
+     {:as-of "2024", :value 25012152848.36619}
+     {:as-of "2025", :value 29986711540.60079}),
     :defense-spending-share-of-gdp-pct
     {:value 1.9082522771435702,
      :as-of "2025",
@@ -5909,6 +6832,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 13932664756.446991}
+     {:as-of "2022", :value 15261446437.325108}
+     {:as-of "2023", :value 16344564791.689405}
+     {:as-of "2024", :value 15232751881.853544}
+     {:as-of "2025", :value 18187723316.285767}),
     :defense-spending-share-of-gdp-pct
     {:value 2.098535636731983,
      :as-of "2025",
@@ -5929,6 +6858,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 762842410.019532}
+     {:as-of "2022", :value 883638837.3727968}
+     {:as-of "2023", :value 961327764.7752216}
+     {:as-of "2024", :value 929494827.6340486}
+     {:as-of "2025", :value 1030461758.3207084}),
     :defense-spending-share-of-gdp-pct
     {:value 1.1567162118438743,
      :as-of "2025",
@@ -5964,6 +6899,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1060851727.3989456}
+     {:as-of "2022", :value 924627059.6618634}
+     {:as-of "2023", :value 975151108.5087827}
+     {:as-of "2024", :value 1116609489.075628}
+     {:as-of "2025", :value 1296994464.2173004}),
     :defense-spending-share-of-gdp-pct
     {:value 1.9571287799143737,
      :as-of "2025",
@@ -5999,6 +6940,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 6842963433.466808}
+     {:as-of "2022", :value 41538018337.94044}
+     {:as-of "2023", :value 65296673144.75592}
+     {:as-of "2024", :value 64768188591.11081}
+     {:as-of "2025", :value 84109045741.85442}),
     :defense-spending-share-of-gdp-pct
     {:value 39.5610183580088,
      :as-of "2025",
@@ -6034,6 +6981,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 1246341555.9444675}
+     {:as-of "2022", :value 1299092604.8743768}
+     {:as-of "2023", :value 1510483625.2996995}
+     {:as-of "2024", :value 1583089131.6599228}
+     {:as-of "2025", :value 1954316864.68679}),
     :defense-spending-share-of-gdp-pct
     {:value 2.284444197592897,
      :as-of "2025",
@@ -6069,6 +7022,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 806230200000}
+     {:as-of "2022", :value 860692200000}
+     {:as-of "2023", :value 916014700000}
+     {:as-of "2024", :value 1004901000000}
+     {:as-of "2025", :value 954387000000}),
     :defense-spending-share-of-gdp-pct
     {:value 3.1173079810605935,
      :as-of "2025",
@@ -6109,6 +7068,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2000", :value 115375384.61538461}
+     {:as-of "2001", :value 59760610.46511628}
+     {:as-of "2002", :value 45914432.98969072}
+     {:as-of "2003", :value 54133695.463502795}
+     {:as-of "2018", :value 1440466815.7583418}),
     :defense-spending-share-of-gdp-pct
     {:value 2.4902493756615884,
      :as-of "2018",
@@ -6163,6 +7128,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2013", :value 6199698500.155424}
+     {:as-of "2014", :value 1554727108.2393248}
+     {:as-of "2015", :value 320539157.9635235}
+     {:as-of "2016", :value 218154892.92907494}
+     {:as-of "2017", :value 2127936596.4357061}),
     :defense-spending-share-of-gdp-pct
     {:value 2.233332199170757,
      :as-of "2017",
@@ -6198,6 +7169,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 7526365988.243411}
+     {:as-of "2022", :value 7093141365.10936}
+     {:as-of "2023", :value 7956802474.203452}
+     {:as-of "2024", :value 8590398540.747652}
+     {:as-of "2025", :value 10487302148.867115}),
     :defense-spending-share-of-gdp-pct
     {:value 2.153801933360168,
      :as-of "2025",
@@ -6271,6 +7248,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2010", :value 1448153376.747575}
+     {:as-of "2011", :value 1612254443.4050515}
+     {:as-of "2012", :value 1618840126.708063}
+     {:as-of "2013", :value 1648750523.5236633}
+     {:as-of "2014", :value 1714830843.687468}),
     :defense-spending-share-of-gdp-pct
     {:value 3.966890832779027,
      :as-of "2014",
@@ -6306,6 +7289,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 3546873356.416921}
+     {:as-of "2022", :value 3461428965.088991}
+     {:as-of "2023", :value 3059543518.9838943}
+     {:as-of "2024", :value 3033251335.883209}
+     {:as-of "2025", :value 3173874329.7418494}),
     :defense-spending-share-of-gdp-pct
     {:value 0.7373520085170768,
      :as-of "2025",
@@ -6341,6 +7330,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 217039384.13832554}
+     {:as-of "2022", :value 325748739.40385664}
+     {:as-of "2023", :value 369211033.2279696}
+     {:as-of "2024", :value 348993115.0437803}
+     {:as-of "2025", :value 405858785.2056163}),
     :defense-spending-share-of-gdp-pct
     {:value 1.2601679088743103,
      :as-of "2025",
@@ -6376,6 +7371,12 @@
      :unit "USD (current prices & exchange rates)",
      :source
      "SIPRI Military Expenditure Database, 'Current US$' sheet (values in US$ m. -> USD), v1.2, https://www.sipri.org/sites/default/files/SIPRI-Milex-data-1949-2025_v1.2.xlsx, retrieved 2026-07-23 (downloaded xlsx; may include SIPRI estimates)"},
+    :defense-spending-usd-history
+    ({:as-of "2021", :value 473945274.72527474}
+     {:as-of "2022", :value 332717337.2781065}
+     {:as-of "2023", :value 870433537.886873}
+     {:as-of "2024", :value 98394292.71626754}
+     {:as-of "2025", :value 159639292.7063351}),
     :defense-spending-share-of-gdp-pct
     {:value 0.5646127356810411,
      :as-of "2025",

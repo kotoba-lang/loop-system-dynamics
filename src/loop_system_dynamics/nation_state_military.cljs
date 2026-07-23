@@ -111,3 +111,100 @@
                                         :name (:country-name e)
                                         :usd (get-in e [:stocks :defense-spending-usd :value])
                                         :as-of (get-in e [:stocks :defense-spending-usd :as-of])})))}))
+
+;; --------------------------------------------------------------------------
+;; Phase 2: structural loop analysis + Meadows leverage points
+;; --------------------------------------------------------------------------
+
+;; Local archetype definitions (NOT added to dynamics.core -- merged locally
+;; for comparison only). HONESTY: cycle-time (annual budget) and annual-flow
+;; (global military spending, SIPRI) are measured/cited; the coefficient
+;; estimates are flagged :estimate?. The arms-race reaction gain (Richardson
+;; k) is :unmeasured and is NOT used to drive any integration -- using it
+;; would fabricate an escalation forecast (ADR-2607203000).
+(def military-archetypes
+  {:arms-race-action-reaction
+   {:cycle-time-days 365            ;; annual appropriations/budget cycle (structural fact)
+    :self-funding-coefficient 0.55  ;; defense-industrial reinvestment + lobbying partially
+                                    ;; self-reinforces spending (documented Military-Industrial
+                                    ;; Complex dynamic, not a single measured coefficient)
+    :instrumentation-completeness 0.4 ;; spending levels measured precisely (SIPRI/IISS), but
+                                    ;; the loop's DRIVING conversion (threat->spending, k) is
+                                    ;; NOT measured globally
+    :friction 0.5                   ;; raising spending needs political will, threat narrative,
+                                    ;; legislated budgets
+    :annual-flow-usd 2.72e12
+    :reaction-gain :unmeasured
+    :estimate? true
+    :source "SIPRI Yearbook 2025 (global military expenditure ~$2.72T, 2024); Richardson action-reaction arms-race model. Coefficients are structural estimates (:estimate?), not measurements."}
+
+   :deterrence-balancing
+   {:cycle-time-days 365
+    :self-funding-coefficient 0.3
+    :instrumentation-completeness 0.4 ;; capability measured; threat->stability conversion not
+    :friction 0.6
+    :annual-flow-usd 2.72e12
+    :gain :unmeasured
+    :estimate? true
+    :source "Deterrence-as-balancing-loop characterization; same SIPRI pool. Coefficients :estimate?."}})
+
+(defn structural-comparison
+  "Rank the military archetypes alongside dynamics.core's catalog by
+  loop-structural-strength."
+  []
+  (dynamics/compare-archetypes
+   (merge dynamics/loop-archetypes military-archetypes)))
+
+;; Meadows-band interventions for RISK REDUCTION (not acquisition). Structural
+;; (no pool-size): scored band-weight * tractability. Tractability is an
+;; auditable heuristic (dynamics.core/leverage-score docstring), not a
+;; measured conversion rate.
+(def leverage-interventions
+  [{:id :redefine-security-paradigm :band :band/A :tractability 0.10
+    :label "Redefine security paradigm (military primacy -> cooperative/human security)"}
+   {:id :arms-control-treaties :band :band/B :tractability 0.30
+    :label "Arms-control/disarmament treaties (New START successor, TPNW)"}
+   {:id :spending-transparency :band :band/B :tractability 0.45
+    :label "Universal military-spending transparency (UNROCA + SIPRI-grade reporting)"}
+   {:id :nuclear-de-alerting :band :band/C :tractability 0.40
+    :label "Nuclear de-alerting (remove launch-on-warning posture)"}
+   {:id :confidence-building :band :band/C :tractability 0.35
+    :label "Confidence-building measures, hotlines, incident-prevention"}
+   {:id :procurement-scrutiny :band :band/D :tractability 0.30
+    :label "Add deliberative delay / scrutiny to major procurement decisions"}
+   {:id :line-item-cuts :band :band/E :tractability 0.50
+    :label "Specific procurement line-item reductions"}])
+
+(defn leverage-ranking
+  "Score and rank risk-reduction interventions by Meadows leverage band."
+  []
+  (dynamics/rank-interventions leverage-interventions))
+
+(defn structural-section
+  "Markdown for the report: archetype structural-strength ranking (military vs
+  catalog) + Meadows leverage-point ranking for risk reduction. Usable as the
+  xmile run-cycle's :structural-fn."
+  [_observation _decision]
+  (let [ranked (:ranked (structural-comparison))
+        mil? #{:arms-race-action-reaction :deterrence-balancing}
+        rank-of (fn [k] (first (keep-indexed (fn [i [id _]] (when (= id k) (inc i))) ranked)))]
+    (str
+     "## Structural loop strength: military archetypes vs the catalog\n\n"
+     "`loop-structural-strength` applied uniformly (dynamics.core). The military "
+     "loops' rank shows their structural compounding speed relative to other real "
+     "loops (fossil-fuel, gambling, derivatives...), independent of their "
+     "(unmeasured) reaction gain.\n\n"
+     "| rank | archetype | structural-strength |\n|---|---|---|\n"
+     (str/join "\n" (for [[i [id score]] (map-indexed vector (take 12 ranked))]
+                      (str "| " (inc i) " | " (name id) (if (mil? id) " **(military)**" "")
+                           " | " (.toFixed score 2) " |")))
+     "\n\n- arms-race rank: **#" (or (rank-of :arms-race-action-reaction) "n/a")
+     "**; deterrence rank: **#" (or (rank-of :deterrence-balancing) "n/a")
+     "** (of " (count ranked) " ranked).\n"
+     "- Both military loops carry :unmeasured reaction gain -- the score reflects "
+     "cycle-time/self-funding/instrumentation/friction only, NOT a forecast.\n\n"
+     "## Leverage points for risk reduction (Meadows bands)\n\n"
+     "score = band-weight x tractability (heuristic). Higher band = deeper systemic leverage.\n\n"
+     "| score | band | intervention |\n|---|---|---|\n"
+     (str/join "\n" (for [{:keys [base-score band label]} (leverage-ranking)]
+                      (str "| " (.toFixed base-score 2) " | " (name band) " | " label " |"))))))
