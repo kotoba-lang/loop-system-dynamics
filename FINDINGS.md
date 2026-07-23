@@ -7432,6 +7432,64 @@ assertions, 0 failures, 0 new lint findings.
 
 **Interpretation**: closes the loop this catalog's own finding 120 left open (a fix landing in kototama, whose real-world trigger was observed via kawaraban's own logs, without yet checking whether kawaraban itself adopted it) -- confirming the fix reached its actual intended consumer within hours, after real multi-day production operation surfaced the need. The silent-data-loss bug found alongside it is a genuinely distinct, separately-worthwhile catch: a high-water-mark that advances on gate-pass rather than actual-success is a subtle, easy-to-miss failure mode (the system LOOKS like it's making progress -- the mark keeps moving forward -- while quietly losing content), and the fix's explicit citation of an already-correct sibling pattern (rather than reinventing the logic) is a small, honest instance of reusing verified design rather than improvising a new one under pressure. This is another distinct real production incident in the growing set this catalog has traced across the kawaraban/kototama/aozora.app chain (findings 91/120/123/124), each independently verified, none overlapping in root cause.
 
+## 125. A different category of tracked blocker in this catalog's own fleet-migration thread: 3 named, structural "required language gates" -- missing primitives/patterns, not bugs in existing ones -- each honestly scoped, one with its own tractable fix path already identified but not yet implemented
+
+Every prior finding in this catalog's compiler-defect thread (94, 108,
+115, 116, 118, 122) has tracked BUGS: cases where an existing compiler
+feature behaves incorrectly. Reading `90-docs/migration/kotoba-cljc-
+project-gap-dispositions.edn` (not checked this cycle) found a
+categorically different kind of tracked item: `:required-language-
+gates`, real structural capabilities the Kotoba language subset simply
+does not have yet, each named precisely and blocking specific repos
+from migrating -- not a defect to fix, a feature to build.
+
+**Gate 1, shared across 3 independent repos**: `search.model` and
+`sheets.model`'s own review entries, plus the atprotocol entry finding
+124's own read touched in passing, all cite the identical blocker --
+`:bounded-arbitrary-keyed-map-profile-precedent`. Every one of the 5
+successful bounded-profile migrations landed so far (association_facts,
+ghosthacker-family/vamos, mining-pool, face-match, cron) closed over a
+FIXED small N (records, vectors, small closed enums); none has yet
+proven a pattern for compiling an open-ended map keyed by arbitrary
+values -- `sheets`'s row/col cell coordinates, `search`'s arbitrary
+document ids, `atprotocol`'s open-ended JSON-shaped concern maps. The
+gap-dispositions doc's own text is explicit that this is a genuine
+precedent gap, not merely "hasn't been tried": "no successful bounded-
+profile split so far... has covered an arbitrary-keyed map."
+
+**Gate 2**: `search.model/tokenize`'s own lower-case-then-regex-split
+(Latin/digit plus Hiragana/Katakana/CJK Unicode ranges) needs a real
+regex or character-class substring primitive that `kotoba-lang/compiler`'s
+entire `string-operations` set (`string-byte-length`/`string=?`/
+`string-concat`/`string-replace-all`/`keyword-from-string`/
+`keyword-name`) simply does not have -- the doc's own text: "search is
+unimplementable without it, not merely unbounded," and cross-references
+this as "the same missing-primitive class already found for
+kotoba-lang/clj-host's bit-shift gap and the wave-2 actor governors'
+phrase-matching gap," i.e. an already-recognized recurring pattern
+across this migration wave, not a one-off.
+
+**Gate 3, `kotoba-lang/clj-host`'s bit-shift gap, with a genuinely
+notable difference from the other 2**: a pure, capability-free binary
+frame decoder (KAMI render-IR format parsing, including IEEE-754
+binary16-to-f32 tint decoding) is blocked because its `rd-u16`/`rd-u32`
+byte assembly and float-exponent extraction use `bit-shift-right`/
+`bit-or`, and the compiler's `arithmetic` set only admits `bit-and`/
+`bit-xor` -- no shift, no or. But this entry, uniquely among the 3
+gates, names its own tractable resolution: "the u16/u32/f16 bit-shift
+extractions are algebraically re-expressible via quot/mod... since h is
+always a non-negative byte-derived value -- this is a real, tractable
+path, just not implemented in this review pass." A precise distinction
+between "blocked because no path exists" and "blocked because the known
+path hasn't been executed yet," not conflated into one undifferentiated
+"blocked" status.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/migration/kotoba-cljc-project-gap-dispositions.edn` (full relevant entries for `kotoba-lang/search`, `kotoba-lang/sheets`, `kotoba-lang/clj-host` read directly) + cross-referenced against `90-docs/adr/2607202200-kotoba-sovereign-source-and-cljc-fleet-migration.edn`'s own `kotoba-lang/atprotocol` entry (independently confirming the 3-repo cross-reference to the same map-precedent gap), 2026-07-23.
+
+**Source**: `90-docs/migration/kotoba-cljc-project-gap-dispositions.edn` (com-junkawasaki/root), entries for `orgs/kotoba-lang/search/src/search/model.cljc`, `orgs/kotoba-lang/sheets/src/sheets/model.cljc`, `orgs/kotoba-lang/clj-host/src/kotoba/clj_host/frame.cljc`, 2026-07-23.
+
+**Interpretation**: a structurally different, valuable addition to this catalog's own fleet-migration coverage -- not another bug in the growing compiler-defect tally (findings 94-122), but the migration team's own honest map of what the LANGUAGE itself cannot yet express, tracked with the same "record precisely, don't claim resolution you haven't verified" discipline this catalog has found everywhere else in this effort. The 3-way cross-reference on the arbitrary-keyed-map gate (independently discovered by 3 different repo reviews, all citing each other rather than each claiming an isolated problem) is itself a small, real data point about review quality -- these repos were checked against prior findings, not reviewed in isolation. Gate 3's own precise distinction between "no known path" and "known path, not yet executed" is a small but genuine instance of resisting the temptation to flatten different kinds of blockedness into one status.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
