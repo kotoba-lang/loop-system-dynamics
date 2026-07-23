@@ -5570,6 +5570,64 @@ among candidate fix designs for a real production incident, the first
 time this session has found direct evidence of that system in active
 use rather than only in its own governing documentation.
 
+## 92. Real, dated progress on the exact revenue stream finding 64 named as this catalog's ONLY confirmed real-money event across the whole 12-product portfolio -- including a genuine self-correction of a prior pass's own error, and a principled refusal to fabricate a profitability number today
+
+Finding 64 read `maturity-facts.edn` and found `club-shinshi`'s ExoClick
+ad revenue was the ONE confirmed real-money event across all 12
+tracked portfolio products. Checked `jk-luxury/club-shinshi-app`'s own
+recent commits for the first time and found real, dated, TODAY
+(2026-07-22) progress on exactly this revenue mechanism's own
+instrumentation, in the repo's own hypothesis-tracking datoms
+(`docs/260613-bmc-lean.datoms.edn`, the same H1/H2 hypothesis pair
+tracked since 2026-06-13).
+
+**A real, explicit self-correction of a prior kaizen pass's own
+mistaken claim**: the diff's own inline comment states plainly
+(translated): "Correction (kaizen 2026-07-22, 2nd pass): H1's
+telemetry (pv_daily/visitor_daily) is already complete via its own
+hooks and running -- not waiting to be wired, just waiting for real
+traffic and time to fill in the month-over-month growth rate. The
+prior pass's 'waiting to be wired' description was wrong." A real
+instance of the same never-silently-smooth-over discipline this
+catalog itself practices (findings 39b/51->52/55-56), found here
+independently in a different team's own process.
+
+**Real, verified progress on H2, the ExoClick ad-revenue hypothesis
+itself**: the ExoClick publisher API integration code
+(`d1_gateway.cljs`'s `fetch-exo-publisher-stats`) was already
+implemented and verified against the real live API back on 2026-06-14
+-- what was missing was only the `EXOCLICK_API_TOKEN` secret. Today,
+that secret was retrieved from Keychain (`gftd.exoclick`), a real
+connectivity test performed against ExoClick's own `/login` endpoint
+(confirmed HTTP 200, real JWT token obtained), and the secret
+provisioned into the live Worker `magatama-sh1n5h1x` -- the same
+worker this catalog's own earlier finding (42/51) already identified
+as the real, shared, cross-org backend serving both `club-shinshi`
+and `ai-gftd-shinshi`. `adult_ecpm_minor`/`adult_impressions` metrics
+will start filling with real data from the next rollup cycle onward.
+
+**A principled refusal to fabricate the actual profitability number,
+stated explicitly today**: even with real ad-revenue data now flowing,
+`contribution_margin_minor` (H2's real gate metric -- ad revenue minus
+actual infra cost) stays `NULL`, because `SHINSHI_DAILY_COST_MINOR`
+(real RunPod+LLM+B2+CF daily cost) is still unset. The diff's own
+comment states directly: "filling this in without real numerical
+backing is forbidden by ADR-2606130200's own invariant principle" --
+hypothesis status stays `:untested`, explicitly not generating a
+fabricated outcome even though the more impressive-looking half of the
+metric (revenue) just became real.
+
+**Why this matters beyond one product**: a precise, dated, technical
+continuation of the exact revenue thread finding 64 flagged as this
+whole portfolio's single confirmed exception -- not a new discovery
+about the fact itself (revenue=3 for club-shinshi was already
+established), but real, verifiable movement on making that one real
+revenue stream's own measurement infrastructure genuinely complete,
+paired with the same zero-fabrication discipline (ADR-2606130200's own
+invariant, explicitly cited) already documented elsewhere in this
+catalog (findings 64/81/86/91) -- now confirmed as a real, live,
+enforced constraint in the one product with real money on the line.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
