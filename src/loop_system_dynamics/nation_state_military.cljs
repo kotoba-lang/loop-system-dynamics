@@ -49,7 +49,13 @@
    :population                        {:label "Population"
                                        :unit "persons"}
    :nuclear-warheads                  {:label "Nuclear warheads (total inventory est.)"
-                                       :unit "warheads"}})
+                                       :unit "warheads"}
+   ;; Equipment inventory (GlobalFirepower, :estimate? grade -- aggregator)
+   :aircraft-total                    {:label "Aircraft total (GFP)" :unit "aircraft"}
+   :fighters                          {:label "Fighter aircraft (GFP)" :unit "aircraft"}
+   :helicopters                       {:label "Helicopters (GFP)" :unit "rotorcraft"}
+   :tanks                             {:label "Tanks / MBTs (GFP)" :unit "vehicles"}
+   :naval-total-assets                {:label "Naval total assets (GFP)" :unit "hulls"}})
 
 (defn entity->dynamics-stocks
   "Lift a seed entity's :stocks into validated dynamics.core/stock maps.
@@ -106,11 +112,18 @@
      :with-defense-spending (count (with-stock ents :defense-spending-usd))
      :with-personnel (count (with-stock ents :active-military-personnel))
      :with-nuclear (count (with-stock ents :nuclear-warheads))
+     :with-equipment (count (with-stock ents :aircraft-total))
      :top-5-spending (->> (top-by observation :defense-spending-usd 5)
                           (map (fn [e] {:iso3 (:iso3 e)
                                         :name (:country-name e)
                                         :usd (get-in e [:stocks :defense-spending-usd :value])
-                                        :as-of (get-in e [:stocks :defense-spending-usd :as-of])})))}))
+                                        :as-of (get-in e [:stocks :defense-spending-usd :as-of])})))
+     :top-5-aircraft (->> (top-by observation :aircraft-total 5)
+                          (map (fn [e] {:iso3 (:iso3 e) :name (:country-name e)
+                                        :n (get-in e [:stocks :aircraft-total :value])})))
+     :top-5-tanks (->> (top-by observation :tanks 5)
+                       (map (fn [e] {:iso3 (:iso3 e) :name (:country-name e)
+                                     :n (get-in e [:stocks :tanks :value])})))}))
 
 ;; --------------------------------------------------------------------------
 ;; Phase 2: structural loop analysis + Meadows leverage points
