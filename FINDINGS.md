@@ -5988,6 +5988,61 @@ same day came in slower:
 
 **Interpretation**: this is the sharpest example yet in this catalog of the workspace's own repo-wide zero-fabrication discipline (捏造ゼロ, already found verbatim in cloud-itonami/club-shinshi/app-aozora documents across findings 64/81/86/91/92/93) applied to performance engineering specifically -- a domain where the temptation to round a regression up to a "win" or quietly drop an inconvenient measurement is high, and where every single addendum here does the opposite: explicit percentages against the correct prior baseline, explicit REJECT verdicts on two separate attempts that made things worse, and a closing line each time that names precisely what's still open rather than declaring victory. The `:state :production-partial` decision-summary field has not moved to `:production-ready` despite an entire day of real, substantive work -- consistent with the document's own stated rule ('P0を満たす前にscale値だけをもってGAと呼ばず'). Not yet checked: whether the byte-bounded-remainder or independent-run-wave lines of work eventually converge on beating the original 77,608.0ms baseline in a LATER addendum than the one read here (this ADR is evidently still being appended to same-day) -- left as an open thread for a future cycle rather than assumed either way.
 
+## 99. Resolving finding 98's own open thread -- not by beating the baseline, but by the ADR's authors building a gate that rejects their OWN prior benchmark evidence as insufficiently rigorous, rather than declaring a trade-off a win
+
+Finding 98 explicitly left open whether kotobase's Merkle-LSM latency
+work would eventually beat its own 77,608.0ms inline-run baseline in
+a later same-day addendum. Re-checked `ADR-2607211343`'s own commit
+history (`gh api .../commits?path=...`) and found 2 new commits since
+finding 98's own read, both after finding 98's last-covered addendum:
+`docs: record adaptive block sizing controller` (03:41) and `docs:
+record block size cohort qualification gate` (04:01) -- 20 new lines,
+2 new addenda. Independently re-fetched 2 newly-cited merge commits
+(peer PR #75 `8f6ce22e`, host PR #66 `90231cc4`) via `gh api`; both
+match the ADR's own dates/messages exactly.
+
+**The answer to finding 98's own question turns out to be more
+interesting than a yes/no on latency**: peer PR #74 built a pure,
+hysteresis-gated controller that picks the next epoch's block-size
+class (16/32/64/128 KiB) from cost-weighted observations -- a real
+piece of control-theory engineering (minimum-sample holds, adjacent-
+class-only comparisons, fail-closed on malformed/NaN/out-of-range
+metrics). But its own addendum immediately flags the honest limit:
+the existing real-R2 16-vs-32-KiB comparison (finding 98's own
+subject) is "each one, single-region," showing only a genuine
+trade-off (32 KiB has faster wall time, 16 KiB has fewer GETs) --
+not evidence strong enough to safely automate class-switching in
+production.
+
+**Rather than papering over that gap or quietly shipping the
+controller anyway, the very next PR closes it structurally**: peer
+PR #75 adds a "production cohort qualification gate" requiring, for
+EVERY block-size class, at least 2 regions, complete ascending AND
+descending rounds, >=3 samples per class, unique heads per trial,
+isolated prefixes per region/class, and non-synthetic CPU/cache
+provenance -- and explicitly `throws` on malformed/duplicate evidence
+while returning `:eligible? false` with a named reason for
+structurally-valid-but-insufficient evidence. Host PR #66 then wires
+this gate directly in front of the controller, replacing hand-
+aggregated `:observations` input with raw `:samples` run through the
+gate, and rejects unqualified evidence as `:block-sizing-evidence-rejected`
+BEFORE it can reach a manifest publish.
+
+**The ADR's own closing line for this addendum states plainly**:
+"既存実R2 receiptは16/32 KiB、単一region、順序反転なし、CPU/cache
+provenanceなしのため、新gateでは明示的にproduction-unqualifiedとなる"
+-- the team's OWN prior real-R2 benchmark data (finding 98's own
+subject, gathered the same day, by the same team) is explicitly
+disqualified by the very gate they just built, rather than
+grandfathered in or quietly reused to justify shipping adaptive
+sizing.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/commits?path=90-docs/adr/2607211343-...edn` (2026-07-23) showing 2 new commits past finding 98's own read, full re-fetch of the updated 436-line document, and independent `gh api` re-fetch of 2 newly-cited merge commits (`kotoba-lang/kotobase-peer` PR #75, `gftdcojp/local-murakumo` PR #66) confirming exact date/message match.
+
+**Source**: `90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (com-junkawasaki/root), addenda dated 2026-07-23, directly following up on this catalog's own finding 98.
+
+**Interpretation**: this is a different, arguably stronger register of the same zero-fabrication discipline finding 98 already documented -- not just "report the number honestly" but "build the mechanism that prevents an under-qualified number from ever silently becoming a production decision, and apply it retroactively to your own team's own data first." `:production-partial` still has not moved, and the ADR's own text is explicit that the real qualification run (>=2 regions x 4 classes x both orderings with real CPU/cache provenance) has NOT yet been collected -- the gate closed a policy gap (unsafe auto-adoption), not the underlying measurement gap. Finding 98's own open question (does a later line of work beat the baseline) is now supersedable by a better-framed one: this catalog should not expect a clean "beats baseline" resolution at all, since the team's own next stated step is to gather qualifying evidence, not to keep chasing the same single-region numbers.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
