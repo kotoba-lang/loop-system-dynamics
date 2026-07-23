@@ -6989,6 +6989,76 @@ CID-verified restore now applied to both.
 
 **Interpretation**: a rare, satisfying kind of continuation for this catalog's own methodology -- finding 114 flagged an open observation (doc lagging evidence) as worth tracking, not as a defect, and this cycle got to watch that exact gap close through completely ordinary subsequent work, the way honest documentation lag is supposed to resolve. Simultaneously, real new engineering happened in the same window: a substantial size-bound fix (10,000-entry paged inventory) shipped with an explicit refusal to call it more than it is ("not true streaming/resumable"), and yet another pair of real bugs was caught and fixed via live R2 testing rather than left latent. Three separate manifestations of the same zero-fabrication discipline this catalog has now traced through this one product across findings 98/99/100/108/110/113/114/116: report the real number, name what's still missing, and don't let a genuine win get inflated into a bigger claim than the evidence supports.
 
+## 117. net-babiniku's dance-quality kaizen loop: a real co-scientist/langgraph choreography-evolution system, an honest incomplete-measurement disclosure, and a correctly-declined "fix" that surfaced a genuinely new gap instead
+
+This catalog's own findings 51-54 previously covered net-babiniku's
+legal-entity labeling and live-status, but never its actual product
+engineering. Checking `docs/dance-quality-kaizen-log.md` (a long-running,
+append-only kaizen log, iterations back to at least 9) found substantial
+real content never touched by this catalog: a working co-scientist/
+langgraph choreography-evolution system (ADR-0012) and a specific,
+recent, honestly-scoped episode (iteration 17, 2026-07-17) worth
+recording on its own.
+
+**The system itself is real, not aspirational**: iteration 16 built and
+ran a langgraph co-scientist over 28-genome populations (seeded,
+deterministic, with structural safety and loop closure), optimizing
+against gaps a 3-lens VLM (vision-language model) judge panel had
+already identified in iteration 15 (self-hosted local Ollama gemma4
+vision model, two-frame pairs for motion, mean+stdev per axis, mandatory
+concrete pixel-evidence per judge) — the baseline against a
+"broadcast-anime-opening" quality bar (Precure as reference) scored
+1.43/10 (stdev 0.35). Iteration 16 shipped 3 real champion genomes
+(fitness 0.93/0.96/0.95) as production quaternion tracks, functionally
+verified end-to-end (probe all-pass across local/canary/production).
+
+**Iteration 17 has 3 real components and 1 honestly-incomplete one,
+each disclosed precisely rather than rounded up or down**: Act 1 (a new
+root-translation channel, letting the avatar's body mass actually shift
+weight instead of only rotating at the hips) shipped and is
+production-verified, described as "the biggest visible improvement of
+this loop so far." Act 3 (multi-frame motion judging) shipped and its
+own rewrite surfaced 2 real probe bugs, both fixed and documented
+in-script: a disabled button's `.click()` silently no-op'ing due to a
+fixed-delay race, and a dance-frame diagnostic crashing on a cold-start
+`null` instead of failing the gate honestly. **Act 2 (the full VLM
+re-panel) is explicitly reported as incomplete, not skipped-silently**:
+the shared local Ollama instance was saturated by concurrent sessions on
+the same workstation, a direct test call timed out at 80s with zero
+response, yielding 0/9 judgments — the log states plainly "No score
+delta against the 1.43/10 ADR-0011 baseline can be claimed," separating
+that from the functional verification (probe all-pass, visibly
+different poses) which "stands on its own."
+
+**Act 4 (the mech-arm accessory dominating the avatar's silhouette in
+VLM feedback) was investigated and correctly NOT "fixed"**: the log
+states it is the licensed third-party Seed-san sample avatar's own
+design, and "altering third-party asset geometry would be wrong
+regardless of how much it would help the score" — a real ethical/legal
+boundary respected even though bypassing it would have improved the
+team's own quality metric. The investigation into a workaround (a
+`?vrm=` URL parameter that bypasses character selection, found to lose
+dance controls entirely and therefore rejected) surfaced a genuinely new
+gap along the way instead: Rin, a kisekae-composed avatar (base VRM +
+donor hair/outfit parts from Seed-san), never reaches live WebGPU
+rendering in production and falls back to a "PORTRAIT · 3D NEEDS WEBGPU"
+placeholder, despite WebGPU being available and every other
+non-composed roster character loading live in the same session. This
+was filed as a new backlog item (`90-docs/remaining-performance-gaps.edn`,
+`:P1/composed-avatar-rendering`, independently confirmed via direct read)
+rather than chased mid-iteration, with an explicit `:not-yet-known` field
+naming the 3 candidate root causes not yet distinguished (the kisekae
+compose-path's own build-document output, the multi-part mesh upload
+path, or a timeout the current status text may be mislabeling as a
+capability gap) — precise honesty about the boundary of current
+knowledge, not a guess dressed up as a diagnosis.
+
+**Evidence**: `gh api repos/jk-luxury/net-babiniku/contents/docs/dance-quality-kaizen-log.md` (iterations 15-17 read directly) + `gh api repos/jk-luxury/net-babiniku/contents/90-docs/remaining-performance-gaps.edn` (full `:P1/composed-avatar-rendering` entry read directly, confirming the discovery date/iteration/scope/not-yet-known fields match the kaizen log's own account exactly) + `gh api repos/jk-luxury/net-babiniku/commits/13875352` and `commits/d3f62f79` (confirming both cited commits are real and touch the exact files quoted), 2026-07-23.
+
+**Source**: `jk-luxury/net-babiniku` `docs/dance-quality-kaizen-log.md` (iterations 15-17, dated 2026-07-17) + `90-docs/remaining-performance-gaps.edn` + `90-docs/adr/0012-dance-coscientist-langgraph-loop.md`, 2026-07-23.
+
+**Interpretation**: a genuinely new subject for this catalog (net-babiniku's actual product engineering, distinct from findings 51-54's legal-entity work on the same repo), and a rich example of the same zero-fabrication discipline in a domain this catalog hasn't traced it in before -- generative/creative quality evaluation, where the temptation to round a saturated-judge non-measurement up to "no regression" or a licensed-asset limitation into a claimed "fix" would be easy and hard to catch from outside. Both temptations were explicitly declined here: the incomplete VLM measurement is reported as literally absent rather than assumed neutral, and the mech-arm's real constraint (a licensed third-party asset) is respected rather than routed around, with the investigation's byproduct (composed-avatar rendering) filed as precisely as possible rather than left as a vague TODO. The same "record precisely, don't claim resolution you haven't verified" discipline findings 94/109/115/116 have each found in kotoba-lang/compiler and kotobase's core infrastructure, here found in a live consumer product's generative-quality engineering.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
