@@ -6335,6 +6335,74 @@ entirely.
 
 **Interpretation**: this workspace's own `kotoba-lang/arrangement` library -- the same one this catalog's own test classpath (`test/run_tests.cljs`'s own `--classpath` argument) depends on for its DataScript-backed system-dynamics tests -- has a real, reproducible dependency-coordinate-kind conflict (`:local/root` vs `:git/sha`) affecting at least one other consumer repo's own JVM classpath resolution, one this catalog had not previously encountered from this angle. The response to hitting it here is a clean instance of the "don't silently skip verification, don't fabricate a pass" discipline this catalog has repeatedly documented (findings 73/92/98/99 among others) applied to a genuinely different failure mode: not a business claim or a performance number, but a build-tooling defect discovered as a side effect of unrelated security work, correctly triaged as out-of-scope-but-real rather than either fixed opportunistically (scope creep) or silently ignored (false confidence).
 
+## 106. A genuinely different aozora/AT-Protocol thread than finding 91's own subject: a real "reverse-topology walk" federation effort that keeps passing its own tests yet keeps refusing to declare victory, including a bug real third-party AT Protocol tooling caught that this team's own tests had missed
+
+Self-check first: this catalog's own finding 91 already covers
+app-aozora's write-triggered-fold incident and the co-scientist
+tournament. Checking `gftdcojp/aozora-engine`'s and `app-aozora`'s
+more recent commits (`b6d350a1`/`1fbf6bd6`/`10b70cce`, 2026-07-20,
+plus `app-aozora`'s own `90-docs/adr/2607201200-pds-relay-sync-v1.md`)
+finds a genuinely different, later thread: a real AT Protocol Relay
+Sync v1.1 conformance effort, structured as an explicit
+"reverse-topology walk" (walk backward from the desired end-state --
+"Bluesky AppView shows the hosted account" -- through each real
+dependency, refusing to claim a step done until it is verified) --
+directly matching the reverse-topology methodology this workspace's
+own business-planning docs also apply, now seen used for engineering
+verification instead.
+
+**A real bug official, independent AT Protocol tooling caught that
+this team's own tests had missed**: `@atproto/repo`'s own signature
+validation library found `commitSigned`'s returned commit CID
+differed from what `getRepo` reconstructed -- meaning a real Relay
+would have CORRECTLY REJECTED the CAR as an invalid signature. Root
+cause, precisely diagnosed: two storage/read asymmetries -- a
+"projected" record (post/follow/profile) and its canonical generic
+record could describe the same AT path and produce a duplicate, and
+projected profile persistence could silently drop JSON fields,
+making the stored record differ from what was actually member-signed.
+Fixed by deduplicating reconstructed records by `[collection rkey]`
+(preferring the lossless generic row) and persisting every AT record
+as a generic source alongside any AppView projection -- independently
+read the actual diff for this fix (`getrepo.cljc`) and confirmed it
+does exactly this: collapses duplicate paths via a `reduce` into a
+`{[collection rkey] record}` map before re-sorting and returning.
+
+**Precise, real, dated production verification throughout, not
+narrative claims**: real Cloudflare Worker version UUIDs for each
+deployed stage, exact CAR byte counts (576-byte CAR verified under
+the DID document's secp256k1 key via `@atproto/repo.verifyRepoCar`,
+423-byte sync frame vs. 484-byte full repository export), a real
+commit CID and rev for a durable federation-pilot account, "all 440
+tests / 1568 assertions pass" restated at each stage, and all three
+official Relay crawl endpoints confirmed returning HTTP 200 with
+Cloudflare tail logs showing real `indigo-relay` instances actually
+subscribing and fetching `describeServer`.
+
+**And still, honestly, not declared done**: the document's own final
+line, after all of the above: "Relay and AppView still returned
+`RepoNotFound` / `Profile not found` at the end of this verification
+window, so public indexing remains an asynchronous external edge." A
+real interoperability bug found and fixed via third-party validation
+tooling, real production wire-protocol conformance proven at every
+implementable layer -- and the team still refuses to claim the
+externally-observable end state (a resolvable public profile) until
+it is actually observed, not merely inferred from every upstream step
+succeeding.
+
+**Also noted in passing**: the durable federation pilot's private key
+material is held only in a Kagi vault item
+(`aozora-federation-pilot`, compartment `gftdcojp`), received by the
+live runner via stdin rather than a plaintext secret file -- the same
+kagi credential-handling discipline finding 105 documented on a
+completely different product, now confirmed here too.
+
+**Evidence**: `gh api repos/gftdcojp/app-aozora/contents/90-docs/adr/2607201200-pds-relay-sync-v1.md` (full document read, both revisions) + `gh api repos/gftdcojp/aozora-engine/commits/b6d350a1` (full diff read, confirming the dedup logic matches the ADR's own description exactly) + independent `gh api repos/com-junkawasaki/root/commits/7420f6cef2e` (confirming the cited root pin-advance commit is real, dated 2026-07-20, message "chore: advance aozora-engine federation pin"), 2026-07-23.
+
+**Source**: `gftdcojp/app-aozora` `90-docs/adr/2607201200-pds-relay-sync-v1.md` + `gftdcojp/aozora-engine` commits `b6d350a1`/`1fbf6bd6`/`10b70cce` + `com-junkawasaki/root` commit `7420f6cef2e`, 2026-07-23.
+
+**Interpretation**: a genuinely different technical register from finding 91's own subject (a production incident and its root-cause fix) -- this is proactive, methodical protocol-conformance engineering, verified against BOTH the team's own test suite AND an independent, standard-compliant third-party validator, with an explicit refusal to declare an externally-observable milestone complete until externally observed. The reverse-topology-walk structure itself is worth noting as a real, applied instance of a planning pattern this workspace's own business documents also use, here repurposed for technical verification sequencing rather than business-metric sequencing -- the same underlying discipline (don't claim the leaf outcome until every real dependency on the path to it is proven, not assumed) showing up in two different domains of this same workspace.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
