@@ -7166,6 +7166,49 @@ verification."
 
 **Interpretation**: a real, precisely-bounded child-safety-adjacent gap -- not a hypothetical one, since #270 genuinely put live Stripe checkout into production before the payment path had the tier check #269 said it needed -- caught and closed within the same working session by the team's own review process, not by an external report or an incident. The fix's own commentary is a small but real example of the same "mechanism, not identity verification" honesty this catalog already found in finding 90's own subject, now explicitly re-asserted at the exact moment the same self-declared gate is extended to a higher-stakes capability, rather than letting the extension implicitly borrow unearned confidence from the original mechanism's design. What remains genuinely open and not determinable from available sources: whether any real purchase intent was actually created by an unset/minor-tier account during that 35-minute window (the repo's own D1 database is not something this analysis can query).
 
+## 120. A second, distinct real production incident connecting kototama, kawaraban, and app-aozora -- a write-side timeout this time, not the already-tracked read-side LSM hang, fixed narrowly to avoid weakening an unrelated security guarantee
+
+Finding 91 already documented a real production incident on this same
+chain -- app-aozora's `listRecords`/`getRecord` read-side hangs from an
+unwired LSM fold threshold. Checking `kotoba-lang/kototama` (this
+catalog's own PR #51 target, already deeply tracked for its
+security-adoption gate) for other recent activity found a second, genuinely
+different real production issue on the SAME `pds.aozora.app` write path,
+independently root-caused and fixed: PR #52 ("configurable HTTP
+connect/request timeout via HostCaps," merged 2026-07-23T10:57:02Z,
+independently confirmed real via `gh api`).
+
+**The incident, precisely described**: "Real go-live deployment
+(kawaraban/cloud-itonami media actors posting to the live
+`pds.aozora.app`) found the fixed 5s connect/request timeout too
+aggressive -- a real `createRecord` call that DID eventually succeed
+(confirmed via a 30s raw HttpClient retry) still timed out at
+kototama's own 5s default, observed repeatedly in the actual launchd
+daemon's logs." This is a write-side (`createRecord`) timing bug, not
+the already-tracked read-side (`listRecords`/`getRecord`) hang from
+finding 91 -- same PDS, same actor family (kawaraban), a genuinely
+distinct root cause and fix location.
+
+**A precisely narrow fix, explicitly reasoned against the easier
+alternative**: rather than simply raising the global default timeout
+(which would have been the simpler one-line change), the fix adds 2 new
+opt-in `HostCaps` fields (`:http-connect-timeout-ms`/
+`:http-request-timeout-ms`), both defaulting to the exact same
+previously-hardcoded 5000ms -- byte-identical behavior for every
+existing consumer unless they explicitly opt in to a longer timeout.
+The PR's own text states the reasoning directly: "Deliberately NOT a
+global widening, to avoid weakening other consumers' fast-fail DoS
+guarantee" -- a real security tradeoff (slow-loris-style resource
+exhaustion resistance) explicitly protected rather than silently traded
+away to fix one caller's problem. Verified: 145 tests/416 assertions, 0
+failures; 0 new lint findings.
+
+**Evidence**: `gh api repos/kotoba-lang/kototama/pulls/52` (full PR body read directly) + `gh api repos/kotoba-lang/kototama/commits/93520c73` (independently confirmed real, merged 2026-07-23T10:57:02Z, matching the PR's own timestamp) + cross-checked against this catalog's own finding 91 (confirming the incident described here is a distinct write-path bug, not a restatement of finding 91's read-path LSM-fold hang), 2026-07-23.
+
+**Source**: `kotoba-lang/kototama` PR #52, `src/kototama/tender.cljc` (HostCaps timeout fields), 2026-07-23.
+
+**Interpretation**: a second real, independently-discovered production incident on the exact same `pds.aozora.app`/kawaraban chain this catalog already tracked once (finding 91), confirming that chain sees genuine, varied operational load rather than being a one-off. The fix discipline mirrors what this catalog has now traced across many products: solve the specific problem narrowly, name the security property that a broader fix would have weakened, and verify the byte-identical-default claim rather than asserting it. A useful data point for this catalog's own PR #51 (still open, in the same repo, on the security-adoption declaration gap) -- this PR shows the same team continuing to ship real, carefully-scoped fixes to this exact area of the codebase while that separate declaration gap remains unaddressed, suggesting the gap is a documentation/tracking lag rather than an indication the team is inattentive to this repo's security posture generally.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
