@@ -6632,6 +6632,63 @@ rather than estimated optimistically.
 
 **Interpretation**: a striking continuation of the same "record precisely, don't claim resolution you haven't verified" discipline finding 94 already documented on this exact compiler -- now at a much larger scale (12 sequential ADRs, 2 more real bugs caught mid-stream, a genuinely new capability proven end-to-end) with the SAME discipline holding throughout: never touching the `:qualification` field to manufacture apparent progress, explicitly stating what remains completely unstarted, and reading the native backend's actual source rather than guessing at its readiness. This is real, substantial engineering velocity in service of a well-documented, previously-identified blocker (finding 80/94's own subject), landing the same week those findings were written, with the next deliberate step (native-AOT foundations) explicitly chosen via an owner decision rather than assumed as an automatic next increment.
 
+## 111. A genuinely fresh topic: a real Delaware LLC formation now consolidates the operating entity for 7 products across 2 previously-separate org clusters -- and closes a loose thread from this catalog's own earliest reading of this repo's untracked files
+
+Reading the ADR-ledger's own most recent amendment entries (append-only,
+`90-docs/adr-ledger/adr-ledger.edn`, `scripts/adr-ledger-append.cljs`
+the only permitted write path) found two real, dated corporate-
+structure amendments, both timestamped 2026-07-23T08:36: a new
+Delaware LLC, **AWAI Network, L.L.C.**, formed 2026-07-20, now
+recorded as the operating entity for BOTH `club-shinshi`/`net-babiniku`
+(superseding the prior JK Inc., a BVI company) AND the entire
+gftdcojp product line this catalog tracks (`cloud-itonami`,
+`cloud-murakumo`, `cloud-manimani`, `network-isekai`, `app-aozora`) --
+7 products across 2 previously-separate org clusters (`jk-luxury` and
+`gftdcojp`) now consolidated under one real legal entity.
+
+**Real, specific, verifiable corporate facts recorded**: entity type
+Delaware LLC, formation date 2026-07-20, Delaware state file number
+10704996, EIN application window 08/12-09/24, registered agent
+Legalinc Corporate Services Inc. (131 Continental Dr Suite 305,
+Newark, DE 19713 US, valid through 2027-07-20). Representative
+personal details (name/phone/address) are explicitly NOT recorded in
+the ADR/ledger per owner instruction -- this catalog respects that
+same boundary and does not attempt to find or infer them.
+
+**Independent verification attempted, honestly limited**: searched
+for third-party confirmation of the entity (Delaware file number
+10704996) via `WebSearch` -- found none, but this is not a red flag:
+the entity was formed only 3 days before this check, and commercial
+business-data aggregators (D&B, RocketReach, etc.) typically lag real
+Delaware formations by weeks to months before indexing them.
+Delaware's own official entity search (`icis.corp.delaware.gov`) is a
+stateful ASP.NET WebForms interface this analysis could not
+programmatically query via a simple fetch -- confirmed the search
+page itself exists and describes file-number lookup as a real,
+available, free public feature, but did not complete an actual
+lookup. Recorded as a genuine verification limitation, not treated as
+either confirming or contradicting the underlying claim.
+
+**Closes a loose thread from this catalog's own much earlier
+investigation this session**: at the very start of this session,
+`70-tools/bmc/delaware_formation_check.clj` and
+`90-docs/business/delaware/` appeared as untracked files in the
+initial git status. An early cycle this session searched
+`com-junkawasaki/root`'s commit history for "delaware" and found
+nothing, concluding that thread had likely gone cold or was abandoned
+WIP. Re-checked now: that specific tool file and directory still do
+NOT exist anywhere in the current git tree (confirmed via a fresh
+`git/trees/main?recursive=true` search) -- but the underlying real-
+world business fact those files were presumably built to track DID
+land, just through a completely different mechanism (the ADR-ledger
+append path) rather than that abandoned tool.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr-ledger/adr-ledger.edn` (event/seq 31-32, both dated 2026-07-23T08:36) + `gh api repos/com-junkawasaki/root/commits?per_page=100` (confirming commit `2c18d983` is the one real commit matching "delaware" in this repo's history) + `gh api repos/com-junkawasaki/root/git/trees/main?recursive=true` (confirming no `delaware`-named path exists anywhere currently) + `WebSearch`/`WebFetch` against Delaware's own public entity-search interface, all 2026-07-23.
+
+**Source**: `com-junkawasaki/root` `90-docs/adr-ledger/adr-ledger.edn` amendments to `adr-2607062300-jk-luxury-org-club-shinshi-net-babiniku-relocation` and `adr-2607141600-cloud-itonami-real-entity-record-placement`, commit `2c18d983`, 2026-07-23.
+
+**Interpretation**: a genuinely new domain for this catalog (real corporate/legal entity structure, not product engineering or business metrics) that materially changes the operating-entity picture this catalog's own `:club-shinshi`/`:cloud-itonami`/etc. entities have recorded up to now -- 7 products this catalog independently tracks across 2 orgs now share one real legal entity, a fact worth propagating into this catalog's own records rather than leaving stale. Also a small, honest example of a workspace-level pattern this catalog itself exhibits: an early-stage tool/directory can be abandoned while the real underlying fact it was meant to serve still gets recorded, just through a different, more durable channel (the append-only ledger) -- not every loose thread this catalog flags as "gone cold" stays cold forever, and periodically re-checking them (as this cycle did) is worth doing rather than assuming a stale finding stays true.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
