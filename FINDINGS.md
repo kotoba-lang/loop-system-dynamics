@@ -6452,6 +6452,72 @@ during this same window, not a one-shot migration.
 
 **Interpretation**: this is meaningfully different from most of this catalog's earlier `.kotoba`-migration findings (which have generally been about narrow-slice pure-function ports of existing repos), because CLAUDE.md itself specifically pre-named shiropico as THE proving slice for the broader kotoba/app profile shift -- this is the one place in the whole workspace where checking "is the policy document's own named next step actually happening" has a single, precise, falsifiable target. It is happening, dated within the same week the ADR-2607231400/2607231900 findings (101/102) also landed, with real safety-relevant care taken (compatibility-oracle parity testing before promotion to authoritative, least-authority checkpoint capability, fail-closed-before-SSoT-mutation) rather than a rushed swap. The one thing this analysis could not verify -- a checked-in compiled wasm binary -- is recorded honestly as a verification gap rather than glossed over or assumed resolved.
 
+## 108. A first for this catalog: direct action on 2 of the real external gaps it had only observed until now, both dated, both real, both left honestly incomplete
+
+Prompted directly by the owner ("gap を解消" -- resolve the gaps),
+this cycle is the first time this catalog has taken direct action on
+an external repo's real defect rather than only observing and
+recording it. Two of this catalog's own previously-documented gaps
+(finding 103's club-shinshi migration risk, finding 95's kototama
+security-adoption gate) were worked on directly, each with real,
+locally-executed verification, not assumed fixes.
+
+**`jk-luxury/club-shinshi-app` PR #1**: reconstructed the two missing
+D1 migrations (`0004_compliance.sql`/`0005_ocel.sql`) finding 103
+identified as still-missing while live worker code depends on them.
+`ocel_event`'s schema was derived with high confidence directly from
+`op-ocel-emit`'s own `INSERT` statement; `compliance_report`'s schema
+was inferred from the `UPDATE`/`SELECT` statements plus the repo's 3
+public submission forms (the only remaining record of what a
+submitted report carries), following this repo's own established
+"Column provenance" convention for schema reconstruction (precedent:
+`0004_hotel_review.sql`'s own header). Verified by loading both files
+into a real in-memory sqlite3 database and executing the exact SQL
+statements `d1_gateway.cljs` itself issues -- all succeed. Used
+`CREATE TABLE IF NOT EXISTS` specifically because whether production
+D1 already has these tables via an untracked path remains genuinely
+unknown. **Left the PR open rather than self-merging**: this is a
+first-time contact with a live, revenue-generating product's own
+database, and the PR's own body explicitly recommends verifying
+against the live schema before treating this as authoritative -- not
+confident enough in an unreviewed schema reconstruction to force it
+through unilaterally.
+
+**`kotoba-lang/kototama` PR #51**: reproduced finding 95's own
+security-adoption gate failure locally (`clojure -M -m
+kotoba.security.adoption`, real JVM/Clojure toolchain, not simulated)
+and fixed it check-by-check, verifying real progress after each edit
+by re-running the exact command: (1) declared 3 real, previously-
+undeclared Signal-protocol entrypoints in `security-adoption.edn`,
+with control-namespace sets read directly from each file's own `ns`
+form; (2) added the resulting 5 new control namespaces to
+`:required-control-namespaces`, satisfying a config self-consistency
+check the first fix alone didn't cover; (3) declared 4 sensitive
+operations (`encrypt`/`decrypt-aead`, `encrypt`/`decrypt-message`)
+with controls traced to what each function actually calls in source
+(not guessed) -- `encrypt/decrypt-aead` call `kotoba.security.aead`
+directly, `encrypt/decrypt-message` depend on `kotoba.security.hkdf`
+transitively via `symmetric-ratchet`. **This surfaced a genuinely
+deeper, more severe defect the fix cannot address**: after all 3
+declarative fixes, the command fails one step later --
+`require`ing `kotoba.security.hkdf` throws `FileNotFoundException`.
+Independently confirmed via `gh api .../git/trees/<pinned-sha>` that
+`kotoba.security.{hkdf,aead,x25519,ed25519,sha256}` do not exist
+anywhere in `kotoba-lang/security` at the exact commit both
+`deps.edn` and `security-adoption.edn` pin -- the Signal-protocol
+source imports namespaces that do not exist anywhere in the resolved
+dependency graph. Explicitly did NOT attempt to write the missing
+cryptographic primitives (HKDF/AEAD/X25519/Ed25519/SHA256)
+unreviewed -- documented the exact gap precisely instead, so whoever
+picks it up next (adding the primitives to `kotoba-lang/security`, or
+correcting kototama's own imports) doesn't need to rediscover it.
+
+**Evidence**: `gh pr view --repo jk-luxury/club-shinshi-app 1` + `gh pr view --repo kotoba-lang/kototama 51` (both real, this session's own PRs) + local `python3`/`sqlite3` verification of the club-shinshi migrations + local `clojure -M -m kotoba.security.adoption` re-execution after each kototama fix, all 2026-07-23.
+
+**Source**: this session's own direct actions, not a third-party observation -- `jk-luxury/club-shinshi-app` PR #1 and `kotoba-lang/kototama` PR #51, both opened 2026-07-23.
+
+**Interpretation**: a deliberate, owner-directed scope expansion from pure observation to direct intervention, carried out with the same discipline this catalog applies when READING other teams' work: real local verification at every step (not claimed-and-assumed), honest disclosure of what remains unresolved rather than declaring victory, and an explicit refusal to take an action (writing unreviewed cryptographic primitives, self-merging an unreviewed schema change to a live paid product) where the risk of getting it wrong outweighs the value of closing the gap unilaterally. Neither PR is confirmed merged as of this entry -- both are genuinely open, pending the repo owners' own review, which is the appropriate resting state for first-contact changes to repos this catalog has never touched before.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
