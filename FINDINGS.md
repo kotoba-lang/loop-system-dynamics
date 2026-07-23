@@ -7540,6 +7540,57 @@ candidate go unrecorded.
 
 **Interpretation**: extends both this catalog's own domain coverage (a first, genuine touch of chip-level electrical-engineering standards work, distinct from every prior product/protocol/economic system this catalog has tracked) and finding 125's own language-gate thread (a 4th-ish independent confirmation that the regex/substring gap is real and recurring, now spanning web, calendar, and circuit-spec parsing). The interpolate-current candidate is a small but genuine example of disciplined future-work scoping: not claiming a timeline or committing effort not yet spent, but precisely naming the 2 concrete things (a bounded-vector profile design, real reference data) that would need to exist before this specific, otherwise-clean algorithm could migrate -- the same "record precisely, don't claim resolution you haven't verified" discipline this catalog has traced through dozens of other products, here applied to planning rather than completed work.
 
+## 127. A real west-orphan discovery: 22 real, content-complete cloud-itonami repos existed on GitHub but were entirely invisible to the manifest's own project tracking, found via a systematic diff and fixed as a batch rather than one-off
+
+Checking fresh `com-junkawasaki/root` commits found a real fleet-
+hygiene repair distinct from the routine per-repo pin-advances this
+catalog has watched all cycle: "register 22 unregistered cloud-itonami
+lei-*/municipality-* repos" (independently confirmed real -- verified
+one named repo, `cloud-itonami-lei-353800678eijloqswz83`, exists on
+GitHub since 2026-07-19, and is now live-present in `manifest/west.yml`
+with a real revision pin, along with `cloud-itonami-municipality-esp-
+barcelona`, both directly checked against the live manifest file).
+
+**The gap, precisely**: 22 real, content-complete repos (12 `lei-*`
+company Terms-of-Service archives, 10 `municipality-*` ordinance
+catalogs) existed on GitHub the whole time but were never added to
+`manifest/repos.edn`'s `:extra-projects` -- meaning `west` (the tool
+this whole workspace uses for project tracking and sync, per CLAUDE.md's
+own repo-wide manifest discipline) had no knowledge these repos
+existed at all. Any enumeration or sync operation going through west
+rather than a direct GitHub API call would have silently missed all 22.
+
+**Found via a disciplined method, not luck, and escalated correctly
+once a pattern emerged**: "discovered via a systematic diff of `gh repo
+list cloud-itonami` against `west list -f '{name}'`" -- comparing the
+two independent listing sources directly rather than trusting either
+alone. The commit's own text states this full sweep was triggered by
+2 earlier ONE-OFF discoveries of the same class of gap (in prior fleet-
+maturity campaign rounds 35 and 41) -- rather than continuing to find
+these one at a time as they happened to surface, the pattern itself
+prompted a systematic full-repo-list diff to close the whole gap at once.
+
+**Honestly scoped verification, including an explicit note about its
+own limitation**: server-side pin verification (via `GH_TOKEN`, noting
+the script's `gh` subprocess didn't pick up keychain-based `gh auth
+login` by default -- a small, concrete operational detail worth
+recording) confirmed all 22 pins are real commits reachable from each
+repo's own default branch. The commit's own text notes `--check`
+reports STALE, but explicitly attributes this to the review being done
+in "an isolated worktree with only these 22 of 3670 total projects
+cloned," confirmed by checking that `--check` is STALE even on the
+UNMODIFIED file in that same worktree -- ruling out its own change as
+the cause before concluding it's a scoping artifact, not a defect. No
+content within the 22 repos was audited in this same commit, explicitly
+left to "the fleet's normal per-round sampling process" rather than
+silently expanding scope.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/commits/beedaa56` (full commit message read directly) + independent `gh api repos/cloud-itonami/cloud-itonami-lei-353800678eijloqswz83` (confirmed real, created 2026-07-19) + `gh api repos/com-junkawasaki/root/contents/manifest/west.yml?ref=main` (confirming both named repos are now live-present with real revision pins), 2026-07-23.
+
+**Source**: `com-junkawasaki/root` commit `beedaa56` ("chore(manifest): register 22 unregistered cloud-itonami lei-*/municipality-* repos"), 2026-07-23.
+
+**Interpretation**: a real instance of exactly the "west orphan" hazard CLAUDE.md's own git-operations discipline names as a known risk (repos existing on GitHub but absent from west's own tracking, breaking fresh-checkout completeness) -- caught and fixed via a genuinely systematic method rather than continued ad-hoc discovery, once the pattern from 2 isolated prior instances became visible. Distinct from finding 80's own 356-repo census, which queried GitHub's API directly rather than through west -- so this specific gap likely did not distort that count, though this analysis has not independently re-verified that overlap and leaves it as a reasonable inference rather than a confirmed fact. The commit's own careful self-check on its `--check STALE` result (verifying the staleness predates its own change before attributing it to scope, not defect) is a small, genuine instance of the same discipline this catalog has traced throughout this whole fleet-migration effort.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
