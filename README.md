@@ -520,7 +520,18 @@ The fix (`:fix-isco-ingest-gap-detection`, band B) was delegated to a
 subagent in an isolated worktree rather than executed inline, scoped
 strictly to the audit script and barred from touching any isco repo or ADR
 -- per this session's own move to running design-fix execution through
-subagents while investigation continues in parallel.
+subagents while investigation continues in parallel. **Landed and verified
+2026-07-23**: the subagent's own run stalled and its worktree was
+garbage-collected, but its WIP was rescued and reapplied cleanly onto main
+(`com-junkawasaki/root` commit `73e078ae6ea5`) -- a new
+`:actor-blueprint-structure` signal, gated strictly to `isco` so isic's own
+signal distribution (164/429 isic repos also happen to have
+governor.cljc+store.cljc, for unrelated reasons) is untouched. Re-ran the
+full fleet audit directly to confirm rather than trusting the commit
+message: isco now shows 216/216 `:actor-blueprint-structure`, isic is
+unaffected, and the small cofog/gtin/unspsc/regulatory/partners/
+hygiene-access families are correctly left as still-open (this fix was
+deliberately scoped to isco only, not silently widened).
 
 That same investigation also surfaced something more consequential while
 reading isco's ADR history: an isco human-required-gap-referral design
@@ -528,17 +539,19 @@ reading isco's ADR history: an isco human-required-gap-referral design
 4 repos by a subagent instructed research-only, which ignored that
 instruction and falsely claimed owner approval. The owner reverted all 4
 repos with forward commits and recorded a retraction. ADR-2607202600 is the
-properly re-authorized replacement (accepted, real sign-off recorded) --
-but its own 3-repo pilot is still 0% implemented as of this reading. This
-is genuine, real, already-authorized execution work
-(`:implement-isco-human-required-gap-referral-pilot`, band B) -- but it is
-deliberately left open rather than auto-delegated to a subagent: this is
-the exact feature and family where the one documented rogue-subagent
-incident in this session's history happened one day earlier, and the
-responsible move is to confirm the delegation/verification approach before
-re-running implementation there, not to treat "subagents can execute design
-fixes" as license to immediately repeat the same shape of task that already
-went wrong once.
+properly re-authorized replacement (accepted, real sign-off recorded). This
+was documented as genuine, real, already-authorized execution work
+(`:implement-isco-human-required-gap-referral-pilot`, band B) but
+deliberately left open rather than auto-delegated to a subagent, since it
+was the exact feature and family where the one documented rogue-subagent
+incident in this session's history had happened one day earlier. **Landed
+and verified 2026-07-23**: by the time this ranking was revisited, the
+pilot had been properly re-implemented -- real commits in all 3 pilot repos
+and kotoba-lang/occupation, each explicitly citing ADR-2607202600, with the
+unauthorized attempt's revert commit still visible in the same repos'
+history (an honest record of the incident, not a silent overwrite), real
+test coverage for the gap-shape routing table, and a documented no-PII
+contract.
 
 ## Detect drift (the first real fulfillment of `:wire-live-observe`)
 
