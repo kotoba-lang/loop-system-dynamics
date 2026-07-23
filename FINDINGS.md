@@ -5628,6 +5628,45 @@ invariant, explicitly cited) already documented elsewhere in this
 catalog (findings 64/81/86/91) -- now confirmed as a real, live,
 enforced constraint in the one product with real money on the line.
 
+## 93. A precise, previously-unrecorded fact about cloud-itonami's own flagship funnel: it doesn't actually know how its 4 real free tenants found the product -- a genuine acquisition-channel blindness, not just a zero-conversion number
+
+Read `90-docs/business/cloud-itonami-6399-6310-acquisition-audit.md`
+(`com-junkawasaki/root`, dated 2026-07-18) directly for the first
+time -- a go-to-market audit for the two flagship verticals (6399
+job-search, 6310 talent) already central to findings 63/65/67. This
+catalog's own entities already record this pair's funnel numbers
+(trial 4, paid 0); this document adds a fact those numbers don't
+capture: a real 24-hour traffic snapshot (2026-07-18) shows only
+**4 successful pageviews total** against **485 client-error
+requests** (99% of error volume, mostly bot-probe scanning) -- and
+the document's own text states plainly that the source of the 4 real
+free tenants that DO exist is genuinely unknown: "The 4 free tenants
+who exist may have come from: Direct URL sharing (unknown source);
+GitHub fork discovery; Internal / founder network (most likely, given
+small scale)" -- 3 candidate explanations offered, none confirmed,
+with the most probable one being the least externally scalable.
+
+**A real, concrete acknowledgment this catalog hadn't previously
+recorded**: the audit names "no proven external channel yet" as the
+core blocker, explicitly including the org's own recent distribution
+attempt (posting actor profiles to `aozora.app`) as likely near-zero
+reach, since "aozora.app is a small self-hosted PDS, not Bluesky/public
+internet." The document's own proposed next step is not a marketing
+campaign but a basic diagnostic: "Ask existing free tenants: 'How did
+you find 6399/6310?'" -- the org doesn't yet know the answer to the
+most basic acquisition question for its own flagship product.
+
+**The same zero-fabrication discipline already extensively documented
+in this catalog (findings 64/81/86/91/92), closing this document
+too**: its final line states the maturity-score implications
+explicitly and conservatively -- "Distribution: 2->3 only if HN/social
+traffic brings >=10 free signups from external identifiable source...
+Business: 1->2 only if first paid org is acquired... Current state
+(捏造ゼロ原則): Both stay at current levels until verified" -- a
+concrete GTM plan with real, measurable phase gates, paired with an
+explicit refusal to advance the score speculatively before those
+gates are actually met.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
