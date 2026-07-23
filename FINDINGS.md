@@ -6518,6 +6518,53 @@ correcting kototama's own imports) doesn't need to rediscover it.
 
 **Interpretation**: a deliberate, owner-directed scope expansion from pure observation to direct intervention, carried out with the same discipline this catalog applies when READING other teams' work: real local verification at every step (not claimed-and-assumed), honest disclosure of what remains unresolved rather than declaring victory, and an explicit refusal to take an action (writing unreviewed cryptographic primitives, self-merging an unreviewed schema change to a live paid product) where the risk of getting it wrong outweighs the value of closing the gap unilaterally. Neither PR is confirmed merged as of this entry -- both are genuinely open, pending the repo owners' own review, which is the appropriate resting state for first-contact changes to repos this catalog has never touched before.
 
+## 109. This catalog's own CI turns red for the first time all session -- a real, self-caught regression, with a genuine gap in this catalog's own local-verification process as the actual root cause
+
+CI on finding 108's own commit (`6668380`) failed -- the first CI
+failure on `kotoba-lang/loop-system-dynamics` main this entire
+session (every prior commit: 84 tests/194 assertions/0 failures).
+Checking `runner_id` on the failing job first (this catalog's own
+standing discipline for the com-junkawasaki/root side's recurring
+infra-outage pattern) showed a REAL runner (`1000026415`), ruling out
+the known false-positive pattern immediately -- this was a genuine
+test failure needing real investigation, not a shrug.
+
+**The actual failure**: `ingest-real-archetypes-queryable-test`
+expected exactly 3 archetypes with `structural-strength > 10000`
+(`speculative-crypto-derivatives`/`surveillance-capitalism-adtech`/
+`online-gambling`) but got 4 -- `bitcoin-pow-mining` now also clears
+the threshold. Re-running the exact same test LOCALLY first showed 0
+failures, appearing to contradict CI -- until checking `../dynamics`
+(the sibling `kotoba-lang/dynamics` checkout this catalog's own test
+classpath depends on, NOT vendored/pinned inside this repo) revealed
+it was locally stale at `9c9cef0` while `origin/main` had moved to
+`270c884` ("add 7 decentralized crypto/compute-network loop
+archetypes + cloud-murakumo entry") -- the SAME concurrent session
+whose `cloud-murakumo-leverage` contribution this catalog fast-
+forwarded past two cycles ago. Fast-forwarding the local sibling
+checkout and re-running reproduced the real CI failure exactly.
+Queried the real, current structural-strength values directly:
+`bitcoin-pow-mining` genuinely computes to `39321.45` from its own
+dated real archetype parameters (not guessed), comfortably above
+10000 and below `online-gambling`'s `41007.75` -- a real, legitimate
+data change, not a bug in the archetype-scoring logic itself.
+
+**The fix**: updated the test's hardcoded expected set from 3 to 4
+elements (adding `bitcoin-pow-mining`), with a new code comment
+explaining explicitly that `../dynamics` is an external,
+independently-evolving dependency this set will need to be
+re-verified against, not assumed stable forever -- the same
+discipline this catalog's own "What's still open" section has
+applied to its own stale entity-counts repeatedly. Verified by
+re-running the full suite against the now-current sibling checkout:
+84 tests / 194 assertions / 0 failures.
+
+**Evidence**: `gh run view 29993269937 --repo kotoba-lang/loop-system-dynamics --log-failed` (full failure log) + `gh api .../actions/jobs` (confirming real `runner_id`, not the infra-outage pattern) + direct `git log`/`git fetch` on the local `../dynamics` sibling checkout (confirming it was stale) + a direct `nbb` query against the real, current archetype catalog (confirming `bitcoin-pow-mining`'s exact structural-strength value), all 2026-07-23.
+
+**Source**: this session's own CI failure and its own local investigation/fix, `kotoba-lang/loop-system-dynamics` commit `6668380`'s CI run + `../dynamics` commit `270c884` (`kotoba-lang/dynamics`), 2026-07-23.
+
+**Interpretation**: the real root cause here is not the concurrent session's own archetype addition (a genuine, legitimate, real-data-grounded contribution) -- it's a previously-unnoticed gap in this catalog's OWN local-verification process: the sibling `../dynamics` checkout this catalog's own test suite depends on can silently drift stale between test runs, since nothing in this catalog's established sync-before-work discipline ever re-fetches it (only THIS repo's own `git fetch`/`git merge --ff-only` is checked before each commit, never the sibling dependency). This produced a real false-negative: this catalog's own local "0 failures" check at finding-108 commit time did not actually match what CI would find, because the sibling dependency had moved in the interim. Self-applying the exact same discipline this catalog has repeatedly found and praised in other teams' own work (don't trust a stale local check, verify against the real current state) closed a real gap in its own process, not just in its own data.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the

@@ -26,12 +26,21 @@
       (is (= [["etzhayyim-adherent-loop"]] present) "the archetype entity itself is still ingested"))))
 
 (deftest ingest-real-archetypes-queryable-test
-  (testing "a real datalog query against the real loop-archetypes catalog returns the known top-3 by structural-strength"
+  ;; kotoba-lang/dynamics is an external, independently-evolving sibling
+  ;; checkout (../dynamics/src, not vendored/pinned here) -- its own
+  ;; loop-archetypes catalog can legitimately grow between test runs. This
+  ;; set was 3 elements until kotoba-lang/dynamics commit 270c884 ("add 7
+  ;; decentralized crypto/compute-network loop archetypes + cloud-murakumo
+  ;; entry") added :bitcoin-pow-mining, whose real structural-strength
+  ;; (39321.45, computed from its own dated real archetype params, not
+  ;; guessed) now also clears the >10000 threshold. Re-verify against a
+  ;; fresh dynamics/core.cljc rather than assuming this stays 4 forever.
+  (testing "a real datalog query against the real loop-archetypes catalog returns the known top-N by structural-strength"
     (let [conn (real-conn)
           top (->> (q/q "[:find ?id ?s :where [?e \"archetype/structural-strength\" ?s] [?e \"archetype/id\" ?id] [(> ?s 10000)]]" conn)
                     (map first)
                     set)]
-      (is (= #{"speculative-crypto-derivatives" "surveillance-capitalism-adtech" "online-gambling"} top)))))
+      (is (= #{"speculative-crypto-derivatives" "surveillance-capitalism-adtech" "online-gambling" "bitcoin-pow-mining"} top)))))
 
 (deftest ingest-real-entities-queryable-test
   (testing "a real datalog query against the real entities-seed.edn finds exactly the orgs with confirmed external GitHub stars"
