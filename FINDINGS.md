@@ -7591,6 +7591,58 @@ silently expanding scope.
 
 **Interpretation**: a real instance of exactly the "west orphan" hazard CLAUDE.md's own git-operations discipline names as a known risk (repos existing on GitHub but absent from west's own tracking, breaking fresh-checkout completeness) -- caught and fixed via a genuinely systematic method rather than continued ad-hoc discovery, once the pattern from 2 isolated prior instances became visible. Distinct from finding 80's own 356-repo census, which queried GitHub's API directly rather than through west -- so this specific gap likely did not distort that count, though this analysis has not independently re-verified that overlap and leaves it as a reasonable inference rather than a confirmed fact. The commit's own careful self-check on its `--check STALE` result (verifying the staleness predates its own change before attributing it to scope, not defect) is a small, genuine instance of the same discipline this catalog has traced throughout this whole fleet-migration effort.
 
+## 128. A real, urgent infrastructure diagnosis for ai-gftd-apex has been correctly identified by the BMC advisor at least twice across 2 different days, and both times silently discarded by the governor due to a canvas-schema mismatch, not a duplicate
+
+Checking the newly-run daily portfolio-wide "bmc operate" routine
+(distinct from the hourly cloud-itonami-only react loop this catalog
+has watched all cycle) found something more concerning than the
+routine's own "duplicate item" governor rejections this catalog has
+seen dozens of times before: a real, correct, urgent diagnosis for
+`ai-gftd-apex` that the governor has rejected on a DIFFERENT, more
+troubling ground -- not because it was redundant, but because the
+canvas id it targeted doesn't exist.
+
+**The real underlying problem, quoted directly from the advisor's own
+observation**: "実測 / 1025訪問 → /signup 36 の real human funnel が存在
+するが 5xx 70% -- backend 障害が転換を破壊中" (a real human funnel exists:
+1,025 real visits leading to 36 real signups, but a 70% 5xx error rate
+is actively destroying that conversion). This is not a hypothetical or
+speculative concern -- it is the advisor correctly reading real,
+measured Cloudflare traffic data (independently confirmed: this same
+routine's own collect step recorded `ai-gftd-apex` at 495,689 req/7d,
+8% 4xx probe -- the 5xx figure comes from the advisor's own path-level
+breakdown, not fabricated) and concluding, correctly, that "marketing
+以前に infra 修復が最優先の律速" (infrastructure repair, not marketing, is
+the true rate-limiting bottleneck) -- exactly the kind of instrumentation-
+before-optimization discipline this catalog has repeatedly found
+elsewhere in this same BMC system.
+
+**The proposal to record this diagnosis was rejected -- twice, on
+different days, for the same structural reason**: today
+(2026-07-23T22:06:39Z, independently read from the raw
+`canvas-ledger.edn`, `:event/seq 4780`), the governor rejected "5xx
+エラー率 83% → 1% 未満への修復 (GTM 律速の解除)" with the reason "unknown
+canvas id :ai-gftd-apex.infra." The exact same class of rejection
+occurred the day before (2026-07-22T22:07:28Z/29Z, `:event/seq
+4562`/`4566`), targeting a slightly different id, `:ai-gftd-
+apex.infrastructure`, with an equally correct diagnosis ("既存トラフィック
+(1025訪問/日) が signup に至る前に崩壊しているため、GTM やマーケティング以前に
+インフラ安定化が最優先の律速"). **This is categorically different from
+every "duplicate item" rejection this catalog has already seen dozens
+of times in this same system** -- a duplicate rejection means the
+governor correctly recognized the SAME already-recorded fact being
+re-proposed; this rejection means the proposal was never recorded at
+all, on EITHER day, because the advisor keeps generating a canvas id
+that isn't a real field in this product's own schema (`:problem`/
+`:channels`/`:metrics`/etc. are the confirmed-real sections; `:infra`/
+`:infrastructure` are not among them).
+
+**Evidence**: `gh api repos/com-junkawasaki/root/commits/bec0488d` (the routine's own commit, real, confirmed) + `gh api repos/com-junkawasaki/root/contents/90-docs/business/canvas-ledger.edn` (raw ledger events independently read directly, both the 2026-07-23 and 2026-07-22 rejection events found and quoted verbatim, not taken from the PR's own summary prose) + `gh api repos/com-junkawasaki/root/contents/90-docs/business/ai-gftd-apex-business-model.edn` (confirming the product's real canvas sections do not include an `:infra`/`:infrastructure` field), 2026-07-23.
+
+**Source**: `90-docs/business/canvas-ledger.edn` (com-junkawasaki/root), events `:seq 4562`/`4566` (2026-07-22) and `:seq 4780` (2026-07-23) + `90-docs/business/ai-gftd-apex-business-model.edn`, 2026-07-23.
+
+**Interpretation**: a genuine, real system gap distinct from the extensively-documented "duplicate item, working as intended" pattern this catalog has already found in this same BMC advisor/governor loop -- here, a correct and urgent diagnosis (a real product with real human traffic actively failing to convert due to a real, measured 5xx error crisis) has been silently lost twice, not because the governor is protecting against redundancy, but because of what looks like a naming mismatch between what the advisor proposes and what the canvas schema actually defines for this product. Unlike this catalog's own extensive record of this system's honesty discipline holding up under scrutiny elsewhere, this is a case where the system's own safety mechanism (schema validation) is working exactly as designed, but the OUTCOME -- a real, urgent, correctly-diagnosed operational problem never getting recorded -- is the opposite of what the BMC loop exists to produce. Not determined by this analysis: whether the fix is adding an `:infra` canvas section to this product's schema, or correcting the advisor's own proposal-generation logic to target an existing section instead -- left open as a real, actionable gap rather than guessed at.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
