@@ -5500,6 +5500,76 @@ been flipped on, or whether the flagged D1 migration has since been
 applied to the live database -- both are explicitly left as
 follow-up items in the PR's own text, not resolved by this finding.
 
+## 91. A real, precisely root-caused production incident on app-aozora -- a classic LSM-tree wiring gap causing 20+ minute reader hangs, fixed carefully on the one side that still has source, with real evidence CLAUDE.md's own co-scientist pattern is used in practice
+
+Checked `app-aozora`'s own recent commits for the first time this
+cycle and found a real production incident with a full, precise
+postmortem: `ADR-2607199970` ("AppView write-triggered fold --
+root-cause fix," accepted 2026-07-19), governing
+`gftdcojp/app-aozora`'s own recent commit burst
+(2026-07-18/19/20: root-cause fix, observability, measured threshold
+tuning, verified relay round-trip).
+
+**The real incident, dated and reproduced**: on 2026-07-19, ingesting
+real content (kawaraban, 668 articles; kouhou, 7 articles) into
+app-aozora's shared AppView index (`yoro-social-v2`) caused
+`pds.aozora.app`'s `listRecords`/`getRecord` to hang or 502 for over
+20 minutes. The ADR states the write path itself was confirmed
+genuine first (published CID matched the re-read CID exactly, ruling
+out data corruption) via a `wrangler tail`-observed reproduction
+before concluding the read-side infrastructure was at fault.
+
+**The root cause is a classic, precisely-named LSM-tree wiring gap**:
+`kotobase-peer/src/kotobase_peer/core.cljc` defines `should-fold?`/
+`default-fold-threshold` (a real function that decides when the
+novelty log needs compacting, threshold 64 items) -- but it was never
+called from any write path in the repo, first surfaced as a milder
+version of the same symptom on 2026-07-10 (`ADR-2607110200` addendum),
+then recurred and worsened under the 2026-07-19 675-write burst.
+
+**A genuinely careful choice of WHERE to apply the fix, explicitly
+reasoned rather than obvious**: the actual server doing the fold
+computation (`kotobase.aozora.app`) is a deployed binary whose source
+is lost and cannot be rebuilt (documented in
+`net-kotobase/kotobase-cf-wasm/wrangler.jsonc`) -- so the fix is
+applied on the client side instead (`app-aozora-pds`, which has
+source), adding a probabilistic, `ctx.waitUntil`-bound background
+trigger after successful writes. The ADR explicitly documents checking
+3 other repos to rule out the same latent bug (`net-kotobase/worker`:
+no per-actor/AppView separation, doesn't apply; `kotobase-server`:
+returns novelty size but doesn't fold, out of scope;
+`kotobase-browser-worker`: single-user local storage, structurally
+can't have shared-index contention) and named one real, deliberately
+deferred follow-up (`kotobase-messenger`'s own write path calls
+`repo/create-record` directly with `ctx` unwired -- judged low-frequency
+risk for now, not fixed here).
+
+**A tunable, honestly-recalibrated, instantly-disableable rollout**:
+`WRITE_FOLD_SAMPLE_RATE`, initially estimated at 0.1 pre-deployment,
+was lowered to 0.02 based on real measured data (a separate, dated
+commit: "fix(pds): lower write-triggered fold sample rate 0.1 -> 0.02
+(measured)") -- and set to `0` restores byte-identical pre-fix
+behavior, a real safety valve. 8 new tests cover specific edge cases
+(safe no-op when `ctx` unwired, sampling boundary, failure-swallowing,
+2-arg backward compatibility). The ADR's own "Negative" consequences
+section discloses plainly: the threshold values are pre-deployment
+estimates needing real-world recalibration; the actual server-side
+fold computation efficiency remains a permanent black box (can't be
+improved, source is lost); the deferred messenger write path could
+reproduce the same incident through a different route if its write
+volume grows. Production deployment is explicitly noted as a separate
+step not yet claimed as done at ADR-authoring time (433 local tests
+green at that point, not a live-deploy confirmation).
+
+**A concrete confirmation that CLAUDE.md's own co-scientist system is
+genuinely used, not just documented**: one of the fix's own commits is
+titled "feat(pds): threshold-based write-triggered fold (co-scientist
+tournament winner)" -- the exact Generate/Reflect/Rank/Evolve pattern
+CLAUDE.md's own kaizen-loop section describes, applied here to select
+among candidate fix designs for a real production incident, the first
+time this session has found direct evidence of that system in active
+use rather than only in its own governing documentation.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
