@@ -6285,6 +6285,56 @@ source rather than silently cleaned up).
 
 **Interpretation**: a real, concrete instance of the exact category of risk CLAUDE.md's own git-operations discipline exists to prevent (its own documented "848 commits" divergence incident, its extensive west-migration/checkout-conflict guardrails) -- but here caught and precisely repaired rather than left to compound, with a quantified before/after (240/105 missing -> 0 missing, 23/49 divergent correctly preserved not clobbered) that most incident write-ups in this catalog's experience only describe qualitatively. The DataLad hand-off for the missing DATA half (rather than restoring it inline into the code repo) is a real, independently-confirmed instance of this workspace's own large-binary-governance policy being followed correctly during incident repair, not just in greenfield setup. The two remaining honest gaps (blocked test suite, legacy non-UTF8 file) are exactly the kind of "don't silently declare victory" disclosure this catalog has repeatedly found elsewhere, now in a product domain (manga-generation tooling) not previously touched.
 
+## 105. local-manimani migrates Gmail/OAuth secrets from plain env vars to kagi/kagitaba -- and while doing it, discovers, correctly diagnoses as pre-existing, and works around a real classpath defect rather than skipping verification
+
+Diversifying to `gftdcojp/local-manimani`, a product this catalog has
+not deeply covered before. PR #67 ("prefer kagi/kagitaba over .env for
+Gmail/OAuth config", merged 2026-07-22) is a genuine security-hardening
+change directly in the spirit of this workspace's own extensively
+documented kagi/credential-vault discipline (CLAUDE.md's "秘密情報の
+保管場所マップ" skill, safety floor ①'s "credential 専用ツール経由で
+読む").
+
+**What actually changed**: Gmail/OAuth channel setup now tries real
+kagi items first (`manimani-google-oauth-client`,
+`manimani-gmail-<account-id>`, compartment `gftdcojp`) and falls back
+to the existing `MANIMANI_GMAIL_*`/`MANIMANI_EMAIL_*` env vars only
+when no matching kagi item exists -- the env-var path is explicitly
+NOT removed, changed, or reordered, just demoted to a fallback.
+`npm run gmail:authorize` now also best-effort writes the OAuth
+refresh token into the kagi item (merging into any existing item
+without touching other fields/sections) in addition to its existing
+required Keychain write. Real test coverage for the new kagi CLI
+wrapper uses an injectable `:sh-fn` specifically so unit tests never
+shell out to the real kagi CLI, "which can take tens of seconds to
+unlock the OS Keychain on this machine" -- a concrete, practical
+engineering detail rather than an abstract design choice.
+
+**A real, honestly diagnosed pre-existing infrastructure defect,
+discovered incidentally**: the PR could not run `agents/test/serve_test.clj`
+via `clojure -M:test` in its own sandbox -- `clojure -Spath` fails with
+"Unable to compare versions for io.github.kotoba-lang/arrangement" (a
+`:local/root` vs `:git/sha` coordinate-kind conflict for a transitive
+dependency). Rather than silently skipping this test file or claiming
+full coverage anyway, the PR does real diagnostic work: (1) confirms
+via `git stash` that the identical failure reproduces on an unmodified
+`main` checkout -- not introduced by this change; (2) checks the
+actual CI workflow and confirms it never runs `clojure -M:test` for
+`agents/` at all, only `npm run check`/`build`/`process` --
+independently reverified here directly via `gh api .../ci.yml`,
+confirming lines 77/84/86/115 match exactly what the PR claims; (3)
+works around the gap by copy-pasting the new function bodies into an
+isolated scratch namespace with no `serve` dependency beyond the
+unaffected `secrets.kagi`, and runs equivalent assertions there (12
+tests/46 assertions, 0 failures) rather than giving up on verification
+entirely.
+
+**Evidence**: `gh pr view 67 --repo gftdcojp/local-manimani` (full body) + independent `gh api repos/gftdcojp/local-manimani/contents/.github/workflows/ci.yml` (confirming the CI workflow genuinely never invokes `clojure -M:test` for `agents/`, only `npm run check`/`build`/`process`) + `gh api repos/gftdcojp/local-manimani/contents/agents/deps.edn` (confirming `arrangement` is not a direct dependency, consistent with the PR's own "transitive" characterization), 2026-07-23.
+
+**Source**: `gftdcojp/local-manimani` PR #67 (merged 2026-07-22) + direct CI workflow/deps.edn reads, 2026-07-23.
+
+**Interpretation**: this workspace's own `kotoba-lang/arrangement` library -- the same one this catalog's own test classpath (`test/run_tests.cljs`'s own `--classpath` argument) depends on for its DataScript-backed system-dynamics tests -- has a real, reproducible dependency-coordinate-kind conflict (`:local/root` vs `:git/sha`) affecting at least one other consumer repo's own JVM classpath resolution, one this catalog had not previously encountered from this angle. The response to hitting it here is a clean instance of the "don't silently skip verification, don't fabricate a pass" discipline this catalog has repeatedly documented (findings 73/92/98/99 among others) applied to a genuinely different failure mode: not a business claim or a performance number, but a build-tooling defect discovered as a side effect of unrelated security work, correctly triaged as out-of-scope-but-real rather than either fixed opportunistically (scope creep) or silently ignored (false confidence).
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
