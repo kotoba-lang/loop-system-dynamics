@@ -221,3 +221,145 @@
      "| score | band | intervention |\n|---|---|---|\n"
      (str/join "\n" (for [{:keys [base-score band label]} (leverage-ranking)]
                       (str "| " (.toFixed base-score 2) " | " (name band) " | " label " |"))))))
+
+;; --------------------------------------------------------------------------
+;; Phase 4: capability composite & concentration (TRANSPARENT, no hidden weights)
+;; --------------------------------------------------------------------------
+;; Every metric here is either a measured share / count / ratio, or a rank
+;; average with EXPLICIT equal weighting (a stated heuristic, not a measured
+;; "true" capability). No black-box 'capability score' and no multiplying
+;; unmeasured conversion rates. This is a structural breadth/concentration
+;; comparison for risk assessment -- NOT a war-outcome predictor.
+
+(defn- stock-val [e k] (get-in e [:stocks k :value]))
+
+(defn- global-shares
+  "iso3 -> (value / global-total) for stock k, with the total. nil when no data."
+  [entities k]
+  (let [pairs (keep #(when-let [v (stock-val % k)] [(:iso3 %) v]) entities)
+        total (reduce + (map second pairs))]
+    (when (pos? total)
+      {:total total :shares (into {} (for [[iso v] pairs] [iso (/ v total)]))})))
+
+(defn- hhi "Herfindahl-Hirschman Index (0..1). Higher = more concentrated."
+  [shares] (reduce + (map #(* % %) (vals shares))))
+
+(defn- top-n-share
+  "Sum of the top-N holders' global shares (fraction, 0..1) for stock k."
+  [entities k n]
+  (some-> (global-shares entities k) :shares vals (->> (sort >) (take n) (reduce +))))
+
+(defn- rank-of
+  "iso3 -> rank (1 = largest) for stock k among nations having k."
+  [entities k]
+  (let [ranked (sort-by #(stock-val % k) > (filter #(stock-val % k) entities))]
+    (into {} (map-indexed (fn [i e] [(:iso3 e) (inc i)]) ranked))))
+
+(defn- composite-rank
+  "Transparent EQUAL-WEIGHT rank-average across measured conventional dimensions
+  (spending, personnel, aircraft, tanks, naval). Lower avg-rank = present and
+  strong across more dimensions. Equal weighting is an EXPLICIT heuristic
+  choice, not a measured relative importance. Nuclear excluded (only 9 states)
+  -- tracked separately as a binary asymmetry."
+  [entities]
+  (let [dims [:defense-spending-usd :active-military-personnel
+              :aircraft-total :tanks :naval-total-assets]
+        ranks (mapv #(rank-of entities %) dims)
+        isos (set (mapcat keys ranks))]
+    (sort-by (comp :avg-rank second)
+             (for [iso isos
+                   :let [rs (keep #(get % iso) ranks)]
+                   :when (seq rs)]
+               [iso {:avg-rank (/ (reduce + rs) (count rs))
+                     :dims-present (count rs)}]))))
+
+(defn capability-analysis
+  "Concentration + transparent composite + efficiency + nuclear asymmetry,
+  over the 4 collected dimensions. Pure functions of measured data."
+  [observation]
+  (let [ents (:entities observation)
+        hhi-of (fn [k] (when-let [s (global-shares ents k)] (hhi (:shares s))))
+        per-1b (fn [ek]
+                 (->> ents
+                      (filter #(and (stock-val % ek) (stock-val % :defense-spending-usd)))
+                      (map (fn [e] {:iso (:iso3 e) :name (:country-name e)
+                                    :per-1b-usd (/ (stock-val e ek)
+                                                   (/ (stock-val e :defense-spending-usd) 1e9))}))
+                      (sort-by :per-1b-usd >)
+                      (take 5)))
+        spend-ranks (rank-of ents :defense-spending-usd)]
+    {:concentration {:spending (hhi-of :defense-spending-usd)
+                     :personnel (hhi-of :active-military-personnel)
+                     :aircraft (hhi-of :aircraft-total)
+                     :tanks (hhi-of :tanks)
+                     :naval (hhi-of :naval-total-assets)
+                     :nuclear (hhi-of :nuclear-warheads)}
+     :top5-share-of-global {:spending (top-n-share ents :defense-spending-usd 5)
+                            :personnel (top-n-share ents :active-military-personnel 5)
+                            :aircraft (top-n-share ents :aircraft-total 5)
+                            :tanks (top-n-share ents :tanks 5)}
+     :composite-top10 (take 10 (composite-rank ents))
+     :efficiency-top5 {:aircraft-per-1b-spend (per-1b :aircraft-total)
+                       :tanks-per-1b-spend (per-1b :tanks)}
+     :nuclear-vs-conventional
+     (for [e (filter #(stock-val % :nuclear-warheads) ents)]
+       {:iso (:iso3 e) :name (:country-name e)
+        :warheads (stock-val e :nuclear-warheads)
+        :spending-rank (get spend-ranks (:iso3 e))})}))
+
+(defn capability-section
+  "Markdown: concentration (HHI), top-5 global share, transparent rank-average
+  composite, equipment-per-spend efficiency, nuclear-vs-conventional asymmetry."
+  [_observation _decision]
+  (let [a (capability-analysis (observe))
+        c (:concentration a)
+        hhi-str (fn [x] (if (number? x) (.toFixed x 4) "n/a"))
+        pct (fn [x] (if (number? x) (str (.toFixed (* x 100) 1) "%") "n/a"))]
+    (str
+     "## Capability concentration (Herfindahl-Hirschman, 0..1)\n\n"
+     "How concentrated each dimension is globally (1.0 = held by one nation).\n\n"
+     "| dimension | HHI |\n|---|---|\n"
+     "| defense spending | " (hhi-str (:spending c)) " |\n"
+     "| personnel | " (hhi-str (:personnel c)) " |\n"
+     "| aircraft | " (hhi-str (:aircraft c)) " |\n"
+     "| tanks | " (hhi-str (:tanks c)) " |\n"
+     "| naval assets | " (hhi-str (:naval c)) " |\n"
+     "| nuclear warheads | " (hhi-str (:nuclear c)) " (near-max: ~9 states) |\n\n"
+     "## Top-5 holders' share of the global total\n\n"
+     "| dimension | top-5 share |\n|---|---|\n"
+     "| spending | " (pct (get-in a [:top5-share-of-global :spending])) " |\n"
+     "| personnel | " (pct (get-in a [:top5-share-of-global :personnel])) " |\n"
+     "| aircraft | " (pct (get-in a [:top5-share-of-global :aircraft])) " |\n"
+     "| tanks | " (pct (get-in a [:top5-share-of-global :tanks])) " |\n\n"
+     "## Composite rank (transparent equal-weight rank-average, NOT a war predictor)\n\n"
+     "Average rank across spending/personnel/aircraft/tanks/naval (lower = strong\n"
+     "across more dimensions). Equal weighting is an explicit heuristic, not a\n"
+     "measured 'true capability'. Nuclear excluded (tracked below).\n\n"
+     "| nation | avg rank | dims present |\n|---|---|---|\n"
+     (str/join "\n" (for [[iso {:keys [avg-rank dims-present]}] (:composite-top10 a)]
+                      (str "| " iso " | " (.toFixed avg-rank 1) " | " dims-present "/5 |")))
+     "\n\n## Equipment per $1B defense spending (efficiency, :estimate? GFP equipment)\n\n"
+     "Who fields the most hardware per dollar. Small / low-spend militaries with\n"
+     "old inexpensive inventory (e.g. DPRK) score high -- a real, if coarse,\n"
+     "measure of cost structure, not of quality.\n\n"
+     "| nation | aircraft / $1B | nation2 | tanks / $1B |\n|---|---|---|---|\n"
+     (str/join "\n" (map (fn [ac tk]
+                           (str "| " (:iso ac) " " (:name ac) " | " (.toFixed (:per-1b-usd ac) 1)
+                                " | " (:iso tk) " " (:name tk) " | " (.toFixed (:per-1b-usd tk) 1) " |"))
+                         (get-in a [:efficiency-top5 :aircraft-per-1b-spend])
+                         (get-in a [:efficiency-top5 :tanks-per-1b-spend])))
+     "\n\n## Nuclear vs conventional asymmetry\n\n"
+     "Nuclear-armed states and their conventional (spending) rank. A low spending\n"
+     "rank + nuclear warheads = outsized strategic weight relative to conventional\n"
+     "size (e.g. DPRK, Pakistan, Israel).\n\n"
+     "| nation | warheads (FAS est.) | spending rank |\n|---|---|---|\n"
+     (str/join "\n" (for [e (:nuclear-vs-conventional a)]
+                      (str "| " (:iso e) " " (:name e) " | " (:warheads e)
+                           " | " (or (:spending-rank e) "?") " |"))))))
+
+(defn analysis-section
+  "Combined markdown: structural loop analysis + capability composite/concentration.
+  Pass as the xmile run-cycle's :structural-fn."
+  [observation decision]
+  (str (structural-section observation decision)
+       "\n\n" (capability-section observation decision)))
