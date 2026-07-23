@@ -6871,6 +6871,70 @@ tracked in this exact product across findings 98/99/100.
 
 **Interpretation**: a direct continuation of findings 98/99/100's own tracked subject, not a duplicate — new dated evidence that the SAME gap-closure effort has kept moving in the hours since finding 100's last read, hitting the exact numeric milestone (10M rows, exact counts, 3 indices) that ADR's own "Consequences" section names as the trigger for a future `:production-ready` decision, while that decision itself has explicitly not yet been made and the document hasn't even been updated to note the milestone was reached. This is a subtly different flavor of the same honesty discipline found throughout this catalog: it is not just that the team declines to claim done when something isn't finished (findings 64/81/86/91/92/93/98/99/100/108/110/113), but that here, even a genuine completion sits unclaimed for at least an hour past the evidence landing -- the gap between "the milestone happened" and "the document was updated to say so" is itself a small, honest, verifiable data point about how this team paces its own claims relative to its own evidence.
 
+## 115. Finding 94's own gap has grown, not closed: the compiler bug tracking issue now documents 2 more real, precisely-reproduced Kotoba defects found in yet another product's migration, still all open
+
+Finding 94 documented 2 real `kotoba-lang/compiler` bugs (5+ `:f64`-param
+Wasm miscompilation; `:f64`-returning cross-file `:require` failing
+project-link) found while migrating `kotoba-lang/mining-pool`, and this
+catalog's own gap-resolution decision (the user's explicit "(B)"
+choice) deliberately left these compiler-internals bugs unfixed as too
+deep/unfamiliar/high-blast-radius to touch directly. Checking back on
+that same tracking issue (`kotoba-lang/compiler#206`, still open, last
+updated today) for any resolution found instead that it has GROWN: a
+single comment, posted by the same account, reports 2 more real bugs
+found three hours later while implementing an entirely different
+product, `kotoba-lang/face-match` (independently confirmed real: repo
+created 2026-07-19, PR #1 "Add bounded no-matcher Kotoba profile + CI"
+merged 2026-07-23T04:21:09Z, 180 additions/1 deletion -- the exact same
+minute as the issue comment reporting the bugs).
+
+**Bug 3**: `(option-none-of [:option :f64])` fails the compiler's own
+subset admission gate with `"expression type mismatch: expected
+option-i64, got [:option :f64]"` -- despite `[:option :string]` working
+correctly elsewhere in the same fleet (cited: cloud-itonami-assoc's own
+`association_facts.kotoba`, on both js-browser and wasm32-browser
+targets), meaning this is specific to an `:f64` payload inside an
+Option, not a general parametric-Option limitation.
+
+**Bug 4**: a bare `:option-i64` — no record wrapper, no business logic,
+just `(if (option-some? (option-none)) 1 42)` — compiles and runs
+correctly under `--target js-browser` but the `--target wasm32-browser`
+build, despite reporting `{:ok true, ...}` from the compiler itself,
+produces a `.wasm` that fails `WebAssembly.compile()` with `"typed Wasm
+operation is not qualified"`. Wrapping the same Option pair inside a
+record field doesn't change the outcome.
+
+**Same honest workaround-not-fix discipline as findings 94's own
+subject**: face-match modeled its one always-absent confidence value as
+a plain `:bool` flag instead of a real Option, explicitly noting this
+"obviously isn't available for cases that need a real present/absent
+*value*, not just a flag" -- an honest limitation disclosure about the
+workaround itself, not a silent one.
+
+**face-match's own product framing is itself a small, notable honesty
+data point**: its repo description reads "Face-match contract boundary
+-- deliberately no comparison algorithm, always routes to human
+review", meaning the compiler bugs were hit while building a
+deliberately inert stub that defers to a human for the actual
+comparison -- not a shortcut around building the real feature, a
+declared non-goal.
+
+**Still fully unaddressed**: no fix PR references issue #206 (checked
+via the issue's own GitHub timeline -- only cross-references, no
+closing commits), and this catalog is not attempting one either, for
+the same reason recorded when finding 94's own gap-resolution scope was
+decided: compiler codegen/type-lowering internals are deep, unfamiliar,
+high-blast-radius foundational code, a different risk category from the
+config-declaration and reconstructable-schema fixes this catalog did
+take on directly (kototama's `security-adoption.edn`, club-shinshi's
+missing migrations).
+
+**Evidence**: `gh api repos/kotoba-lang/compiler/issues/206` (full issue body + 1 comment, read directly) + `gh api repos/kotoba-lang/compiler/issues/206/timeline` (confirming no closing/fixing cross-reference exists yet) + independent `gh api repos/kotoba-lang/face-match` and `repos/kotoba-lang/face-match/pulls/1` (confirming the cited repo and PR are real, dated, and merged at the exact minute the bug-report comment was posted), 2026-07-23.
+
+**Source**: `kotoba-lang/compiler` issue #206 (opened 2026-07-23T01:11:35Z, commented 2026-07-23T04:21:43Z, still open) + `kotoba-lang/face-match` PR #1, 2026-07-23.
+
+**Interpretation**: this is the first time this catalog has re-checked a compiler-bug tracking thread it explicitly declined to fix, and found the gap widened rather than narrowed -- a useful, honest correction to any implicit assumption that "found and reported" trends toward "found and fixed" on a predictable timeline. The reporting discipline itself remains excellent throughout (exact minimal repros, exact error strings, exact boundary conditions, explicit "not filing as a bug, just flagging" judgment calls on ambiguous cases like `:f64` equality) -- this is the same rigor findings 94/98/99/100/108/110/113/114 have each found in a different product, here applied to the team's own compiler defects rather than external claims. What remains genuinely open, and appropriately left open by this catalog rather than attempted: whether these 4 (now confirmed still-open) bugs share one root cause in the compiler's typed-Wasm lowering pass, or are 4 independent gaps in unrelated code paths -- a question that would require deep compiler-internals familiarity this catalog does not have and the user's own risk-based gap-resolution scoping did not extend to acquiring.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
