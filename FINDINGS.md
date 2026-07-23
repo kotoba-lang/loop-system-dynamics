@@ -6233,6 +6233,58 @@ unverified, needs follow-up -- rather than asserting either outcome).
 
 **Interpretation**: this catalog's own self-check habit (grep FINDINGS.md before writing) caught a near-duplicate before it happened and instead produced a more complete result: finding 92 already established the ExoClick-correction half of this commit was real and verified; this finding independently confirms the migration-gap half is ALSO real, going a step further than finding 92 did by verifying both the claimed absence (via the tree listing) and the claimed live dependency (via the worker source) rather than taking the commit's own self-report at face value. This is a real, concrete, currently-open production risk on a live-deployed product (`magatama-sh1n5h1x` Worker) that neither finding 92 nor the source repo's own commit message fully resolves -- the commit itself is honest that the production impact is unconfirmed, and this analysis's independent verification narrows but does not close that uncertainty (confirming the code-level dependency exists; not confirming whether the tables happen to already exist in production D1 via some untracked path). Consistent with this catalog's now well-established pattern of finding genuine value in verifying rather than merely summarizing other teams' own self-reported work, and in checking its own prior coverage before treating something as new.
 
+## 104. A real, precisely quantified west-migration data-loss incident on ai-gftd-mangaka -- 240 code files and 105 data files silently went missing during an earlier "flat west boundary" cutover, caught by a follow-up audit and repaired without clobbering newer work
+
+Diversifying to a genuinely fresh product for this catalog
+(`gftdcojp/ai-gftd-mangaka`, checked for the first time). Its own
+`MIGRATION.edn` (real, machine-readable, `:migration/status :complete`)
+records a concrete data-loss incident from an earlier west-boundary
+migration and its own subsequent repair, both precisely quantified.
+
+**The incident**: `ai-gftd-mangaka`'s canonical content was migrated
+out of a monorepo path (`gftdcojp/ai-gftd-apps-gftdcojp`'s
+`60-apps/ai-gftd-project-mangaka`, 468 source entries as of commit
+`aa7b554`, this catalog's own `:code-before` audit field) into this
+standalone west-registered repo. The migration's own follow-up audit
+found: of 261 code-classified entries, only 21 matched the source, 23
+had diverged (destination already had different, presumably newer,
+content), and **240 were simply MISSING** from the destination
+entirely. Separately, of 184 data-classified entries, 30 matched, 49
+diverged, and **105 were missing**.
+
+**The repair, verified precise rather than blunt**: PR #7 ("recover
+authoritative mangaka source and workflows", merged 2026-07-19)
+restored all 240 missing code files while explicitly `:preserve-newer-destination`
+for the 23 divergent ones -- not blindly overwriting anything that had
+already moved on. The 105 missing data entries were separately handed
+off to `gftdcojp/mangaka-data`, a real DataLad dataset (git-annex + B2,
+independently confirmed via `gh api repos/gftdcojp/mangaka-data` --
+description states "DataLad dataset: ai-gftd-mangaka data/ (git-annex +
+B2, fileprefix=mangaka-data/) — ADR-2607023000" verbatim) rather than
+embedded back into the code repo -- matching this workspace's own
+documented large-binary-via-DataLad-not-git policy. Both
+`ai-gftd-mangaka` and `mangaka-data` are independently confirmed
+properly west-registered (`manifest/west.yml` on com-junkawasaki/root
+carries both, with `mangaka-data` correctly showing `annex-remote: b2`).
+Post-repair audit: 261 source blobs matched, 23 divergent destinations
+preserved, 0 missing.
+
+**Honest disclosure of what the repair did NOT fully resolve**: the
+same `MIGRATION.edn` records `:clojure-test {:status :blocked :reason
+:missing-local-kami-mangaka-page-dependency}` (the repo's own test
+suite can't run standalone, blocked on an adjacent local dependency)
+and `:python-compile {:status :legacy-source-failure :reason
+:non-utf8-source-without-encoding-declaration}` (a losslessly-restored
+legacy Python file, `MangakaTextOverlay/nodes.py`, has a pre-existing
+non-UTF8 encoding problem carried over faithfully from the original
+source rather than silently cleaned up).
+
+**Evidence**: `gh api repos/gftdcojp/ai-gftd-mangaka/contents/MIGRATION.edn` (full read) + `gh pr view 7 --repo gftdcojp/ai-gftd-mangaka` (241 files, +49,838/-2 lines) + independent `gh api repos/gftdcojp/mangaka-data` (confirming the DataLad/B2 dataset description) + independent `gh api repos/com-junkawasaki/root/contents/manifest/west.yml` (confirming both repos' west registration and `mangaka-data`'s `annex-remote: b2`), 2026-07-23.
+
+**Source**: `gftdcojp/ai-gftd-mangaka` `MIGRATION.edn` + PR #7 (merged 2026-07-19) + `gftdcojp/mangaka-data` + `com-junkawasaki/root` `manifest/west.yml`, 2026-07-23.
+
+**Interpretation**: a real, concrete instance of the exact category of risk CLAUDE.md's own git-operations discipline exists to prevent (its own documented "848 commits" divergence incident, its extensive west-migration/checkout-conflict guardrails) -- but here caught and precisely repaired rather than left to compound, with a quantified before/after (240/105 missing -> 0 missing, 23/49 divergent correctly preserved not clobbered) that most incident write-ups in this catalog's experience only describe qualitatively. The DataLad hand-off for the missing DATA half (rather than restoring it inline into the code repo) is a real, independently-confirmed instance of this workspace's own large-binary-governance policy being followed correctly during incident repair, not just in greenfield setup. The two remaining honest gaps (blocked test suite, legacy non-UTF8 file) are exactly the kind of "don't silently declare victory" disclosure this catalog has repeatedly found elsewhere, now in a product domain (manga-generation tooling) not previously touched.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
