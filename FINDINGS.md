@@ -6935,6 +6935,60 @@ missing migrations).
 
 **Interpretation**: this is the first time this catalog has re-checked a compiler-bug tracking thread it explicitly declined to fix, and found the gap widened rather than narrowed -- a useful, honest correction to any implicit assumption that "found and reported" trends toward "found and fixed" on a predictable timeline. The reporting discipline itself remains excellent throughout (exact minimal repros, exact error strings, exact boundary conditions, explicit "not filing as a bug, just flagging" judgment calls on ambiguous cases like `:f64` equality) -- this is the same rigor findings 94/98/99/100/108/110/113/114 have each found in a different product, here applied to the team's own compiler defects rather than external claims. What remains genuinely open, and appropriately left open by this catalog rather than attempted: whether these 4 (now confirmed still-open) bugs share one root cause in the compiler's typed-Wasm lowering pass, or are 4 independent gaps in unrelated code paths -- a question that would require deep compiler-internals familiarity this catalog does not have and the user's own risk-based gap-resolution scoping did not extend to acquiring.
 
+## 116. Finding 114's own "doc hasn't caught up to the milestone" observation has now resolved itself, plus a genuinely new paged-restore gap closed with an honest non-claim, plus 2 more real production bugs found and fixed
+
+Finding 114, written roughly an hour ago, noted that kotobase's 10M-row
+R2 streaming compaction gate had actually succeeded (per a direct bench
+receipt read) while the governing ADR's own prose still showed an
+intermediate progress count frozen before that receipt landed — an
+honest lag between milestone and documentation, not a discrepancy to
+treat as suspicious. Re-checking the same ADR now (3 more merged PRs:
+peer #90-91, host #88) finds that lag has resolved on its own: a new
+"2026-07-23 Completed 10M R2 RangeDirectory gate" addendum now states
+the gate plainly, with the exact same numbers finding 114 already
+independently verified from the raw receipt (exact 10,000,000 rows
+across EAVT/AEVT/AVET, 612 pages, 31,200 reused pages) — closing that
+specific observation with a real, expected resolution rather than
+leaving it as an open question.
+
+**A genuinely new gap, also flagged as still-open in finding 114
+(cross-account backup separation and large-inventory streaming), got
+real, substantial, and honestly-scoped progress**: peer PR #90
+("CID-paged database backup inventory v2", commit `c58474bc`) replaced
+a single-object inline inventory with CID-addressed paged inventory
+(max 256 entries / 65,536 bytes per page, bounded 4-page publish/load
+waves), tested against a deterministic 10,000-entry fixture splitting
+into 40 pages with stable page CIDs and ordering on regeneration. The
+ADR's own text is explicit that this does NOT fully close the gap:
+"従って本変更をtrue streaming/resumable database restoreとは呼ばない"
+(this change is therefore not called true streaming/resumable database
+restore) — backup traversal's `seen` set, pre-restore entry
+materialization, and post-restore reachability verification remain
+O(total entries) in-process memory, with the next-needed items named
+explicitly (hierarchical inventory root, durable page cursor,
+externalized visited set, per-page restore/verification checkpoints).
+
+**2 more real production bugs found and fixed, same live-testing
+discipline as finding 114's own subject**: peer PR #91 ("crash-safe
+paged database restore", commit `98afcb85`) split restore into
+lease-guarded, checkpointed phases (page restore / verification /
+HeadCAS-or-terminal-publication) so a crash between HeadCAS and
+terminal-pointer CAS can recover from the same checkpoint — and the
+same real drill against Cloudflare R2 surfaced two GC namespace bugs in
+the process: (1) materialized packs were being decoded as `blocks/`
+DAG-CBOR nodes when they should have been treated as `objects/` opaque
+CID-verified bytes, and (2) `objects/` entries were being marked
+reachable during GC but never actually included in the sweep listing.
+Both fixed by making GC namespace-aware across both `blocks/` and
+`objects/`, with two-pass inventory fencing, backup-before-delete, and
+CID-verified restore now applied to both.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (re-fetched, 3 new addenda past finding 114's own read) + independent `gh api` re-fetch of 3 newly-cited merge commits (peer PR #90 `c58474bc`, peer PR #91 `98afcb85`, host PR #88 `5eb0295e`) all confirmed matching the ADR's own dates/messages exactly, 2026-07-23.
+
+**Source**: `90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (com-junkawasaki/root) + `kotoba-lang/kotobase-peer` PRs #90-91 + `gftdcojp/local-murakumo` PR #88, 2026-07-23.
+
+**Interpretation**: a rare, satisfying kind of continuation for this catalog's own methodology -- finding 114 flagged an open observation (doc lagging evidence) as worth tracking, not as a defect, and this cycle got to watch that exact gap close through completely ordinary subsequent work, the way honest documentation lag is supposed to resolve. Simultaneously, real new engineering happened in the same window: a substantial size-bound fix (10,000-entry paged inventory) shipped with an explicit refusal to call it more than it is ("not true streaming/resumable"), and yet another pair of real bugs was caught and fixed via live R2 testing rather than left latent. Three separate manifestations of the same zero-fabrication discipline this catalog has now traced through this one product across findings 98/99/100/108/110/113/114/116: report the real number, name what's still missing, and don't let a genuine win get inflated into a bigger claim than the evidence supports.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
