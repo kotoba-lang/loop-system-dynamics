@@ -7643,6 +7643,83 @@ that isn't a real field in this product's own schema (`:problem`/
 
 **Interpretation**: a genuine, real system gap distinct from the extensively-documented "duplicate item, working as intended" pattern this catalog has already found in this same BMC advisor/governor loop -- here, a correct and urgent diagnosis (a real product with real human traffic actively failing to convert due to a real, measured 5xx error crisis) has been silently lost twice, not because the governor is protecting against redundancy, but because of what looks like a naming mismatch between what the advisor proposes and what the canvas schema actually defines for this product. Unlike this catalog's own extensive record of this system's honesty discipline holding up under scrutiny elsewhere, this is a case where the system's own safety mechanism (schema validation) is working exactly as designed, but the OUTCOME -- a real, urgent, correctly-diagnosed operational problem never getting recorded -- is the opposite of what the BMC loop exists to produce. Not determined by this analysis: whether the fix is adding an `:infra` canvas section to this product's schema, or correcting the advisor's own proposal-generation logic to target an existing section instead -- left open as a real, actionable gap rather than guessed at.
 
+## 129. A genuinely new domain for this catalog: cloud-itonami's hygiene-access actor runs a real closed-loop industrial control simulation (PID + ISA-18.2 alarm + CFD) for a humanitarian sanitation-chemistry product, with safety-by-design that forces alarm states to stay visible and physical actuation explicitly, permanently absent
+
+A new repo family name appeared in a routine pin-advance batch --
+`hygiene-access`, distinct from every isic/isco/iso3166/lei/
+municipality/unspsc/cofog/gtin/assoc family this catalog has already
+extensively covered under cloud-itonami. Checking it directly found
+`cloud-itonami/cloud-itonami-hygiene-access` (created 2026-07-18),
+whose own repo description reads: "Affordable hygiene/disinfectant
+(sodium hypochlorite + IPMP) active-ingredient commercialization for
+water-scarce / poor-sanitation-infrastructure markets -- governed
+actor, coordination/proposal layer only." A genuinely new domain for
+this catalog -- humanitarian global-development product engineering,
+distinct from every classification/citation repo, blockchain economy,
+or consumer app already tracked.
+
+**A real, computed closed-loop industrial control simulation, not a
+mockup**: `hygaccess.mes/run-homogeneity-control-loop` (independently
+confirmed via `gh api`, commit `c4940715`) iterates a genuine loop --
+each tick reads a sensor summary from a stepwise mixing-simulation
+API, feeds the coefficient-of-variation error into a real PID
+algorithm (reverse-acting, negative-signed gains -- raising agitator
+RPM lowers CoV, correctly modeling the physical relationship), runs an
+ISA-18.2 (a real published industrial alarm-management standard)
+scan-cycle against plausibility windows for pH/temperature/RPM, and
+overrides the PID's own command with a documented safe minimum RPM
+(20.0) whenever any alarm is active. Bounded at 40 iterations,
+matching the underlying CFD simulation's own mixing window -- never
+run unbounded. Verified: 181 tests/631 assertions (up from 173/597
+before this commit), 0 failures; 0 lint errors/warnings.
+
+**Safety-by-design specifically preventing a degraded run from looking
+clean**: a new visibility fact, `control-loop-alarm-triggered?`, is
+"sourced directly from the trace, not overridable via io tag mocks"
+and independently re-derived in the governor's own check (new check
+40): "an alarm-triggered batch/reading forces SOFT escalation
+regardless of self-reported `:stake`, so it can never silently look
+identical to a clean PID-converged run" -- the same "don't let a
+degraded/uncertain state masquerade as a clean success" discipline
+this catalog has now found in dozens of unrelated products, here
+applied to a genuinely different domain (industrial process safety).
+
+**A precise, non-obvious engineering catch in the follow-up
+observability work**: a later commit (`00586fc0`) adds a real,
+loopback-only, READ-ONLY Modbus TCP server (Function Code 04 only --
+"real Modbus itself has no write-input-register function code," so
+this isn't merely a policy choice but structurally enforced) exposing
+the simulation's live state for external SCADA/HMI-style observation.
+While wiring this, the commit found and fixed a real unit-scaling
+defect: the library's own illustrative default scale (1000) would
+silently clamp a legitimately-observed reading -- a fresh, unmixed
+tank's first control-loop iteration genuinely produces a
+coefficient-of-variation around 300%, which scale 1000 cannot
+represent without clamping -- so the register uses scale 100 instead,
+keeping every real value in the loop's actual trajectory exactly
+representable. Verified with a genuine external-observability proof: a
+separate, independently-connected real Modbus TCP client polls all 5
+registers on every iteration and asserts the externally-read value
+matches the loop's own internal state for that exact tick -- not an
+internal self-check.
+
+**The explicit, permanent boundary, stated as plainly as the repo's
+own existing no-payment/no-real-filing disclosures**: "this is a real,
+computed closed-loop control simulation... entirely inside this
+software's own digital twin, no physical actuation pathway
+(GPIO/serial/Modbus/OPC-UA/PLC) anywhere in this codebase" -- and the
+Modbus work explicitly adds only a read-only OBSERVATION channel, not
+a control one, with the commit noting this isn't even a governed
+operation ("not a governed op, exposing a live protocol server isn't a
+proposal the governor needs to arbitrate") since it carries no write
+authority to arbitrate over.
+
+**Evidence**: `gh api repos/cloud-itonami/cloud-itonami-hygiene-access` (repo real, confirmed) + `gh api repos/cloud-itonami/cloud-itonami-hygiene-access/commits/c4940715` and `/commits/00586fc0` (both full commit messages read directly), 2026-07-23.
+
+**Source**: `cloud-itonami/cloud-itonami-hygiene-access`, commits `c4940715` ("Real closed-loop control simulation for mixing-homogeneity") and `00586fc0` ("Add real, loopback-only, read-only Modbus TCP observability"), 2026-07-19.
+
+**Interpretation**: a genuinely new domain for this catalog in two distinct senses -- the product concept itself (affordable disinfectant commercialization for water-scarce/poor-sanitation-infrastructure markets, a real humanitarian/global-development framing this catalog hasn't encountered in 128 prior findings) and the engineering domain (industrial process control -- PID, published alarm-management standards, protocol-level SCADA observability), distinct from every web/blockchain/business-classification domain already tracked. The same zero-fabrication and safety-floor disciplines this catalog has traced across dozens of unrelated products reappear here in a genuinely different register: not "don't claim a feature works when it doesn't," but "don't let a genuinely dangerous state (an active industrial alarm) be structurally capable of looking like a clean success," and "don't let a simulation accumulate a real physical control pathway even by accident" (explicitly verified absent, not merely undocumented).
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
