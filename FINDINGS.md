@@ -6043,6 +6043,45 @@ sizing.
 
 **Interpretation**: this is a different, arguably stronger register of the same zero-fabrication discipline finding 98 already documented -- not just "report the number honestly" but "build the mechanism that prevents an under-qualified number from ever silently becoming a production decision, and apply it retroactively to your own team's own data first." `:production-partial` still has not moved, and the ADR's own text is explicit that the real qualification run (>=2 regions x 4 classes x both orderings with real CPU/cache provenance) has NOT yet been collected -- the gate closed a policy gap (unsafe auto-adoption), not the underlying measurement gap. Finding 98's own open question (does a later line of work beat the baseline) is now supersedable by a better-framed one: this catalog should not expect a clean "beats baseline" resolution at all, since the team's own next stated step is to gather qualifying evidence, not to keep chasing the same single-region numbers.
 
+## 100. A self-referential, meta-level discovery: the literal "Claude-Session" commit trailer this catalog's own commits use is NOT a unique per-conversation identifier -- 306 real commits across at least 7 unrelated repos and orgs carry the identical string, spanning work this catalog never did
+
+Investigating `gftdcojp/network-isekai` for fresh material (its own PR
+#267, "fix: add real robots.txt and sitemap.xml (were falling back to
+SPA shell HTML)", merged 2026-07-21) surfaced something unexpected in
+the PR body's own trailer: the exact literal string
+`https://claude.ai/code/session_01Pa7N8BvMW7RsvnJJfWrrR4` -- the SAME
+`Claude-Session` URL this catalog's own commits in THIS conversation
+have been appending to every commit message all session.
+
+**Checked how widely this exact string is reused**: `gh api
+"search/commits?q=%22session_01Pa7N8BvMW7RsvnJJfWrrR4%22"` returns
+`total_count: 306`. Sampled the first 300 (3 pages x 100) and grouped
+by repository: `com-junkawasaki/root` 145, `kotoba-lang/loop-system-dynamics`
+136, `kotoba-lang/dynamics` 13 (all plausibly this catalog's own work
+across this session), but also `etzhayyim/root` 3,
+`gftdcojp/network-isekai` 1, `gftdcojp/aozora-yoro-ui` 1,
+`gftdcojp/aozora-appview` 1 -- 6 commits (2% of the sample) in repos
+and on work this catalog never touched.
+
+**Verified those 6 are genuinely unrelated work, not a coincidence**:
+the 3 `etzhayyim/root` commits are, by title, literally the DID
+`alsoKnownAs`-fabrication-fix PRs (#3305, #3307, #3310) this catalog's
+OWN much-earlier findings 16-38 independently read and reported on as
+someone else's work -- proof this catalog was never the author of
+those commits, yet they carry this catalog's own session trailer.
+`gftdcojp/aozora-appview` carries a same-class-but-independently-titled
+fix ("fix(cljs): add robots.txt + sitemap.xml (SPA fallback was
+serving index.html)", 2026-07-21T23:33) landing 47 minutes after
+network-isekai's own version (22:46) -- two different repos, two
+differently-worded commit messages, same underlying bug class, same
+session string, clearly two different concurrent agent runs.
+
+**Evidence**: `gh api search/commits?q=%22session_01Pa7N8BvMW7RsvnJJfWrrR4%22` (total_count 306, sampled first 300 across 3 pages, 2026-07-23) + direct `gh pr view`/`gh api search/commits` reads of the `etzhayyim/root` (#3302/#3305/#3307/#3310), `gftdcojp/network-isekai` (#267), and `gftdcojp/aozora-appview` commits confirming their content is real, dated, and topically unrelated to each other and to this catalog's own work.
+
+**Source**: GitHub commit search API, 2026-07-23, cross-referenced against this catalog's own commit history in `kotoba-lang/loop-system-dynamics` and `com-junkawasaki/root`, and against this catalog's own much-earlier findings 16-38 (the etzhayyim DID saga).
+
+**Interpretation**: the `Claude-Session` trailer, as actually used across this whole workspace's fleet of concurrent Claude Code agents, provides ZERO reliable per-conversation provenance -- it is very likely a literal example string baked into a shared harness instruction template (this catalog's own system prompt carries this exact string as its own worked example for how to format a commit trailer) that many independent, unrelated agent sessions copy verbatim rather than each substituting a genuinely unique identifier. This is a different flavor of finding than this catalog's usual business/technical-claim verification: it's a real, dated, quantified observation about the audit-trail integrity of the tooling this whole workspace's own extensively-documented '並行エージェント運用' (concurrent-agent operations, CLAUDE.md's own section) discipline depends on. Anyone trying to use a `Claude-Session` URL to trace which specific conversation produced a given commit -- across at least 7 repos and 306 commits -- cannot reliably do so from this string alone. Not investigated further: whether this is universal (EVERY Claude Code session reuses this exact string) or specific to some subset of harness configurations -- this analysis found real counter-evidence against uniqueness but did not attempt to enumerate all Claude Code sessions in this environment to establish the true denominator.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
