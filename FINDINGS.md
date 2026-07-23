@@ -7263,6 +7263,62 @@ repeatedly found and corrected in itself, not assumed away.
 
 **Interpretation**: a real instance of this catalog's own standing discipline applied to itself again -- not a large error, a single stale field in one stock, caught by reading the primary source directly rather than trusting the meta-level summary a concurrent session had already recorded. Worth recording precisely rather than silently editing the stale field away, consistent with how findings 39/39b handled a similar self-correction: the original data was not wrong when written, the source moved, and the catalog's own honesty requires saying so rather than quietly updating without a trace. Separately, the correction itself is a genuinely well-reasoned piece of real product strategy: recognizing that 2 recommendations are actually 1 sharper recommendation is exactly the kind of insight a comparative analysis is supposed to produce, and the source caught it on its own initiative rather than needing this catalog (or anyone else) to point it out.
 
+## 122. A 5th, categorically more dangerous compiler bug in this catalog's own ongoing tracking thread -- not a rejected compile like issues #206's 4 bugs, but a silently-compiling module that throws at runtime on a common Clojure idiom
+
+Findings 94/108/115/116/118 have traced `kotoba-lang/compiler`'s
+growing set of real, precisely-reported defects surfacing from the
+fleet-migration pilot wave, all of which share one property: the
+compiler either rejects the code outright or produces a module that
+fails to instantiate -- loud, immediate failures. Issue #225 (opened
+2026-07-23, still open, 0 comments, previously only mentioned in
+passing by this catalog's own prior findings as "a separate bug about
+self-shadowing let bindings," never read in full until now) is a
+different, worse category: **the module compiles successfully and
+looks fine, but throws at runtime**.
+
+**The bug, precisely reproduced**: a function that rebinds a `let`
+name to a narrowed/normalized version of itself -- "a very common
+Clojure idiom for 'narrow/normalize this value under the same name'"
+-- like `(let [y (if (< y 0) (- y) y)] y)`, where the `y` used inside
+the binding's *value* expression correctly refers to the OUTER binding
+(the function parameter), only the body after the binding sees the new
+`y`. This is valid, idiomatic, unambiguous Clojure semantics. The
+compiler generates JS where both bindings lower to the *same*
+identifier (`k$y`), so the inner reference resolves to the new
+`const`'s own not-yet-initialized declaration (JS's temporal dead
+zone) instead of the outer parameter -- `ReferenceError: Cannot access
+'k\$y' before initialization` at runtime, even though `{:ok true, ...}`
+was reported at compile time.
+
+**Why this is a more dangerous class of bug than issue #206's 4**: the
+issue's own text states it directly -- "worse than a rejection, since
+nothing signals the problem until runtime." A rejected compile fails
+fast and visibly; this bug produces a module that a developer, CI
+check, or admission gate could all treat as successfully compiled,
+with the actual defect only surfacing when the specific code path
+executes. Because the triggering shape (rebind-and-narrow under the
+same name) is common Clojure style rather than an edge case, this has
+real potential to recur silently across other, unrelated migrations in
+this same fleet wave without anyone noticing until a specific runtime
+path is hit.
+
+**Found and worked around during a real migration, same discipline as
+every other entry in this thread**: discovered while porting
+`kotoba-lang/cron`'s civil-calendar profile (PR #2, independently
+confirmed real and merged 2026-07-23T08:56:04Z, matching the issue's
+own cited timestamp exactly). Worked around by renaming the shadowing
+binding (`y` -> `y1`) rather than restructuring the logic. The report
+honestly discloses the limit of what was checked: only the
+`js-browser` target was tested for this repro, with the `wasm32-browser`
+target's behavior explicitly left unverified ("didn't check whether
+wasm32-browser reproduces the same bug or fails differently").
+
+**Evidence**: `gh api repos/kotoba-lang/compiler/issues/225` (full issue body read directly for the first time, including the exact repro code and generated-JS analysis) + `gh api repos/kotoba-lang/cron/pulls/2` (independently confirmed real, merged 2026-07-23T08:56:04Z, matching the issue's own cited compiler-SHA and timestamp), 2026-07-23.
+
+**Source**: `kotoba-lang/compiler` issue #225 (opened 2026-07-23, still open, 0 comments) + `kotoba-lang/cron` PR #2 (merged 2026-07-23T08:56:04Z), 2026-07-23.
+
+**Interpretation**: extends this catalog's own compiler-defect thread with a bug the prior findings hadn't yet captured -- not just "another bug of the same kind" but a genuinely distinct failure mode (silent semantic miscompilation vs. loud compile/instantiate rejection) that the source's own reporting explicitly names as more dangerous, not merely different. The same honest-scoping discipline holds: the workaround is precisely described (a rename, not a rewrite), and the report is explicit about what was NOT checked (the wasm32 target) rather than implying broader verification than actually happened. This bug, plus issue #206's 4 bugs, plus the 2 unfiled quirks from finding 118, brings this catalog's own running tally of distinct, independently-verified `kotoba-lang/compiler` defects/observations discovered during this single fleet-migration wave to 7 -- none yet fixed, none yet connected to a common root cause, a question this catalog continues to appropriately leave to people with actual compiler-internals expertise.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
