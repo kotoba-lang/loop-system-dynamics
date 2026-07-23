@@ -512,7 +512,12 @@
    :org "external-reference"
    :note "runs on the SAME AT Protocol substrate etzhayyim's own identity architecture is built on -- the sharpest available evidence that etzhayyim's near-zero adoption is not a protocol ceiling"
    :stocks {:users {:value 4.02e7 :source "Bluesky 2025 Transparency Report: 13M (Oct 2024) -> 40.2M (Nov 2025)"}
-            :daily-active-users {:value 3.5e6}}}
+            :daily-active-users {:value 3.5e6}
+            :users-corrected-primary-source-2025-transparency-report
+            {:value {:end-2024 2.594e7 :end-2025 4.141e7 :growth-pct 60 :prior-stock-2024-figure 1.3e7 :prior-stock-discrepancy-x 2.0}
+             :evidence "Read Bluesky's own official blog post directly for the first time (bsky.social/about/blog/01-29-2026-transparency-report-2025, published 2026-01-29) rather than trusting this entity's existing :users stock's already-summarized numbers. It states plainly: 25.94M users end of 2024, 41.41M users end of 2025 ('nearly 60%' growth), both figures including federated AT Protocol Personal Data Servers, not just Bluesky's own infrastructure. The existing stock's '13M (Oct 2024)' does not match Bluesky's own reported 25.94M for essentially the same date -- off by roughly 2x, most likely because whatever secondary source it came from was citing an earlier, stale, or differently-scoped count (13M was closer to Bluesky's size around its Nov 2023 launch-wave spike). Cross-checked via WebSearch against 7 independent third-party stat aggregators (backlinko.com/sproutsocial.com/proxidize.com/axis-intelligence.com among them), all converging on the same 41.41M/25.94M pair"
+             :source "bsky.social/about/blog/01-29-2026-transparency-report-2025 (Bluesky's own official Trust & Safety blog, WebFetch 2026-07-23), cross-checked against WebSearch results, 2026-07-23"
+             :interpretation "This catalog's own zero-fabrication discipline applies to its external-reference benchmark entities too -- an unverified secondary-source figure sat in this entity's own seed data across multiple cycles without the actual primary source it claimed to cite ever being read directly. Doesn't change the entity's own :note (Bluesky's growth remains the sharpest available evidence that etzhayyim's near-zero AT-Protocol adoption is a go-to-market problem, not a protocol ceiling) but corrects a real, previously-unnoticed ~2x error in one input number. Recorded as a new stock alongside the original rather than overwriting it, keeping the correction itself visible"}}}
 
   {:id :estonia-e-residency
    :org "external-reference"

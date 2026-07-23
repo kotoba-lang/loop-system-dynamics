@@ -5806,6 +5806,54 @@ cases) was not identified, so what exactly needs to change in
 kototama's `security-adoption.edn` to turn this gate green again is
 not yet known from this analysis alone.
 
+## 96. Diversifying to a world-scale external-reference entity for the first time in several cycles: re-verified :bluesky's own stock against Bluesky's OWN primary-source transparency report, found this catalog's existing figure was itself imprecise -- corrected, not just refreshed
+
+This catalog's `:bluesky` entity (an external-reference benchmark for
+etzhayyim's AT Protocol-based identity architecture) has carried the
+same `:users` stock since it was first written: "4.02e7 ... Bluesky
+2025 Transparency Report: 13M (Oct 2024) -> 40.2M (Nov 2025)" -- but
+that stock's own source string does not point at Bluesky's actual
+report, and this cycle read the real one directly for the first time.
+
+**Fetched Bluesky's own official blog post** (`bsky.social/about/blog/01-29-2026-transparency-report-2025`,
+published 2026-01-29) rather than trusting the prior stock's
+already-summarized numbers. It states plainly: 25.94M users at end of
+2024, 41.41M users at end of 2025, "nearly 60%" growth -- both
+figures for accounts including federated AT Protocol Personal Data
+Servers, not just Bluesky's own infrastructure. The prior stock's
+"13M (Oct 2024)" figure does not match Bluesky's own reported 25.94M
+for essentially the same date -- off by nearly 2x, most likely because
+whatever secondary source it came from was itself citing an earlier,
+stale, or differently-scoped count (13M was roughly Bluesky's size
+around its Nov 2023 launch-wave/Elon-exodus spike, not late 2024). The
+end-2025 figure (41.41M) is close to but not identical to the prior
+stock's "40.2M (Nov 2025)" -- plausibly just a one-month-earlier
+snapshot from a secondary aggregator, not obviously wrong the way the
+2024 figure is.
+
+**Evidence**: `WebFetch` of `bsky.social/about/blog/01-29-2026-transparency-report-2025`
+directly, 2026-07-23 -- Bluesky's own primary-source blog, not an
+aggregator. Cross-checked against a `WebSearch` sweep of 7 third-party
+stat-aggregator pages (Backlinko/Sprout Social/Proxidize/etc.), all of
+which independently cite the same 41.41M end-2025 / 25.94M end-2024
+pair back to the same primary report, giving convergent confirmation.
+
+**Source**: `bsky.social/about/blog/01-29-2026-transparency-report-2025` (Bluesky's own official Trust & Safety blog, accessed 2026-07-23 via WebFetch), cross-checked against WebSearch results from backlinko.com/sproutsocial.com/proxidize.com/axis-intelligence.com (2026-07-23).
+
+**Interpretation**: this catalog's own zero-fabrication discipline
+applies as much to its external-reference benchmark entities as to
+its primary subjects -- an unverified secondary-source figure sat in
+`:bluesky`'s own seed data for multiple cycles without anyone reading
+the actual primary source it claimed to cite. The corrected 25.94M
+figure doesn't change this entity's own `:note` (Bluesky's growth is
+still the sharpest available evidence that etzhayyim's near-zero
+AT-Protocol adoption is a go-to-market problem, not a protocol
+ceiling) but does correct a real, previously-unnoticed ~2x error in
+one input number. Recorded as a new stock alongside the original
+rather than silently overwriting it, so the correction itself stays
+visible -- the same practice already used for findings 73/85's own
+self-corrections.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
