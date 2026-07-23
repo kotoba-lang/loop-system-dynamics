@@ -23,7 +23,8 @@
             ["path" :as path]
             ["os" :as os]
             [clojure.string :as str]
-            [clojure.pprint :as pprint]))
+            [clojure.pprint :as pprint]
+            [clojure.edn :as edn]))
 
 ;; --------------------------------------------------------------------------
 ;; Config
@@ -56,6 +57,23 @@
   (str "FAS Status of World Nuclear Forces 2025 (fas.org/initiative/status-world-nuclear-forces) "
        "+ Bulletin of the Atomic Scientists Nuclear Notebook 2025 (Kristensen et al.), "
        "estimated total warhead inventory (deployed+reserve+retired), verified " RETRIEVED))
+
+;; GlobalFirepower equipment inventory (Phase 3). :estimate? grade -- GFP is a
+;; defense-data aggregator (NOT primary; IISS Military Balance is primary but
+;; paywalled). Produced by scripts/scrape_gfp_equipment.cljs into
+;; resources/gfp-equipment-seed.edn. Loaded + merged here if present.
+(def GFP-SOURCE
+  (str "GlobalFirepower 2026 country detail (globalfirepower.com, defense-data aggregator: "
+       "compiles open sources + GFP estimates; GFP states some values estimated), scraped "
+       RETRIEVED))
+
+(defn- load-gfp-equipment
+  "Read resources/gfp-equipment-seed.edn if present -> {iso3 {equipment-key int}}.
+  nil when absent (equipment coverage then 0, but seed still generates)."
+  []
+  (let [p "resources/gfp-equipment-seed.edn"]
+    (when (fs/existsSync p)
+      (:entities (edn/read-string {:default (fn [_ v] v)} (fs/readFileSync p "utf8"))))))
 
 ;; --------------------------------------------------------------------------
 ;; HTTP + cache helpers (all return promises)
@@ -141,7 +159,7 @@
 ;; --------------------------------------------------------------------------
 ;; Entity construction
 ;; --------------------------------------------------------------------------
-(defn build-entities [idx sipri-by-cca3 wb-gdp wb-pop wb-pers]
+(defn build-entities [idx sipri-by-cca3 wb-gdp wb-pop wb-pers gfp]
   (for [c (sort-by :cca3 (:countries idx))
         :let [cca3 (:cca3 c)
               include? (and (or (:un-member c) (#{"TWN" "XKX"} cca3))
@@ -194,7 +212,11 @@
                     (when-let [n (get NUCLEAR-FAS cca3)]
                       {:nuclear-warheads
                        {:value n :as-of "2025"
-                        :source NUCLEAR-SOURCE}}))}))
+                        :source NUCLEAR-SOURCE}})
+                    (when-let [eq (get gfp cca3)]
+                      (into {} (for [[k v] eq]
+                                 [(keyword k) {:value v :as-of "2026"
+                                               :source GFP-SOURCE :estimate? true}]))))}))
 
 ;; --------------------------------------------------------------------------
 ;; Main (promise chain -- this nbb build has no top-level await)
@@ -217,7 +239,8 @@
                                              :when cca3]
                                          [cca3 {:usd usd :gdp (get sipri-gdp nm)}]))
                    unresolved (for [[nm _] sipri-usd
-                                    :when (nil? (resolve-sipri-name idx nm))] nm)]
+                                    :when (nil? (resolve-sipri-name idx nm))] nm)
+                   gfp (load-gfp-equipment)]
                (println "\n=== JOIN STATS ===")
                (let [un193 (filter #(and (:un-member %) (not (NON-MEMBER-EXCLUDE (:cca3 %))))
                                    (:countries idx))]
@@ -229,8 +252,10 @@
                (println "World Bank GDP / pop / personnel countries:"
                         (count wb-gdp) "/" (count wb-pop) "/" (count wb-pers))
                (println "Nuclear (FAS):" (count NUCLEAR-FAS))
+               (println "Equipment inventory (GlobalFirepower, :estimate?):" (count gfp) "countries"
+                        (if (seq gfp) "" "(gfp-equipment-seed.edn absent -- run scripts/scrape_gfp_equipment.cljs)"))
                (when-not dry-run
-                 (let [entities (build-entities idx sipri-by-cca3 wb-gdp wb-pop wb-pers)
+                 (let [entities (build-entities idx sipri-by-cca3 wb-gdp wb-pop wb-pers gfp)
                        seed {:as-of RETRIEVED
                              :domain :nation-state-military-capability
                              :purpose "Risk evaluation / structural system-dynamics analysis. Observation entities citing public datasets. Charter Rider §2(a) (WEAPONS AND MILITARY) non-applicable: this is analysis of public data about military reality, not manufacture/sale/distribution/maintenance of weapons or services to forces engaged in armed conflict."
@@ -238,6 +263,7 @@
                              :sources {:sipri (str "SIPRI Military Expenditure Database v1.2, " SIPRI-XLSX-URL ", retrieved " RETRIEVED)
                                        :world-bank "World Bank Open Data API (api.worldbank.org/v2), retrieved 2026-07-23"
                                        :fas "FAS Nuclear Notebook, fas.org, retrieved 2026-07-23"
+                                       :globalfirepower "GlobalFirepower 2026 (aggregator, scraped; equipment inventory counts). :estimate? grade -- NOT primary (IISS Military Balance paywalled). Owner-authorized scrape."
                                        :country-list "mledoze/countries (cca3 + unMember), github.com/mledoze/countries, retrieved 2026-07-23"}
                              :entities entities}]
                    (fs/writeFileSync "resources/nation-state-military-seed.edn"
@@ -246,5 +272,6 @@
                    (println "Entities:" (count entities)
                             "| with spending:" (count (filter #(get-in % [:stocks :defense-spending-usd]) entities))
                             "| with personnel:" (count (filter #(get-in % [:stocks :active-military-personnel]) entities))
-                            "| with nuclear:" (count (filter #(get-in % [:stocks :nuclear-warheads]) entities))))))))
+                            "| with nuclear:" (count (filter #(get-in % [:stocks :nuclear-warheads]) entities))
+                            "| with equipment:" (count (filter #(get-in % [:stocks :aircraft-total]) entities))))))))
     (.catch #(do (println "ERROR:" %) (js/process.exit 1))))
