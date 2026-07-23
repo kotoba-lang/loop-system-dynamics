@@ -6565,6 +6565,73 @@ re-running the full suite against the now-current sibling checkout:
 
 **Interpretation**: the real root cause here is not the concurrent session's own archetype addition (a genuine, legitimate, real-data-grounded contribution) -- it's a previously-unnoticed gap in this catalog's OWN local-verification process: the sibling `../dynamics` checkout this catalog's own test suite depends on can silently drift stale between test runs, since nothing in this catalog's established sync-before-work discipline ever re-fetches it (only THIS repo's own `git fetch`/`git merge --ff-only` is checked before each commit, never the sibling dependency). This produced a real false-negative: this catalog's own local "0 failures" check at finding-108 commit time did not actually match what CI would find, because the sibling dependency had moved in the interim. Self-applying the exact same discipline this catalog has repeatedly found and praised in other teams' own work (don't trust a stale local check, verify against the real current state) closed a real gap in its own process, not just in its own data.
 
+## 110. Deepening finding 94's own compiler-quality thread: a 12-ADR chain landing a real capability crossing a real typed-cap-call boundary through a real Wasmtime-verified provider, with 2 more real bugs discovered along the way and an explicit refusal to declare the migration wave unblocked
+
+Checking `com-junkawasaki/root`'s recent commits found
+`ADR-2607231830` ("kotoba-lang/compiler ADR 0050-0061 -- state-v1
+capability crosses a real typed-cap-call boundary through a real
+Wasmtime-verified provider," accepted 2026-07-23) -- a real,
+precisely documented 12-ADR chain in `kotoba-lang/compiler`, all
+merged, directly extending finding 94's own compiler-quality thread
+into a different area (Canonical ABI / Component Model capability
+crossing, not the f64-parameter/stub-value bugs finding 94 covered).
+
+**Directly motivated by the same gap-disposition document finding 80
+and finding 94 already read**: this chain exists specifically to
+close 2 of the 2 named blockers that document identified for
+cloud-itonami's isic/isco/iso3166/unspsc/cofog/gtin migration wave
+(294 repos, 2,120 files, still 0 migrated to `.kotoba`): (a) no
+substring-search/case-fold primitive (closed by ADR 0050), (b) all 7
+capability kits stuck at `:wasm-aot :pending`.
+
+**2 more real bugs found and fixed during the work, independently
+verified via 3 spot-checked merge commits (`8da4369`/`f6b91be`/
+`69680aa`, all matching the ADR's own claimed dates/messages
+exactly)**: ADR 0056 found a real `wac-cli` 0.9.0 bug (`wac plug`
+type-validation failure), diagnosed via release notes and fixed by
+pinning to 0.10.1 (pre-checked for blast radius: CI does a fresh
+install per run, no cross-repo spillover). ADR 0057 found a real data-
+corruption bug in the compiler's OWN Canonical ABI string-lowering
+glue code -- crossing a variant case containing a string caused an
+unpredictable number of extra `cm32p2_realloc` calls that collided
+with a fixed-address allocation, fixed by switching to a capacity-
+bounded bump allocator.
+
+**A real feature landed with rigorous negative-control testing**: ADR
+0060 implements the FIRST genuinely non-identity/non-echo provider
+logic for any capability kit -- a real bounded table (get/put/delete),
+real byte-level key comparison, real persistent state across calls,
+checked semantically against the existing pure-Clojure reference
+implementation down to fine details (e.g. "first write is version
+2"). Proven via 14 real sequential Wasmtime steps in one component
+instance, including a deliberately-corrupted negative control
+confirmed to fail correctly. ADR 0061 then grew the table from 4 to
+the real full 256-entry capacity `state-v1.edn`/`state.cljc` both
+specify, verified via 262 consecutive real Wasmtime calls (fills all
+256 slots, confirms a 257th distinct key hits a real capacity error,
+exercises the boundary slot, confirms existing keys can still be
+overwritten when full).
+
+**An explicit, honest refusal to declare victory**: `:qualification`
+in `state-v1.edn` was never rewritten across all 12 ADRs -- still
+`:wasm-aot :pending` as of this ADR, despite the real progress. The
+Consequences section states plainly this does NOT unblock the
+cloud-itonami migration wave (6 other capability kits still have zero
+provider implementations; `component-composition.clj`'s variant-case
+handling is still `:ref`-only; no security/production-hardening
+review has happened). A direct code-read (not speculation) of the
+native backends found record/variant Canonical-ABI-equivalent value
+representation does not exist there AT ALL -- meaning native-AOT
+support isn't "port this chain to native," it's an independent
+initiative of comparable or greater scope, honestly scoped as such
+rather than estimated optimistically.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231830-...edn` (full ADR read) + independent `gh api repos/kotoba-lang/compiler/commits/{8da4369,f6b91be,69680aa}` (all 3 confirmed real, dated, matching claimed messages exactly), 2026-07-23.
+
+**Source**: `com-junkawasaki/root` `90-docs/adr/2607231830-kotoba-lang-compiler-state-v1-capability-canonical-abi-chain.edn` (accepted 2026-07-23) + `kotoba-lang/compiler` PRs #197-#226 (ADRs 0050-0061), 2026-07-23.
+
+**Interpretation**: a striking continuation of the same "record precisely, don't claim resolution you haven't verified" discipline finding 94 already documented on this exact compiler -- now at a much larger scale (12 sequential ADRs, 2 more real bugs caught mid-stream, a genuinely new capability proven end-to-end) with the SAME discipline holding throughout: never touching the `:qualification` field to manufacture apparent progress, explicitly stating what remains completely unstarted, and reading the native backend's actual source rather than guessing at its readiness. This is real, substantial engineering velocity in service of a well-documented, previously-identified blocker (finding 80/94's own subject), landing the same week those findings were written, with the next deliberate step (native-AOT foundations) explicitly chosen via an owner decision rather than assumed as an automatic next increment.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
