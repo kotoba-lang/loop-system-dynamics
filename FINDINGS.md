@@ -7490,6 +7490,56 @@ path hasn't been executed yet," not conflated into one undifferentiated
 
 **Interpretation**: a structurally different, valuable addition to this catalog's own fleet-migration coverage -- not another bug in the growing compiler-defect tally (findings 94-122), but the migration team's own honest map of what the LANGUAGE itself cannot yet express, tracked with the same "record precisely, don't claim resolution you haven't verified" discipline this catalog has found everywhere else in this effort. The 3-way cross-reference on the arbitrary-keyed-map gate (independently discovered by 3 different repo reviews, all citing each other rather than each claiming an isolated problem) is itself a small, real data point about review quality -- these repos were checked against prior findings, not reviewed in isolation. Gate 3's own precise distinction between "no known path" and "known path, not yet executed" is a small but genuine instance of resisting the temptation to flatten different kinds of blockedness into one status.
 
+## 126. Finding 125's own regex/substring-primitive language gate turns up in a genuinely new domain -- semiconductor I/O buffer modeling -- plus a distinct, honestly-scoped future candidate with 2 named prerequisites, not a fabricated timeline
+
+Checking `90-docs/migration/kotoba-cljc-project-gap-dispositions.edn`
+for entries added after finding 125's own read found one more:
+`kotoba-lang/org-ibis` (independently confirmed a real repo, created
+2026-07-07), reviewed 2026-07-23. IBIS (I/O Buffer Information
+Specification) is a real semiconductor/electronic-design standard for
+describing chip-pin electrical behavior -- a domain this catalog has
+not touched anywhere in 125 prior findings, spanning consumer web
+products, blockchain/DePIN economics, compiler internals, and
+government/NGO datasets, but not circuit-level electrical engineering.
+
+**The same regex/substring gate finding 125 already tracked recurs
+here too**: `ibis.parser`'s line-based `.ibs`-format reader (section
+headers, `key=value` lines, tabular voltage-current rows, numeric-token
+detection) is "entirely re-matches-driven," the review's own text
+citing "same missing string-search-primitive class as kotoba-lang/
+search and kotoba-lang/cron's cron.model" -- a further, independently-
+arrived-at confirmation that this specific gap is a real, recurring
+blocker across genuinely unrelated problem domains (web search
+indexing, cron calendar-format parsing, electrical circuit
+specification files), not an artifact of any one repo's particular
+design.
+
+**A genuinely distinct contribution: a real, tractable numeric
+algorithm flagged as a concrete future candidate, with its exact
+blockers named rather than left implicit**: `ibis.model/interpolate-
+current` -- linear interpolation over an ordered vector of
+`[voltage current]` points, clamping at the table endpoints -- is
+described as "a clean, bounded-numeric-algorithm candidate similar in
+shape to mining-pool's vardiff" (mining-pool being one of this
+catalog's own already-tracked successful bounded-profile migrations,
+finding 94). The review explicitly did NOT attempt it, and states
+exactly why: it needs (1) "a fixed-size V-I table profile design (the
+legacy function takes an arbitrary-length vector)" -- the same
+bounded-arbitrary-collection gap finding 125 already tracked, here
+applied to a vector rather than a map -- and (2) "real IBIS V-I curve
+reference data to hand-verify against, neither of which this review
+had time to produce." The doc's own closing phrase -- "flagged as a
+concrete next-wave candidate rather than left unremarked" -- is itself
+a small, precise statement of intent: distinguishing "not done yet,
+here's exactly what's missing" from silently letting a viable
+candidate go unrecorded.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/migration/kotoba-cljc-project-gap-dispositions.edn` (the `orgs/kotoba-lang/org-ibis/src/ibis/parser.cljc` entry read in full) + independent `gh api repos/kotoba-lang/org-ibis` (confirming the repo is real, created 2026-07-07), 2026-07-23.
+
+**Source**: `90-docs/migration/kotoba-cljc-project-gap-dispositions.edn` (com-junkawasaki/root), `orgs/kotoba-lang/org-ibis` entry, reviewed 2026-07-23.
+
+**Interpretation**: extends both this catalog's own domain coverage (a first, genuine touch of chip-level electrical-engineering standards work, distinct from every prior product/protocol/economic system this catalog has tracked) and finding 125's own language-gate thread (a 4th-ish independent confirmation that the regex/substring gap is real and recurring, now spanning web, calendar, and circuit-spec parsing). The interpolate-current candidate is a small but genuine example of disciplined future-work scoping: not claiming a timeline or committing effort not yet spent, but precisely naming the 2 concrete things (a bounded-vector profile design, real reference data) that would need to exist before this specific, otherwise-clean algorithm could migrate -- the same "record precisely, don't claim resolution you haven't verified" discipline this catalog has traced through dozens of other products, here applied to planning rather than completed work.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
