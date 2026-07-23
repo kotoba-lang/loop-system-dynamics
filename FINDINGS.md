@@ -7115,6 +7115,57 @@ from the original.
 
 **Interpretation**: extends findings 94/115's own compiler-defect tracking with a category those findings hadn't yet captured -- not every real compiler oddity found during this fleet's ongoing migration work gets filed as a formal issue, and the team's own stated reasons for not filing are themselves informative and honestly differentiated (one confidently judged intentional, one honestly admitted not-yet-understood) rather than uniformly deferred or uniformly dismissed. This is a subtly different register of the same zero-fabrication discipline this catalog has traced through this exact compiler across findings 94/108/115/116/118: not just "report the bug precisely," but "be equally precise about WHY something isn't being reported as a bug." A live, still-open question this catalog is not equipped to resolve: whether the actor-ipc `let`/`if` diagnostic-span quirk shares a root cause with any of issue #206's own 4 open bugs (all involve typed-Wasm lowering in some form) -- flagged, not guessed at, consistent with this catalog's own established boundary around compiler-internals questions.
 
+## 119. network-isekai's own account-tier safety gate (finding 90's subject) was extended to real-money payment 3 days later, with a real ~35-minute enforcement gap caught and closed the same session
+
+Finding 90 covered the birth of network-isekai's self-declared
+account-tier trust-and-safety gate (`account-tier.mjs`'s `canPublish`,
+PR #266, `ADR-0005 Phase 0`/`ADR-0069`), which blocks `unset`/`minor`
+tiers from publishing by default. Checking the repo's recent activity
+again found the natural next chapter, 3 days later: 3 sequential PRs
+(#269, #270, #272, all merged 2026-07-23) extending that exact
+mechanism to a new, more sensitive capability -- real-money purchases --
+with a real, precisely-timed enforcement gap in between.
+
+**PR #269 (design-only) stated the requirement explicitly, in
+advance**: a formalization-and-scaffold PR (no live payment wiring) for
+`ADR-0070` explicitly calls out "ADR-0005 Phase 0 minors/COPPA guardrail
+must land *before* gem-pack checkout goes live (not after)" -- the
+safety precondition was documented as a hard sequencing requirement
+before any live payment code existed.
+
+**PR #270 (merged 10:05:52Z) made the payment wiring live without
+actually satisfying that precondition**: real Stripe Payment Links,
+webhook signature verification, and a shared settle/refund
+implementation went live, with an honest "Not done (deliberately)"
+section disclosing that no end-to-end test purchase was run (the same
+agent-cannot-enter-real-card-details boundary already established for
+cloud-itonami) and that the seed SQL still needed applying to
+production D1 -- but nothing in this PR actually wired the account-tier
+check into the payment code path.
+
+**PR #272 (merged 10:41:06Z, exactly 35 minutes 14 seconds later)
+found and closed that exact gap**: its own summary states plainly,
+"Found while reviewing #269 (which correctly flagged this as a
+pre-live-checkout blocker): `payment-intent-create`/
+`subscription-intent-create` in `platform.js` had no account-tier check
+at all. Since #270 already made gem-pack/subscription checkout live
+... an undeclared or self-declared-`minor` account could create a
+real-money purchase intent today." The fix, independently verified in
+the actual merged diff, adds the identical `canPublish` gate already
+used for publishing to both payment-intent creation paths, returning
+HTTP 403 `"account tier declaration required"` for any account without
+a qualifying tier -- with the fix's own inline comment stating "not a
+new mechanism, just applying an existing one to a second capability"
+and explicitly re-stating the honesty caveat from finding 90's own
+subject: this is a self-declared-tier check, "mechanism, not identity
+verification."
+
+**Evidence**: `gh api repos/gftdcojp/network-isekai/pulls/269`, `pulls/270`, `pulls/272` (all 3 read directly, merge timestamps independently confirmed: 2026-07-23T10:05:52Z and 2026-07-23T10:41:06Z, 35m14s apart) + `gh api repos/gftdcojp/network-isekai/commits/66bc4aaa` (full diff of `functions/api/platform.js` read directly, confirming both `payment-intent-create` and `subscription-intent-create` now call `canPublish` before proceeding), 2026-07-23.
+
+**Source**: `gftdcojp/network-isekai` PRs #269/#270/#272, `functions/api/platform.js` (commit `66bc4aaa`), `90-docs/adr/0070-payment-rails-and-channel-integration.md`, 2026-07-23.
+
+**Interpretation**: a real, precisely-bounded child-safety-adjacent gap -- not a hypothetical one, since #270 genuinely put live Stripe checkout into production before the payment path had the tier check #269 said it needed -- caught and closed within the same working session by the team's own review process, not by an external report or an incident. The fix's own commentary is a small but real example of the same "mechanism, not identity verification" honesty this catalog already found in finding 90's own subject, now explicitly re-asserted at the exact moment the same self-declared gate is extended to a higher-stakes capability, rather than letting the extension implicitly borrow unearned confidence from the original mechanism's design. What remains genuinely open and not determinable from available sources: whether any real purchase intent was actually created by an unset/minor-tier account during that 35-minute window (the repo's own D1 database is not something this analysis can query).
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
