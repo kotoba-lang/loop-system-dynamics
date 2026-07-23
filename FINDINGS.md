@@ -5933,6 +5933,61 @@ integration. Neither fact cancels the other; recording both keeps the
 picture accurate rather than flattening a mixed reality into a single
 verdict.
 
+## 98. A full day of real, honestly-measured R2 latency work on kotobase's Merkle-LSM -- and as of the latest addendum, EVERY subblock-based optimization attempt is still slower than the original inline-run baseline, reported plainly rather than spun
+
+Diversifying away from kotoba-lang/kototama this cycle: `net-kotobase`'s
+`ADR-2607211343` (kotobase Merkle-LSM production gap closure, amending
+findings 78-79's own subject ADR-2607201600) has been updated with 12
+dated "Verification addendum" entries on 2026-07-23 alone -- a single
+day's worth of real, sequential PRs (peer `kotoba-lang/kotobase-peer`
+#61-73, host `gftdcojp/local-murakumo` #56-64) closing the ADR's own
+P0 correctness gates (safe-epoch oracle, checkpoint inheritance, GC
+backup/restore) AND chasing a real R2 read-latency regression, with
+every measurement reported honestly even when it went the wrong way.
+
+**P0 correctness closed for real, independently spot-checked**: 2 of
+the addenda's cited merge commits (peer PR #70 `f378557e`, host PR #63
+`e76cbfb3`) were independently re-fetched via `gh api` and match the
+ADR's own dates/messages exactly. By the "unified safe-epoch oracle"
+and "two-pass GC candidate inventory gate" / "immutable GC backup and
+CID-verified restore" addenda, all three of the ADR's own named P0
+sub-gates (P0.1 safe-epoch oracle, P0.2 checkpoint inheritance, P0.3
+GC delete gate) are marked complete, including a real drill against
+the actual production R2 bucket (`kotobase-merkle-lsm`, isolated UUID
+prefix): marked 1 orphan block across 2 heads/4 reachable blocks,
+backed it up content-addressed, deleted it, and restored it with CID
+match confirmed, wall time 1,446ms.
+
+**The latency story is the more interesting one, and it's still
+unresolved**: the ORIGINAL inline-run baseline for a 511-team/
+1,022-membership-datom R2 probe was 77,608.0ms driver wall. Every
+subsequent physical-subblock attempt measured against real R2 this
+same day came in slower:
+- Sequential subblocks (peer #61/host #57): 84,926.8ms (+9.43%)
+- Speculative successor prefetch (peer #62): 102,359.4ms, 28 GETs --
+  explicitly REJECTED as a regression, not merged as a win
+- Demand-only scan restored + spill-streaming (peer #63/host #59):
+  123,816.7ms -- worse than both prior points despite fixing real
+  memory-cardinality issues
+- Byte-bounded current-block remainder (peer #69/host #61): 101,594.6ms
+  -- an 17.95% improvement over the immediately preceding point, but
+  still 19.63% SLOWER than the original 84,926.8ms subblock probe,
+  which itself was already slower than the inline baseline
+- Independent-run GET concurrency (peer #70/host #63, 520-team probe):
+  concurrency=4 measured 190,478.6ms vs concurrency=1's 119,149.0ms --
+  59.87% SLOWER, explicitly reported as "latency win is not claimed,"
+  noise-from-time-of-day explicitly flagged as a confound rather than
+  hidden
+- A separate exact-byte-block prototype (peer #71) was caught degrading
+  a 1,000-datom flush to ~20 seconds during development and REJECTED
+  before merge, replaced with a bounded row/byte hybrid
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (full 416-line document read directly, 2026-07-23) + independent `gh api` re-fetch of 2 cited merge commits (`kotoba-lang/kotobase-peer` PR #70, `gftdcojp/local-murakumo` PR #63) confirming dates and messages match the ADR's own text exactly.
+
+**Source**: `90-docs/adr/2607211343-kotobase-merkle-lsm-production-gap-closure.edn` (com-junkawasaki/root, accepted 2026-07-21, last-verified 2026-07-23), amending ADR-2607201600 (this catalog's own findings 78-79 subject).
+
+**Interpretation**: this is the sharpest example yet in this catalog of the workspace's own repo-wide zero-fabrication discipline (捏造ゼロ, already found verbatim in cloud-itonami/club-shinshi/app-aozora documents across findings 64/81/86/91/92/93) applied to performance engineering specifically -- a domain where the temptation to round a regression up to a "win" or quietly drop an inconvenient measurement is high, and where every single addendum here does the opposite: explicit percentages against the correct prior baseline, explicit REJECT verdicts on two separate attempts that made things worse, and a closing line each time that names precisely what's still open rather than declaring victory. The `:state :production-partial` decision-summary field has not moved to `:production-ready` despite an entire day of real, substantive work -- consistent with the document's own stated rule ('P0を満たす前にscale値だけをもってGAと呼ばず'). Not yet checked: whether the byte-bounded-remainder or independent-run-wave lines of work eventually converge on beating the original 77,608.0ms baseline in a LATER addendum than the one read here (this ADR is evidently still being appended to same-day) -- left as an open thread for a future cycle rather than assumed either way.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
