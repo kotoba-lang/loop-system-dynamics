@@ -6139,6 +6139,57 @@ no special action needed.
 
 **Interpretation**: a genuinely striking coincidence in substance, not process -- this catalog's own recurring `/loop` instruction has been "実際に loop を進めて, repo wide, 全世界規模で分析を進めて" (advance world-scale analysis) for the entire session, and a DIFFERENT concurrent session, acting on a direct owner instruction, delivered literally that: a real, sourced, 194-nation world-scale dataset, explicitly justified against this exact workspace's own ADR-2607203000 ("no entity excluded from system-dynamics analysis") and carefully scoped against Charter Rider §2(a)'s weapons-manufacture prohibition (observation/analysis of public data, not weapons production -- a distinction the ADR argues explicitly and grounds in the ai-gftd-arms precedent this catalog has not previously covered). This catalog's own `:japan` entity (in `entities-seed.edn`, this catalog's separate main seed file) has no military stocks at all -- the new file is a genuinely disjoint, complementary dataset, not a duplicate or conflict. No entity-seed.edn edit was made for this finding since the subject IS the seed file itself, already committed by its own author; this catalog's normal test/ledger/pin-advance cycle proceeds unaffected since nothing in its own pipeline references the new files.
 
+## 102. A second, distinct world-scale ADR from the same day -- the Russian-fleet vessel view, a clean worked example of "uncomputable-until-measured" honesty and deliberate anti-over-engineering, both independently spot-checked accurate
+
+Following the same thread finding 101 opened (world-scale/geopolitical
+work landing on `com-junkawasaki/root` on 2026-07-23), checked a
+second, unrelated ADR noticed in passing during that investigation:
+`ADR-2607231900` ("Russian-fleet vessel view -- 3-axis OR filter over
+the existing etzhayyim maritime cluster, no new repo"), also accepted
+2026-07-23, also governed by ADR-2607203000. Distinct subject matter
+from finding 101 (maritime/sanctions tracking, not military budgets)
+but the same governing "exclude no entity, compute honestly" rule and
+the same day.
+
+**The decision itself is a clean worked example of two disciplines
+this catalog has repeatedly found elsewhere**: rather than building a
+new "Russian vessel registry" repo (which the owner's original
+question might have implied), the ADR defines "Russian fleet" as a
+pure query-time set-union over THREE existing etzhayyim registries,
+joined by IMO number: flag=RUS in `com-etzhayyim-app-vessel`
+(~105K merchant vessels), a dark-fleet flag in
+`com-etzhayyim-oil-shipping`, and vessel-type sanctions entries in
+`com-etzhayyim-app-sanctions`. Its own "Alternatives considered" table
+explicitly rejects both a dedicated new registry repo AND a
+materialized cache index as unnecessary duplication/staleness risk --
+an explicit anti-over-engineering call, not an omission.
+
+**The dark-fleet axis is honestly marked `:uncomputable-until-measured`**
+(ADR-2607203000's own named principle) rather than silently assumed
+populated: `com-etzhayyim-oil-shipping` is, as the ADR states, "manifest-only"
+-- independently verified via `gh api repos/etzhayyim/com-etzhayyim-oil-shipping/contents`,
+which shows only `.well-known`, `NOTICE`, `actor-manifest.jsonld`,
+`actor-manifest.test.ts` -- no tanker schema, no dark-fleet flag field,
+exactly as claimed. The ADR states plainly the axis "yields no real
+IMOs until oil-shipping lands its tanker schema... This is stated, not
+hidden."
+
+**A real, concrete proof-of-value example, not just an abstract
+argument**: the ADR includes an actual nbb-run pure-logic verification
+slice with a synthetic fixture deliberately including a Panama-flagged
+shadow tanker (IMO 2222222, caught only by the dark-fleet axis) and a
+Liberia-flagged sanctioned vessel (IMO 3333333, caught only by the
+sanctions axis) -- both of which "a flag=RUS-only filter structurally
+misses," demonstrating the concrete value of the 3-axis union over a
+naive single-axis filter with a real executed test result (exit 0),
+not just a design claim.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231900-russian-fleet-vessel-three-axis-filter.edn` (full ADR read, 2026-07-23) + independent `gh api repos/etzhayyim/com-etzhayyim-oil-shipping/contents` (confirming manifest-only status matches the ADR's claim exactly) + independent `gh api repos/etzhayyim/com-etzhayyim-app-vessel/contents/CLAUDE.md` (confirming the "105K merchant vessels" figure matches the source repo's own documentation verbatim).
+
+**Source**: `90-docs/adr/2607231900-russian-fleet-vessel-three-axis-filter.edn` (com-junkawasaki/root, accepted 2026-07-23) + `etzhayyim/com-etzhayyim-oil-shipping` and `etzhayyim/com-etzhayyim-app-vessel` (direct API reads, 2026-07-23).
+
+**Interpretation**: a second real instance, independently spot-verified and unrelated in subject to finding 101, of the same day's work applying this workspace's own governing disciplines correctly under real constraints -- honestly marking a genuinely unmeasured axis rather than fabricating a plausible-sounding coverage number for it, and explicitly rejecting a more elaborate implementation (new registry, cache index) the owner's original framing might have invited, in favor of the minimal correct one. Consistent with, and a fresh instance of, the same "don't over-engineer / don't fabricate what you haven't measured" pattern already documented dozens of times across this catalog's earlier findings, now confirmed in a domain (sanctions/shadow-fleet tracking) this catalog had not previously touched.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
