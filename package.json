@@ -3,7 +3,8 @@
   "private": true,
   "description": "npm deps for the DataScript-backed query layer (src/loop_system_dynamics/query.cljs) and the arrangement.datalog-backed one (src/loop_system_dynamics/arrangement_query.cljs). No runtime JS of its own -- nbb consumes these directly.",
   "dependencies": {
+    "@noble/hashes": "^1.5.0",
     "datascript": "^1.7.8",
-    "@noble/hashes": "^1.5.0"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }
