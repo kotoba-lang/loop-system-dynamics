@@ -7059,6 +7059,62 @@ knowledge, not a guess dressed up as a diagnosis.
 
 **Interpretation**: a genuinely new subject for this catalog (net-babiniku's actual product engineering, distinct from findings 51-54's legal-entity work on the same repo), and a rich example of the same zero-fabrication discipline in a domain this catalog hasn't traced it in before -- generative/creative quality evaluation, where the temptation to round a saturated-judge non-measurement up to "no regression" or a licensed-asset limitation into a claimed "fix" would be easy and hard to catch from outside. Both temptations were explicitly declined here: the incomplete VLM measurement is reported as literally absent rather than assumed neutral, and the mech-arm's real constraint (a licensed third-party asset) is respected rather than routed around, with the investigation's byproduct (composed-avatar rendering) filed as precisely as possible rather than left as a vague TODO. The same "record precisely, don't claim resolution you haven't verified" discipline findings 94/109/115/116 have each found in kotoba-lang/compiler and kotobase's core infrastructure, here found in a live consumer product's generative-quality engineering.
 
+## 118. 2 more real compiler quirks surfaced during the fleet-migration pilot wave, deliberately left unfiled -- one judged working-as-designed, one still not conclusively isolated -- widening this catalog's own compiler-defect picture from findings 94/115 beyond what issue #206 tracks
+
+Findings 94/115 traced `kotoba-lang/compiler`'s own bug-tracking issue
+#206 as it grew from 2 to 4 documented, precisely-reproduced defects.
+Re-reading the master fleet-migration ADR (`ADR-2607202200`) for its
+newest addenda (`kotoba-lang/atprotocol` PR #1, `kotoba-lang/actor-ipc`
+PR #1, both independently confirmed real and merged 2026-07-23) finds 2
+more real compiler observations from the SAME migration-pilot wave --
+neither filed to issue #206, each with an explicit, distinct reason for
+staying unfiled.
+
+**atprotocol's observation, judged working-as-designed**: while porting
+a fixed 12-concern architectural responsibility-boundary table to
+Kotoba, the migration noted that `kotoba-lang/compiler`'s `=` operator
+types its result as `:i64`, not `:bool` -- so a function declared to
+return `:bool` that computes a bare `(= a b)` needs an explicit
+`(if (= a b) true false)` wrapper to type-check. The addendum records
+this plainly as "noted (not filed, working-as-designed)" -- a
+deliberate judgment call that this is intended compiler behavior, not a
+defect, distinct from how the same team has handled genuine bugs
+elsewhere.
+
+**actor-ipc's observation, still unresolved and explicitly flagged as
+not-yet-isolated**: while porting a fixed-timestep game-clock module (4
+fields, ported from the original Rust `kami-engine/kami-core`
+`src/time.rs`), a single deeply-nested (~15 levels) `let`/`if` check
+function failed to compile with `"let requires one result expression"`
+-- at a diagnostic span that did not correspond to any actual
+multi-body `let` in the source. Worked around by flattening into 4
+shallowly-nested top-level check functions (not a rewrite of logic, a
+restructuring), verified against both the original legacy test (6
+tests/19 assertions) and an independently Python-reimplemented
+arithmetic check of the wraparound-at-2^32 boundary cases. The addendum
+records this as "hit and worked around a compiler quirk along the way
+(not filed, precise trigger not conclusively isolated)" -- an honest
+statement that the team doesn't yet understand this well enough to file
+a precise bug report, distinct from choosing not to file a known,
+well-understood issue.
+
+**Both migrations otherwise succeeded cleanly**: atprotocol's own local
+test run couldn't execute (an unresolvable `:local/root` sibling
+dependency in an isolated review checkout) but the hosted CI job, which
+clones the sibling, passed the full legacy suite -- the addendum
+explicitly notes this gives "stronger confirmation than the local
+read-only check," an honest calibration of evidence strength rather
+than treating all passing signals as equal. actor-ipc's case A matched
+its own legacy test verbatim, with cases B/C and the 2^32 wraparound
+boundary independently re-derived before compiling, not just trusted
+from the original.
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607202200-kotoba-sovereign-source-and-cljc-fleet-migration.edn` (re-read for its 2 newest `:qualified-evidence` entries, past findings 94/115's own last reads) + independent `gh api repos/kotoba-lang/atprotocol/pulls/1` and `repos/kotoba-lang/actor-ipc/pulls/1` (both confirmed real, merged 2026-07-23T11:05:27Z and 2026-07-23T11:38:29Z respectively, matching the ADR's own cited timestamps), 2026-07-23.
+
+**Source**: `90-docs/adr/2607202200-kotoba-sovereign-source-and-cljc-fleet-migration.edn` (com-junkawasaki/root) `:qualified-evidence` entries for `kotoba-lang/atprotocol` PR #1 and `kotoba-lang/actor-ipc` PR #1, 2026-07-23.
+
+**Interpretation**: extends findings 94/115's own compiler-defect tracking with a category those findings hadn't yet captured -- not every real compiler oddity found during this fleet's ongoing migration work gets filed as a formal issue, and the team's own stated reasons for not filing are themselves informative and honestly differentiated (one confidently judged intentional, one honestly admitted not-yet-understood) rather than uniformly deferred or uniformly dismissed. This is a subtly different register of the same zero-fabrication discipline this catalog has traced through this exact compiler across findings 94/108/115/116/118: not just "report the bug precisely," but "be equally precise about WHY something isn't being reported as a bug." A live, still-open question this catalog is not equipped to resolve: whether the actor-ipc `let`/`if` diagnostic-span quirk shares a root cause with any of issue #206's own 4 open bugs (all involve typed-Wasm lowering in some form) -- flagged, not guessed at, consistent with this catalog's own established boundary around compiler-internals questions.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
