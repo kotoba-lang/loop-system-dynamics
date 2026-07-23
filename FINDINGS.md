@@ -7385,6 +7385,53 @@ exercised against the live server as of that PR).
 
 **Interpretation**: a genuinely rich addition to this catalog's own kawaraban/aozora.app thread (findings 91/95/108/120), distinct from every prior entry in it -- and a particularly clean demonstration of layered honest engineering discipline: bug 1's diagnosis explicitly ruled out the scarier hypothesis (auth failure) before accepting the mundane one (buffer size) by testing rather than guessing; bug 2's fix was deliberately structural (all 9 fields) rather than a point patch for the 2 fields that happened to fail this time; bug 3 is a genuinely humbling real-world example of how a fix can introduce its own bug, caught only because the regression test asserted a specific value rather than mere non-failure -- worth remembering as a concrete argument for precise test assertions, not a hypothetical one. Not yet independently confirmed by this analysis: whether the delete-then-recreate remediation (PR #15) has since actually been run against the live corrupted record -- the PR's own text explicitly states no real network calls were made in that PR's own session, leaving that as an open, undetermined next step rather than assumed complete.
 
+## 124. Finding 120's kototama timeout fix reaches its first real consumer, days into live launchd operation -- and adopting it surfaced a second, independent silent-data-loss bug in the same code path
+
+Finding 120 documented `kototama` PR #52 (configurable HTTP timeout,
+merged 2026-07-23T10:57:02Z), noting its own production incident was
+observed via `kawaraban`'s real launchd daemon logs but stopping there.
+Checking `etzhayyim/com-etzhayyim-kawaraban` for newer activity found
+the direct sequel: PR #16 ("configurable HTTP timeout + publish-gated
+high-water-mark," independently confirmed real and merged
+2026-07-23T11:11:24Z, ~14 minutes after kototama's own fix), the actual
+first real consumer opting into the new capability, governed by a
+fresh ADR (`2607232009`, independently confirmed real, explicitly
+`:adr/related` to both this ADR and kototama's own
+`2607231955-kototama-configurable-http-timeout.edn`) -- landing "post-
+go-live... after the launchd daemon ran live against pds.aozora.app for
+a few days," i.e. real production operating time, not a same-session
+follow-up.
+
+**Adopting the fix, precisely**: kawaraban opts into the new
+`:http-connect-timeout-ms`/`:http-request-timeout-ms` HostCaps keys at
+20 seconds (overridable via `KAWARABAN_WASM_HTTP_TIMEOUT_MS`),
+replacing the implicit 5s default that a real 30s raw `HttpClient`
+retry had already confirmed would have succeeded -- while explicitly
+NOT touching kototama's own global default, so every other caller of
+that shared HTTP layer is unaffected, exactly the narrow-scoping
+discipline finding 120 already found in the fix's own origin.
+
+**A second, independent bug found in the same pass, distinct from the
+timeout itself**: `process-outlet-records!`'s high-water-mark
+(`:new-mark`) previously advanced unconditionally past every
+gate-passed record's timestamp, regardless of whether that record
+actually published successfully -- meaning any article that failed to
+publish (for example, from the exact timeout bug just fixed) was
+**silently and permanently dropped**, since the mark had already moved
+past it and nothing would ever retry it. Fixed to advance only past
+articles that were actually published this run. The PR's own text
+notes this mirrors a pattern `cloud-itonami.media.batch` already gets
+correct (`advance-marks`), and explicitly scopes out a related-but-
+separate policy in `run_live_ingest.clj`, flagging it as a possible
+follow-up rather than silently expanding scope. 141 tests/304
+assertions, 0 failures, 0 new lint findings.
+
+**Evidence**: `gh api repos/etzhayyim/com-etzhayyim-kawaraban/pulls/16` (full PR body read directly, independently confirmed real and merged 2026-07-23T11:11:24Z) + `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607232009-kawaraban-wasm-orchestrator-reliability-fixes.edn` (full ADR read, confirming the `:adr/related` cross-links to both kototama's own timeout ADR and this catalog's already-tracked kawaraban Phase H go-live ADR), 2026-07-23.
+
+**Source**: `etzhayyim/com-etzhayyim-kawaraban` PR #16 (merged 2026-07-23T11:11:24Z) + `90-docs/adr/2607232009-kawaraban-wasm-orchestrator-reliability-fixes.edn` (com-junkawasaki/root) + `90-docs/adr/2607231955-kototama-configurable-http-timeout.edn`, 2026-07-23.
+
+**Interpretation**: closes the loop this catalog's own finding 120 left open (a fix landing in kototama, whose real-world trigger was observed via kawaraban's own logs, without yet checking whether kawaraban itself adopted it) -- confirming the fix reached its actual intended consumer within hours, after real multi-day production operation surfaced the need. The silent-data-loss bug found alongside it is a genuinely distinct, separately-worthwhile catch: a high-water-mark that advances on gate-pass rather than actual-success is a subtle, easy-to-miss failure mode (the system LOOKS like it's making progress -- the mark keeps moving forward -- while quietly losing content), and the fix's explicit citation of an already-correct sibling pattern (rather than reinventing the logic) is a small, honest instance of reusing verified design rather than improvising a new one under pressure. This is another distinct real production incident in the growing set this catalog has traced across the kawaraban/kototama/aozora.app chain (findings 91/120/123/124), each independently verified, none overlapping in root cause.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
