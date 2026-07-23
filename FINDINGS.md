@@ -7319,6 +7319,72 @@ wasm32-browser reproduces the same bug or fails differently").
 
 **Interpretation**: extends this catalog's own compiler-defect thread with a bug the prior findings hadn't yet captured -- not just "another bug of the same kind" but a genuinely distinct failure mode (silent semantic miscompilation vs. loud compile/instantiate rejection) that the source's own reporting explicitly names as more dangerous, not merely different. The same honest-scoping discipline holds: the workaround is precisely described (a rename, not a rewrite), and the report is explicit about what was NOT checked (the wasm32 target) rather than implying broader verification than actually happened. This bug, plus issue #206's 4 bugs, plus the 2 unfiled quirks from finding 118, brings this catalog's own running tally of distinct, independently-verified `kotoba-lang/compiler` defects/observations discovered during this single fleet-migration wave to 7 -- none yet fixed, none yet connected to a common root cause, a question this catalog continues to appropriately leave to people with actual compiler-internals expertise.
 
+## 123. A real go-live diagnostic session against production pds.aozora.app found and fixed 3 distinct real bugs -- a silent-overflow-masquerading-as-refusal, a live memory-corruption incident, and a bug caught only because a regression test asserted the specific value -- plus a real remediation module to fix the already-corrupted live record
+
+Continuing this catalog's own extensive tracking of the
+kawaraban/kototama/aozora.app chain (findings 91/95/108/120), checking
+the `adr-ledger.edn` (not yet checked this cycle) found 2 fresh
+amendment entries -- both from a real "go-live diagnostic" run
+2026-07-23 against the actual live production PDS -- describing 3
+distinct bugs, none previously covered by this catalog. Independently
+verified all 4 cited `etzhayyim/com-etzhayyim-kawaraban` PRs (#12-15)
+real via `gh api`, matching the ledger's own account exactly.
+
+**Bug 1: a silent buffer overflow indistinguishable from a real
+refusal**: `aozora_create_session.kotoba`/`aozora_create_record.kotoba`'s
+response-pointer buffer (512 bytes) was too small for real AT-Proto
+responses -- `kototama.tender`'s `write-bytes!` silently returns `-1`
+on overflow, with no signal distinguishing "the buffer was too small"
+from "the server refused the call." The diagnostic first empirically
+confirmed the entire protocol chain (CACAO self-mint -> wire-encode ->
+`createSession`) was ALREADY working correctly end-to-end against the
+live server (a genuine 694-byte response, real `accessJwt`/
+`refreshJwt`) before concluding the `-1` was purely a buffer-size
+artifact, not an auth or wire-format failure -- ruling out the more
+alarming explanation before accepting the mundane one. Fixed by
+widening the buffer 512 -> 2048 bytes (PR #13).
+
+**Bug 2: a real, live-observed data-corruption incident, not a
+hypothetical one**: a genuinely published record
+(`rkey art.outlet.bbc-world.1784766113`) was found live with control
+bytes embedded mid-URL -- a real 78-byte BBC article URL had exceeded
+`record.cites.0.url`'s 64-byte field width and was written RAW with no
+truncation, corrupting the NEXT field's length header. Root cause:
+unlike the already-correctly-truncated headline/analysis field, the
+`cites0`/`cites1` fields had no bound check at all in
+`write-record-field!`. Fixed structurally, not just for the 2 fields
+that happened to overflow: `write-record-field!` now requires and
+enforces a `max-bytes` parameter (via `truncate-utf8`) for every one of
+9 fields, closing the entire bug class at once (PR #14).
+
+**Bug 3: a second, independent bug introduced by the fix for bug 2,
+caught only by a precise regression test**: the fix's own new code
+shadowed `clojure.core/identity` with a function parameter of the same
+name, so `(keep identity [...])` silently performed a key lookup into
+the shadowing `identity` value instead of filtering -- always returning
+empty for `:truncated-fields`. The ledger's own text states plainly
+this "was caught only because a new regression test asserted the
+specific field, not merely that the call didn't error" -- an explicit,
+honest acknowledgment that a weaker test (checking only "no exception
+thrown") would have missed this entirely. Fixed in the same PR (#14).
+
+**A real remediation module, closing the loop on the already-corrupted
+live data**: because AT-Proto's `createRecord` against an existing
+`rkey` doesn't cleanly overwrite in place (independently confirmed via
+`gh api`: it hits an `HttpTimeoutException`, not a clean 200/409), a
+new `wasm/aozora_delete_record.kotoba` module implementing
+`com.atproto.repo.deleteRecord`'s real flat body was built specifically
+to delete-then-recreate the corrupted record (PR #15, 140 tests/302
+assertions, 0 failures, "no real network calls made in this session" --
+an honest disclosure that the delete/recreate itself was not yet
+exercised against the live server as of that PR).
+
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr-ledger/adr-ledger.edn` (both amendment entries read in full, `:event/seq 33` and `34`) + independent `gh api repos/etzhayyim/com-etzhayyim-kawaraban/pulls/{12,13,14,15}` (all 4 confirmed real and merged, matching the ledger's own cited PR content and file lists), 2026-07-23.
+
+**Source**: `90-docs/adr-ledger/adr-ledger.edn` (amendments to `adr-2607231711-kawaraban-kotoba-wasm-phase-h-production-url-golive`, both dated 2026-07-23) + `etzhayyim/com-etzhayyim-kawaraban` PRs #12-15, 2026-07-23.
+
+**Interpretation**: a genuinely rich addition to this catalog's own kawaraban/aozora.app thread (findings 91/95/108/120), distinct from every prior entry in it -- and a particularly clean demonstration of layered honest engineering discipline: bug 1's diagnosis explicitly ruled out the scarier hypothesis (auth failure) before accepting the mundane one (buffer size) by testing rather than guessing; bug 2's fix was deliberately structural (all 9 fields) rather than a point patch for the 2 fields that happened to fail this time; bug 3 is a genuinely humbling real-world example of how a fix can introduce its own bug, caught only because the regression test asserted a specific value rather than mere non-failure -- worth remembering as a concrete argument for precise test assertions, not a hypothetical one. Not yet independently confirmed by this analysis: whether the delete-then-recreate remediation (PR #15) has since actually been run against the live corrupted record -- the PR's own text explicitly states no real network calls were made in that PR's own session, leaving that as an open, undetermined next step rather than assumed complete.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
