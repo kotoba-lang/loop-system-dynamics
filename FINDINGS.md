@@ -7209,6 +7209,60 @@ failures; 0 new lint findings.
 
 **Interpretation**: a second real, independently-discovered production incident on the exact same `pds.aozora.app`/kawaraban chain this catalog already tracked once (finding 91), confirming that chain sees genuine, varied operational load rather than being a one-off. The fix discipline mirrors what this catalog has now traced across many products: solve the specific problem narrowly, name the security property that a broader fix would have weakened, and verify the byte-identical-default claim rather than asserting it. A useful data point for this catalog's own PR #51 (still open, in the same repo, on the security-adoption declaration gap) -- this PR shows the same team continuing to ship real, carefully-scoped fixes to this exact area of the codebase while that separate declaration gap remains unaddressed, suggesting the gap is a documentation/tracking lag rather than an indication the team is inattentive to this repo's security posture generally.
 
+## 121. cloud-murakumo's own growth-loop ADR was self-corrected the same day it was written, merging 2 recommendations into a sharper one -- and this catalog's own existing entity data (added by a concurrent session) is now precisely 86 minutes stale as a direct result
+
+A concurrent session's own work this cycle (finding 113's context
+already noted the leverage-ranking stock as "the concurrent session's
+own meta-analysis") added `:decentralized-network-comparator-leverage-
+ranking` to this catalog's `:cloud-murakumo` entity, based on
+`gftdcojp/cloud-murakumo`'s `docs/adr-operator-dynamics-loop-
+integration.md` -- a real, computed (not hand-waved) comparative
+system-dynamics analysis of how Bitcoin, Ethereum, Helium, Bittensor,
+Render, Akash, and io.net grew, run through `kotoba-lang/dynamics`'s
+`loop-structural-strength`/`rank-interventions` per this workspace's
+own ADR-2607203000 mandate. Reading that ADR directly for the first
+time (rather than only the meta-level ranking stock) found it was
+itself amended, same-day, in a way that makes one specific field of
+this catalog's own existing data stale.
+
+**The correction, read in full**: item 3 of the original decision list
+("publish an open, third-party-integrable inference API standard,"
+band B, score 4.20) was corrected in an addendum stating plainly: "This
+ADR's original item 3 was written without having read [`llms.txt`],
+and incorrectly treated 'publish an open standard' as the open item" --
+`murakumo.cloud/llms.txt` already documents a live, public,
+OpenAI/Anthropic-compatible gateway with a documented
+`ANTHROPIC_BASE_URL` drop-in (independently confirmed as real by this
+catalog's own much-earlier finding 28c, which found the exact same
+`llms.txt` content directly). **The correction goes further than
+simply retracting item 3**: it reframes the real gap as manual,
+out-of-band upstream provisioning ("a human has to manually wire up
+each account's upstream after purchase") and states this is "almost
+certainly a direct contributor to item 1's own 0%-conversion finding"
+-- merging what were 2 separate recommendations (item 1: close the
+first paid loop; item 3: publish an API standard) into one sharper
+insight: the standard already exists, so the remaining leverage is
+building real self-service provisioning, not publishing anything.
+
+**This catalog's own data was caught mid-staleness, git-blamed to the
+minute**: `git log -S --date=iso` on this repo's own
+`resources/entities-seed.edn` shows the leverage-ranking stock (whose
+`:top-3-interventions` still lists `:open-inference-api-standard` as a
+separate item) was committed `2026-07-23 17:32:08 +0900` (`5ef6785`) --
+i.e. `2026-07-23T08:32:08Z` in UTC. `cloud-murakumo` PR #29's
+correction merged at `2026-07-23T09:58:30Z`, **86 minutes later**. The
+catalog's own data was accurate when written and became stale through
+no fault of its own, purely from the primary source's own honest
+same-day self-correction landing afterward -- precisely the kind of
+staleness this catalog's own discipline (findings 39/39b, 109) has
+repeatedly found and corrected in itself, not assumed away.
+
+**Evidence**: `gh api repos/gftdcojp/cloud-murakumo/pulls/29` (correction PR read directly) + `gh api repos/gftdcojp/cloud-murakumo/contents/docs/adr-operator-dynamics-loop-integration.md` (full 238-line ADR read, both the original decision list and the addendum) + `git log -S':decentralized-network-comparator-leverage-ranking' --date=iso` on this repo's own `resources/entities-seed.edn` (confirming the stock's own commit timestamp), 2026-07-23.
+
+**Source**: `gftdcojp/cloud-murakumo` `docs/adr-operator-dynamics-loop-integration.md` (amended 2026-07-23) + PR #29 + this repo's own git history, 2026-07-23.
+
+**Interpretation**: a real instance of this catalog's own standing discipline applied to itself again -- not a large error, a single stale field in one stock, caught by reading the primary source directly rather than trusting the meta-level summary a concurrent session had already recorded. Worth recording precisely rather than silently editing the stale field away, consistent with how findings 39/39b handled a similar self-correction: the original data was not wrong when written, the source moved, and the catalog's own honesty requires saying so rather than quietly updating without a trace. Separately, the correction itself is a genuinely well-reasoned piece of real product strategy: recognizing that 2 recommendations are actually 1 sharper recommendation is exactly the kind of insight a comparative analysis is supposed to produce, and the source caught it on its own initiative rather than needing this catalog (or anyone else) to point it out.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
