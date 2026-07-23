@@ -6190,6 +6190,49 @@ not just a design claim.
 
 **Interpretation**: a second real instance, independently spot-verified and unrelated in subject to finding 101, of the same day's work applying this workspace's own governing disciplines correctly under real constraints -- honestly marking a genuinely unmeasured axis rather than fabricating a plausible-sounding coverage number for it, and explicitly rejecting a more elaborate implementation (new registry, cache index) the owner's original framing might have invited, in favor of the minimal correct one. Consistent with, and a fresh instance of, the same "don't over-engineer / don't fabricate what you haven't measured" pattern already documented dozens of times across this catalog's earlier findings, now confirmed in a domain (sanctions/shadow-fleet tracking) this catalog had not previously touched.
 
+## 103. Completing finding 92's own coverage of the SAME club-shinshi commit: the half it didn't dig into -- an independently-verified, concrete production-risk gap: two D1 migrations its own worker code still depends on are missing from the repo
+
+**Self-check first**: before writing this up, grepped this catalog's
+own FINDINGS.md for "club-shinshi" and found finding 92 already read
+`jk-luxury/club-shinshi-app` commit `50c1334394` ("correct prior pass,
+provision live EXOCLICK_API_TOKEN, flag missing compliance/ocel
+migrations", 2026-07-22) -- but finding 92's own evidence text covers
+ONLY the ExoClick/H1-H2 correction half of that commit's title; the
+second half the title itself names ("flag missing compliance/ocel
+migrations") was never actually dug into. This finding completes
+coverage of the SAME already-read commit, independently verifying the
+half finding 92 left uncovered, rather than presenting it as a fresh
+discovery.
+
+**What the uncovered half says, and what independent verification
+adds to it**: the same commit's diff states that migrations
+`0004_compliance.sql` (creating `compliance_report`) and
+`0005_ocel.sql` (creating `ocel_event`) -- both previously logged in
+this repo's own kaizen notes as "出荷済" (shipped) -- do not actually
+exist in this repo's own migrations directory, hypothesized as lost
+during an earlier "west抽出" (west-extraction) migration.
+**Independently verified via `gh api .../git/trees/main?recursive=true`**:
+the real migration sequence is `0001_shinshi.sql, 0002_comic.sql,
+0003_telemetry.sql, 0004_hotel_review.sql, 0006_actress_gender.sql,
+...` -- 0004 is a DIFFERENT migration (hotel_review, not compliance)
+and 0005 is entirely absent from the sequence, exactly as the commit
+claims. **Independently verified the other half of the risk too**:
+`grep`ing the live `d1_gateway.cljs` source shows it still contains
+real SQL (`INSERT INTO ocel_event`, `SELECT * FROM compliance_report`,
+`UPDATE compliance_report SET`...) wired to callable ops
+(`set_compliance_report`, `list_compliance_reports`, `ocel_events`) --
+meaning invoking those ops against the real production D1 database
+would very plausibly throw a missing-table error, UNLESS those tables
+were created by some out-of-band migration never captured in this
+repo (which the commit itself flags as "未検証、要フォローアップ" --
+unverified, needs follow-up -- rather than asserting either outcome).
+
+**Evidence**: `gh api repos/jk-luxury/club-shinshi-app/commits/50c13343` (full patch read) + independent `gh api repos/jk-luxury/club-shinshi-app/git/trees/main?recursive=true` (confirming the real migration file sequence matches the commit's claim exactly) + independent `gh api .../contents/appview/ai-gftd-wasm-shinshi-sh1n5h1x/cljs/src/shinshi/worker/d1_gateway.cljs` (confirming live SQL references to both allegedly-missing tables), 2026-07-23.
+
+**Source**: `jk-luxury/club-shinshi-app` commit `50c13343` (2026-07-22) + direct tree/file reads, 2026-07-23.
+
+**Interpretation**: this catalog's own self-check habit (grep FINDINGS.md before writing) caught a near-duplicate before it happened and instead produced a more complete result: finding 92 already established the ExoClick-correction half of this commit was real and verified; this finding independently confirms the migration-gap half is ALSO real, going a step further than finding 92 did by verifying both the claimed absence (via the tree listing) and the claimed live dependency (via the worker source) rather than taking the commit's own self-report at face value. This is a real, concrete, currently-open production risk on a live-deployed product (`magatama-sh1n5h1x` Worker) that neither finding 92 nor the source repo's own commit message fully resolves -- the commit itself is honest that the production impact is unconfirmed, and this analysis's independent verification narrows but does not close that uncertainty (confirming the code-level dependency exists; not confirming whether the tables happen to already exist in production D1 via some untracked path). Consistent with this catalog's now well-established pattern of finding genuine value in verifying rather than merely summarizing other teams' own self-reported work, and in checking its own prior coverage before treating something as new.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
