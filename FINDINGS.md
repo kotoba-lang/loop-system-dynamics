@@ -5854,6 +5854,85 @@ rather than silently overwriting it, so the correction itself stays
 visible -- the same practice already used for findings 73/85's own
 self-corrections.
 
+## 97. Finding 95's kototama capabilities, one day and one commit later: real downstream consumption by an etzhayyim actor, with an unusually honest engineering disclosure -- including one genuinely NEW language-limitation finding
+
+Finding 95 read ADR-2607231022 (kototama's http-fetch/cbor-encode/
+json-encode/json-extract-field capability wave) and its own text
+mentioned, only in passing, a planned future actor ("kawaraban/
+cloud-itonami, 別セッションで後続実装" -- a separate future session).
+Checking etzhayyim's most-recently-pushed repos this cycle found
+`etzhayyim/com-etzhayyim-kawaraban` (aozora.app's existing news-actor,
+live since 2026-06-24, unrelated to cloud-itonami despite the shared
+name) pushed 9 minutes before this check, merging PR #9 ("kotoba-wasm
+componentization Phase B -- CACAO self-mint + aozora XRPC") -- real,
+immediate downstream consumption of the exact capabilities finding 95
+was reading about, landing barely a day after ADR-2607231022 itself.
+
+**What's real**: 3 `.kotoba` modules compiled to actual `.wasm` and
+checked in (`cacao_self_mint.wasm`, `aozora_create_session.wasm`,
+`aozora_extract_session_fields.wasm`), each hosted and run against a
+real Chicory `Instance` via `kototama.tender` -- the same pipeline
+finding 95's own subject matter (`kotoba wasm emit` -> `kototama.tender`)
+established, now with a concrete new consumer. `MATURITY.md` claims
+`clojure -M:test` 29 tests / 56 assertions, 0 failures (20/46
+pre-existing + 9/10 new). Unlike finding 95's kototama check, this
+repo has NO hosted CI configured at all (`gh api .../workflows` 404s,
+`gh pr view --json statusCheckRollup` returns empty) -- so unlike
+finding 95, there was no independent CI result to cross-check this
+claim against; this analysis is limited to reading the diff and
+README directly, a materially weaker verification than finding 95's
+own CI-based catch. Recorded as an honest limitation, not glossed
+over.
+
+**The wasm/README.md's own disclosure is unusually rigorous**: a
+'Language-limitation findings' section lists 6 concrete gaps (no
+runtime string construction beyond compile-time literals, 0-arity-only
+`main`, no i64 division/mod, http-post/http-fetch have no header
+parameter, did:key/graph-cid needs bignum bit-packing deemed
+disproportionate effort for this pass) -- 5 of which it explicitly
+says were independently reached before by 3 sibling wasm ports
+(cloud-itonami-isic-6310/-6419/-6511's own achievement_band/
+iban_checksum/underwriting_decision modules) and are being
+re-confirmed, not discovered fresh. **One IS new**: `cbor-encode`/
+`json-encode` only produce a FLAT single-level map, but the real
+CACAO wire format (`kawaraban.cacao/->wire`) is nested
+(`{\"h\":{...},\"p\":{...},\"s\":{...}}`) -- so `cacao_self_mint.kotoba`'s
+CBOR output is explicitly labeled a 'flat approximation,' useful only
+to prove the capability chain runs end-to-end, 'NOT wire-compatible
+with a real CACAO-verifying server.' The README is equally direct
+about `http-post` targeting loopback ON PURPOSE (SSRF-denylist proof,
+not a live round trip, 'No internet access happens anywhere in this
+port's test suite') and about what was deliberately NOT ported
+(RSS/Atom fetch+parse, the G1/G3/G4 charter gates in
+`methods/ingest.cljc` -- both left completely untouched, explicitly
+not weakened or reimplemented).
+
+**Evidence**: `gh api orgs/etzhayyim/repos?sort=pushed` (2026-07-23) +
+direct reads of PR #9's file list, `wasm/README.md` (full), and
+`MATURITY.md`'s new dated entry, all from
+`etzhayyim/com-etzhayyim-kawaraban`, 2026-07-23. Cross-checked CI
+existence via `gh api .../workflows` (404) and
+`gh pr view --json statusCheckRollup` (empty) -- confirmed absence,
+not just absence-by-omission.
+
+**Source**: `gh api repos/etzhayyim/com-etzhayyim-kawaraban/{commits,pulls/9,contents/wasm/README.md,contents/MATURITY.md}`, 2026-07-23, following up directly on this catalog's own finding 95.
+
+**Interpretation**: a real, fast, healthy propagation chain --
+capability lands in kototama (ADR-2607231022, finding 94/95's own
+subject) -> a real consumer actor adopts it one day later with an
+honest, scoped port and a precise account of exactly where the port
+falls short of production fidelity (the flat-CBOR/nested-CACAO gap is
+the kind of finding that would be easy to silently paper over, and
+wasn't). This is a genuinely different, more positive data point than
+finding 95's own undisclosed-CI-failure finding about the SAME
+capability wave's origin repo -- both are true simultaneously: the
+capability's origin repo (kototama) has an undisclosed, ongoing
+compliance-gate failure, while its first real downstream consumer
+(kawaraban) shipped an unusually well-disclosed, honestly-scoped
+integration. Neither fact cancels the other; recording both keeps the
+picture accurate rather than flattening a mixed reality into a single
+verdict.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
