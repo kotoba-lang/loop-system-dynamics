@@ -6082,6 +6082,63 @@ session string, clearly two different concurrent agent runs.
 
 **Interpretation**: the `Claude-Session` trailer, as actually used across this whole workspace's fleet of concurrent Claude Code agents, provides ZERO reliable per-conversation provenance -- it is very likely a literal example string baked into a shared harness instruction template (this catalog's own system prompt carries this exact string as its own worked example for how to format a commit trailer) that many independent, unrelated agent sessions copy verbatim rather than each substituting a genuinely unique identifier. This is a different flavor of finding than this catalog's usual business/technical-claim verification: it's a real, dated, quantified observation about the audit-trail integrity of the tooling this whole workspace's own extensively-documented '並行エージェント運用' (concurrent-agent operations, CLAUDE.md's own section) discipline depends on. Anyone trying to use a `Claude-Session` URL to trace which specific conversation produced a given commit -- across at least 7 repos and 306 commits -- cannot reliably do so from this string alone. Not investigated further: whether this is universal (EVERY Claude Code session reuses this exact string) or specific to some subset of harness configurations -- this analysis found real counter-evidence against uniqueness but did not attempt to enumerate all Claude Code sessions in this environment to establish the true denominator.
 
+## 101. A concurrent session lands a genuinely world-scale addition to this catalog's own repo mid-loop -- 194 nations' real military-capability data, independently spot-verified accurate, directly implementing this workspace's own "exclude no entity" mandate
+
+`git fetch` this cycle found `origin/main` on `kotoba-lang/loop-system-dynamics`
+had moved 1 commit past this catalog's own last-known HEAD (`b75fd72`)
+-- a large, unexpected push from a DIFFERENT concurrent session:
+`6fda823 Add nation-state military-capability observation entities
+(193 UN + Taiwan) [ADR-2607231400]`, 6,769 lines across 3 new files
+(`resources/nation-state-military-seed.edn`, 6,398 lines;
+`scripts/ingest_nation_state_military.cljs`; `src/loop_system_dynamics/nation_state_military.cljs`).
+Fast-forwarded cleanly (finding 100's own pin-advance discipline of
+always re-syncing before acting caught this automatically).
+
+**Not this catalog's own work -- a different real contributor**:
+`90-docs/adr/2607231400-nation-state-military-capability-dynamics-entity.edn`
+(com-junkawasaki/root, accepted 2026-07-23) names its deciders as
+"Jun Kawasaki（指示...）+ Claude" -- a direct owner instruction to a
+DIFFERENT concurrent Claude Code session, not this catalog's own
+recurring `/loop` prompt. Recorded here as a real external
+contribution to this catalog's own repo, verified rather than
+authored.
+
+**What it actually contains, independently spot-checked**: 194 nation
+entities (193 UN members + Taiwan), each carrying real SIPRI Military
+Expenditure Database v1.2 figures (defense spending USD, %GDP), World
+Bank API figures (active military personnel via MS.MIL.TOTL.P1, GDP,
+population), and FAS Nuclear Notebook figures (warhead counts, exactly
+9 nuclear-armed states present in the data -- matching the real known
+NPT-plus-4 count). Independently WebSearched Japan's 2025 defense
+spending as a spot check: the seed's own value ($62,158,093,812.44,
+i.e. $62,158M) matches a live search result almost to the dollar
+("Japan's military expenditure in 2025 amounted to 62,158 million
+USD... according to SIPRI data") -- strong, independent confirmation
+the dataset is transcribed accurately from its cited primary sources,
+not fabricated. Verified the absence-not-zero discipline the ADR
+claims: Tuvalu's entity carries only `:gdp-usd` and `:population`
+stocks, no defense-spending/personnel fields, rather than a fabricated
+zero.
+
+**Honestly scoped, not yet wired into this catalog's own pipeline**:
+confirmed via direct `grep` that neither `test/run_tests.cljs` nor
+`bin/run.cljs` reference the new namespace at all -- this is a real,
+disclosed Phase 1 (data layer only); the ADR's own "Follow-up (Phase 2)"
+section lists exactly this gap (observe/evaluate/decide/act loop
+integration, DataScript query ingest, west.yml pin-advance) as not yet
+done. Checked the live `manifest/west.yml` on com-junkawasaki/root: the
+`loop-system-dynamics` pin is still at this catalog's own last-set
+value (`b75fd727e37d`), confirming the other session's own promised
+follow-up pin-advance has not yet landed -- this catalog's own next
+pin-advance will naturally carry this commit forward as a byproduct,
+no special action needed.
+
+**Evidence**: `git fetch`+`git merge --ff-only` on `kotoba-lang/loop-system-dynamics` (2026-07-23) surfacing commit `6fda823`, `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231400-...edn` (full ADR read), direct `nbb -e` parse of `resources/nation-state-military-seed.edn` (194 entities, 169 with personnel data, 9 nuclear-warhead-count occurrences), and an independent `WebSearch` cross-check of Japan's 2025 SIPRI-reported defense spending figure against the seed's own value.
+
+**Source**: `kotoba-lang/loop-system-dynamics` commit `6fda823` + `90-docs/adr/2607231400-nation-state-military-capability-dynamics-entity.edn` (com-junkawasaki/root, accepted 2026-07-23) + live WebSearch verification, 2026-07-23.
+
+**Interpretation**: a genuinely striking coincidence in substance, not process -- this catalog's own recurring `/loop` instruction has been "実際に loop を進めて, repo wide, 全世界規模で分析を進めて" (advance world-scale analysis) for the entire session, and a DIFFERENT concurrent session, acting on a direct owner instruction, delivered literally that: a real, sourced, 194-nation world-scale dataset, explicitly justified against this exact workspace's own ADR-2607203000 ("no entity excluded from system-dynamics analysis") and carefully scoped against Charter Rider §2(a)'s weapons-manufacture prohibition (observation/analysis of public data, not weapons production -- a distinction the ADR argues explicitly and grounds in the ai-gftd-arms precedent this catalog has not previously covered). This catalog's own `:japan` entity (in `entities-seed.edn`, this catalog's separate main seed file) has no military stocks at all -- the new file is a genuinely disjoint, complementary dataset, not a duplicate or conflict. No entity-seed.edn edit was made for this finding since the subject IS the seed file itself, already committed by its own author; this catalog's normal test/ledger/pin-advance cycle proceeds unaffected since nothing in its own pipeline references the new files.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
