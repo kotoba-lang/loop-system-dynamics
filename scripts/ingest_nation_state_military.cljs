@@ -111,10 +111,13 @@
           (for [r (drop 6 rows)
                 :let [nm (nth r 0 nil)]
                 :when (and (string? nm) (not (str/blank? nm)))
-                :let [pairs (map vector years (drop 2 r))]
-                :when (some #(number? (second %)) pairs)]
-            (let [[y v] (->> pairs (filter #(number? (second %))) last)]
-              [nm {:year (str (int y)) :value v}])))))
+                :let [pairs (map vector years (drop 2 r))
+                      numeric (filter #(number? (second %)) pairs)]
+                :when (seq numeric)]
+            (let [hist (for [[y v] numeric] {:as-of (str (int y)) :value v})
+                  [y v] (last numeric)]
+              [nm {:year (str (int y)) :value v
+                   :history (vec (take-last 5 hist))}])))))
 
 ;; --------------------------------------------------------------------------
 ;; World Bank: most-recent-non-nil per country iso3 (returns promise)
@@ -156,13 +159,18 @@
                 ":labor-union-dues-organizing (personnel loop).")
      :stocks (merge {}
                     (when-let [usd (:usd sipri)]
-                      {:defense-spending-usd
-                       {:value (* (:value usd) 1e6)
-                        :as-of (:year usd)
-                        :unit "USD (current prices & exchange rates)"
-                        :source (str "SIPRI Military Expenditure Database, 'Current US$' sheet "
-                                     "(values in US$ m. -> USD), v1.2, " SIPRI-XLSX-URL
-                                     ", retrieved " RETRIEVED " (downloaded xlsx; may include SIPRI estimates)")}})
+                      (merge
+                       {:defense-spending-usd
+                        {:value (* (:value usd) 1e6)
+                         :as-of (:year usd)
+                         :unit "USD (current prices & exchange rates)"
+                         :source (str "SIPRI Military Expenditure Database, 'Current US$' sheet "
+                                      "(values in US$ m. -> USD), v1.2, " SIPRI-XLSX-URL
+                                      ", retrieved " RETRIEVED " (downloaded xlsx; may include SIPRI estimates)")}}
+                       (when (>= (count (:history usd)) 2)
+                         {:defense-spending-usd-history
+                          (for [{:keys [as-of value]} (:history usd)]
+                            {:as-of as-of :value (* value 1e6)})})))
                     (when-let [gshare (:gdp sipri)]
                       {:defense-spending-share-of-gdp-pct
                        {:value (* (:value gshare) 100)
