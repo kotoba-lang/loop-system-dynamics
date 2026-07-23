@@ -5667,6 +5667,67 @@ concrete GTM plan with real, measurable phase gates, paired with an
 explicit refusal to advance the score speculatively before those
 gates are actually met.
 
+## 94. Deepening finding 80's own coverage of the fleet-migration ADR one level: two real, precisely reproduced Kotoba compiler bugs, found and worked around during a real, successful migration -- not cloud-itonami this time, but the same governing document
+
+Finding 80 read `ADR-2607202200` (the master fleet-migration ADR) for
+its census of cloud-itonami's classification repos. This cycle
+checked the SAME document's latest update (PR #1110, "record
+mining-pool bounded vardiff profile + compiler bugs") and found it
+now records something finding 80 didn't cover: 2 real, precisely
+characterized bugs in `kotoba-lang/compiler` itself, discovered while
+migrating `kotoba-lang/mining-pool/src/mining_pool/vardiff.cljc` --
+a real Stratum mining-pool variable-difficulty algorithm, unrelated to
+cloud-itonami but governed by the same ADR and gap-dispositions
+ledger.
+
+**Compiler bug 1, reproduced down to an exact boundary**: functions
+with 5 or more `:f64`-typed parameters fail Wasm instantiation with an
+"invalid-local-index" error -- despite being within the compiler's own
+declared max-parameters admission limit, meaning the compiler's
+admission check and its actual code generation disagree with each
+other. The gap-dispositions ledger records this was "reproduced with
+minimal standalone functions down to the exact 4-vs-5 boundary,"
+tagged to a specific compiler commit SHA
+(`def5161be96d489539175813326a316da46268be`).
+
+**Compiler bug 2, with a documented, precedented workaround**:
+`kotoba.compiler.project/stub-value` has no case for `:f64`/`:f32`
+value types, so requiring a function that returns a raw `:f64` from a
+different module fails at the project-linking stage. Worked around --
+not fixed -- by keeping the kernel and its conformance tests in one
+file rather than splitting them, explicitly citing the same pattern
+already used by `pbrt`/`kami-usd-native`/`rtx-native` (repos this
+catalog's own finding 80 already knew as "already merged-and-empty"
+kotoba-lang repos, now revealed to share this specific structural
+workaround, not just an empty-shell status).
+
+**The migration itself is real and succeeded despite both bugs**:
+`mining-pool` PR #1, commit `73720fa6b8f08f9fd2cd0f6965ea215d5f1f4c08`
+-- 15 legacy tests / 29 assertions, 0 failures; hosted CI on JDK 17
+and 21, passed; a real, honest safety note explaining the one
+observable behavior change (min-difficulty is pinned to the
+Stratum-standard 1.0 floor rather than accepted as a 5th parameter,
+explicitly checked that every existing legacy test case already used
+the default of 1).
+
+**A genuinely sophisticated staged rollout visible in the same
+document's `:language-maturity` section**, worth noting in passing:
+real compiler PRs and commit SHAs for phased IEEE-754 floating-point
+type safety (`safe-f64-phase-3a`, `safe-f32-phase-3b`,
+`safe-floating-phase-4a`), each qualified only for specific targets
+(reference-executor, kotoba-script-js, typed-wasm) and explicitly
+fail-closed for others (native, cljs), with real verification counts
+(302-304 compiler tests, 3870-3885 assertions per phase).
+
+**Why this matters beyond one migrated repo**: real compiler defects
+found during migration work are foundational, not local -- they
+affect every future migration of code with the same shape (5+ f64
+params, cross-file f64-returning requires), which plausibly includes
+some fraction of the 294 still-unmigrated cloud-itonami classification
+repos finding 80 already counted. Neither bug is claimed fixed here;
+both are recorded precisely, with reproduction detail specific enough
+that a future fix attempt would not need to rediscover them.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
