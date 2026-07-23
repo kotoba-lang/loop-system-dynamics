@@ -5728,6 +5728,84 @@ repos finding 80 already counted. Neither bug is claimed fixed here;
 both are recorded precisely, with reproduction detail specific enough
 that a future fix attempt would not need to rediscover them.
 
+## 95. Following up on the SAME ADR/PR finding 94 just read one commit further: kotoba-lang/kototama's own mandatory "shared security adoption" CI gate has been continuously red for 4+ days across ~10 merged PRs, undisclosed by any of their own ADRs -- including the very one finding 94 just cited as fully passing
+
+Finding 94 read ADR-2607231022 (kototama actor:host ABI second wave --
+http-fetch/cbor-encode/json-encode/json-extract-field, PR
+kotoba-lang/kototama#49, merged 2026-07-23) and took its own claimed
+"`clojure -M:test` 130 tests / 387 assertions, 0 failures/errors" at
+face value. Checking the ACTUAL hosted CI on that same PR's merge
+commit (`0ccdafc6`) found a real, non-infra-outage failure the ADR
+never mentions: the `CLJC contract gate` job's `Verify shared security
+adoption` step (`clojure -M -m kotoba.security.adoption`) fails with
+"shared security source inventory denied", causing steps 7-12 of that
+job (including `Test CLJC contract` and `Lint CLJC contract` -- the
+exact commands the ADR cites numbers for) to be SKIPPED, not run, on
+CI. The 130/387 figure the ADR states must therefore be a local-only
+run, not a CI-verified one -- true as stated, but the ADR does not
+disclose that the repo's own mandatory security gate is currently
+failing.
+
+**How long, and how widely**: walked the last 20 commits on
+kototama's `main` via `gh api .../check-runs`. The gate was green as
+of 2026-07-18 (PR #38, commit `d96f717b`). It turned red somewhere in
+a two-commit window on 2026-07-19 ("harden transport provider
+security" then "pin shared security dependency", commit `2eca7fe6`)
+and has stayed red on every commit since -- 0ccdafc6 is at minimum the
+11th consecutive red commit, spanning PRs #39 through #49 (~4 days).
+The `2eca7fe6` diff (1 file, `deps.edn`) changed kototama's
+`io.github.kotoba-lang/security` dependency from `{:local/root
+"../security"}` to a pinned `:git/sha`. Separately, `security-adoption.edn`
+(the config the check actually validates against) carries its OWN
+independent `:security/git-sha` pin, currently `c83183f7` (a real
+kotoba-lang/security commit from 2026-07-20, "Bind authorized decision
+to effect grant") -- confirmed this is the exact commit the CI log
+shows being cloned and checked out at verification time. The
+`kotoba.security.adoption/verify!` source (read directly from
+`kotoba-lang/security`) throws this specific message only for one of
+three `inventory-violations` categories (`:unregistered-security-importers`,
+`:stale-security-entrypoints`, `:source-control-edge-mismatch`) --
+which of the three was NOT pinned down (the full violation report is
+written to an ephemeral `/tmp/clojure-*.edn` on the CI runner and
+never surfaced in the log or as an artifact).
+
+**Not isolated to one repo's config shape**: independently confirmed
+`security-adoption.edn` + this same `:security/git-sha`-pinning pattern
+also exists in `kotoba-lang/kotoba` (pinned to a different, older sha
+`49fc4ce3`) and `kotoba-lang/aiueos` (same `49fc4ce3`) -- a real,
+shared, multi-repo compliance mechanism, not a kototama-only
+invention. Whether kotoba's or aiueos's own equivalent gates are
+currently green was NOT checked (their top-level `check-runs` listing
+doesn't surface a separately-named security-adoption check the way
+kototama's `CLJC contract gate` job does, and confirming would require
+digging into step-level logs of a differently-named job for each --
+left unverified rather than assumed).
+
+**Not found in any tracking doc**: searched kototama's own `docs/maturity.md`
+and open issues for any acknowledgment of this specific ongoing
+failure -- found only PR #44/#45 ("Enforce shared security adoption in
+CI" / "...dependency edges"), the historical PRs that ADDED this gate
+months earlier, not anything tracking its current red state.
+
+**Interpretation**: this is a real, dated, precisely-scoped gap in the
+exact governance mechanism CLAUDE.md's own "Kotoba is safe application
+language" section describes as foundational (ambient-authority
+elimination via typed capability + policy-gated provider + audit) --
+the shared-security-adoption gate exists specifically to prevent a
+consumer repo's security-sensitive entrypoints from silently drifting
+out of sync with the canonical `kotoba-lang/security` source, and that
+exact drift-detection gate has itself been failing, unremarked, across
+~10 real merged PRs including the ADR finding 94 (and this finding)
+both treat as a clean, fully-verified capability addition. This is not
+a fabrication risk (the ADR's own claimed numbers are accurate as
+stated) but a disclosure gap: hosted CI status is directly and
+cheaply checkable (as done here) and was not checked before the ADR's
+"Consequences"/"Evidence" sections were written. Scoped honestly: the
+root violation category (which of the three `inventory-violations`
+cases) was not identified, so what exactly needs to change in
+kototama's `security-adoption.edn` to turn this gate green again is
+not yet known from this analysis alone.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
