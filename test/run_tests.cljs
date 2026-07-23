@@ -11,6 +11,7 @@
             [loop-system-dynamics.cloud-itonami-isic-isco-sysml-test]
             [loop-system-dynamics.aca-marketplace-decline-test]
             [loop-system-dynamics.cloud-itonami-leverage-test]
+            [loop-system-dynamics.cloud-murakumo-leverage-test]
             [loop-system-dynamics.etzhayyim-ai-agent-evangelism-test]
             [loop-system-dynamics.cloud-itonami-live-diff-test]
             [loop-system-dynamics.cloud-itonami-age-lag-monitor-test]))
@@ -29,6 +30,7 @@
               'loop-system-dynamics.cloud-itonami-isic-isco-sysml-test
               'loop-system-dynamics.aca-marketplace-decline-test
               'loop-system-dynamics.cloud-itonami-leverage-test
+              'loop-system-dynamics.cloud-murakumo-leverage-test
               'loop-system-dynamics.etzhayyim-ai-agent-evangelism-test
               'loop-system-dynamics.cloud-itonami-live-diff-test
               'loop-system-dynamics.cloud-itonami-age-lag-monitor-test)
