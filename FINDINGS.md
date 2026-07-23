@@ -6689,6 +6689,60 @@ append path) rather than that abandoned tool.
 
 **Interpretation**: a genuinely new domain for this catalog (real corporate/legal entity structure, not product engineering or business metrics) that materially changes the operating-entity picture this catalog's own `:club-shinshi`/`:cloud-itonami`/etc. entities have recorded up to now -- 7 products this catalog independently tracks across 2 orgs now share one real legal entity, a fact worth propagating into this catalog's own records rather than leaving stale. Also a small, honest example of a workspace-level pattern this catalog itself exhibits: an early-stage tool/directory can be abandoned while the real underlying fact it was meant to serve still gets recorded, just through a different, more durable channel (the append-only ledger) -- not every loose thread this catalog flags as "gone cold" stays cold forever, and periodically re-checking them (as this cycle did) is worth doing rather than assuming a stale finding stays true.
 
+## 112. A real, carefully-designed mutual-credit economic kernel (ENGI) landed in etzhayyim today -- alongside a real, freshly-created instance of the exact retired-tooling pattern CLAUDE.md itself warns is hard to notice
+
+Checking `etzhayyim/com-etzhayyim-credits` (an actor repo created
+2026-06-24, pushed again just hours before this check) found PR #3
+("add ENGI mutual-credit social kernel," merged 2026-07-23T02:56),
+connecting to the "ENGI"/mutual-credit business-planning documents
+this catalog has seen referenced in this workspace's own untracked
+files earlier this session but never directly read.
+
+**A real, principled economic design, independently verified against
+its own source, not just its PR description**: `methods/engi.cljc`
+implements a pure mutual-credit state machine where EN (the credit
+unit) is created ONLY by a real bilateral exchange (equal debit/
+credit between two consenting parties, both cryptographically signed)
+and retired only by exchange in the opposite direction -- explicitly
+"No administrator, treasury, token holder, or validator can mint it."
+Read the actual `establish-credit-line` function: negative-balance
+credit limits are derived from the MEDIAN of independent third-party
+endorsements (not a single authority's decision), with real
+safeguards against self-endorsement and duplicate-guarantor
+inflation. A separate, deliberately bounded "Commons issuance" path
+requires heterogeneous witness roles (`:local-community`,
+`:independent-witness`, `:commons-guardian` -- not all the same
+type of participant). Nonce/event replay is rejected. The PR's own
+"Why" section states the explicit design goal plainly: the existing
+GCC/USDC/Safe/central-ledger paths all "replace one central issuer
+with another" -- ENGI's point is specifically to avoid that. Author's
+own claimed validation: 5 tests / 23 assertions / 0 failures.
+
+**A real, dated, freshly-created instance of exactly the kind of
+tooling-compliance gap CLAUDE.md itself names as hard to notice**:
+the PR's own validation command is literally `bb run_tests.clj` --
+babashka, which CLAUDE.md's own repo-wide rule retired as a script
+host (ADR-2607173000, 2026-07-17) more than a week before this repo
+was even created (2026-06-24 predates it; this specific PR merged
+2026-07-23, well after). Verified this is not just loose PR-
+description phrasing: `run_tests.clj` genuinely contains only plain
+`clojure.test`/`load-file` calls with zero JVM-specific or babashka-
+specific code, so it would in fact run correctly under bare `bb`
+(babashka ships `clojure.test` built in) -- the claim is real, not
+imprecise. No `bb.edn` exists in the repo (consistent with not being
+a NEW bb.edn placement, but the underlying rule is broader than just
+that one file), and no CI workflow exists at all for this repo to
+catch or enforce either way -- this repo's own local `CLAUDE.md`
+copy contains zero mentions of `bb`/`nbb`/`babashka`, so nothing in
+this specific repo's own documentation would have prompted the
+correct tool choice.
+
+**Evidence**: `gh pr view 3 --repo etzhayyim/com-etzhayyim-credits` (full body) + `gh api repos/etzhayyim/com-etzhayyim-credits/git/trees/main?recursive=true` (confirming no `bb.edn`, no `.github/workflows`) + direct reads of `run_tests.clj` (confirming portable plain-Clojure content) and `methods/engi.cljc` (confirming the credit-line/replay-protection/Commons-issuance logic matches the PR's own description exactly), 2026-07-23.
+
+**Source**: `etzhayyim/com-etzhayyim-credits` PR #3 (merged 2026-07-23) + `methods/engi.cljc` + `run_tests.clj` + `deps.edn`, 2026-07-23.
+
+**Interpretation**: both halves of this finding are real and independently significant, and neither cancels the other. The economic design itself is genuinely careful, principled work directly relevant to this workspace's own extensively-referenced mutual-credit/reference-economy business planning -- worth recording as real, substantive progress in a domain (decentralized credit systems) this catalog has only touched via external comparators (Sardex, findings from earlier this session) until now, this time from inside the workspace's own actor fleet. The `bb` usage is a small but concrete, dated instance of exactly what CLAUDE.md's own text predicts: 'CCR agent が実行時に自己修復して動いてしまうため気付きにくい' (hard to notice because the agent self-heals it at runtime) -- here, no CI exists at all to even attempt that self-heal, so the gap simply sits undetected in a real, dated, currently-merged PR rather than being silently patched over. Recording it precisely (which file, which command, why it's verifiably real rather than assumed) is exactly the kind of finding this catalog exists to surface: a real, small, currently-true compliance gap in a document this workspace treats as repo-wide mandatory.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
