@@ -572,10 +572,18 @@ tool, not a silent seed-rewriter -- a real drift finding gets folded back
 into the seed by hand. First real run (2026-07-21) found 0 drift across
 all three categories: the checked-in seed and live reality matched
 exactly, live confirming all 797 isic/isco codes are now registered
-(`clear-current-backlog` landed, see above). This is one CLI invocation,
-not yet "on a schedule" (that needs external cron infra this repo doesn't
-own) -- `wire-live-observe` in `cloud_itonami_leverage.cljs` is updated to
-reflect this partial fulfillment.
+(`clear-current-backlog` landed, see above). This was one CLI invocation
+until 2026-07-24, when it was actually wired to a schedule:
+`com-junkawasaki/root/.github/workflows/cloud-itonami-live-observe.yml`
+runs this tool (report-only) and `cloud_itonami_age_lag_monitor.cljs`
+below (job-gating, exits 1 on a real stall) daily. It lives in
+`com-junkawasaki/root`, not here, because `manifest/west.yml` is private
+to that repo -- a workflow in this public repo would need a cross-repo
+secret that doesn't exist, so the workflow runs there (free access to its
+own `manifest/west.yml`) and shallow-clones this repo instead, the same
+pattern `com-junkawasaki/root`'s own `repo-reality-verify.yml` already
+uses for its external public-repo dependencies. `wire-live-observe` in
+`cloud_itonami_leverage.cljs` is now `:landed`.
 
 ## Monitor for a real stall (the fulfillment of `:automate-age-lag-monitor`)
 

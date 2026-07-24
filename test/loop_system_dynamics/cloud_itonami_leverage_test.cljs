@@ -16,6 +16,16 @@
       (is (> (:base-score (by-id :wire-live-observe))
              (:base-score (by-id :clear-current-backlog)))))))
 
+(deftest wire-live-observe-landed-despite-unrelated-ci-billing-outage-test
+  (testing "the 'needs external cron infra this repo doesn't own' framing was wrong -- com-junkawasaki/root already runs 5 scheduled workflows; a 6th (cloud-itonami-live-observe.yml) now runs this tool + automate-age-lag-monitor daily. Marked :landed on design/implementation/local-verification grounds, independent of an unrelated account-wide GitHub Actions billing outage affecting every workflow in the repo at trigger time"
+    (let [ev (leverage/evaluate)
+          by-id (into {} (map (juxt :id identity)) (:intervention-ranking ev))
+          wire-observe (by-id :wire-live-observe)
+          age-lag (by-id :automate-age-lag-monitor)]
+      (is (= :band/B (:band wire-observe)))
+      (is (= :landed (:status wire-observe)))
+      (is (= :landed (:status age-lag))))))
+
 (deftest highest-leverage-item-is-also-least-tractable-test
   (testing "reconsidering the fleet architecture (band A) is the highest possible band but this analysis assigns it the lowest tractability -- Meadows' own claim, not hidden"
     (let [ev (leverage/evaluate)
