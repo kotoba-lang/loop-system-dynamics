@@ -7720,6 +7720,57 @@ authority to arbitrate over.
 
 **Interpretation**: a genuinely new domain for this catalog in two distinct senses -- the product concept itself (affordable disinfectant commercialization for water-scarce/poor-sanitation-infrastructure markets, a real humanitarian/global-development framing this catalog hasn't encountered in 128 prior findings) and the engineering domain (industrial process control -- PID, published alarm-management standards, protocol-level SCADA observability), distinct from every web/blockchain/business-classification domain already tracked. The same zero-fabrication and safety-floor disciplines this catalog has traced across dozens of unrelated products reappear here in a genuinely different register: not "don't claim a feature works when it doesn't," but "don't let a genuinely dangerous state (an active industrial alarm) be structurally capable of looking like a clean success," and "don't let a simulation accumulate a real physical control pathway even by accident" (explicitly verified absent, not merely undocumented).
 
+## 130. The native x86-64/aarch64 compiler backend chain this catalog already tracked through ADR 0061 has moved from scalar primitives to real compound value types -- records, then sealed variants -- each proven via actual native-process execution, including a genuine defense-in-depth confirmation
+
+This entity's own already-recorded stock tracked `kotoba-lang/compiler`'s
+state-v1 capability ADR chain through ADR 0061 (PRs #197-#226).
+Checking the repo's fresh activity found the chain has continued with 2
+more real, substantive milestones: ADR 0062 ("first native scalar-record
+construction+projection," PR #230, merged 2026-07-23T10:33:14Z) and ADR
+0063 ("native sealed-variant construction+dispatch," PR #234,
+independently confirmed real and merged 2026-07-24T00:12:00Z) -- moving
+the native AOT backend (the exact ADR-2607198300 machine-code-emitting
+backend this workspace's own CLAUDE.md names as the canonical path for
+"kotoba execution finally not going through JVM/Node/Rust") from scalar
+primitives to real compound/structured value types for the first time.
+
+**Records and sealed variants both compile to zero new runtime
+machinery, by design**: both PRs' own text states the same principle --
+"no independent runtime representation" -- a record's fields or a
+variant's discriminant-plus-payload lower to synthetic 8-byte stack
+slots on the SAME existing `emit-let`/`load-let` machinery already
+proven for scalars, with "no new heap arena, no new host ABI offset,
+no `tools/kexe_loader.c` change." Dispatch over a sealed variant is
+described precisely as "a real runtime compare-and-branch chain" (`cmp
+discriminant,i ; je case_i` on x86-64, `cmp x0,#i ; b.eq case_i` on
+aarch64) for every declared case, falling through to a defensive
+`UD2`/`BRK` trap instruction if nothing matches -- and the codegen
+explicitly "never special-cases away a comparison based on a
+directly-nested `variant-new`'s literal tag being statically known,"
+meaning even a case the compiler could in principle resolve at compile
+time still gets the real runtime check.
+
+**A genuine defense-in-depth finding, not merely a feature landing**:
+the PR's own text states plainly that this repository's signing/
+execution pipeline "provably prevents an out-of-range/unrecognized
+discriminant from ever reaching real execution at FOUR independent
+layers -- frontend's own declared-tag check, this backend's own
+re-derived ordinal lookup, `verifier.cljc`'s independent re-derivation,
+and... BOTH `sign` and `verify` (the latter invoked on every execution)
+unconditionally re-run the full verifier" -- and this claim was not
+left as an assertion: the PR includes a real negative test that hand-
+feeds an out-of-range discriminant and confirms the defensive trap
+fires as actual, executed machine code via the same `kexe-loader`
+process harness every other test in the suite uses (Apple Silicon
+aarch64 run locally, x86-64 independently byte-verified plus expected
+real execution on `ubuntu-latest` CI).
+
+**Evidence**: `gh api repos/kotoba-lang/compiler/pulls/234` (full PR body read directly, independently confirmed real and merged 2026-07-24T00:12:00Z) + `gh api repos/kotoba-lang/compiler/commits` (confirming ADR 0062's own PR #230 real and merged 2026-07-23T10:33:14Z, immediately preceding this one), 2026-07-24.
+
+**Source**: `kotoba-lang/compiler` PR #230 ("Add first native scalar-record construction+projection," ADR 0062) and PR #234 ("Add native sealed-variant construction+dispatch," ADR 0063), 2026-07-23/24.
+
+**Interpretation**: a real, substantive continuation of this entity's own already-tracked native-AOT backend thread, and a genuinely new register of the zero-fabrication discipline this catalog has traced throughout this compiler's own ADR chain -- not just "the feature works," but "the safety property this feature depends on was independently proven as executed machine code, not merely argued in prose." The explicit refusal to let the codegen special-case away a statically-knowable tag comparison is a small but real instance of the same conservative, defense-in-depth-preserving discipline: a compile-time shortcut that would have been a legitimate optimization elsewhere is deliberately not taken here, because it would have weakened the very guarantee (every discriminant is checked at runtime, unconditionally) the PR spends its own effort proving.
+
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
