@@ -50,14 +50,33 @@
 
 (defn- ensure-dir! [p] (fs/mkdirSync (path/dirname p) #js {:recursive true}))
 
-(defn- fetch-json [url]
-  (-> (js/fetch url)
-      (.then (fn [^js res]
-               (if-not (.-ok res)
-                 (throw (js/Error. (str "World Bank API " (.-status res) " for " url)))
-                 (.text res))))
-      (.then (fn [^string body]
-               (js->clj (js/JSON.parse (str/replace body #"^﻿" "")) :keywordize-keys true)))))
+(defn- sleep [ms] (js/Promise. (fn [res] (js/setTimeout res ms))))
+
+(defn- fetch-json
+  "GET + parse, with bounded retry.
+
+  This endpoint intermittently answers 400 to a URL that curl fetches
+  successfully seconds later -- observed repeatedly on 2026-07-25, and it is
+  request-rate dependent rather than query dependent (the same URL succeeds
+  after a pause). Retrying with a backoff is the honest way to consume a free
+  unauthenticated public API; failing the whole 54-year pull on one throttled
+  request is not.
+
+  It also strips a UTF-8 BOM the endpoint serves, which res.json() rejects."
+  ([url] (fetch-json url 4))
+  ([url attempts-left]
+   (-> (js/fetch url)
+       (.then (fn [^js res]
+                (cond
+                  (.-ok res) (.text res)
+                  (pos? attempts-left)
+                  (-> (sleep 2000) (.then (fn [_] ::retry)))
+                  :else (throw (js/Error. (str "World Bank API " (.-status res)
+                                               " for " url " after retries"))))))
+       (.then (fn [body]
+                (if (= ::retry body)
+                  (fetch-json url (dec attempts-left))
+                  (js->clj (js/JSON.parse (str/replace body #"^﻿" "")) :keywordize-keys true)))))))
 
 (defn fetch-economies! []
   (-> (fetch-json (str api-base "/country?format=json&per_page=400"))
@@ -67,20 +86,47 @@
                                     :region (get-in c [:region :value])
                                     :income (get-in c [:incomeLevel :value])}]))))))
 
+(def page-size 5000)
+
+(defn- index-rows [acc rows]
+  (reduce (fn [a r]
+            (if (and (some? (:value r)) (not (str/blank? (:countryiso3code r))))
+              (assoc-in a [(:countryiso3code r) (:date r)] (:value r))
+              a))
+          acc rows))
+
 (defn fetch-series!
-  "One indicator across a year RANGE, as {iso3 {year value}}. The range form is
-  one request per indicator rather than one per year."
+  "One indicator across a year RANGE, as {iso3 {year value}}.
+
+  PAGINATED, and that is not defensive boilerplate. This endpoint SILENTLY
+  truncates at per_page: a 1970-2023 pull reports total 14,310 across 3 pages
+  and returns 5,000 rows with HTTP 200 and no warning. Reading only page 1
+  produced per-decade coverage of 12-33 economies where the true figures are
+  much higher -- plausible numbers, quietly wrong. The response's own :pages
+  field is the only signal, so it is followed."
   [indicator from to]
-  (-> (fetch-json (str api-base "/country/all/indicator/" indicator
-                       "?format=json&date=" from ":" to "&per_page=5000"))
-      (.then (fn [[meta rows]]
-               {:last-updated (:lastupdated meta)
-                :series (reduce (fn [acc r]
-                                  (if (and (some? (:value r))
-                                           (not (str/blank? (:countryiso3code r))))
-                                    (assoc-in acc [(:countryiso3code r) (:date r)] (:value r))
-                                    acc))
-                                {} rows)}))))
+  (let [url (fn [page] (str api-base "/country/all/indicator/" indicator
+                            "?format=json&date=" from ":" to
+                            "&per_page=" page-size "&page=" page))]
+    (-> (fetch-json (url 1))
+        (.then (fn [[meta rows]]
+                 (let [pages (:pages meta)]
+                   (if (<= (or pages 1) 1)
+                     (js/Promise.resolve {:meta meta :series (index-rows {} rows)})
+                     ;; sequential, same reason the indicator pulls are: this
+                     ;; free endpoint 400s on concurrent requests
+                     (-> (reduce (fn [p n]
+                                   (.then p (fn [acc]
+                                              (.then (fetch-json (url n))
+                                                     (fn [[_ more]] (index-rows acc more))))))
+                                 (js/Promise.resolve (index-rows {} rows))
+                                 (range 2 (inc pages)))
+                         (.then (fn [series] {:meta meta :series series})))))))
+        (.then (fn [{:keys [meta series]}]
+                 {:last-updated (:lastupdated meta)
+                  :total-rows (:total meta)
+                  :pages (:pages meta)
+                  :series series})))))
 
 (def series-break-threshold
   "A year-over-year ratio outside [1/20, 20] in a local-currency series is
@@ -252,3 +298,50 @@
                  (fs/writeFileSync out-path (with-out-str (pr a)) "utf8")
                  (fs/writeFileSync summary-path (with-out-str (pr s)) "utf8")
                  {:out-path out-path :summary-path summary-path :summary s})))))
+
+(defn decade-windows
+  "Consecutive [from to] pairs covering `from`..`to` in `step`-year blocks."
+  [from to step]
+  (vec (for [a (range from to step) :let [b (min (+ a step) to)] :when (< a b)] [a b])))
+
+(defn run-multi!
+  "Fetch ONCE over the whole span, then compute every window from the same
+  series in memory.
+
+  The naive alternative -- one full pull per window -- re-downloads five
+  indicators per decade and takes minutes per window against a free public
+  endpoint that already rejects concurrent requests. It also risks the windows
+  disagreeing if the upstream data updates mid-run, which would be a silent
+  inconsistency rather than a visible failure. One pull, many windows, one
+  `lastupdated` stamp for all of them."
+  [{:keys [from to step out-path]
+    :or {from 1970 to 2020 step 10 out-path "reports/money-loop-history.edn"}}]
+  (-> (reduce (fn [p [k ind]]
+                (.then p (fn [acc]
+                           (.then (fetch-series! ind from 2023)
+                                  (fn [v] (assoc acc k v))))))
+              (js/Promise.resolve {})
+              indicators)
+      (.then (fn [series]
+               (.then (fetch-economies!) (fn [economies] [economies series]))))
+      (.then (fn [[economies series]]
+               (let [windows (decade-windows from to step)
+                     per (for [[a b] windows
+                               :let [r (analyse economies series a b)]]
+                           {:window [a b]
+                            :measured (:economies-with-real-growth r)
+                            :series-breaks (:economies-with-series-break r)
+                            :median-real (let [xs (sort (keep :real-growth (:measured r)))]
+                                           (when (seq xs) (nth xs (quot (count xs) 2))))
+                            :shrinking (count (filter #(neg? (or (:real-growth %) 0)) (:measured r)))
+                            :top-3 (mapv (fn [x] {:iso3 (:iso3 x) :name (:name x)
+                                                  :real-pct (* 100.0 (:real-growth x))})
+                                         (take 3 (:measured r)))})
+                     out {:span [from 2023] :step step
+                          :source (str "World Bank Indicators API, single pull "
+                                       from "-2023, lastupdated "
+                                       (get-in series [:broad-money-lcu :last-updated]))
+                          :windows (vec per)}]
+                 (ensure-dir! out-path)
+                 (fs/writeFileSync out-path (with-out-str (pr out)) "utf8")
+                 out)))))
