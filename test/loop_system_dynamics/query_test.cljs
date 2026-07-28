@@ -40,7 +40,20 @@
           top (->> (q/q "[:find ?id ?s :where [?e \"archetype/structural-strength\" ?s] [?e \"archetype/id\" ?id] [(> ?s 10000)]]" conn)
                     (map first)
                     set)]
-      (is (= #{"speculative-crypto-derivatives" "surveillance-capitalism-adtech" "online-gambling" "bitcoin-pow-mining"} top)))))
+      ;; A SUPERSET assertion, not equality. This set was 3, then 4, and is now
+      ;; 5: kotoba-lang/dynamics added ethereum-network-fee-loop, whose real
+      ;; structural-strength is 1,809,363.53 -- the SECOND strongest archetype
+      ;; in the catalog, far above this query's >10000 threshold. The comment
+      ;; above already warned not to assume the count "stays 4 forever", but
+      ;; the assertion was still an equality, so the next legitimate addition
+      ;; turned CI red rather than being recorded.
+      ;;
+      ;; What matters is that these four remain above the threshold. A real
+      ;; regression -- one of them dropping out -- still fails; dynamics
+      ;; discovering another strong loop no longer does.
+      (is (every? top #{"speculative-crypto-derivatives" "surveillance-capitalism-adtech"
+                        "online-gambling" "bitcoin-pow-mining"})
+          (str "known-strong archetypes must stay above the threshold; got " (pr-str top))))))
 
 (deftest ingest-real-entities-queryable-test
   (testing "a real datalog query against the real entities-seed.edn finds exactly the orgs with confirmed external GitHub stars"
