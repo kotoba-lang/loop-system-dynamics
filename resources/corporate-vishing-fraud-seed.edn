@@ -1,0 +1,158 @@
+;; Corporate police-impersonation (ニセ警察) transfer-fraud case.
+;;
+;; Registered 2026-07-28. Every stock value below is real, dated and sourced --
+;; the same discipline entities-seed.edn holds (ADR-2607203000). Judgement
+;; parameters that are reasoned rather than cited carry :estimate? true and an
+;; :evidence string naming what the judgement is grounded in.
+;;
+;; Sources referenced by :source keys below:
+;;   :src/hatena-report  株式会社はてな 特別調査委員会報告書 (2026-07-24 公表) の報道
+;;                       coki.jp/article/news/89967 (2026-07) /
+;;                       news.yahoo.co.jp/expert/articles/88b665c4276a6dc50af7306101a442fda6caa5a8
+;;                       (山口健太, 2026-07-25)
+;;   :src/npa-2025       警察庁 令和7年(2025年)特殊詐欺・SNS型投資ロマンス詐欺統計
+;;                       (nippon.com/ja/japan-data/h02795 が引用する警察庁発表)
+;;   :src/npa-2025-nov   警察庁 SOS47 令和7年11月末暫定値
+;;                       npa.go.jp/bureau/safetylife/sos47/new-topics/251225/01.html
+{:as-of "2026-07-28"
+ :case/id :corporate-vishing-fraud-jp
+ :case/label "法人向けニセ警察詐欺 — はてな事案 (2026-04-20) + 警察庁 2025年統計"
+
+ :sources
+ {:src/hatena-report
+  "株式会社はてな 特別調査委員会報告書 (2026-07-24公表) の報道 — coki.jp/article/news/89967 および news.yahoo.co.jp/expert/articles/88b665c4276a6dc50af7306101a442fda6caa5a8 (山口健太, 2026-07-25)"
+  :src/npa-2025
+  "警察庁 令和7年(2025年)特殊詐欺及びSNS型投資・ロマンス詐欺の認知・検挙状況 — nippon.com/ja/japan-data/h02795 が引用する警察庁発表"
+  :src/npa-2025-nov
+  "警察庁 SOS47 令和7年11月末における特殊詐欺等の認知・検挙状況(暫定値) — npa.go.jp/bureau/safetylife/sos47/new-topics/251225/01.html"}
+
+ ;; --------------------------------------------------------------------------
+ ;; stocks -- passed through dynamics.core/stock, which requires value/as-of/source
+ ;; --------------------------------------------------------------------------
+ :stocks
+ [{:id :hatena/outflow :label "はてな 流出額"
+   :value 1179810000 :unit "JPY" :as-of "2026-04-21" :source :src/hatena-report}
+  {:id :hatena/transfer-limit :label "経理部長アカウントの振込承認上限(初期設定のまま)"
+   :value 999999999999 :unit "JPY" :as-of "2026-04-20" :source :src/hatena-report
+   :note "9,999億9,999万9,999円。報告書は『初期設定のまま』と記述。"}
+  {:id :hatena/assets-est :label "推定保有資産"
+   :value 3539430000 :unit "JPY" :as-of "2026-04-20" :source :src/hatena-report
+   :estimate? true
+   :note "『流出額は同社保有資産の約3分の1』という記述からの逆算。原資料に総資産の明示値はない。"}
+  {:id :hatena/hours-to-detect :label "初回着信(08:02 4/20)→警察通報(11:00 4/21)"
+   :value 26.967 :unit "hours" :as-of "2026-04-21" :source :src/hatena-report}
+  {:id :hatena/hours-transfer-window :label "初回送金(11:41 4/20)→通報(11:00 4/21)"
+   :value 23.317 :unit "hours" :as-of "2026-04-21" :source :src/hatena-report}
+  {:id :hatena/hours-to-bank-warning :label "初回送金→Y銀行が取締役へスクリーニング警告(16:00頃)"
+   :value 4.317 :unit "hours" :as-of "2026-04-20" :source :src/hatena-report}
+  {:id :hatena/days-to-report :label "事案発生(2026-04-20)→調査報告書公表(2026-07-24)"
+   :value 95 :unit "days" :as-of "2026-07-24" :source :src/hatena-report}
+  {:id :hatena/outflow-calendar-days :label "流出がまたがった暦日数"
+   :value 2 :unit "days" :as-of "2026-04-21" :source :src/hatena-report}
+
+  {:id :jp/tokushu-cases-2025 :label "特殊詐欺 認知件数"
+   :value 27832 :unit "件" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/tokushu-loss-2025 :label "特殊詐欺 被害額"
+   :value 142310000000 :unit "JPY" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/nisekeisatsu-cases-2025 :label "ニセ警察詐欺 認知件数"
+   :value 11014 :unit "件" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/nisekeisatsu-loss-2025 :label "ニセ警察詐欺 被害額"
+   :value 100500000000 :unit "JPY" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/cleared-cases-2025 :label "特殊詐欺 検挙件数"
+   :value 6575 :unit "件" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/cleared-persons-2025 :label "特殊詐欺 検挙人員"
+   :value 2338 :unit "人" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/cleared-ukeko-2025 :label "検挙人員のうち受け子"
+   :value 1379 :unit "人" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/cleared-ringleaders-2025 :label "検挙人員のうち主犯"
+   :value 69 :unit "人" :as-of "2025-12-31" :source :src/npa-2025}
+  {:id :jp/intl-numbers-2025-nov :label "犯行利用 国際電話番号(1-11月)"
+   :value 86180 :unit "件" :as-of "2025-11-30" :source :src/npa-2025-nov}
+  {:id :jp/intl-numbers-observation-days :label "上記の観測日数(2025-01-01..11-30)"
+   :value 334 :unit "days" :as-of "2025-11-30" :source :src/npa-2025-nov}
+  {:id :jp/nisekeisatsu-initial-contact-phone-pct :label "ニセ警察詐欺の初期接触が電話である割合"
+   :value 0.990 :unit "ratio" :as-of "2025-11-30" :source :src/npa-2025-nov}]
+
+ ;; --------------------------------------------------------------------------
+ ;; loops -- consumed by dynamics.core/loop-structural-strength
+ ;;
+ ;; :override-authority is NOT part of dynamics.core's formula. It is this
+ ;; case's own composition on top (see corporate_vishing_fraud.cljs
+ ;; effective-strength): the fraction of a balancing loop's actuation that the
+ ;; person currently under attack can unilaterally cancel. dynamics.core keeps
+ ;; owning the strength formula; this repo owns only this case's facts.
+ ;; --------------------------------------------------------------------------
+ :loops
+ [{:id :R1-fraud-reinvestment
+   :kind :reinforcing
+   :label "詐欺再投資ループ 被害金→名簿/口座/国際番号/出し子→架電量→被害金"
+   :cycle-time-days 1.1236
+   :self-funding-coefficient 0.90
+   :instrumentation-completeness 0.90
+   :friction 0.05
+   :estimate? true
+   :evidence "cycle-time は はてな事案の実測(26.967h)。self-funding 0.90: 被害金がそのまま次サイクルの調達原資になる構造(名簿・口座・回線・出し子)。instrumentation 0.90: 標的セグメントが年次で移動している(ニセ警察詐欺の最多年齢層が30代2,239件・20代1,718件へ) = 転換率を測って標的を更新している。friction 0.05: 被害者側の1サイクルのコストは『電話に出る』のみ(初期接触が電話 99.0%)。"}
+
+  {:id :B1-bank-screening
+   :kind :balancing
+   :label "銀行スクリーニングループ 異常送金検知→顧客確認"
+   :cycle-time-days 0.1799
+   :self-funding-coefficient 0.05
+   :instrumentation-completeness 0.80
+   :friction 0.30
+   :override-authority 1.00
+   :estimate? true
+   :evidence "cycle-time は実測: 初回送金11:41→16:00頃にY銀行が『9999万円の移動は詐欺の際によくある金額なのでスクリーニングされている』と取締役へ警告。検知は発火している。override-authority 1.00: 銀行が設けた制限は最終的に被害者本人の指示で解除された。"}
+
+  {:id :B2-internal-control
+   :kind :balancing
+   :label "社内統制ループ 振込データ作成・申請→承認→送金"
+   :cycle-time-days 0.0417
+   :self-funding-coefficient 0.05
+   :instrumentation-completeness 0.10
+   :friction 0.40
+   :override-authority 1.00
+   :estimate? true
+   :evidence "override-authority 1.00: 経理部長のアカウントに『振込データの作成・申請権限』と『承認権限』の両方が付与され、1アカウントで申請から承認まで完結できた。振込承認上限も初期設定のまま。"}
+
+  {:id :B3-institutional-learning
+   :kind :balancing
+   :label "制度学習ループ 事故→調査→報告書→統制改定→業界普及"
+   :cycle-time-days 95
+   :self-funding-coefficient 0.05
+   :instrumentation-completeness 0.00
+   :friction 0.60
+   :estimate? true
+   :evidence "cycle-time は実測(2026-04-20事案→2026-07-24報告書公表=95日)で、これは1社1周期の下限。業界普及はさらに長い。instrumentation 0.00: 『自社の従業員が実際の標的型ソーシャルエンジニアリングに遭遇したとき何%が上申するか』という転換率は測定されていない — 報告書自身が『過去に大きな事故がなかったことによりリスク認識が弱かった』と記述しており、これは0件を発生率0と読む誤り(§upper-bound 参照)。"}
+
+  {:id :B4-attribution-investigation
+   :kind :balancing
+   :label "捜査・特定ループ 認知→番号/口座/端末/資金の突合→検挙"
+   :cycle-time-days 365
+   :self-funding-coefficient 0.05
+   :instrumentation-completeness 0.60
+   :friction 0.85
+   :estimate? true
+   :evidence "cycle-time 365日は年次統計の観測周期をそのまま置いた代理値 — 個別事件の検挙までのラグは公表されていない。倍率としてではなく桁として読むこと。friction 0.85: 番号×口座×端末×資金の突合が制度的に別々の保有者に分割され、join のたびに授権が要る。"}]
+
+ ;; --------------------------------------------------------------------------
+ ;; 実装済み介入 (2026-07-28) -- 実装先 repo / commit は ADR 側が正本
+ ;; --------------------------------------------------------------------------
+ :implemented-interventions
+ [{:id :meibo/callback-registry :org "cloud-itonami" :repo "cloud-itonami/meibo"
+   :effect-on :R1-fraud-reinvestment :effect :friction-up
+   :measured? false
+   :note "初期接触エッジに『名乗りを検証せず公表窓口へかけ直す』引き当てを置く。攻撃側 friction を上げるが、上げ幅は未計測 — 数値としてモデルには入れない。"}
+  {:id :itonami/nonoverridable-governor :org "cloud-itonami"
+   :repo "kotoba-lang/loop-system-dynamics (control-config 評価器)"
+   :effect-on [:B1-bank-screening :B2-internal-control] :effect :override-authority-to-zero
+   :measured? true
+   :note "override-authority は定義上の量なので、1.00→0.00 の効果は経験的主張ではなく算術。scenario で計算してよい唯一の介入。"}
+  {:id :yabai/phone-infra-scorer :org "etzhayyim" :repo "etzhayyim/com-etzhayyim-yabai"
+   :effect-on :B4-attribution-investigation :effect :friction-down
+   :measured? false
+   :note "突合の一部を機械化するが、授権が律速である以上 friction の低下幅は未計測。"}
+  {:id :kabuto/vishing-attack-graph :org "gftdcojp" :repo "gftdcojp/ai-gftd-kabuto"
+   :effect-on :B3-institutional-learning :effect :instrumentation-up
+   :measured? false
+   :note "どのエッジが製品カテゴリで塞げないかを機械的に出す。B3 の instrumentation 0.00 を埋める方向だが、埋まったかどうかは実運用で測るまで不明。"}]}
