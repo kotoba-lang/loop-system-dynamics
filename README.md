@@ -607,6 +607,50 @@ was skipped while newer codes cleared, a real anomaly worth investigating
 by name. First real run (2026-07-21): 0 stalls, youngest registered code
 1.70 days old.
 
+## A registered CASE, not an entity (corporate police-impersonation transfer fraud)
+
+```bash
+nbb --classpath "../dynamics/src:src" bin/run_corporate_vishing_fraud.cljs
+```
+
+Every other cycle in this repository models an *organization*. This one models
+an *incident class*: corporate police-impersonation (ニセ警察) transfer fraud,
+instantiated against the はてな 2026-04-20 incident (¥1,179,810,000 out in ~27
+hours) plus 警察庁 2025 national statistics (27,832 recognized cases,
+¥142.31B, ニセ警察詐欺 11,014 cases / ¥100.5B). Facts live in
+`resources/corporate-vishing-fraud-seed.edn`, all dated and sourced; judgement
+parameters carry `:estimate?` and an `:evidence` string.
+
+Three things this namespace owns that `dynamics.core` does not model — all
+compositions on top of its output, never replacements for its scoring:
+
+- **`effective-strength`** = `loop-structural-strength` × `(1 - override-authority)`.
+  The finding it encodes: the bank's screening loop cycles **6.25× faster than
+  the attack loop** and fired **18.5% of the way into the transfer window** —
+  and delivered exactly **0**, because its output terminated at the person
+  under attack, who could lift the hold. Detection latency was never the
+  binding constraint. `B1` and `B2` both come out at effective strength 0
+  against a reinforcing fraud loop at 341.09.
+- **`counterfactual-cumulative-cap`** — a cap at 20% of assets/day avoids
+  nothing (the transfers were already structured below it, at the amount the
+  bank itself flagged); 5%/day avoids 70%. This is why "lower the per-transfer
+  limit" is the wrong fix and only a *cumulative* cap binds.
+- **`measurability-floor`** — inverting `upper-bound-rate-from-zero-events`:
+  claiming an annual rate ≤1% needs **299 incident-free company-years**. No
+  single firm accumulates that, so a firm structurally *cannot* measure its own
+  exposure, and the measurement can only exist at a pooled
+  (industry-association) layer. 25 incident-free years is consistent with an
+  annual rate of 11.29%.
+
+`scenario` is deliberately partial. It applies only the intervention whose
+effect is *definitional* (`override-authority → 0`, which is arithmetic on this
+model's own definition: `+219.12` / `+183.81`). Interventions whose effect is
+*empirical* — does a callback registry actually raise attacker friction, and by
+how much? — are returned under `:uncomputable-until-measured` with the loop and
+direction they target, never as a guessed parameter delta. The attack loop's
+strength is identical before and after, and a test asserts it: the model must
+not quietly credit interventions with slowing the attacker.
+
 ## Test
 
 ```bash
