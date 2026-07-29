@@ -186,4 +186,13 @@
    :effect-on :B1-bank-screening :effect :lateness-made-recordable
    :measured? false
    :consumer-count 0
-   :note "振り込め詐欺救済法の凍結チェーンと、遅延の第3状態 :unknown-not-measured。B1 が『送金ウィンドウの18.5%時点で発火したのに実効0』だった事案の直接の帰結で、『間に合った』を無計測で主張できなくする。ただし呼び出し側は 0 件——誰も使っていないライブラリである。"}]}
+   :note "振り込め詐欺救済法の凍結チェーンと、遅延の第3状態 :unknown-not-measured。B1 が『送金ウィンドウの18.5%時点で発火したのに実効0』だった事案の直接の帰結で、『間に合った』を無計測で主張できなくする。ただし呼び出し側は 0 件——誰も使っていないライブラリである。"}
+
+  ;; --- 第3波（2026-07-29）: ランク3位・最上位の未実装だった集計ベンチマーク ---
+
+  {:id :itonami/response-benchmark :org "cloud-itonami"
+   :repo "cloud-itonami/cloud-itonami-response-benchmark"
+   :effect-on :B3-institutional-learning :effect :comparison-becomes-possible
+   :measured? false
+   :case-count 1
+   :note "『4.3時間は速かったのか』に答えるには分布が要る、という介入。実装して分かったのは、p99 の報告に必要な観測数が 299 で、pooled-incidence の『年率≤1% に必要な 299社年』と同一だということ（同じ裾を逆から訊いている。exposure-floor を呼んで再実装しない）。収載できたのは本件 1 ケース＝各 phase で n=1 で、中央値（要 5 観測）すら報告できない。ライブラリの最初の正直な出力は :insufficient-observations :deficit 4 である。当初 asset は fushin だったが、fushin の憲章は自治体インフラに限定され G1/N1 は R0 で IMMUTABLE のため、規律だけ移植して cloud-itonami に置いた。"}]}

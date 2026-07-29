@@ -174,10 +174,10 @@
     :asset "etzhayyim/com-etzhayyim-yabai"
     :label "phish_infra の2独立シグナル規律を電話/回線インフラへ移植"
     :rationale "yabai の phish_infra.cljc(ADR-0003) は既に『語彙的シグナルと co-hosting シグナルの2本、co-hosting 単独では決して :confirmed にしない、弱い単独シグナルでは :indicator を一切出さない』という規律を 36 benign / 7 impersonation の回帰セットで較正済み。番号は使い捨てられるので列挙型ブロックリストは構造的に追いつかない(blocklist-lag 参照)が、同じ2独立シグナル規律をインフラ集中に当てれば個々の番号ではなく調達経路を指せる。band/C: 検知ループのゲイン。"}
-   {:id :fushin/aggregate-benchmark :org "etzhayyim" :band :band/B :tractability 0.65
-    :asset "etzhayyim/com-etzhayyim-fushin"
+   {:id :itonami/response-benchmark :org "cloud-itonami" :band :band/B :tractability 0.65
+    :asset "cloud-itonami/cloud-itonami-response-benchmark"
     :label "法人の送金詐欺への応答時間ベンチマークを国・業種レベルで公表"
-    :rationale "fushin は既に『集計は公表するが個社名指しは Council Lv6+ ゲート』という憲法的境界を持つ SD シナリオアクター。この案件の測定可能性の床(299社年)は、まさに集計層でしか測れないものが何かを示しており、fushin の既存境界にそのまま収まる。band/B。"}
+    :rationale "当初この asset は etzhayyim/com-etzhayyim-fushin を指していた。fushin の『集計は公表・個社名指しは Council ゲート・非裁定』という規律はこの用途に正しいが、fushin の憲章は自治体インフラ補修に限定され G1/N1 は R0 で IMMUTABLE と明記されている(2026-07-29 に憲章を読んで判明、オーナー判断で移設)。規律だけを移植して cloud-itonami の commons として実装した — :cohort-id は国×業種のみ、識別キーを持つ観測は匿名化ではなく拒否、裁定語彙はテストで禁止。band/B の根拠は『集計層であること』であって fushin 固有ではないので score は変わらない。実装で分かったこと: p99 の報告に要る観測数は 299 で、これは pooled-incidence が出す『年率≤1% を主張するのに要る 299社年』と同じ数である(同じ裾を逆から訊いているだけ)。"}
    {:id :tasuke/corporate-case :org "etzhayyim" :band :band/D :tractability 0.70
     :asset "etzhayyim/com-etzhayyim-tasuke"
     :label "被害者支援オントロジーを法人送金詐欺へ拡張(証拠保全・届出起草)"

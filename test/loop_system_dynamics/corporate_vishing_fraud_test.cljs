@@ -151,7 +151,7 @@
   (testing "the four interventions ADR-2607284000 deferred are now in the seed, so the model stops reporting them as unbuilt"
     (let [implemented (set (map :id (:implemented-interventions obs)))]
       (is (every? implemented wave-2))
-      (is (= 8 (count implemented)) "four from wave 1, four from wave 2"))))
+      (is (= 9 (count implemented)) "four from wave 1, four from wave 2, one from wave 3"))))
 
 (deftest building-something-does-not-make-it-measured-test
   ;; The failure this guards against is the one the whole case is about:
@@ -168,17 +168,36 @@
     (testing "so all four land in uncomputable-until-measured"
       (let [unmeasured (set (map :id (:uncomputable-until-measured sc)))]
         (is (every? unmeasured wave-2))
-        (is (= 7 (count unmeasured)) "three from wave 1 plus four from wave 2")))
+        (is (contains? unmeasured :itonami/response-benchmark) "wave 3 too")
+        (is (= 8 (count unmeasured)) "three from wave 1, four from wave 2, one from wave 3")))
     (testing "and none of them moves the computed delta"
       (is (= [:itonami/nonoverridable-governor] (:applied sc)))
       (is (= #{:B1-bank-screening :B2-internal-control} (set (keys (:delta sc))))))))
 
 (deftest the-highest-ranked-intervention-is-still-unbuilt-test
-  ;; fushin/aggregate-benchmark ranks 3rd overall and is the top-scoring
-  ;; thing nobody has built. If a later wave builds it, this test is the
-  ;; one that must change -- which is the point of asserting it.
+  ;; The top-scoring thing nobody has built. Wave 3 built what used to sit
+  ;; here (:itonami/response-benchmark, 3rd overall), so this now names the
+  ;; next one down. A later wave that builds it has to change this test,
+  ;; which is the point of asserting it rather than describing it.
   (let [implemented (set (map :id (:implemented-interventions obs)))
         unbuilt (remove #(implemented (:id %)) (:intervention-ranking ev))]
-    (is (= :fushin/aggregate-benchmark (:id (first unbuilt))))
+    (is (= :lei/payee-verification (:id (first unbuilt))))
     (is (= :band/B (:band (first unbuilt))))
-    (is (= 10 (count unbuilt)) "18 ranked, 8 built")))
+    (is (= 9 (count unbuilt)) "18 ranked, 9 built")
+    (testing "and its yield stays uncomputable -- pool size is known, conversion is not"
+      (is (nil? (:conversion-rate (first unbuilt))))
+      (is (= 5572 (:pool-size (first unbuilt)))))))
+
+(deftest the-relocated-benchmark-kept-its-rank-test
+  ;; Moving the asset from etzhayyim/fushin to a cloud-itonami commons was
+  ;; a housing decision, not a scoring one: the band/B rationale is that
+  ;; the measurement is aggregate-layer, which is not specific to fushin.
+  (let [entry (first (filter #(= :itonami/response-benchmark (:id %)) cvf/interventions))]
+    (is (some? entry) "the id was renamed, not dropped")
+    (is (= :band/B (:band entry)))
+    (is (= "cloud-itonami" (:org entry)))
+    (is (= "cloud-itonami/cloud-itonami-response-benchmark" (:asset entry)))
+    (is (empty? (filter #(= :fushin/aggregate-benchmark (:id %)) cvf/interventions))
+        "the old id must not linger alongside the new one")
+    (testing "fushin is no longer named as an asset anywhere in the ranking"
+      (is (empty? (filter #(re-find #"fushin" (str (:asset %))) cvf/interventions))))))
