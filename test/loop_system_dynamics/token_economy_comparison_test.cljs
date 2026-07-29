@@ -11,19 +11,39 @@
              (count scores)))
       (is (= scores (sort > scores))))))
 
-(deftest charter-excluded-item-is-scored-and-separated-test
-  (testing "the forbidden token issuance is scored (not omitted) AND kept out of the
-            recommendable ranking -- declining the largest lever is a decision worth
-            quantifying, and hiding it would flatter the remaining set"
+(deftest token-issuance-is-now-in-the-recommendable-ranking-test
+  (testing "ADR-2607299900 lifted the charter exclusion. The entry that was
+            reported separately as declined leverage now competes -- and tops
+            the ranking, which is what the exclusion was costing."
     (let [ev (tec/evaluate)
-          excluded (:charter-excluded-ranking ev)
-          allowed (:intervention-ranking ev)]
-      (is (= 1 (count excluded)))
-      (is (= :issue-a-tradeable-token (:id (first excluded))))
-      (is (string? (:charter-basis (first excluded))))
-      (is (not (some #{:issue-a-tradeable-token} (map :id allowed))))
-      (testing "and it outscores every charter-allowed item -- the cost of the charter, computed"
-        (is (> (:base-score (first excluded)) (:base-score (first allowed))))))))
+          allowed (:intervention-ranking ev)
+          entry (first allowed)]
+      (is (= :issue-a-tradeable-token (:id entry))
+          "it outscored every allowed item while excluded; un-excluded, it leads")
+      (is (nil? (:charter-excluded entry)))
+      (is (string? (:policy-change entry))
+          "the reversal is recorded on the entry, not just in prose elsewhere"))))
+
+(deftest excluded-partition-is-empty-but-retained-test
+  (testing "an empty excluded set is a reportable fact, not the absence of the
+            mechanism -- the next declined lever belongs in this partition"
+    (let [ev (tec/evaluate)]
+      (is (= [] (vec (:charter-excluded-ranking ev))))
+      (is (= [] (vec (:declined-leverage (tec/decide ev)))))
+      (is (empty? (filter :charter-excluded tec/three-sphere-interventions))))))
+
+(deftest capital-and-settlement-demand-stay-distinguished-test
+  (testing "the token raises capital, NOT settlement demand. Losing that
+            distinction with the exclusion is the failure mode this guards."
+    (let [entry (first (filter #(= :issue-a-tradeable-token (:id %))
+                               tec/three-sphere-interventions))
+          r (:rationale entry)]
+      (is (clojure.string/includes? r "acceptance density"))
+      (is (clojure.string/includes? r "NOT settlement demand"))
+      (testing "and the acceptance-density levers remain in the ranking beside it"
+        (let [ids (set (map :id (:intervention-ranking (tec/evaluate))))]
+          (is (contains? ids :open-facilitator-to-third-party-sellers))
+          (is (contains? ids :credits-multilateral-acceptance)))))))
 
 (deftest en-loop-is-in-the-never-fired-partition-test
   (testing "EN is scored by the same formula as its rivals and lands in :unmeasured,
@@ -42,10 +62,14 @@
       (is (false? (:fired? (:holochain-holofuel-mutual-credit b))))
       (is (false? (:fired? (:engi-en-mutual-credit-current b))))
       (testing "EN currently has the lowest instrumentation of the four, which is why
-                instrument-the-en-loop tops the charter-allowed ranking"
+                instrument-the-en-loop leads every intervention EXCEPT token
+                issuance -- it topped the ranking outright until ADR-2607299900
+                un-excluded the token, and that displacement is the visible cost
+                of the reversal, not a demotion of the EN work"
         (is (= 0 (:instrumentation (:engi-en-mutual-credit-current b))))
         (is (= :instrument-the-en-loop
-               (:id (first (:intervention-ranking (tec/evaluate))))))))))
+               (:id (first (remove #(= :issue-a-tradeable-token (:id %))
+                                   (:intervention-ranking (tec/evaluate)))))))))))
 
 (deftest grounding-facts-are-sourced-not-asserted-test
   (testing "every quantitative fact this ranking leans on carries its own source string"

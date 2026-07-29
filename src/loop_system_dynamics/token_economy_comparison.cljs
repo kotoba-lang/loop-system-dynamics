@@ -27,10 +27,20 @@
      nil, so dynamics.core/leverage-score marks :expected-yield
      :uncomputable-until-measured rather than multiplying a big pool by a
      hoped-for rate.
-   - The one intervention the charter forbids (issue a tradeable token) is
-     scored anyway and reported SEPARATELY under :charter-excluded, because
-     'we decline this leverage' is a decision worth quantifying, and silently
-     omitting the highest-leverage forbidden option would flatter the ranking."
+   - The :charter-excluded partition exists so that a lever we decline is
+     scored anyway and reported SEPARATELY, because 'we decline this' is a
+     decision worth quantifying and silently omitting a forbidden high-leverage
+     option would flatter the ranking. It is EMPTY as of ADR-2607299900
+     (2026-07-29): the one entry it held, :issue-a-tradeable-token, was
+     un-excluded by owner directive and now ranks first among the allowed set.
+     The partition is kept, not deleted -- the next declined lever belongs in
+     it, and an empty excluded set is itself a reportable fact rather than the
+     absence of one.
+
+   What the un-exclusion does NOT change: the token raises capital, security
+   budget and contributor inflow. It does not raise settlement demand, which is
+   rate-limited by acceptance density = 1. Both facts now sit in the same
+   ranking and must be read together."
   (:require ["fs" :as fs]
             ["path" :as path]
             [clojure.string :as str]
@@ -109,10 +119,9 @@
 
    {:id :issue-a-tradeable-token
     :band :band/A :tractability 0.9
-    :charter-excluded true
-    :charter-basis "ADR-2607995000 Sec.1 membrane rules (credits->fiat forbidden, EN<->USDC forbidden both ways, chain gateway mint-only) and the etzhayyim charter's no-own-token / no-speculative-finance clause (ADR-2607021800 J1)"
-    :label "[EXCLUDED BY CHARTER -- scored to quantify what is being declined] Issue a tradeable, externally-priced token"
-    :rationale "Scored, reported separately, and NOT recommended. This is the growth engine :bitcoin-pow-mining (structural strength ~39,321, $17.2B/yr miner revenue) and Ethereum actually used: a speculative asset whose price funds both the security budget and the developer inflow, before any end-user demand exists. It ranks at the top of this set on the raw formula precisely because it is the highest-band, highest-tractability move available -- which is the honest content of the finding. The charter forbids it, and ADR-2607995000 Sec.1 goes further by proving structurally that neither internal unit can be an investment (neither is redeemable). Two things follow that the ranking should not be allowed to hide: (1) declining this is declining the single largest lever, and any growth plan must therefore substitute a non-speculative engine rather than assume growth will arrive anyway; (2) the substitute with actual precedent is :wir-bank-mutual-credit's -- acceptance density plus active brokerage -- not a smaller version of the token engine. :holochain-holofuel-mutual-credit is the cautionary datum: $20.4M raised in March 2018 on a token, and 8 years later the mutual-credit loop it was meant to fund still has not fired."}])
+    :label "Issue a tradeable, externally-priced token in the junbi sphere"
+    :policy-change "ADR-2607299900 (2026-07-29, owner directive) lifted the charter exclusion this entry carried. It was previously scored with :charter-excluded true and reported separately; it now competes in the recommendable ranking, where it ranks first."
+    :rationale "This is the growth engine :bitcoin-pow-mining (structural strength ~39,321, $17.2B/yr miner revenue) and Ethereum actually used: a speculative asset whose price funds both the security budget and the developer inflow, before any end-user demand exists. It ranks at the top of this set on the raw formula precisely because it is the highest-band, highest-tractability move available. Two qualifications survive the policy change and must not be lost with the exclusion: (1) what this lever raises is CAPITAL, security budget and contributor inflow -- NOT settlement demand. The credits sphere is rate-limited by acceptance density = 1, and no token issuance changes that number; the substitute-or-companion with actual precedent is :wir-bank-mutual-credit acceptance density plus active brokerage. Pair this with :open-facilitator-to-third-party-sellers and :credits-multilateral-acceptance or the capital arrives and is not spent. (2) :holochain-holofuel-mutual-credit remains the cautionary datum in the other direction: $20.4M raised in March 2018 on a token, and 8 years later the mutual-credit loop it was meant to fund still has not fired -- a token funded that project without firing its loop. Issuance is necessary for the capital engine and sufficient for neither demand nor the loop."}])
 
 ;; ---------------------------------------------------------------------------
 ;; evaluate / decide -- all scoring delegated to dynamics.core
