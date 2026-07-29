@@ -8,6 +8,7 @@ Intervention set + grounding facts: this namespace.
 
 ## Interventions (charter-allowed), ranked
 
+- 9.00  issue-a-tradeable-token  [A x 0.9, structural]
 - 6.30  instrument-the-en-loop  [B x 0.9, structural]
 - 5.95  asymmetric-witness-bond  [B x 0.85, structural]
 - 5.25  open-facilitator-to-third-party-sellers  [B x 0.75, structural]
@@ -17,8 +18,6 @@ Intervention set + grounding facts: this namespace.
 
 ## Declined by charter (scored, not recommended)
 
-- 9.00  issue-a-tradeable-token
-  basis: ADR-2607995000 Sec.1 membrane rules (credits->fiat forbidden, EN<->USDC forbidden both ways, chain gateway mint-only) and the etzhayyim charter's no-own-token / no-speculative-finance clause (ADR-2607021800 J1)
 
 ## Mutual-credit bracket -- where EN sits
 
