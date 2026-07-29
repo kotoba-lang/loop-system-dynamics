@@ -155,4 +155,35 @@
   {:id :kabuto/vishing-attack-graph :org "gftdcojp" :repo "gftdcojp/ai-gftd-kabuto"
    :effect-on :B3-institutional-learning :effect :instrumentation-up
    :measured? false
-   :note "どのエッジが製品カテゴリで塞げないかを機械的に出す。B3 の instrumentation 0.00 を埋める方向だが、埋まったかどうかは実運用で測るまで不明。"}]}
+   :note "どのエッジが製品カテゴリで塞げないかを機械的に出す。B3 の instrumentation 0.00 を埋める方向だが、埋まったかどうかは実運用で測るまで不明。"}
+
+  ;; --- 第2波（2026-07-29）: 当初「未実装」としていた上位介入 4件 ---
+  ;; いずれも capability であって adoption ではない。実データは 1 件も無く、
+  ;; :measured? は全て false。「作った」と「効いた」は別である。
+
+  {:id :zenginkyo/transfer-default-rule :org "cloud-itonami"
+   :repo "cloud-itonami/cloud-itonami-assoc-6419-jpn-zenginkyo"
+   :effect-on :B2-internal-control :effect :parameter-authority-made-legible
+   :measured? false
+   :implemented-as :absence-made-machine-readable
+   :note "当初の予測（協会が既定値を決めれば band/B）は外れた。2026-07-29 のライブ検証で分かったのは、協会は既にパラメータを名指しし、数値は顧客に委譲し、その顧客の選択に補償を紐づけている、ということ（4文書・10年）。:addressee と :parameter-disposition で機械可読にしたのは『既定値の存在』ではなく『不在』であり、B2 の override-authority は動いていない。効果は未計測どころか、まだ何も起きていない。"}
+
+  {:id :assoc/pooled-incidence-registry :org "cloud-itonami"
+   :repo "cloud-itonami/cloud-itonami-pooled-incidence"
+   :effect-on :B3-institutional-learning :effect :measurability-floor-reachable
+   :measured? false
+   :observation-count 0
+   :note "299社年の床に対する構造的な解（プール層でしか測れない）を関数ライブラリとして実装。ただし observation は 0 件で、どの協会も採用していない。合成データで 8社×40試行 → :supported を確認しただけである。k>0 の信頼区間は未実装（:not-implemented-for-nonzero-events として名指しで欠落宣言）。"}
+
+  {:id :cyber-drill/finance-vishing :org "gftdcojp" :repo "gftdcojp/ai-gftd-cyber-drill"
+   :effect-on :B3-institutional-learning :effect :instrumentation-up
+   :measured? false
+   :participant-count 0
+   :note "kabuto の6段に 1:1 対応する測定用シナリオ。pooled-incidence が admit する形の observation を出す。B3 の instrumentation 0.00 は『埋まった』のではなく『埋められる状態になった』— 参加者は 0 人。加えて試行は社年ではなく、行動失敗率→事故発生率の写像は未計測のままである（:exposure-unit が両者の加算を構造的に禁じている）。WebVR ランタイムは :blocked-pending-kami-api-port のまま。"}
+
+  {:id :regtracker/freeze-pipeline :org "cloud-itonami"
+   :repo "cloud-itonami/cloud-itonami-regulatory-tracker"
+   :effect-on :B1-bank-screening :effect :lateness-made-recordable
+   :measured? false
+   :consumer-count 0
+   :note "振り込め詐欺救済法の凍結チェーンと、遅延の第3状態 :unknown-not-measured。B1 が『送金ウィンドウの18.5%時点で発火したのに実効0』だった事案の直接の帰結で、『間に合った』を無計測で主張できなくする。ただし呼び出し側は 0 件——誰も使っていないライブラリである。"}]}

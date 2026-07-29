@@ -1,5 +1,6 @@
 (ns loop-system-dynamics.corporate-vishing-fraud-test
   (:require [cljs.test :refer [deftest is testing]]
+            [clojure.set :as set]
             [dynamics.core :as d]
             [loop-system-dynamics.corporate-vishing-fraud :as cvf]))
 
@@ -129,3 +130,55 @@
       (is (= 3 (count (:top-3 dec))))
       (is (= #{:B1-bank-screening :B2-internal-control} (set (:neutralized-loops dec))))
       (is (= 299 (:measurability-floor-1pct dec))))))
+
+;; ---------------------------------------------------------------------------
+;; wave 2 (2026-07-29) -- built is not measured, and not adopted
+;; ---------------------------------------------------------------------------
+
+(def wave-2
+  #{:zenginkyo/transfer-default-rule :assoc/pooled-incidence-registry
+    :cyber-drill/finance-vishing :regtracker/freeze-pipeline})
+
+(deftest implemented-interventions-do-not-drift-from-the-ranking-test
+  (testing "every implemented intervention is one this model actually ranked -- an implementation whose id is not in the ranking is either a typo or work the model never asked for, and both should be visible"
+    (let [ranked (set (map :id cvf/interventions))
+          implemented (set (map :id (:implemented-interventions obs)))]
+      (is (empty? (set/difference implemented ranked))
+          (str "implemented but never ranked: "
+               (pr-str (set/difference implemented ranked)))))))
+
+(deftest wave-2-is-recorded-as-implemented-test
+  (testing "the four interventions ADR-2607284000 deferred are now in the seed, so the model stops reporting them as unbuilt"
+    (let [implemented (set (map :id (:implemented-interventions obs)))]
+      (is (every? implemented wave-2))
+      (is (= 8 (count implemented)) "four from wave 1, four from wave 2"))))
+
+(deftest building-something-does-not-make-it-measured-test
+  ;; The failure this guards against is the one the whole case is about:
+  ;; treating the existence of a control as evidence that it works. Every
+  ;; wave-2 entry ships with :measured? false and zero real data, and must
+  ;; therefore appear in :uncomputable-until-measured, not in :delta.
+  (let [impl (by-id (:implemented-interventions obs))]
+    (testing "none of wave 2 claims to be measured"
+      (is (every? #(false? (:measured? (impl %))) wave-2)))
+    (testing "and each records that it has no real data yet"
+      (is (= 0 (:observation-count (impl :assoc/pooled-incidence-registry))))
+      (is (= 0 (:participant-count (impl :cyber-drill/finance-vishing))))
+      (is (= 0 (:consumer-count (impl :regtracker/freeze-pipeline)))))
+    (testing "so all four land in uncomputable-until-measured"
+      (let [unmeasured (set (map :id (:uncomputable-until-measured sc)))]
+        (is (every? unmeasured wave-2))
+        (is (= 7 (count unmeasured)) "three from wave 1 plus four from wave 2")))
+    (testing "and none of them moves the computed delta"
+      (is (= [:itonami/nonoverridable-governor] (:applied sc)))
+      (is (= #{:B1-bank-screening :B2-internal-control} (set (keys (:delta sc))))))))
+
+(deftest the-highest-ranked-intervention-is-still-unbuilt-test
+  ;; fushin/aggregate-benchmark ranks 3rd overall and is the top-scoring
+  ;; thing nobody has built. If a later wave builds it, this test is the
+  ;; one that must change -- which is the point of asserting it.
+  (let [implemented (set (map :id (:implemented-interventions obs)))
+        unbuilt (remove #(implemented (:id %)) (:intervention-ranking ev))]
+    (is (= :fushin/aggregate-benchmark (:id (first unbuilt))))
+    (is (= :band/B (:band (first unbuilt))))
+    (is (= 10 (count unbuilt)) "18 ranked, 8 built")))
