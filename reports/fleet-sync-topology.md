@@ -6,9 +6,9 @@ Scoring: `dynamics.core`; projection: `dynamics.xmile` on `org-oasis-open-xmile`
 
 ## Planes and reconcilers
 
-- representations of 'where is the code': 4 (3 live)
+- representations of 'where is the code': 4 (4 live)
 - pairwise consistency obligations: 6
-- reconcilers that exist: 4 of 6 tracked pairs; SCHEDULED (run without a person typing them): **0**
+- reconcilers that exist: 3 of 6 tracked pairs; SCHEDULED (run without a person typing them): **0**
 
 ## Loops
 
@@ -55,13 +55,13 @@ repair-period / drift-period. Below 1.0 means a repair pass completes faster tha
 | 5 | parallel-fleet-sync | D | 0.9 | 2.70 |
 | 6 | capability-gated-canonical-writes | B | 0.35 | 2.45 |
 | 7 | consensus-ref-plane | B | 0.3 | 2.10 |
-| 8 | retire-or-wire-the-dead-plane | D | 0.5 | 1.50 |
+| 8 | replicate-the-radicle-plane | D | 0.7 | 2.10 |
 | 9 | working-set-materialisation | D | 0.5 | 1.50 |
 | 10 | content-addressed-object-plane | D | 0.5 | 1.50 |
 | 11 | semantic-cid-definitions | A | 0.15 | 1.50 |
 | 12 | raise-sync-frequency | E | 0.9 | 0.90 |
 
-moved this cycle: [:manifest-as-datom-db-not-yaml :retire-or-wire-the-dead-plane] (one up on new evidence, one DOWN because measurement found a blocker)
+moved this cycle: [:manifest-as-datom-db-not-yaml :replicate-the-radicle-plane] (one up on new evidence, one DOWN because measurement found a blocker)
 
 ### The tension the ranking alone would hide
 
