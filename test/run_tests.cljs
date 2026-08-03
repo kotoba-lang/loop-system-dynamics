@@ -15,6 +15,7 @@
             [loop-system-dynamics.etzhayyim-ai-agent-evangelism-test]
             [loop-system-dynamics.cloud-itonami-live-diff-test]
             [loop-system-dynamics.cloud-itonami-age-lag-monitor-test]
+            [loop-system-dynamics.cloud-itonami-local-agent-storage-test]
             [loop-system-dynamics.token-economy-comparison-test]
             [loop-system-dynamics.corporate-vishing-fraud-test]))
 
@@ -36,5 +37,6 @@
               'loop-system-dynamics.etzhayyim-ai-agent-evangelism-test
               'loop-system-dynamics.cloud-itonami-live-diff-test
               'loop-system-dynamics.cloud-itonami-age-lag-monitor-test
+              'loop-system-dynamics.cloud-itonami-local-agent-storage-test
               'loop-system-dynamics.token-economy-comparison-test
               'loop-system-dynamics.corporate-vishing-fraud-test)
