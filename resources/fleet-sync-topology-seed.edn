@@ -1,0 +1,151 @@
+;; Multi-agent, multi-terminal fleet SYNCHRONISATION topology -- first real
+;; observation snapshot (com-junkawasaki/root, ADR-2608040100).
+;;
+;; Every value below was measured on 2026-08-03 on the owner's workstation by
+;; the command recorded in its own :source. Nothing here is estimated, and
+;; nothing derived from an unmeasured rate is presented as measured -- where a
+;; quantity has never been observed the value is the keyword :unmeasured, which
+;; dynamics.core/loop-structural-strength turns into nil rather than a number.
+;;
+;; SCOPE OF THE SAMPLE. Two of the stocks are sampled, not censused, and say so
+;; in :sample-n. Everything else is a full census of the 4,063 west.yml entries.
+{:as-of "2026-08-03"
+ :subject "com-junkawasaki/root west/git fleet + kotoba-lang VCS suite (bonsai/nekko/kagami) + radicle storage"
+ :host "owner workstation (darwin 25.3.0), single machine -- a second terminal/machine would have its own drift, not measured here"
+
+ ;; --------------------------------------------------------------------------
+ ;; PLANES -- how many independent representations of 'where is the code' exist
+ ;; --------------------------------------------------------------------------
+ :planes
+ [{:id :local-worktrees :role "3,600 materialised child checkouts under orgs/<org>/<repo>"
+   :live? true
+   :source "ls -d orgs/*/*/.git | wc -l -> 3675 directories; 3600 of them are reachable from a west.yml entry with a 40-hex pin"}
+  {:id :github-west :role "manifest/west.yml pins + GitHub refs -- today's source of truth"
+   :live? true
+   :source "manifest/west.yml, 4,063 project entries (4,056 with 40-hex revision, 4 with none, 1 non-SHA)"}
+  {:id :radicle :role "per-writer namespaces + sigrefs in ~/.radicle/storage"
+   :live? false
+   :source "ls ~/.radicle/storage | wc -l -> 3677; `rad node status` -> 'Node is stopped.'; no child checkout has a rad remote (git config --get-regexp remote in orgs/kotoba-lang/dynamics shows origin=github only)"}
+  {:id :fleet-db :role "manifest/fleet-db.edn + append-only ledger (kagami) -- declared west.yml's upstream in CLAUDE.md"
+   :live? false
+   :source "git log -1 -- manifest/fleet-db.edn -> 2026-07-26 21:11 (95029c3046d), 8 days before this snapshot; the CI that absorbed west.yml writes into it was removed 2026-07-30 (ADR-2607300900)"}]
+
+ ;; --------------------------------------------------------------------------
+ ;; STOCKS -- accumulations, all dated 2026-08-03
+ ;; --------------------------------------------------------------------------
+ :stocks
+ {:west-entries
+  {:value 4063 :unit "project entries"
+   :source "grep -c '    - name: ' manifest/west.yml"}
+
+  :materialised-checkouts
+  {:value 3600 :unit "repos" :of 4056
+   :source "per-entry probe: os.path.isdir(<path>/.git) over every west.yml entry carrying a 40-hex pin"}
+
+  :unmaterialised-entries
+  {:value 456 :unit "repos"
+   :source "same probe; 456 pinned entries have no local .git at all"}
+
+  :head-equals-pin
+  {:value 3229 :unit "repos" :of 3600
+   :source "git -C <repo> rev-parse HEAD == west.yml revision"}
+
+  :head-diverges-from-pin
+  {:value 370 :unit "repos"
+   :breakdown {:local-ahead 51 :local-behind 78 :not-relatable-locally 254}
+   :source "git rev-list --count <pin>..HEAD / HEAD..<pin>; :not-relatable-locally = both counts fail, i.e. the pinned commit is not an object this checkout holds -- the machine cannot even say whether it is ahead or behind"}
+
+  :pin-behind-known-origin
+  {:value 77 :unit "repos" :of-comparable 1626
+   :commits-behind 448 :median 2 :p90 12 :max 108 :max-repo "root"
+   :source "git rev-list --count <pin>..origin/HEAD, using only refs already present locally. LOWER BOUND: only 1,626 of 3,600 checkouts hold an origin/HEAD or origin/main ref to compare against, and a checkout that has not fetched for 10 days cannot see commits pushed since"}
+
+  :uncommitted-wip
+  {:value 293 :unit "tracked dirty files" :repos 28
+   :untracked-only-repos 44 :stashes 4
+   :source "git status --porcelain per repo; git stash list per repo"}
+
+  :unpushed-commits
+  {:value 123 :unit "commits" :repos 10
+   :source "git rev-list --count origin/<branch>..HEAD for the 264 checkouts that are on a branch rather than detached"}
+
+  :detached-head-checkouts
+  {:value 3335 :unit "repos"
+   :source "git rev-parse --abbrev-ref HEAD == 'HEAD' -- the normal west pin-checkout state"}
+
+  :radicle-repos
+  {:value 3677 :unit "repos" :writers-per-repo {1 499 2 1} :sample-n 500
+   :source "ls ~/.radicle/storage; per-repo `git for-each-ref` counting distinct refs/namespaces/<nid>/ prefixes over a seeded random sample of 500"}
+
+  :radicle-plane-divergence
+  {:value 90 :unit "repos" :sample-n 500 :fraction 0.18
+   :source "for a random 500 of the 3,677 radicle repos, the SHA at refs/heads/main (radicle's canonical ref) matched a live local checkout HEAD in 384 cases and a west.yml pin in 26; in 90 cases it matched NEITHER, i.e. radicle's canonical is at a commit no plane in the git side is currently on"
+   :window-days 9
+   :window-source "radicle identity COBs were created 2026-07-25 (492 of the 500 sampled) and 2026-07-28 (8) -- a bulk import, not incremental use; the snapshot is 2026-08-03, so the divergence accumulated over ~9 days"}
+
+  :manifest-write-rate
+  {:value 173 :unit "commits/day touching manifest/west.yml" :window "2026-07-04..2026-08-03"
+   :total 5181 :peak-day 430 :peak-date "2026-07-31"
+   :source "git log --since=2026-07-04 --oneline -- manifest/west.yml | wc -l -> 5181 over 30 days"}
+
+  :fleet-db-lag
+  {:value 1355 :unit "west.yml commits since fleet-db.edn last moved"
+   :source "sum of daily west.yml commit counts 2026-07-27..2026-08-03 (100+35+128+277+430+168+88+129), against fleet-db.edn's last commit 2026-07-26"}
+
+  :registered-guard-hooks
+  {:value 11 :unit "hook commands" :breakdown {:SessionStart 1 :PreToolUse 9 :PostToolUse 1}
+   :source ".claude/settings.json"}}
+
+ ;; --------------------------------------------------------------------------
+ ;; RATES -- the two that set every loop's clock
+ ;; --------------------------------------------------------------------------
+ :rates
+ {:fetch-refresh
+  {:repos-fetched-last-24h 120 :of 3397 :never-fetched 203
+   :staleness-days {:median 10.3 :p75 10.3 :p90 16.0 :max 38.3}
+   :buckets {"<1d" 120 "1-7d" 497 "7-30d" 2748 ">30d" 32}
+   :source "mtime of <repo>/.git/FETCH_HEAD for every materialised checkout, 2026-08-03"
+   :note "p75 == median == 10.3 because a single bulk `west update`-shaped fetch on ~2026-07-24 refreshed most of the fleet at once; the distribution is bulk-correlated, not Poisson"}
+
+  :fleet-refresh-period
+  {:value 30.0 :unit "days" :computed-as "materialised-checkouts / repos-fetched-last-24h = 3600 / 120"
+   :note "the time for the sync loop to visit every materialised repo once at the OBSERVED throughput. This is a derived quantity, not an independent measurement; it agrees in order of magnitude with the directly measured median staleness of 10.3 days (a bulk-correlated refresh gives a median well below the mean period)."}
+
+  :parallel-sync-speedup
+  {:value 4.8 :unit "x" :basis "10 light repos, `fleet sync --jobs 8` 6.0s vs --jobs 1 29.0s"
+   :source "ADR-2607160005 addendum (2026-07-16), measured, not projected"}}
+
+ ;; --------------------------------------------------------------------------
+ ;; WHAT IS ALREADY BUILT -- tractability inputs, each with its own evidence
+ ;; --------------------------------------------------------------------------
+ :capability-inventory
+ [{:id :bonsai :what "content-addressed blob/tree/commit objects + refs as arrangement datoms, byte-exact git loose-object/pack/idx interop, git-remote-kotoba helper"
+   :state :implemented-unwired
+   :source "orgs/kotoba-lang/bonsai/README.md 'What this deliberately is NOT (yet)': no deployed kotobase git server route; the kotobase.net route and durable nekko.ref-event transaction are still pending"}
+  {:id :nekko :what "RID = CID of genesis, hash-chained identity journal, Ed25519 delegates, sigrefs, push-gate (authorize-push? / CACAO)"
+   :state :implemented-unwired
+   :source "orgs/kotoba-lang/nekko/README.md; ADR-2607072200 (50 tests / 76 assertions)"}
+  {:id :miki :what "the 'trunk' slot in the tree-motif naming table"
+   :state :does-not-exist
+   :source "ADR-2607161801 addendum: the git slot was resolved to `bonsai`, not `miki`; `miki` remains a RESERVED WORD with no repository behind it. grep 'name: mik' manifest/west.yml -> only com-etzhayyim-app-omikuji / com-etzhayyim-mikurabe, unrelated"}
+  {:id :kagami-fleet-db :what "west.yml <-> fleet-db bijective import, signed pin-advance, parallel `fleet sync`"
+   :state :phase-0-landed-phase-1-pending
+   :source "ADR-2607160005 addendum: byte-identical round trip over the real west.yml verified; signed pins (Phase 1) not landed; the absorbing CI was removed 2026-07-30"}
+  {:id :semantic-code :what "Unison-shaped content-addressed DEFINITION identity: DAG-CBOR CIDv1 per checked def, de Bruijn binders, dependency CIDs propagate, CID-addressed namespace commits"
+   :state :local-kernel-implemented-no-network
+   :source "orgs/kotoba-lang/kotoba/docs/ADR-kotoba-content-addressed-codebase-gap.md (2026-07-23): 'Do not claim a deployed codebase network, signed-record distribution, or availability guarantees'"}
+  {:id :inga :what "chained-HotStuff BFT: n=3f+1, 2f+1 quorum certificates, pacemaker, signed attestations, real WebSocket transport, stake-weighted quorum"
+   :state :implemented-3166-lines-not-wired-to-repo-refs
+   :source "ADR-2608038000 (2026-08-03), engi@a6d4450 namespace line counts"}
+  {:id :nix-shaped-supply-chain :what "content-address pinning of external deps with fail-closed validation (aiueos TCB inventory v2)"
+   :state :implemented-for-aiueos-only
+   :source "ADR-2608012050 (2026-08-01): literal nix/flake usage is 0 files; the properties were reached independently, for one repo's TCB"}]
+
+ ;; --------------------------------------------------------------------------
+ ;; NOT MEASURED -- named so nothing downstream silently treats them as zero
+ ;; --------------------------------------------------------------------------
+ :unmeasured
+ {:agent-edit-to-landed-latency "no instrumentation exists that timestamps an agent's first edit and the merge of the commit containing it"
+  :manifest-write-conflict-rate "409 rates on the single-entry west.yml PUT path are not logged anywhere; ADR-2607258000 records that the registration path emptied west.yml twice, which is evidence the path fails, not a rate"
+  :concurrent-agent-count "the number of terminals/agents live at any moment is not recorded"
+  :cross-machine-drift "this snapshot is one workstation; a second machine's checkouts were not probed"}}
