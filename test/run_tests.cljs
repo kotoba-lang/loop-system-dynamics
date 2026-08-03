@@ -17,6 +17,7 @@
             [loop-system-dynamics.cloud-itonami-age-lag-monitor-test]
             [loop-system-dynamics.cloud-itonami-local-agent-storage-test]
             [loop-system-dynamics.token-economy-comparison-test]
+            [loop-system-dynamics.cloud-itonami-vlp-levers-test]
             [loop-system-dynamics.corporate-vishing-fraud-test]))
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
@@ -39,4 +40,5 @@
               'loop-system-dynamics.cloud-itonami-age-lag-monitor-test
               'loop-system-dynamics.cloud-itonami-local-agent-storage-test
               'loop-system-dynamics.token-economy-comparison-test
+              'loop-system-dynamics.cloud-itonami-vlp-levers-test
               'loop-system-dynamics.corporate-vishing-fraud-test)
