@@ -20,8 +20,8 @@
  :planes
  [{:id :local-worktrees :role "materialised child checkouts under orgs/<org>/<repo>" :live? true}
   {:id :github-west :role "manifest/west.yml pins + GitHub refs -- today's source of truth" :live? true}
-  {:id :radicle :role "per-writer namespaces + sigrefs in ~/.radicle/storage" :live? false
-   :note "`rad node status` -> stopped on 2026-08-03. Wiring it was chosen by the owner the same day; the prerequisite visibility audit passed (3,676 of 3,677 repos are public-visibility and ZERO correspond to a repo that is private on GitHub), but `rad node start` needs the passphrase for this machine's identity (alias junkawasaki, did:key:z6MkpPKis...) and a targeted lookup found it in neither kagi nor the macOS Keychain. Blocked on one owner action: `rad auth`, then store it as kagi personal/radicle-junkawasaki-passphrase."}
+  {:id :radicle :role "per-writer namespaces + sigrefs in ~/.radicle/storage" :live? true
+   :note "CORRECTED 2026-08-04. This was recorded as a write-once plane that had drifted; measuring the DIRECTION of the divergence over 556 repos inverted that reading -- rad-behind 0.2% (1 repo) against rad-ahead 3.8%, i.e. the plane is overwhelmingly FRESHER than the local checkouts, and other sessions on this machine keep pushing to it (8-9 repos updated in the 12h to 2026-08-04 04:09). It is :live? true. The node is still stopped, so it does not REPLICATE between machines -- but locally it is maintained, not abandoned. `rad node status` -> stopped on 2026-08-03/04. Wiring it was chosen by the owner the same day; the prerequisite visibility audit passed (3,676 of 3,677 repos are public-visibility and ZERO correspond to a repo that is private on GitHub), but `rad node start` needs the passphrase for this machine's identity (alias junkawasaki, did:key:z6MkpPKis...) and a targeted lookup found it in neither kagi nor the macOS Keychain. Blocked on one owner action: `rad auth`, then store it as kagi personal/radicle-junkawasaki-passphrase."}
   {:id :fleet-db :role "manifest/fleet-db.edn + append-only ledger (kagami) -- CLAUDE.md declares this west.yml's upstream" :live? true
    :note "live again on 2026-08-03: `fleet reconcile` absorbed 629 changed pins / 499 added / 201 removed as 1,329 attributed ledger events and `--check` is clean. It had not moved since 2026-07-26."}]
 
@@ -37,9 +37,9 @@
   {:pair [:github-west :fleet-db] :exists? true :scheduled? false
    :how "`fleet reconcile --check` / `fleet reconcile` (kagami). The GitHub Action that ran it was removed 2026-07-30 (ADR-2607300900)."}
   {:pair [:radicle :local-worktrees] :exists? true :scheduled? false
-   :how "scripts/fleet-sync-probe.cljs (:radicle) -- classifies each sampled canonical head against live checkout HEADs and west pins. New on 2026-08-03; before that this pair had nothing."}
-  {:pair [:radicle :github-west] :exists? true :scheduled? false
-   :how "same probe key; the :matches-pin-only bucket is exactly this pair"}
+   :how "scripts/fleet-sync-probe.cljs (:radicle) -- as of 2026-08-04 it compares each repo's rad canonical against ITS OWN checkout by ancestry and reports :rad-behind / :rad-ahead / :rad-commit-absent-locally / :diverged separately. The first version reported one undirected number and therefore blamed the radicle plane for what was a stale local checkout."}
+  {:pair [:radicle :github-west] :exists? false :scheduled? false
+   :how "the old :matches-pin-only bucket claimed to cover this pair but was an artefact of undirected matching; with direction-aware classification nothing compares rad against the manifest pin. Honest downgrade, not a regression in capability."}
   {:pair [:radicle :fleet-db] :exists? false :scheduled? false}
   {:pair [:fleet-db :local-worktrees] :exists? false :scheduled? false
    :how "nothing checks a checkout against fleet-db directly; it is only ever compared through the west.yml projection"}]
@@ -115,9 +115,13 @@
    {:did "wrote scripts/fleet-sync-probe.cljs and made it this model's measurement input"
     :effect "loop drivers carrying a standing check went from a minority to a majority, and the numeric half of the seed became regenerable instead of hand-typed"}
    {:did "audited the radicle plane for private-repo exposure before wiring it"
-    :effect "0 of 3,677 radicle repos correspond to a GitHub-private repo, so wiring exposes nothing. Blocked on the identity passphrase, which is stored nowhere."}]
+    :effect "0 of 3,677 radicle repos correspond to a GitHub-private repo, so wiring exposes nothing."}
+   {:did "measured the DIRECTION of the rad<->git divergence over 556 repos (2026-08-04)"
+    :effect "equal 85.8%, rad-commit-absent-locally 10.1%, rad-ahead 3.8%, rad-behind 0.2%, diverged 0.2% -- the plane is fresher than the checkouts, not staler. The probe was fixed to report direction and the undirected :divergence-pct was removed."}
+   {:did "confirmed the exact form of the radicle node blocker after the owner ran `rad auth`"
+    :effect "the key IS in ssh-agent (fingerprint matches `rad self`), and git-level rad operations work -- but `rad node start` reads the key file itself and still demands a passphrase (or RAD_PASSPHRASE). The blocker is the passphrase not being stored, not the key being unusable."}]
   :not-done
-  [{:what "start the radicle node" :why "needs `rad auth` by the owner; the safety floor forbids an agent guessing or typing a passphrase"}
+  [{:what "start the radicle node" :why "`rad auth` was run and the key is in ssh-agent, but the node daemon needs the passphrase itself. Store it as kagi personal/radicle-junkawasaki-passphrase (or set RAD_PASSPHRASE); the safety floor forbids an agent guessing or typing it."}
    {:what "schedule any of the checks" :why "every reconciler above has :scheduled? false. This is the single biggest remaining gap, and it is a decision about where the scheduler lives, not a missing capability."}]}
 
  ;; --------------------------------------------------------------------------

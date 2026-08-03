@@ -205,9 +205,9 @@
     :what "canonical main is not a push target but a pure function of (writer namespaces x delegate set x threshold), recomputed identically by every node"
     :evidence "the rule exists in radicle and the primitives exist in nekko; nothing in this fleet computes it. A rules-layer change (Meadows tier 5-6): it decides who may move canonical without anyone having to be trusted not to."}
 
-   {:id :retire-or-wire-the-dead-plane :band :band/D :tractability 0.5
-    :what "either start the radicle node and give checkouts a rad remote, or delete the storage -- do not keep a plane that is written once and never reconciled"
-    :evidence "LOWERED 0.9 -> 0.5 on 2026-08-03, the honest half of this cycle. The prerequisite audit came back clean: of 3,677 radicle repos, 3,676 are public-visibility and exactly ZERO correspond to a repo that is private on GitHub, so wiring exposes nothing. But starting the node needs the passphrase for this machine's radicle identity (alias junkawasaki, did:key:z6MkpPKis...), and a targeted lookup found it in neither kagi nor the macOS Keychain. What looked like 'a decision plus one command' is a decision plus one command plus a credential nobody stored."}
+   {:id :replicate-the-radicle-plane :band :band/D :tractability 0.7
+    :what "start the radicle node so the plane replicates BETWEEN machines, and give checkouts a rad remote. Renamed 2026-08-04: the previous id was retire-or-wire-the-dead-plane, and the plane is not dead"
+    :evidence "0.9 -> 0.5 -> 0.7 across three readings, and the middle one was wrong for an instructive reason. The prerequisite audit is clean (3,676 of 3,677 repos public-visibility, ZERO corresponding to a GitHub-private repo). The 0.5 assumed an abandoned write-once mirror; measuring the DIRECTION of the divergence over 556 repos gave rad-behind 0.2% against rad-ahead 3.8%, so the plane is FRESHER than the local checkouts and other sessions keep pushing to it -- retiring it would delete the fresher copy. Held below 0.9 because `rad node start` still needs a passphrase stored nowhere: confirmed after the owner ran `rad auth` that the key is in ssh-agent and git-level rad operations work, but the daemon reads the key file itself."}
 
    {:id :parallel-fleet-sync :band :band/D :tractability 0.9
     :what "replace serial `west update` with the pin-SHA-direct parallel `fleet sync`"
@@ -354,7 +354,7 @@
       :measured-multiplier (:improvement-factor refresh-regimes)
       :tension "the highest-LEVERAGE intervention (band A, a goal change) and the only intervention with a MEASURED multiplier (band D, its mechanism) are not the same row. dynamics.core keeps base-score and yield on separate axes; reporting only the ranking would hide the multiplier."})
    :moved-this-cycle (->> intervention-ranking
-                          (filter #(str/includes? (str (:evidence %)) "0.9 -> 0.5"))
+                          (filter #(str/includes? (str (:evidence %)) "0.9 -> 0.5 -> 0.7"))
                           (mapv :id)
                           (into (->> intervention-ranking
                                      (filter #(str/includes? (str (:evidence %)) "0.45 -> 0.50"))
