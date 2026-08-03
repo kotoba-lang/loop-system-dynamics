@@ -5,13 +5,19 @@
   (println "observe -> evaluate -> decide -> act -> record-evidence complete")
   (println "report:" report-path)
   (println "ledger:" ledger-path)
+  (println "measurement source:" (:probe-source evaluation)
+           "(:seed-only means nobody re-ran scripts/fleet-sync-probe.cljs)")
   (println "planes:" (:planes evaluation))
-  (doseq [{:keys [id cycle-time-days instrumentation-completeness structural-strength]}
+  (println "reconcilers:" (select-keys (:reconcilers evaluation) [:total :existing :scheduled]))
+  (doseq [{:keys [id kind cycle-time-days instrumentation-completeness structural-strength]}
           (:loops evaluation)]
-    (println "  loop" (name id) "cycle=" cycle-time-days
+    (println " " (name kind) (name id) "period=" cycle-time-days
              "instr=" instrumentation-completeness "strength=" structural-strength))
-  (println "dominant loop:" (:dominant-loop decision))
+  (println "dominant reinforcing loop:" (:dominant-loop decision))
+  (println "period ratio (repair/drift):" (:period-ratio evaluation))
+  (println "standing-check coverage:" (:standing-check-coverage evaluation))
   (println "refresh regimes:" (:refresh-regimes evaluation))
-  (println "rad projection:" (:rad-projection evaluation))
+  (println "divergence:" (:divergence-projection evaluation))
+  (println "moved this cycle:" (:moved-this-cycle decision))
   (doseq [{:keys [id band tractability base-score]} (:intervention-ranking evaluation)]
     (println "  " (name id) (name band) tractability "->" base-score)))
