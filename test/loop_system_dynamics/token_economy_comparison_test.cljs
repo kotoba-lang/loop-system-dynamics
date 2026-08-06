@@ -86,3 +86,53 @@
     (doseq [k [:visa-card-network-interchange :central-bank-balance-sheet-expansion
                :commercial-bank-credit-creation :stablecoin-reserve-yield]]
       (is (contains? d/loop-archetypes k)))))
+
+;; ---------------------------------------------------------------------------
+;; Our own billing loops (added 2026-08-06)
+;; ---------------------------------------------------------------------------
+
+(deftest own-monetisation-bracket-separates-three-causes-test
+  (testing "all four loops we bill through score nil, and reporting only that
+            would hide that they need three different kinds of work"
+    (let [b (:own-monetisation-bracket (tec/decide (tec/evaluate)))]
+      (is (= 4 (count b)))
+      (is (every? nil? (map :strength (vals b))))
+      (is (every? false? (map :fired? (vals b))))
+      (is (= {:wiring 1 :stage 1 :demand 2}
+             (frequencies (map :class (vals b)))))))
+  (testing "the classification lives HERE, not in the library -- dynamics owns the
+            measurement and the nil; which of OUR systems is mis-wired versus
+            unsold is a judgement about our situation"
+    (doseq [[k _] tec/own-monetisation-loops]
+      (is (contains? d/loop-archetypes k) (str k " must exist in the library"))
+      (is (nil? (:class (k d/loop-archetypes)))
+          (str k ": the library must not carry our failure classification"))))
+  (testing "x402 is the only one whose zero is repairable by engineering alone"
+    (let [b (:own-monetisation-bracket (tec/decide (tec/evaluate)))]
+      (is (= [:nexus-x402-facilitator-take-rate-current]
+             (vec (keep (fn [[k v]] (when (= :wiring (:class v)) k)) b)))))))
+
+(deftest own-loop-upper-bounds-come-from-the-library-test
+  (testing "each bracket row's upper bound is recomputed from the library function
+            against the trial count in the archetype -- the report never carries a
+            hand-written percentage"
+    (let [b (:own-monetisation-bracket (tec/decide (tec/evaluate)))]
+      (doseq [[k v] b :when (:trials v)]
+        (is (= (:upper-bound-pct v)
+               (* 100 (d/upper-bound-rate-from-zero-events (:trials v))))
+            (str k "'s bound must equal the library's, recomputed")))
+      (testing "murakumo carries no trial count, so it gets no bound rather than a
+                fabricated one"
+        (is (nil? (:trials (:cloud-murakumo-credits-current b))))
+        (is (nil? (:upper-bound-pct (:cloud-murakumo-credits-current b))))))))
+
+(deftest the-2d-view-reports-our-unfired-take-rate-loop-test
+  (testing "x402 declares a flow kind and a zero flow; it must appear in the
+            partition for 'kind known, strength unmeasured' rather than vanishing
+            from the scale axis entirely (the silent-drop bug fixed 2026-08-06)"
+    (let [{:keys [flow-known-strength-unmeasured]} (:archetype-scale (tec/evaluate))]
+      (is (some #{:nexus-x402-facilitator-take-rate-current}
+                flow-known-strength-unmeasured))
+      (testing "and it was not the only one being dropped -- etzhayyim's adherent
+                loop had the same shape and the same invisibility"
+        (is (some #{:etzhayyim-adherent-loop} flow-known-strength-unmeasured))))))
