@@ -150,6 +150,61 @@
               :instrumentation (:instrumentation-completeness (k d/loop-archetypes))
               :friction (:friction (k d/loop-archetypes))}])))
 
+(def own-monetisation-loops
+  "The loops this portfolio actually bills through, and -- because all four
+   score nil -- the DIAGNOSIS that separates them. `dynamics` supplies the
+   measurements and the nil; the classification of WHY each is nil is a
+   judgement about our own systems, so it is owned here rather than in the
+   library (repository-rules.edn: the library owns domain math, not our
+   situation).
+
+   The classes are not degrees of the same failure. They take different work:
+
+     :wiring  the counterparty acted and the mechanism refused. Repairable by
+              engineering alone, without persuading anybody.
+     :stage   an earlier leg fires and the next does not. The failing step is
+              located; what it needs is a product/UX experiment.
+     :demand  nothing is broken and nobody bought. Only contact and offer
+              move this, which is the most expensive of the three."
+  {:nexus-x402-facilitator-take-rate-current
+   {:class :wiring
+    :evidence "3 submissions, 3 rejections, 0 settlements (100% rejection on every payment ever submitted)"
+    :also "take rate on internal sellers is 0 BY DESIGN, so repairing the rejections makes payments work without making the loop compound"}
+   :net-kotobase-subscription-current
+   {:class :stage
+    :evidence "signups fired 0 -> 12; checkouts 0/12"
+    :also "3 of 2,292 visitors came from a paid channel -- too few to be evidence either way"}
+   :cloud-itonami-saas-current
+   {:class :demand
+    :evidence "checkout verified live end-to-end; 5 external tenants; 0 ever opened it"
+    :also "1,012 agent runs vs 321 human uniques -- the substrate is exercised by agents, and agents do not open Stripe Checkout"}
+   :cloud-murakumo-credits-current
+   {:class :demand
+    :evidence "real inference usage, 0 credits purchases, 0 active subscriptions"
+    :also "fleet cost was validated cheaper than spot (0.50 ratio), so the zero is not a cost-competitiveness result"}})
+
+(defn- own-monetisation-bracket
+  "Our own four billing loops side by side, each with its measured trial count
+   turned into a 95% upper bound. The bound is a statement about how little has
+   been tested, never a forecast: 0 of 5 bounds the rate at 45% because 5 trials
+   is almost no evidence, not because the product half-converts."
+  []
+  (into {}
+        (for [[k {:keys [class evidence also]}] own-monetisation-loops
+              :let [a (k d/loop-archetypes)
+                    trials (or (:submissions-observed a) (:funnel-signups a) (:external-tenants a))]]
+          [k (cond-> {:class class
+                      :evidence evidence
+                      :also also
+                      :strength (d/loop-structural-strength a)
+                      :fired? (some? (:cycle-time-days a))
+                      :self-funding (:self-funding-coefficient a)
+                      :instrumentation (:instrumentation-completeness a)
+                      :friction (:friction a)}
+               (and trials (pos? trials))
+               (assoc :trials trials
+                      :upper-bound-pct (* 100 (d/upper-bound-rate-from-zero-events trials))))])))
+
 (defn decide [{:keys [intervention-ranking charter-excluded-ranking archetype-speed archetype-scale]}]
   {:top-3 (vec (take 3 intervention-ranking))
    :declined-leverage (vec charter-excluded-ranking)
@@ -157,6 +212,11 @@
                                         (:unmeasured archetype-speed)))
    :never-fired-loops (vec (:unmeasured archetype-speed))
    :mutual-credit-bracket (mutual-credit-bracket)
+   :own-monetisation-bracket (own-monetisation-bracket)
+   :own-loops-all-nil? (every? nil? (map (comp d/loop-structural-strength
+                                               #(% d/loop-archetypes))
+                                         (keys own-monetisation-loops)))
+   :own-loop-failure-classes (frequencies (map :class (vals own-monetisation-loops)))
    :speed-vs-scale-correlation (:speed-vs-scale-correlation archetype-scale)
    :en-instrumentation-is-catalog-minimum?
    (= 0 (apply min (keep :instrumentation-completeness (vals d/loop-archetypes))))})
@@ -200,6 +260,34 @@
            " instrumentation=" (:instrumentation v)
            " friction=" (:friction v)))
     [""
+     "## Our own billing loops -- all nil, for three different reasons"
+     ""
+     "measurements as-of 2026-08-06 (90-docs/business/metrics/*.edn), which is"
+     "LATER than this report's three-sphere as-of above -- the two dates are"
+     "different observations and are not merged."
+     ""
+     "Every loop this portfolio bills through scores nil (never fired). That is"
+     "one number, and it hides three different jobs: a rejecting facilitator, a"
+     "checkout nobody opens, and a product nobody was asked to buy. Only the"
+     "first is an engineering job."
+     ""
+     (str "failure classes: "
+          (str/join ", " (for [[c n] (:own-loop-failure-classes decision)]
+                           (str (name c) "=" n))))
+     ""]
+    (for [[k v] (:own-monetisation-bracket decision)]
+      (str "- **" (name k) "** [" (name (:class v)) "]"
+           "\n  strength=" (if (:strength v) (fmt (:strength v) 2) "nil (never fired)")
+           " self-funding=" (:self-funding v)
+           " instrumentation=" (:instrumentation v)
+           " friction=" (:friction v)
+           (when (:upper-bound-pct v)
+             (str "\n  measured: " (:evidence v)
+                  "\n  95% upper bound on the missing conversion: "
+                  (fmt (:upper-bound-pct v) 1) "% (n=" (:trials v)
+                  ", zero events) -- read as how little has been tested"))
+           "\n  also: " (:also v)))
+    [""
      "## Never-fired loops in the whole catalog"
      ""
      (str "  " (str/join ", " (map name (:never-fired-loops decision))))
@@ -217,6 +305,15 @@
                       (str "- " (.toExponential annual-flow-usd 2) " USD   strength="
                            (fmt strength 2) "   " (name id)))))
             (:by-flow-kind archetype-scale))
+    [""
+     "### declared a flow kind, not yet rankable (strength unmeasured)"
+     ""
+     "These have a flow figure and a flow kind but no strength, because the loop"
+     "has never fired. They are listed rather than dropped -- before 2026-08-06"
+     "they matched none of the partitions and appeared nowhere at all."
+     ""]
+    (for [id (:flow-known-strength-unmeasured archetype-scale)]
+      (str "- " (name id)))
     [""
      "## Speed vs scale, Spearman within each flow kind (never pooled across kinds)"
      ""]
@@ -242,6 +339,10 @@
                :declined-leverage (mapv #(select-keys % [:id :base-score :charter-basis])
                                         (:declined-leverage decision))
                :mutual-credit-bracket (:mutual-credit-bracket decision)
+               :own-monetisation-bracket (:own-monetisation-bracket decision)
+               :own-monetisation-as-of "2026-08-06"
+               :own-loop-failure-classes (:own-loop-failure-classes decision)
+               :own-loops-all-nil? (:own-loops-all-nil? decision)
                :never-fired-loops (:never-fired-loops decision)
                :speed-vs-scale-correlation (:speed-vs-scale-correlation decision)
                :scoring-owner "kotoba-lang/dynamics"
