@@ -1,9 +1,11 @@
 {
   "name": "loop-system-dynamics",
   "private": true,
-  "description": "npm deps for the DataScript-backed query layer (src/loop_system_dynamics/query.cljs) and the arrangement.datalog-backed one (src/loop_system_dynamics/arrangement_query.cljs). No runtime JS of its own -- nbb consumes these directly.",
+  "description": "npm deps for arrangement_query.cljs (xlsx) and nbb test scripts. Query layer uses kotoba-lang/datalog via nbb.edn.",
+  "scripts": {
+    "test": "nbb --classpath \"../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src\" test/run_tests.cljs"
+  },
   "dependencies": {
-    "datascript": "^1.7.8",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }
