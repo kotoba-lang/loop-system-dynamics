@@ -1,71 +1,77 @@
 (ns loop-system-dynamics.query
-  "A real DataScript (npm `datascript`, same package + same JS-interop
-   convention as com-junkawasaki/root's manifest/edn-query.cljs) query layer
-   over this loop's facts.
+  "Datalog query layer (kotoba-lang/datalog) over this loop's facts.
 
    Why this exists: ADR-2607203000 asked for entity/actor data to be
    'DataScript/Datomic query で接続' (connected via DataScript/Datomic query),
-   not just read from a static file. Every cycle before this one answered that
-   by hand-copying `gh api` output into resources/entities-seed.edn's nested
-   maps -- real and sourced, but only queryable by eyeballing the file. This
-   namespace ingests three real, already-sourced datasets --
-   kotoba-lang/dynamics's `loop-archetypes` catalog, a curated flat subset
-   of this repo's own `entities-seed.edn`, and every category from any
-   fleet-registration seed (loop_system_dynamics/fleet_registration_xmile.cljs's
-   observe -- cloud-itonami/etzhayyim-actors/kotoba-lang's own real
-   backlog+rate facts) -- as datoms, so a caller can ask a genuine
-   `:find/:where` datalog question instead of grepping prose OR reading one
-   report at a time. The fleet dataset in particular makes a
-   previously-unaskable question askable directly: 'across every entity
-   this loop has modeled, which categories are stalled right now' used to
-   require opening 3 separate reports; it is now one query (see bin/
-   query_demo.cljs).
+   not just read from a static file. This namespace ingests three real,
+   already-sourced datasets into an in-memory datalog db so a caller can ask
+   a genuine `:find/:where` datalog question instead of grepping prose.
 
-   This does NOT replace entities-seed.edn as the source of truth: the seed
-   stays the hand-curated, dated, sourced snapshot (see README 'Extending
-   coverage'). This is a second, queryable *projection* of the same real
-   facts. Convention (matches manifest/edn-query.cljs exactly, so anyone who
-   already knows that tool already knows this one): datascript.js exposes
-   attributes as BARE strings (no leading colon) except \":db/id\" itself,
-   which is a colon-prefixed string key on the JS object; datalog queries are
-   plain query strings, e.g. \"[:find ?id :where [?e \\\"archetype/id\\\" ?id]]\"."
-  (:require ["datascript" :as ds-mod]))
-
-(def ds (.-default ds-mod))
+   Convention (matches manifest/edn-query.cljs and loop-innen.query): attributes
+   are bare strings (no leading colon); datalog queries are plain query strings,
+   e.g. \"[:find ?id :where [?e \\\"archetype/id\\\" ?id]]\"."
+  (:require [clojure.edn :as edn]
+            [datalog.core :as dl]
+            [datalog.index :as index]))
 
 (defn- stringify-complex
-  "Same rule as manifest/edn-datomize.cljs: a nested map/vector becomes a
-   pr-str string blob (preserves the real data for provenance/debugging
-   without forcing irregularly-shaped domain data into a rigid attribute
-   schema). Scalars pass through unchanged."
+  "Nested map/vector -> pr-str string blob; scalars pass through unchanged."
   [v]
   (if (or (map? v) (vector? v) (list? v) (set? v))
     (pr-str v)
     v))
 
-(defn- entity-map->js
-  "{:db/id <int> \"ns/attr\" val ...} -> datascript.js entity object.
-   :db/id becomes the special colon-prefixed JS key; every other key is
-   expected to already be a bare attribute string (this namespace's
-   ->tx-data fns produce that shape directly, matching entity->js in
-   manifest/edn-query.cljs)."
-  [m]
-  (let [obj (js-obj)]
-    (doseq [[k v] m]
-      (if (= k :db/id)
-        (aset obj ":db/id" v)
-        (aset obj k (stringify-complex v))))
-    obj))
+(defn- parse-vector-query [query]
+  (let [qvec (if (string? query) (edn/read-string query) query)
+        idx-in (first (keep-indexed #(when (= %2 :in) %1) qvec))
+        idx-where (or (first (keep-indexed #(when (= %2 :where) %1) qvec)) -1)
+        find-end (or idx-in idx-where)
+        find-syms (vec (subvec qvec 1 find-end))
+        in-syms (when idx-in (vec (subvec qvec (inc idx-in) idx-where)))
+        where-clauses (when (pos? idx-where) (vec (subvec qvec (inc idx-where))))]
+    {:find find-syms :in in-syms :where where-clauses}))
+
+(defn- norm-ground [x]
+  (cond
+    (symbol? x) x
+    (keyword? x) (if-let [ns* (namespace x)] (str ns* "/" (name x)) (name x))
+    :else x))
+
+(defn- norm-clause [clause]
+  (cond
+    (and (seq? clause) (= 'not (first clause)) (vector? (second clause)))
+    (list 'not (mapv norm-ground (second clause)))
+
+    (vector? clause)
+    (mapv (fn [x]
+            (if (seq? x)
+              (apply list (map norm-ground x))
+              (norm-ground x)))
+          clause)
+
+    :else clause))
+
+(defn- records->db [records]
+  (reduce (fn [db record]
+            (let [subject (str (:db/id record))]
+              (reduce (fn [acc [k v]]
+                        (if (= k :db/id)
+                          acc
+                          (index/assert-quad acc
+                                             {:s subject
+                                              :p (if (keyword? k)
+                                                   (if-let [ns* (namespace k)]
+                                                     (str ns* "/" (name k))
+                                                     (name k))
+                                                   (str k))
+                                              :o (stringify-complex v)}
+                                             (constantly false))))
+                      db
+                      record)))
+          (index/empty-db)
+          records))
 
 (defn archetypes->tx-data
-  "loop-archetypes (from dynamics.core, passed in so this namespace has no
-   hard dependency on dynamics.core's own require path) -> a vector of entity
-   maps ready for entity-map->js. One entity per archetype.
-   structural-strength is computed with the SAME dynamics.core/
-   loop-structural-strength fn the caller passes in, so this can never
-   silently drift from the real scoring formula.
-   next-tempid!: a 0-arg fn returning a fresh negative int each call (see
-   ingest! below) -- DataScript tempids must be numbers, not strings."
   [loop-archetypes structural-strength-fn next-tempid!]
   (vec
    (for [[archetype-id params] loop-archetypes]
@@ -76,12 +82,6 @@
                            [(str "archetype/" (name k)) v])))))))
 
 (defn entities->tx-data
-  "A curated FLAT subset of the observed entities (from loop-system-dynamics.
-   core/observe) -- only fields that already exist as clean scalar values in
-   entities-seed.edn (never a re-derivation/re-parse of prose). Fields absent
-   for a given entity are simply omitted from that entity's datoms, not
-   defaulted to 0 or nil -- 'not yet checked' and 'checked and zero' stay
-   distinguishable, same discipline as the rest of this loop."
   [entities next-tempid!]
   (vec
    (for [e entities]
@@ -99,20 +99,6 @@
                       ["entity/f2-upper-bound-95pct" (get-in s [:f2-upper-bound-95pct :value])]]))))))
 
 (defn fleet-categories->tx-data
-  "fleets: a vector of {:label \"cloud-itonami\" :observation <a
-   fleet-registration-xmile observation map, i.e. what (fleet/observe
-   seed-path) returns -- :window {:days ...} + :categories [{:id
-   :github-total :west-registered-t0 :west-registered-t1} ...]>}.
-
-   One datom entity per (entity, category) pair -- e.g. (cloud-itonami,
-   isco), (etzhayyim-actors, actor), (kotoba-lang, com) -- with backlog and
-   observed-rate-per-day computed by the SAME formula
-   loop_system_dynamics/fleet_registration_xmile.cljs's own build-model
-   uses (github-total - west-registered-t1; (west-registered-t1 -
-   west-registered-t0) / days), so this can never silently drift from what
-   the XMILE model itself simulates. This is what makes 'which categories
-   are stalled right now, across every entity' a single datalog query
-   instead of reading 3 separate reports."
   [fleets next-tempid!]
   (vec
    (for [{:keys [label observation]} fleets
@@ -130,27 +116,36 @@
       "fleet/observed-rate-per-day" rate})))
 
 (defn ingest!
-  "Transacts all three datasets into one fresh in-memory DataScript conn and
-   returns it. Callers hold the conn and call `q` against it -- no global
-   mutable state in this namespace, so tests can build independent confs
-   in parallel."
+  "Transacts all three datasets into one fresh in-memory datalog db.
+   Returns the db value (callers historically named this `conn`)."
   [{:keys [archetypes structural-strength-fn entities fleets]}]
-  (let [conn (.create_conn ds)
-        tempid (atom 0)
+  (let [tempid (atom 0)
         next-tempid! (fn [] (swap! tempid dec))
         arch-tx (when (and archetypes structural-strength-fn)
                   (archetypes->tx-data archetypes structural-strength-fn next-tempid!))
         entity-tx (when entities (entities->tx-data entities next-tempid!))
-        fleet-tx (when fleets (fleet-categories->tx-data fleets next-tempid!))
-        all-tx (into-array (map entity-map->js (concat arch-tx entity-tx fleet-tx)))]
-    (.transact ds conn all-tx)
-    conn))
+        fleet-tx (when fleets (fleet-categories->tx-data fleets next-tempid!))]
+    (records->db (concat arch-tx entity-tx fleet-tx))))
+
+(defn- resolve-db [db-or-conn]
+  "ingest! returns a datalog index db (map with :eavt). Callers may still name
+   it `conn` historically; do not confuse it with a wrapper `{:db …}`."
+  (cond
+    (and (map? db-or-conn) (contains? db-or-conn :eavt)) db-or-conn
+    (and (map? db-or-conn) (contains? db-or-conn :db)) (:db db-or-conn)
+    :else db-or-conn))
 
 (defn q
-  "query-str: a real datalog query, as a STRING (e.g.
-   \"[:find ?id ?stars :where [?e \\\"entity/id\\\" ?id] [?e \\\"entity/github-stars\\\" ?stars]]\").
-   Matches manifest/edn-query.cljs's own `q` mode exactly -- same query
-   syntax works unmodified against either tool. Returns a Clojure data
-   structure (a set of result tuples, as vectors)."
-  [query-str conn]
-  (js->clj (.q ds query-str (.db ds conn))))
+  "query-str: a real datalog query string. `db-or-conn` is the value returned
+   by `ingest!`. Returns a vector of result tuples (DataScript-shaped; datalog
+   itself returns a set)."
+  [query-str db-or-conn & inputs]
+  (let [db (resolve-db db-or-conn)
+        {:keys [find in where]} (parse-vector-query query-str)
+        in-syms (vec (remove #{'$} (or in [])))
+        _ (when (not= (count in-syms) (count inputs))
+            (throw (ex-info "loop-system-dynamics.query: :in arity mismatch"
+                            {:in in-syms :inputs inputs})))]
+    (vec (dl/q db {:find find :in in :where (mapv norm-clause where)}
+               (constantly true)
+               inputs))))

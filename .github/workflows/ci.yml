@@ -53,6 +53,10 @@ jobs:
         with:
           repository: kotoba-lang/org-ietf-cbor
           path: org-ietf-cbor
+      - uses: actions/checkout@v4
+        with:
+          repository: kotoba-lang/datalog
+          path: datalog
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -60,4 +64,4 @@ jobs:
       - working-directory: loop-system-dynamics
         run: npm install
       - working-directory: loop-system-dynamics
-        run: nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljs
+        run: nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:../datalog/src:src:test" test/run_tests.cljs
