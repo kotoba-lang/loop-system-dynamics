@@ -24,14 +24,14 @@
    and report table are identical across all three."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             [xmile.model :as m]
             [xmile.validate :as validate]
             [xmile.execute :as execute]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
-(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- slurp-edn [p] (edn/read-string (slurp p)))
 (defn- ensure-dir! [file-path]
   (fs/mkdirSync (path/dirname file-path) #js {:recursive true}))
 

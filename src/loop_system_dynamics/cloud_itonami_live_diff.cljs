@@ -25,10 +25,10 @@
             ["child_process" :as cp]
             [clojure.string :as str]
             [clojure.set :as set]
-            [clojure.edn :as edn]))
+            [kotoba.lang.edn :as edn]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
-(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- slurp-edn [p] (edn/read-string (slurp p)))
 
 ;; ---------------------------------------------------------------------------
 ;; observe-live

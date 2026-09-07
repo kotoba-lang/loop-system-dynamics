@@ -13,12 +13,12 @@
    for a live kqe query or a GitHub API pull only touches `observe`."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             [dynamics.core :as d]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
-(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- slurp-edn [p] (edn/read-string (slurp p)))
 (defn- ensure-dir! [file-path]
   (fs/mkdirSync (path/dirname file-path) #js {:recursive true}))
 

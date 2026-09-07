@@ -18,7 +18,7 @@
   entity's stocks into dynamics.core primitives so leverage-scoring /
   loop-structural-strength can be applied. Full XMILE stock-flow simulation
   (deterrence/escalation loops over time) is Phase 2, documented in the ADR."
-  (:require [clojure.edn :as edn]
+  (:require [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             ["fs" :as fs]
             [dynamics.core :as dynamics]))
@@ -26,7 +26,7 @@
 (def default-seed-path "resources/nation-state-military-seed.edn")
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
-(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- slurp-edn [p] (edn/read-string (slurp p)))
 
 (defn observe
   "Read the nation-state military capability seed. Returns today's real,

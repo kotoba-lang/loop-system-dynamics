@@ -41,12 +41,12 @@
    same rule dynamics.core/leverage-score applies to pool-tap yields."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             [dynamics.core :as d]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
-(defn- slurp-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp p)))
+(defn- slurp-edn [p] (edn/read-string (slurp p)))
 (defn- ensure-dir! [file-path]
   (fs/mkdirSync (path/dirname file-path) #js {:recursive true}))
 (defn- r2 [x] (/ (js/Math.round (* 100 x)) 100))
