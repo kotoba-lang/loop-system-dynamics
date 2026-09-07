@@ -24,7 +24,7 @@
             ["os" :as os]
             [clojure.string :as str]
             [clojure.pprint :as pprint]
-            [clojure.edn :as edn]))
+            [kotoba.lang.edn :as edn]))
 
 ;; --------------------------------------------------------------------------
 ;; Config
@@ -73,7 +73,7 @@
   []
   (let [p "resources/gfp-equipment-seed.edn"]
     (when (fs/existsSync p)
-      (:entities (edn/read-string {:default (fn [_ v] v)} (fs/readFileSync p "utf8"))))))
+      (:entities (edn/read-string (fs/readFileSync p "utf8"))))))
 
 ;; --------------------------------------------------------------------------
 ;; HTTP + cache helpers (all return promises)

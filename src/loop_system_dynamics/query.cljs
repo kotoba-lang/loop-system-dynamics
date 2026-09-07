@@ -10,7 +10,7 @@
    Convention (matches manifest/edn-query.cljs and loop-innen.query): attributes
    are bare strings (no leading colon); datalog queries are plain query strings,
    e.g. \"[:find ?id :where [?e \\\"archetype/id\\\" ?id]]\"."
-  (:require [clojure.edn :as edn]
+  (:require [kotoba.lang.edn :as edn]
             [datalog.core :as dl]
             [datalog.index :as index]))
 

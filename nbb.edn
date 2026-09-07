@@ -1,3 +1,3 @@
-{:paths ["src" "bin" "test"]
+{:paths ["src" "bin" "test" "../edn/src" "../org-nist-sha2/src" "../org-omg-sysmlv2/src"]
  :deps {io.github.kotoba-lang/datalog {:git/url "https://github.com/kotoba-lang/datalog.git"
                                        :git/sha "d18513af533917539c56435de6fb1426738da31a"}}}

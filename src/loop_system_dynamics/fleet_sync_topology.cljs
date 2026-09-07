@@ -56,7 +56,7 @@
       before any forward checkpoint is reported."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             [dynamics.core :as d]
             [dynamics.xmile :as dx]
@@ -69,7 +69,7 @@
 
 (defn- slurp* [p] (fs/readFileSync p "utf8"))
 (defn- ensure-dir! [p] (fs/mkdirSync (path/dirname p) #js {:recursive true}))
-(defn- read-edn [p] (edn/read-string {:default (fn [_ v] v)} (slurp* p)))
+(defn- read-edn [p] (edn/read-string (slurp* p)))
 
 ;; ---------------------------------------------------------------------------
 ;; observe

@@ -19,7 +19,7 @@
   run-cycle!."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.string :as str]
             [xmile.model :as m]
             [xmile.validate :as validate]
