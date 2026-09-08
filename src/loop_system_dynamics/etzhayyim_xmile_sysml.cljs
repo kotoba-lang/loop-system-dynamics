@@ -15,7 +15,7 @@
    after the seed is updated automatically projects from fresh data."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [loop-system-dynamics.core :as core]
             [dynamics.xmile :as dx]
             [dynamics.sysml :as ds]

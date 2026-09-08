@@ -1,5 +1,5 @@
 (ns loop-system-dynamics.token-economy-comparison-test
-  (:require [cljs.test :refer [deftest is testing]]
+  (:require [kotoba.lang.text] [cljs.test :refer [deftest is testing]]
             [dynamics.core :as d]
             [loop-system-dynamics.token-economy-comparison :as tec]))
 
@@ -38,8 +38,8 @@
     (let [entry (first (filter #(= :issue-a-tradeable-token (:id %))
                                tec/three-sphere-interventions))
           r (:rationale entry)]
-      (is (clojure.string/includes? r "acceptance density"))
-      (is (clojure.string/includes? r "NOT settlement demand"))
+      (is (kotoba.lang.text/includes? r "acceptance density"))
+      (is (kotoba.lang.text/includes? r "NOT settlement demand"))
       (testing "and the acceptance-density levers remain in the ranking beside it"
         (let [ids (set (map :id (:intervention-ranking (tec/evaluate))))]
           (is (contains? ids :open-facilitator-to-third-party-sellers))

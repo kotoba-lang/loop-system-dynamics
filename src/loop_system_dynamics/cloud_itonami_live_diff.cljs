@@ -23,7 +23,7 @@
    directly, real strings, no west/east-manifest tooling dependency)."
   (:require ["fs" :as fs]
             ["child_process" :as cp]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.set :as set]
             [kotoba.lang.edn :as edn]))
 

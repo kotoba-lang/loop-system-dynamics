@@ -3,7 +3,7 @@
             ["fs" :as fs]
             ["os" :as os]
             ["path" :as path]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [loop-system-dynamics.fleet-registration-xmile :as fleet]))
 
 ;; Not a fabricated fixture -- reuses cloud-itonami's own real, checked-in

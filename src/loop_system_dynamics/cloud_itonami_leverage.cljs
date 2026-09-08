@@ -83,7 +83,7 @@
    never assigned to make a preferred answer win."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.core :as d]))
 
 (defn- ensure-dir! [file-path]

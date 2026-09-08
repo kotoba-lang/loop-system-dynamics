@@ -82,7 +82,7 @@
    SCENARIOS -- see `evaluate`'s docstring."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.xmile :as dx]
             [dynamics.sysml :as ds]
             [xmile.model :as m]

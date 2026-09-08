@@ -36,7 +36,7 @@
   silently dropped, so the gap stays visible in the artifact itself."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.string :as str]))
+            [kotoba.lang.text :as str]))
 
 (def indicator "FM.LBL.BMNY.CN")
 (def api-base "https://api.worldbank.org/v2")

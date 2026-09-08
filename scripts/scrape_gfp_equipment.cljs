@@ -17,7 +17,7 @@
     NODE_PATH=<repo>/node_modules nbb scripts/scrape_gfp_equipment.cljs [--limit N]
   "
   (:require ["fs" :as fs]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.pprint :as pprint]))
 
 (def RETRIEVED "2026-07-23")
@@ -87,7 +87,7 @@
      (into {} (for [[k lbl] AIR-LAND-LABELS :when (stock-after lbl)] [k (stock-after lbl)]))
      (into {} (for [[k lbl] NAVAL-LABELS :when (num-after lbl)] [k (num-after lbl)])))))
 
-(defn normalize-name [s] (-> (str/lower-case (str s)) str/trim (str/replace #"\.$" "")))
+(defn normalize-name [s] (-> (str/lower (str s)) str/trim (str/replace #"\.$" "")))
 
 (defn build-name-index [mledoze]
   (reduce (fn [acc c]

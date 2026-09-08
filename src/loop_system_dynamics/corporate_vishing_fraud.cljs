@@ -42,7 +42,7 @@
   (:require ["fs" :as fs]
             ["path" :as path]
             [kotoba.lang.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.core :as d]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))

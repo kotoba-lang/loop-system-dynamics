@@ -8,7 +8,7 @@
    can actually differ: plaintext working-set exposure, EDN->datom reconcile,
    local-view lag, encrypted remote write amplification, sync backlog, and
    routine Kagi key re-wrap work."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [xmile.execute :as execute]
             [xmile.model :as m]
             [xmile.validate :as validate]))

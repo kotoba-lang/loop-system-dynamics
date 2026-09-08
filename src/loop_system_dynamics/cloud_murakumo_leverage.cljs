@@ -28,7 +28,7 @@
    an input to that operator-level decision, not itself the decision."
   (:require ["fs" :as fs]
             ["path" :as path]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.core :as d]))
 
 (defn- ensure-dir! [file-path]
