@@ -36,7 +36,7 @@
   (:require ["fs" :as fs]
             ["path" :as path]
             [clojure.set :as set]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.core :as d]))
 
 (def api-base "https://api.worldbank.org/v2")

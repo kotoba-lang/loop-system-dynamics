@@ -47,7 +47,7 @@
   (:require ["fs" :as fs]
             ["path" :as path]
             [kotoba.lang.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [dynamics.sysml :as ds]
             [sysml.model :as sm]
             [sysml.validate :as validate]))

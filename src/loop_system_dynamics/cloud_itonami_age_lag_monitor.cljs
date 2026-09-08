@@ -19,7 +19,7 @@
    not a guessed constant."
   (:require ["fs" :as fs]
             ["child_process" :as cp]
-            [clojure.string :as str]))
+            [kotoba.lang.text :as str]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
 

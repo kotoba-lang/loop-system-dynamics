@@ -19,7 +19,7 @@
   loop-structural-strength can be applied. Full XMILE stock-flow simulation
   (deterrence/escalation loops over time) is Phase 2, documented in the ADR."
   (:require [kotoba.lang.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             ["fs" :as fs]
             [dynamics.core :as dynamics]))
 

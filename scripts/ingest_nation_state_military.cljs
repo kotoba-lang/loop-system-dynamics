@@ -22,7 +22,7 @@
             ["fs" :as fs]
             ["path" :as path]
             ["os" :as os]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [clojure.pprint :as pprint]
             [kotoba.lang.edn :as edn]))
 
@@ -95,7 +95,7 @@
 ;; Country master list (mledoze) -> name index
 ;; --------------------------------------------------------------------------
 (defn normalize-name [s]
-  (-> (str/lower-case (str s)) str/trim (str/replace #"\.$" "")))
+  (-> (str/lower (str s)) str/trim (str/replace #"\.$" "")))
 
 (defn build-country-index [mledoze]
   (let [countries (for [c mledoze]
@@ -166,7 +166,7 @@
                             (not (NON-MEMBER-EXCLUDE cca3)))]
         :when include?
         :let [sipri (get sipri-by-cca3 cca3)]]
-    {:id (keyword "nation" (str/lower-case cca3))
+    {:id (keyword "nation" (str/lower cca3))
      :org "external-reference"
      :domain :nation-state-military-capability
      :country-name (:name-common c)

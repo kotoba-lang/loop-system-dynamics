@@ -25,7 +25,7 @@
   (:require ["fs" :as fs]
             ["path" :as path]
             [kotoba.lang.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [xmile.model :as m]
             [xmile.validate :as validate]
             [xmile.execute :as execute]))
