@@ -1,7 +1,7 @@
 (ns refresh-from-github
   "Runs a cycle with live-refreshed GitHub org data (real `gh api
    orgs/<org>` public_repos, no human copying numbers first). Usage:
-     nbb --classpath \"../dynamics/src:src\" bin/refresh_from_github.cljs <YYYY-MM-DD>"
+     nbb --classpath \"../dynamics/src:src\" bin/refresh_from_github.cljk <YYYY-MM-DD>"
   (:require [loop-system-dynamics.core :as loop]))
 
 (let [[as-of-today] *command-line-args*]

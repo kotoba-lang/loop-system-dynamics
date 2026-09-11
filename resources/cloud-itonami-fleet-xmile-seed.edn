@@ -1,7 +1,7 @@
 ;; Real, dated, git-verified input facts for the cloud-itonami GitHub-to-west
 ;; registration pipeline, modeled as an XMILE (OASIS 1.0) stock-flow system
 ;; via kotoba-lang/org-oasis-open-xmile. See
-;; src/loop_system_dynamics/cloud_itonami_xmile.cljs for how this is turned
+;; src/loop_system_dynamics/cloud_itonami_xmile.cljk for how this is turned
 ;; into stocks/flows and simulated.
 ;;
 ;; Backlog_<cat> (stock) = github-total - west-registered-t1 (repos that

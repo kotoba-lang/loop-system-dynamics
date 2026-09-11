@@ -1,6 +1,6 @@
 ;; Real, per-individual-code GitHub data for cloud-itonami's isic/isco
 ;; classification-blueprint fleet (797 repos total: 457 isic + 340 isco).
-;; See src/loop_system_dynamics/cloud_itonami_isic_isco_sysml.cljs for how this is
+;; See src/loop_system_dynamics/cloud_itonami_isic_isco_sysml.cljk for how this is
 ;; turned into an OMG SysML v2 model (kotoba-lang/org-omg-sysmlv2).
 ;;
 ;; :label -- from the GitHub repo :description field when set (:label-source

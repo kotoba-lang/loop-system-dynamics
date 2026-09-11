@@ -6,7 +6,7 @@
 ;; tested with synthetic fixtures. `observe-live` shells out to the real
 ;; `gh` CLI and reads a real manifest/west.yml; per this session's own
 ;; established convention for network/fs-touching code, it is validated by
-;; running it for real (bin/run_cloud_itonami_age_lag_monitor.cljs), not
+;; running it for real (bin/run_cloud_itonami_age_lag_monitor.cljk), not
 ;; mocked here.
 
 (deftest no-stall-when-unregistered-is-younger-than-youngest-registered-test

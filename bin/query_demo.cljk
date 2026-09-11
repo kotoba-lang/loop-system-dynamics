@@ -2,7 +2,7 @@
   "Standalone demo of the DataScript query layer (src/loop_system_dynamics/
    query.cljs) against real, currently-observed data. Usage:
      nbb --classpath \"../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src\" \\
-         bin/query_demo.cljs
+         bin/query_demo.cljk
    Every query below is a real datalog string against real ingested facts --
    nothing here is illustrative/fake data."
   (:require [dynamics.core :as d]
