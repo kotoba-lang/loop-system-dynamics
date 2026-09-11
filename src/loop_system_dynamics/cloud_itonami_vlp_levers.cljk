@@ -206,7 +206,7 @@
     "billing_x402.cljc documents this as a KNOWN GAP in its own docstring: the proposal-kind allowlist
      is kernels.substance/known-kind, a CLOSED KOTOBA-WASM-CODED set (codes 0..5) with no
      :billing.x402-rule code, so extending it means 'touching the .kotoba wasm twin and re-running
-     `bb emit-kernel-wasm`' -- and bb is retired (ADR-2607173000). Tractability 0.45 for that reason.
+     `kbb -M:emit-kernel-wasm`' -- and bb is retired (ADR-2607173000). Tractability 0.45 for that reason.
      NOT unguarded, correcting a harsher earlier reading: the proposal still lands in the approval
      queue and activity/policy-risk resolves an unregistered policy to :destructive risk, MORE
      conservative than billing.cljc's :financial. An x402 rule is more gated than a billing change."}

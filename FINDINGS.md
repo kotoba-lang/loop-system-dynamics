@@ -4479,7 +4479,7 @@ Checked a previously-unread `90-docs/business/` file:
 document this catalog has read. Not a lean-canvas business model but a
 real, machine-readable **optimization model**: nodes and `:requires`/`:enables`
 dependency edges across the cloud-itonami/etzhayyim ISIC/ISCO rollout,
-loaded via `nbb scripts/labor-liberation-sd.cljs [verify|layers|rank|loops|plan|q]`,
+loaded via `kbb --backend sci scripts/labor-liberation-sd.cljk [verify|layers|rank|loops|plan|q]`,
 whose explicit stated objective is `:model/objective "maximize dW/dt --
 W = 解放された人間労働時間ストック"` (maximize the rate of change of W,
 the stock of liberated human labor-hours), scored per node as
@@ -4546,7 +4546,7 @@ verified, and is a natural next step rather than a claim made here.
 
 ## 73. Following through on finding 72's own flagged next step: the labor-liberation model's tool genuinely runs (a near-miss corrected before publishing), and a real rank output surfaces a THIRD, more precise staleness data point -- while partially correcting finding 72's own speculation about what the staleness actually affects
 
-Finding 72 explicitly scoped out actually invoking `nbb scripts/labor-liberation-sd.cljs rank` -- this cycle did. Worth recording the
+Finding 72 explicitly scoped out actually invoking `kbb --backend sci scripts/labor-liberation-sd.cljk rank` -- this cycle did. Worth recording the
 near-miss honestly: a first attempt, from a sparse-checkout worktree
 missing `nbb.edn`, failed with "Could not find namespace:
 clojure.java.shell" -- for a moment this looked like a real bug (a
@@ -5038,7 +5038,7 @@ tracked products every cycle, explicitly states no secrets are ever
 included in output/logs/PRs, and gates any change to the base
 datoms/`maturity-facts.edn` behind human review (only `metrics/*.edn`
 and an append-only `canvas-ledger.edn` entry are auto-updated). Its
-own verification step: `nbb 70-tools/bmc/run-tests.cljs`, 31 tests /
+own verification step: `kbb --backend sci 70-tools/bmc/run-tests.cljk`, 31 tests /
 161 assertions, 0 failures. And an explicit zero-fabrication
 disclosure, quoted verbatim: "kotobase-graph-arpu 等、他の gate 項目
 はこの product に紐づく登録なし（無いものは「無い」と記載。捏造ゼロ）"
@@ -5733,11 +5733,11 @@ that a future fix attempt would not need to rediscover them.
 Finding 94 read ADR-2607231022 (kototama actor:host ABI second wave --
 http-fetch/cbor-encode/json-encode/json-extract-field, PR
 kotoba-lang/kototama#49, merged 2026-07-23) and took its own claimed
-"`clojure -M:test` 130 tests / 387 assertions, 0 failures/errors" at
+"`kbb -M:test` 130 tests / 387 assertions, 0 failures/errors" at
 face value. Checking the ACTUAL hosted CI on that same PR's merge
 commit (`0ccdafc6`) found a real, non-infra-outage failure the ADR
 never mentions: the `CLJC contract gate` job's `Verify shared security
-adoption` step (`clojure -M -m kotoba.security.adoption`) fails with
+adoption` step (`kbb -M -m kotoba.security.adoption`) fails with
 "shared security source inventory denied", causing steps 7-12 of that
 job (including `Test CLJC contract` and `Lint CLJC contract` -- the
 exact commands the ADR cites numbers for) to be SKIPPED, not run, on
@@ -5874,7 +5874,7 @@ checked in (`cacao_self_mint.wasm`, `aozora_create_session.wasm`,
 real Chicory `Instance` via `kototama.tender` -- the same pipeline
 finding 95's own subject matter (`kotoba wasm emit` -> `kototama.tender`)
 established, now with a concrete new consumer. `MATURITY.md` claims
-`clojure -M:test` 29 tests / 56 assertions, 0 failures (20/46
+`kbb -M:test` 29 tests / 56 assertions, 0 failures (20/46
 pre-existing + 9/10 new). Unlike finding 95's kototama check, this
 repo has NO hosted CI configured at all (`gh api .../workflows` 404s,
 `gh pr view --json statusCheckRollup` returns empty) -- so unlike
@@ -6133,7 +6133,7 @@ follow-up pin-advance has not yet landed -- this catalog's own next
 pin-advance will naturally carry this commit forward as a byproduct,
 no special action needed.
 
-**Evidence**: `git fetch`+`git merge --ff-only` on `kotoba-lang/loop-system-dynamics` (2026-07-23) surfacing commit `6fda823`, `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231400-...edn` (full ADR read), direct `nbb -e` parse of `resources/nation-state-military-seed.edn` (194 entities, 169 with personnel data, 9 nuclear-warhead-count occurrences), and an independent `WebSearch` cross-check of Japan's 2025 SIPRI-reported defense spending figure against the seed's own value.
+**Evidence**: `git fetch`+`git merge --ff-only` on `kotoba-lang/loop-system-dynamics` (2026-07-23) surfacing commit `6fda823`, `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231400-...edn` (full ADR read), direct `kbb --backend sci -e` parse of `resources/nation-state-military-seed.edn` (194 entities, 169 with personnel data, 9 nuclear-warhead-count occurrences), and an independent `WebSearch` cross-check of Japan's 2025 SIPRI-reported defense spending figure against the seed's own value.
 
 **Source**: `kotoba-lang/loop-system-dynamics` commit `6fda823` + `90-docs/adr/2607231400-nation-state-military-capability-dynamics-entity.edn` (com-junkawasaki/root, accepted 2026-07-23) + live WebSearch verification, 2026-07-23.
 
@@ -6312,14 +6312,14 @@ engineering detail rather than an abstract design choice.
 
 **A real, honestly diagnosed pre-existing infrastructure defect,
 discovered incidentally**: the PR could not run `agents/test/serve_test.clj`
-via `clojure -M:test` in its own sandbox -- `clojure -Spath` fails with
+via `kbb -M:test` in its own sandbox -- `kbb -Spath` fails with
 "Unable to compare versions for io.github.kotoba-lang/arrangement" (a
 `:local/root` vs `:git/sha` coordinate-kind conflict for a transitive
 dependency). Rather than silently skipping this test file or claiming
 full coverage anyway, the PR does real diagnostic work: (1) confirms
 via `git stash` that the identical failure reproduces on an unmodified
 `main` checkout -- not introduced by this change; (2) checks the
-actual CI workflow and confirms it never runs `clojure -M:test` for
+actual CI workflow and confirms it never runs `kbb -M:test` for
 `agents/` at all, only `npm run check`/`build`/`process` --
 independently reverified here directly via `gh api .../ci.yml`,
 confirming lines 77/84/86/115 match exactly what the PR claims; (3)
@@ -6329,7 +6329,7 @@ unaffected `secrets.kagi`, and runs equivalent assertions there (12
 tests/46 assertions, 0 failures) rather than giving up on verification
 entirely.
 
-**Evidence**: `gh pr view 67 --repo gftdcojp/local-manimani` (full body) + independent `gh api repos/gftdcojp/local-manimani/contents/.github/workflows/ci.yml` (confirming the CI workflow genuinely never invokes `clojure -M:test` for `agents/`, only `npm run check`/`build`/`process`) + `gh api repos/gftdcojp/local-manimani/contents/agents/deps.edn` (confirming `arrangement` is not a direct dependency, consistent with the PR's own "transitive" characterization), 2026-07-23.
+**Evidence**: `gh pr view 67 --repo gftdcojp/local-manimani` (full body) + independent `gh api repos/gftdcojp/local-manimani/contents/.github/workflows/ci.yml` (confirming the CI workflow genuinely never invokes `kbb -M:test` for `agents/`, only `npm run check`/`build`/`process`) + `gh api repos/gftdcojp/local-manimani/contents/agents/deps.edn` (confirming `arrangement` is not a direct dependency, consistent with the PR's own "transitive" characterization), 2026-07-23.
 
 **Source**: `gftdcojp/local-manimani` PR #67 (merged 2026-07-22) + direct CI workflow/deps.edn reads, 2026-07-23.
 
@@ -6426,7 +6426,7 @@ artifact." Independently confirmed the source file itself exists:
 `clj/src/shiropico/publish_decision.kotoba` is a real path in the
 repo's git tree. Could NOT independently confirm a checked-in compiled
 `.wasm` binary (none found anywhere in the tree) -- the wasm32
-compilation claim rests on the PR's own `clojure -M:dev:test`
+compilation claim rests on the PR's own `kbb -M:dev:test`
 verification step rather than an inspectable binary artifact, an
 honest scope limit on this analysis's own verification, not a claim
 that the PR is wrong.
@@ -6484,7 +6484,7 @@ confident enough in an unreviewed schema reconstruction to force it
 through unilaterally.
 
 **`kotoba-lang/kototama` PR #51**: reproduced finding 95's own
-security-adoption gate failure locally (`clojure -M -m
+security-adoption gate failure locally (`kbb -M -m
 kotoba.security.adoption`, real JVM/Clojure toolchain, not simulated)
 and fixed it check-by-check, verifying real progress after each edit
 by re-running the exact command: (1) declared 3 real, previously-
@@ -6512,7 +6512,7 @@ unreviewed -- documented the exact gap precisely instead, so whoever
 picks it up next (adding the primitives to `kotoba-lang/security`, or
 correcting kototama's own imports) doesn't need to rediscover it.
 
-**Evidence**: `gh pr view --repo jk-luxury/club-shinshi-app 1` + `gh pr view --repo kotoba-lang/kototama 51` (both real, this session's own PRs) + local `python3`/`sqlite3` verification of the club-shinshi migrations + local `clojure -M -m kotoba.security.adoption` re-execution after each kototama fix, all 2026-07-23.
+**Evidence**: `gh pr view --repo jk-luxury/club-shinshi-app 1` + `gh pr view --repo kotoba-lang/kototama 51` (both real, this session's own PRs) + local `python3`/`sqlite3` verification of the club-shinshi migrations + local `kbb -M -m kotoba.security.adoption` re-execution after each kototama fix, all 2026-07-23.
 
 **Source**: this session's own direct actions, not a third-party observation -- `jk-luxury/club-shinshi-app` PR #1 and `kotoba-lang/kototama` PR #51, both opened 2026-07-23.
 
@@ -6720,7 +6720,7 @@ own claimed validation: 5 tests / 23 assertions / 0 failures.
 
 **A real, dated, freshly-created instance of exactly the kind of
 tooling-compliance gap CLAUDE.md itself names as hard to notice**:
-the PR's own validation command is literally `bb run_tests.clj` --
+the PR's own validation command is literally `kbb run_tests.cljk` --
 babashka, which CLAUDE.md's own repo-wide rule retired as a script
 host (ADR-2607173000, 2026-07-17) more than a week before this repo
 was even created (2026-06-24 predates it; this specific PR merged

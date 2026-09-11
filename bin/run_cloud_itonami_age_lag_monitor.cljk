@@ -1,5 +1,5 @@
 (ns run-cloud-itonami-age-lag-monitor
-  "Usage: nbb --classpath src bin/run_cloud_itonami_age_lag_monitor.cljk <superproject-root>
+  "Usage: kbb --backend sci --classpath src bin/run_cloud_itonami_age_lag_monitor.cljk <superproject-root>
    Exits 1 if a real stall is detected (CI/cron-schedulable use), 0 otherwise."
   (:require [loop-system-dynamics.cloud-itonami-age-lag-monitor :as monitor]))
 

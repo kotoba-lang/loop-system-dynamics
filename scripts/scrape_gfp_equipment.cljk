@@ -14,7 +14,7 @@
   this seed (absent != zero), consistent with Phase 1 microstate handling.
 
   Usage:
-    NODE_PATH=<repo>/node_modules nbb scripts/scrape_gfp_equipment.cljk [--limit N]
+    NODE_PATH=<repo>/node_modules kbb --backend sci scripts/scrape_gfp_equipment.cljk [--limit N]
   "
   (:require ["fs" :as fs]
             [kotoba.lang.text :as str]
