@@ -7,7 +7,7 @@
 ;; reads a real manifest/west.yml; per this session's own established
 ;; convention for network/fs-touching code (e.g. cloud_itonami_isic_isco_sysml.cljs's
 ;; own GitHub fetches), it is validated by running it for real
-;; (bin/run_cloud_itonami_live_diff.cljs), not mocked in this test suite.
+;; (bin/run_cloud_itonami_live_diff.cljk), not mocked in this test suite.
 
 (deftest diff-finds-new-codes-test
   (testing "a repo live but absent from the seed is a new code"

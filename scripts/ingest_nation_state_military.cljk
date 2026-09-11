@@ -15,8 +15,8 @@
   omitted (absent != zero). Never fabricate.
 
   Usage:
-    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljs --dry-run
-    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljs
+    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljk --dry-run
+    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljk
   "
   (:require ["xlsx$default" :as XLSX]
             ["fs" :as fs]
@@ -60,7 +60,7 @@
 
 ;; GlobalFirepower equipment inventory (Phase 3). :estimate? grade -- GFP is a
 ;; defense-data aggregator (NOT primary; IISS Military Balance is primary but
-;; paywalled). Produced by scripts/scrape_gfp_equipment.cljs into
+;; paywalled). Produced by scripts/scrape_gfp_equipment.cljk into
 ;; resources/gfp-equipment-seed.edn. Loaded + merged here if present.
 (def GFP-SOURCE
   (str "GlobalFirepower 2026 country detail (globalfirepower.com, defense-data aggregator: "
@@ -253,7 +253,7 @@
                         (count wb-gdp) "/" (count wb-pop) "/" (count wb-pers))
                (println "Nuclear (FAS):" (count NUCLEAR-FAS))
                (println "Equipment inventory (GlobalFirepower, :estimate?):" (count gfp) "countries"
-                        (if (seq gfp) "" "(gfp-equipment-seed.edn absent -- run scripts/scrape_gfp_equipment.cljs)"))
+                        (if (seq gfp) "" "(gfp-equipment-seed.edn absent -- run scripts/scrape_gfp_equipment.cljk)"))
                (when-not dry-run
                  (let [entities (build-entities idx sipri-by-cca3 wb-gdp wb-pop wb-pers gfp)
                        seed {:as-of RETRIEVED

@@ -3,7 +3,7 @@
 ;; name-prefix category, modeled as an XMILE (OASIS 1.0) stock-flow system
 ;; via kotoba-lang/org-oasis-open-xmile. Same shape as
 ;; resources/cloud-itonami-fleet-xmile-seed.edn -- see
-;; src/loop_system_dynamics/kotoba_lang_xmile.cljs (a thin wrapper over
+;; src/loop_system_dynamics/kotoba_lang_xmile.cljk (a thin wrapper over
 ;; loop_system_dynamics/fleet_registration_xmile.cljs, the generic core
 ;; this, cloud-itonami's, and etzhayyim-actors' own models all now share).
 ;;

@@ -3,7 +3,7 @@
 ;; pipeline, modeled as an XMILE (OASIS 1.0) stock-flow system via
 ;; kotoba-lang/org-oasis-open-xmile. Same shape as
 ;; resources/cloud-itonami-fleet-xmile-seed.edn -- see
-;; src/loop_system_dynamics/etzhayyim_actors_xmile.cljs (a thin wrapper over
+;; src/loop_system_dynamics/etzhayyim_actors_xmile.cljk (a thin wrapper over
 ;; loop_system_dynamics/fleet_registration_xmile.cljs, the generic core
 ;; both this and cloud-itonami's own model now share).
 ;;

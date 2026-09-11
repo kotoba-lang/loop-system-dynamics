@@ -1,5 +1,5 @@
 (ns run-cloud-itonami-live-diff
-  "Usage: nbb --classpath src bin/run_cloud_itonami_live_diff.cljs <superproject-root>"
+  "Usage: nbb --classpath src bin/run_cloud_itonami_live_diff.cljk <superproject-root>"
   (:require [loop-system-dynamics.cloud-itonami-live-diff :as live-diff]))
 
 (let [[superproject-root] *command-line-args*]

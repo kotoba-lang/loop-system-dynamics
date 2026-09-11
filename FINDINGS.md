@@ -826,7 +826,7 @@ would be exactly the kind of fabrication this model exists to avoid.
 Datomic query で接続" (connected via DataScript/Datomic query) -- every prior
 cycle answered that in spirit only, by hand-copying `gh api` output into
 `resources/entities-seed.edn`'s nested maps and reading them by eye.
-`src/loop_system_dynamics/query.cljs` closes that gap for real: it ingests
+`src/loop_system_dynamics/query.cljk` closes that gap for real: it ingests
 both the `loop-archetypes` catalog (`kotoba-lang/dynamics`) and a curated
 flat subset of the observed entities into an in-memory DataScript conn
 (npm `datascript`, the same package and JS-interop convention as
@@ -1005,7 +1005,7 @@ off-switch (the CACAO leash, post-hoc transparency not pre-approval). Of
 `com-etzhayyim-tomoshibi` (灯) -- is confirmed evangelism-scoped (2 more,
 `com-google-ads` and `recruit`, have outreach-adjacent descriptions but
 unverified relevance). An attestation-ledger schema exists with zero real
-writes. `src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljs`
+writes. `src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljk`
 builds the real SysML v2 structure of this (`EvangelistAgent ->
 EvangelismGate -> TargetPopulation`, 6 real Charter-cited
 `RequirementUsage`s, all satisfied and valid).
@@ -2563,7 +2563,7 @@ question this single cycle did not attempt to answer.
 `:reframe-goal-paradigm` ("Lead with SBT governance / multigenerational
 objective function, not religious paradigm, in outward content") has
 been this repo's top-ranked intervention in essentially every cycle's
-`bin/run.cljs` output this whole session, including this one. That
+`bin/run.cljk` output this whole session, including this one. That
 ranking has been repeated dozens of times without anyone (including
 this analysis, until now) checking whether the thing it asks to
 *reframe* -- existing outward content about etzhayyim's governance
@@ -2728,7 +2728,7 @@ distinct architectural fact worth knowing, not a defect.
 
 ## 39. Investigating why `:etzhayyim-adherent-loop` never fires surfaced stale data -- and a real question about how it got that way
 
-Every single cycle's `bin/run.cljs` output this whole session has
+Every single cycle's `bin/run.cljk` output this whole session has
 printed `never-fired loops: (:etzhayyim-adherent-loop)`, repeated
 dozens of times without anyone checking why. This cycle checked. The
 archetype's definition in `kotoba-lang/dynamics` (`core.cljc`) sourced
@@ -2765,7 +2765,7 @@ own merits: `:adherents 0` was corrected to `1` in `kotoba-lang/dynamics`
 JOINS.md` state as checked 2026-07-22. `:cycle-time-days` was
 deliberately left `nil` -- one join is a single data point, not a
 measurable rate -- and both the `dynamics` test suite (28 tests/66
-assertions) and `loop-system-dynamics`'s own `bin/run.cljs` were
+assertions) and `loop-system-dynamics`'s own `bin/run.cljk` were
 re-run after the fix to confirm the loop still correctly classifies as
 never-fired, just for the right reason (no rate yet) rather than the
 wrong one (zero adherents, no longer true).
@@ -4255,7 +4255,7 @@ workspace's own CLAUDE.md carries a repo-wide mandatory rule (ADR-2607203000,
 "system dynamics loop 分析 ... 全 entity 対象") that "計算そのものは
 `kotoba-lang/dynamics`... を使う。ゼロから再発明しない" (the computation
 itself uses kotoba-lang/dynamics; do not reinvent from scratch) --
-exactly the toolkit this catalog's own `bin/run.cljs` uses via
+exactly the toolkit this catalog's own `bin/run.cljk` uses via
 `dynamics.core`. Read `cloud-itonami-energy-systemdynamics-model.cljs`
 directly: its entire `:require` clause is `(:require [\"fs\" :as
 fs])` -- zero reference to `dynamics.core` or any part of
@@ -4277,7 +4277,7 @@ unused," it's that the general stock/flow/loop-archetype computation
 substrate this rule mandates was never engaged with at all, for a
 model whose own text explicitly names a standard SD loop archetype it
 could have scored using that substrate the way this catalog's own
-`bin/run.cljs` does. Whether other similarly-isolated SD scripts exist
+`bin/run.cljk` does. Whether other similarly-isolated SD scripts exist
 elsewhere in this workspace was not established either way: `gh api
 search/code` returned 0 hits for both `"Bass diffusion"` and `"system
 dynamics" extension:cljs` scoped to this repo -- given this catalog's
@@ -4648,7 +4648,7 @@ resolved as part of this finding.
 
 ## 75. This model's own "strongest archetype" -- checked directly, for the first time this session: `:speculative-crypto-derivatives` is a real, cited, external reference benchmark baked into `kotoba-lang/dynamics` itself, not entity-specific data -- and current 2026 numbers show it measurably declining from the figure this catalog's own headline output has been citing
 
-Every single run of `bin/run.cljs` this whole session has printed
+Every single run of `bin/run.cljk` this whole session has printed
 "strongest archetype: `:speculative-crypto-derivatives`" as a
 headline fact, without this catalog ever having checked what that
 actually means or whether it's grounded in real, current data. Looked
@@ -4769,7 +4769,7 @@ strongest stale-data candidate in the whole table:
 other archetype's citation this catalog has checked. Worth checking
 carefully since this archetype is the direct comparison point
 `dynamics.core` uses for etzhayyim's own `:etzhayyim-adherent-loop` --
-the one loop this catalog's own `bin/run.cljs` has reported as
+the one loop this catalog's own `bin/run.cljk` has reported as
 "never-fired" in every single cycle this session.
 
 **A real, initially-promising lead that didn't hold up under direct
@@ -6090,7 +6090,7 @@ had moved 1 commit past this catalog's own last-known HEAD (`b75fd72`)
 `6fda823 Add nation-state military-capability observation entities
 (193 UN + Taiwan) [ADR-2607231400]`, 6,769 lines across 3 new files
 (`resources/nation-state-military-seed.edn`, 6,398 lines;
-`scripts/ingest_nation_state_military.cljs`; `src/loop_system_dynamics/nation_state_military.cljs`).
+`scripts/ingest_nation_state_military.cljk`; `src/loop_system_dynamics/nation_state_military.cljk`).
 Fast-forwarded cleanly (finding 100's own pin-advance discipline of
 always re-syncing before acting caught this automatically).
 
@@ -6121,8 +6121,8 @@ stocks, no defense-spending/personnel fields, rather than a fabricated
 zero.
 
 **Honestly scoped, not yet wired into this catalog's own pipeline**:
-confirmed via direct `grep` that neither `test/run_tests.cljs` nor
-`bin/run.cljs` reference the new namespace at all -- this is a real,
+confirmed via direct `grep` that neither `test/run_tests.cljk` nor
+`bin/run.cljk` reference the new namespace at all -- this is a real,
 disclosed Phase 1 (data layer only); the ADR's own "Follow-up (Phase 2)"
 section lists exactly this gap (observe/evaluate/decide/act loop
 integration, DataScript query ingest, west.yml pin-advance) as not yet
@@ -6333,7 +6333,7 @@ entirely.
 
 **Source**: `gftdcojp/local-manimani` PR #67 (merged 2026-07-22) + direct CI workflow/deps.edn reads, 2026-07-23.
 
-**Interpretation**: this workspace's own `kotoba-lang/arrangement` library -- the same one this catalog's own test classpath (`test/run_tests.cljs`'s own `--classpath` argument) depends on for its DataScript-backed system-dynamics tests -- has a real, reproducible dependency-coordinate-kind conflict (`:local/root` vs `:git/sha`) affecting at least one other consumer repo's own JVM classpath resolution, one this catalog had not previously encountered from this angle. The response to hitting it here is a clean instance of the "don't silently skip verification, don't fabricate a pass" discipline this catalog has repeatedly documented (findings 73/92/98/99 among others) applied to a genuinely different failure mode: not a business claim or a performance number, but a build-tooling defect discovered as a side effect of unrelated security work, correctly triaged as out-of-scope-but-real rather than either fixed opportunistically (scope creep) or silently ignored (false confidence).
+**Interpretation**: this workspace's own `kotoba-lang/arrangement` library -- the same one this catalog's own test classpath (`test/run_tests.cljk`'s own `--classpath` argument) depends on for its DataScript-backed system-dynamics tests -- has a real, reproducible dependency-coordinate-kind conflict (`:local/root` vs `:git/sha`) affecting at least one other consumer repo's own JVM classpath resolution, one this catalog had not previously encountered from this angle. The response to hitting it here is a clean instance of the "don't silently skip verification, don't fabricate a pass" discipline this catalog has repeatedly documented (findings 73/92/98/99 among others) applied to a genuinely different failure mode: not a business claim or a performance number, but a build-tooling defect discovered as a side effect of unrelated security work, correctly triaged as out-of-scope-but-real rather than either fixed opportunistically (scope creep) or silently ignored (false confidence).
 
 ## 106. A genuinely different aozora/AT-Protocol thread than finding 91's own subject: a real "reverse-topology walk" federation effort that keeps passing its own tests yet keeps refusing to declare victory, including a bug real third-party AT Protocol tooling caught that this team's own tests had missed
 
@@ -7774,7 +7774,7 @@ real execution on `ubuntu-latest` CI).
 ## What's still open
 
 - `observe` still reads a static seed (`resources/entities-seed.edn`) as the
-  source of truth. `src/loop_system_dynamics/query.cljs` now provides a real
+  source of truth. `src/loop_system_dynamics/query.cljk` now provides a real
   DataScript `:find/:where` datalog projection over that seed plus the
   `loop-archetypes` catalog (see README "Query it") -- this is genuine
   progress on the original ask, but every fact still enters the seed via a
@@ -7797,7 +7797,7 @@ real execution on `ubuntu-latest` CI).
   `arrangement.datalog` in as a genuine 2nd query engine, navigating the
   same 5-deep dependency chain (`arrangement` -> `prolly-tree` + `io-ipld`
   -> `io-multiformats` + `org-ietf-cbor`) this bullet had only scoped.
-  `bin/arrangement_query_demo.cljs` now runs real cross-engine-parity
+  `bin/arrangement_query_demo.cljk` now runs real cross-engine-parity
   queries against real fleet-registration facts (see finding 47's own
   entry, and README "Query it a SECOND way"). Left as a lesson rather than
   silently deleted: a "still open" bullet needs the same staleness check

@@ -32,7 +32,7 @@ record, FINDINGS.md is the narrative built on top of it.
 
 ```bash
 # from a west workspace where kotoba-lang/dynamics is checked out as a sibling:
-nbb --classpath "../dynamics/src:src" bin/run.cljs
+nbb --classpath "../dynamics/src:src" bin/run.cljk
 ```
 
 This observes `resources/entities-seed.edn` (31 real, dated, sourced entities
@@ -48,7 +48,7 @@ reference organizations), evaluates etzhayyim's candidate interventions and
 
 ```bash
 # from a superproject checkout (needs 90-docs/business/metrics/*.edn):
-nbb --classpath "../dynamics/src:src" bin/refresh_and_run.cljs <superproject-root> <YYYY-MM-DD>
+nbb --classpath "../dynamics/src:src" bin/refresh_and_run.cljk <superproject-root> <YYYY-MM-DD>
 ```
 
 `refresh-from-bmc-metrics` re-reads the live BMC metrics files for the
@@ -64,7 +64,7 @@ when it is worth keeping permanently, same as every prior cycle.
 ## Run it with a live GitHub-API pull (direct ingestion, no human copying `gh api` output first)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/refresh_from_github.cljs <YYYY-MM-DD>
+nbb --classpath "../dynamics/src:src" bin/refresh_from_github.cljk <YYYY-MM-DD>
 ```
 
 The README "Next" section used to list this as a documented-not-yet-built
@@ -95,10 +95,10 @@ mechanically would be worse than not refreshing it live at all.
 ```bash
 npm install   # once, pulls in the npm `datascript` package
 nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
-    bin/query_demo.cljs
+    bin/query_demo.cljk
 ```
 
-`src/loop_system_dynamics/query.cljs` ingests three real datasets into one
+`src/loop_system_dynamics/query.cljk` ingests three real datasets into one
 in-memory DataScript conn: the real `loop-archetypes` catalog (from
 `kotoba-lang/dynamics`), a curated flat subset of the observed entities,
 and (2026-07-22) every category from all 3 real fleet-registration seeds
@@ -143,7 +143,7 @@ simulates. Example real queries, run against real data:
 # from a west workspace where kotoba-lang/arrangement, prolly-tree, io-ipld,
 # io-multiformats, org-ietf-cbor, org-oasis-open-xmile, dsl-core are siblings:
 nbb --classpath "../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
-    bin/arrangement_query_demo.cljs
+    bin/arrangement_query_demo.cljk
 ```
 
 The README's "Next" section used to ask for `kotoba-lang/kqe` to be wired in
@@ -152,7 +152,7 @@ router was merged into
 [`kotoba-lang/arrangement`](https://github.com/kotoba-lang/arrangement)
 (`arrangement.query`/`arrangement.datalog`) because a pure routing function
 with no storage of its own didn't need a separate repo (see the `kqe` repo's
-own README). `src/loop_system_dynamics/arrangement_query.cljs` ingests the
+own README). `src/loop_system_dynamics/arrangement_query.cljk` ingests the
 SAME real fleet-registration facts `query.cljs` does into this genuinely
 different engine -- a `[s p o]` triple store with a Datomic-shaped
 `:find`/`:where` join that supports negation, aggregation, and recursive
@@ -199,12 +199,12 @@ answers:
 # from a west workspace where kotoba-lang/org-oasis-open-xmile and
 # kotoba-lang/dsl-core are checked out as siblings:
 nbb --classpath "../org-oasis-open-xmile/src:../dsl-core/src:src" \
-    bin/run_cloud_itonami_xmile.cljs
+    bin/run_cloud_itonami_xmile.cljk
 ```
 
 Everything above (`core.cljs`, `query.cljs`) scores leverage or answers
 queries over point-in-time stocks; it never actually integrates a stock
-forward through time. `src/loop_system_dynamics/fleet_registration_xmile.cljs`
+forward through time. `src/loop_system_dynamics/fleet_registration_xmile.cljk`
 does, for the real shape three different GitHub orgs turned out to share:
 a GitHub-repo -> `com-junkawasaki/root manifest/west.yml` registration
 pipeline, per name-prefix category. It builds an actual
@@ -229,7 +229,7 @@ interpretive `reads-fn`:
   closure shows **zero stalled categories** -- the finding was real and has
   since changed, which the re-observation now shows rather than hiding.
 - **`loop_system_dynamics/etzhayyim_actors_xmile.cljs`**
-  (`nbb ... bin/run_etzhayyim_actors_xmile.cljs`) -- com-etzhayyim-*'s 613
+  (`nbb ... bin/run_etzhayyim_actors_xmile.cljk`) -- com-etzhayyim-*'s 613
   actor repos, modeled as a SINGLE category (the name structure doesn't
   support a real multi-category split the way cloud-itonami's does, see
   the seed file for why). Real finding: 67 backlog, ~178.6/day observed
@@ -238,7 +238,7 @@ interpretive `reads-fn`:
   window). A structurally different shape from cloud-itonami's prior
   stalled isco/iso.
 - **`loop_system_dynamics/kotoba_lang_xmile.cljs`**
-  (`nbb ... bin/run_kotoba_lang_xmile.cljs`) -- kotoba-lang's 1650 repos
+  (`nbb ... bin/run_kotoba_lang_xmile.cljk`) -- kotoba-lang's 1650 repos
   split into com/kami/org/kotoba/kotobase/kotodama/other (the org's real
   prefix structure, partitioning the whole org with zero residual). Real
   finding: only 27/1650 (1.6%) unregistered, small and distributed rather
@@ -264,10 +264,10 @@ mostly done."
 # from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-oasis-open-xmile,
 # kotoba-lang/org-omg-sysmlv2, and kotoba-lang/dsl-core are checked out as siblings:
 nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
-    bin/run_etzhayyim_xmile_sysml.cljs
+    bin/run_etzhayyim_xmile_sysml.cljk
 ```
 
-`src/loop_system_dynamics/etzhayyim_xmile_sysml.cljs` takes the F2
+`src/loop_system_dynamics/etzhayyim_xmile_sysml.cljk` takes the F2
 upper-bound finding (findings 1/1b in FINDINGS.md) one step further using
 the same real standards as the cloud-itonami simulation above, via the
 generic builders in `kotoba-lang/dynamics.xmile`/`dynamics.sysml`: reads
@@ -291,12 +291,12 @@ validated, traceable model, not free-text prose.
 # from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-omg-sysmlv2,
 # and kotoba-lang/dsl-core are checked out as siblings:
 nbb --classpath "../dynamics/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
-    bin/run_cloud_itonami_isic_isco_sysml.cljs
+    bin/run_cloud_itonami_isic_isco_sysml.cljk
 ```
 
 The category-level counts in `entities-seed.edn` and the per-category
 Backlog/rate in `cloud_itonami_xmile.cljs` both stop at the category
-(isic/isco); `src/loop_system_dynamics/cloud_itonami_isic_isco_sysml.cljs`
+(isic/isco); `src/loop_system_dynamics/cloud_itonami_isic_isco_sysml.cljk`
 goes one level deeper, using `dynamics.sysml`'s generic
 `fleet-model`/`add-fleet-requirement` (a second, N-member shape distinct
 from the etzhayyim funnel above) to model all **797 individual repos**
@@ -362,7 +362,7 @@ set reach empty and needed a real fix (`apply max` on `[]` was crashing
 
 ```bash
 nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
-    bin/run_aca_marketplace_decline.cljs
+    bin/run_aca_marketplace_decline.cljk
 ```
 
 Every XMILE model above feeds a stock via an ADDITIVE inflow (a rate times a
@@ -383,11 +383,11 @@ part of doing this honestly.
 
 ```bash
 nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
-    bin/run_etzhayyim_ai_agent_evangelism.cljs
+    bin/run_etzhayyim_ai_agent_evangelism.cljk
 ```
 
 Every module above measures something real that already happened.
-`src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljs` is different
+`src/loop_system_dynamics/etzhayyim_ai_agent_evangelism.cljk` is different
 in kind (owner directive, 2026-07-21): etzhayyim's real mechanism of spread
 is LLM/AI-agent-driven evangelism, and this loop had never modeled it. What
 IS real and already built: `ADR-2606281500`'s "種をまく" (seed-and-grow)
@@ -457,7 +457,7 @@ will not emerge from publishing more content through more actors alone.
 ## Where to start (a real leverage-point ranking, not just observation)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljs
+nbb --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljk
 ```
 
 Every cycle above OBSERVES cloud-itonami (stocks, structure, age) but never
@@ -556,7 +556,7 @@ contract.
 ## Detect drift (the first real fulfillment of `:wire-live-observe`)
 
 ```bash
-nbb --classpath src bin/run_cloud_itonami_live_diff.cljs <superproject-root>
+nbb --classpath src bin/run_cloud_itonami_live_diff.cljk <superproject-root>
 ```
 
 Every cloud-itonami cycle above hand-refreshed its seed by running `gh api`
@@ -588,7 +588,7 @@ uses for its external public-repo dependencies. `wire-live-observe` in
 ## Monitor for a real stall (the fulfillment of `:automate-age-lag-monitor`)
 
 ```bash
-nbb --classpath src bin/run_cloud_itonami_age_lag_monitor.cljs <superproject-root>
+nbb --classpath src bin/run_cloud_itonami_age_lag_monitor.cljk <superproject-root>
 # exits 1 (CI/cron-schedulable) if a real stall is found, 0 otherwise
 ```
 
@@ -610,7 +610,7 @@ by name. First real run (2026-07-21): 0 stalls, youngest registered code
 ## A registered CASE, not an entity (corporate police-impersonation transfer fraud)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/run_corporate_vishing_fraud.cljs
+nbb --classpath "../dynamics/src:src" bin/run_corporate_vishing_fraud.cljk
 ```
 
 Every other cycle in this repository models an *organization*. This one models
@@ -655,7 +655,7 @@ not quietly credit interventions with slowing the attacker.
 
 ```bash
 npm install
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljs
+nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljk
 ```
 
 ## Extending coverage
@@ -665,7 +665,7 @@ how many entities it can hold or what kind of organization they are. The only
 requirement is that every stock value carry `:source` and (implicitly)
 `:as-of` at the top of the file. Fabricated numbers are the one thing this
 repository refuses to hold. To wire a new entity into the live-refresh path
-too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljs`.
+too, add it to `bmc-tracked-entities` in `src/loop_system_dynamics/core.cljk`.
 
 ## Next (documented, not yet built)
 

@@ -1,6 +1,6 @@
 (ns refresh-and-run
   "Runs a cycle with live-refreshed traffic data. Usage:
-     nbb --classpath \"../dynamics/src:src\" bin/refresh_and_run.cljs <superproject-root> <YYYY-MM-DD>"
+     nbb --classpath \"../dynamics/src:src\" bin/refresh_and_run.cljk <superproject-root> <YYYY-MM-DD>"
   (:require [loop-system-dynamics.core :as loop]))
 
 (let [[superproject-root as-of-today] *command-line-args*]
