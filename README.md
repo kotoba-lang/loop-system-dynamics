@@ -32,7 +32,7 @@ record, FINDINGS.md is the narrative built on top of it.
 
 ```bash
 # from a west workspace where kotoba-lang/dynamics is checked out as a sibling:
-nbb --classpath "../dynamics/src:src" bin/run.cljk
+kbb --backend sci --classpath "../dynamics/src:src" bin/run.cljk
 ```
 
 This observes `resources/entities-seed.edn` (31 real, dated, sourced entities
@@ -48,7 +48,7 @@ reference organizations), evaluates etzhayyim's candidate interventions and
 
 ```bash
 # from a superproject checkout (needs 90-docs/business/metrics/*.edn):
-nbb --classpath "../dynamics/src:src" bin/refresh_and_run.cljk <superproject-root> <YYYY-MM-DD>
+kbb --backend sci --classpath "../dynamics/src:src" bin/refresh_and_run.cljk <superproject-root> <YYYY-MM-DD>
 ```
 
 `refresh-from-bmc-metrics` re-reads the live BMC metrics files for the
@@ -64,7 +64,7 @@ when it is worth keeping permanently, same as every prior cycle.
 ## Run it with a live GitHub-API pull (direct ingestion, no human copying `gh api` output first)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/refresh_from_github.cljk <YYYY-MM-DD>
+kbb --backend sci --classpath "../dynamics/src:src" bin/refresh_from_github.cljk <YYYY-MM-DD>
 ```
 
 The README "Next" section used to list this as a documented-not-yet-built
@@ -94,7 +94,7 @@ mechanically would be worse than not refreshing it live at all.
 
 ```bash
 npm install   # once, pulls in the npm `datascript` package
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
     bin/query_demo.cljk
 ```
 
@@ -142,7 +142,7 @@ simulates. Example real queries, run against real data:
 ```bash
 # from a west workspace where kotoba-lang/arrangement, prolly-tree, io-ipld,
 # io-multiformats, org-ietf-cbor, org-oasis-open-xmile, dsl-core are siblings:
-nbb --classpath "../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
     bin/arrangement_query_demo.cljk
 ```
 
@@ -198,7 +198,7 @@ answers:
 ```bash
 # from a west workspace where kotoba-lang/org-oasis-open-xmile and
 # kotoba-lang/dsl-core are checked out as siblings:
-nbb --classpath "../org-oasis-open-xmile/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../org-oasis-open-xmile/src:../dsl-core/src:src" \
     bin/run_cloud_itonami_xmile.cljk
 ```
 
@@ -263,7 +263,7 @@ mostly done."
 ```bash
 # from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-oasis-open-xmile,
 # kotoba-lang/org-omg-sysmlv2, and kotoba-lang/dsl-core are checked out as siblings:
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
     bin/run_etzhayyim_xmile_sysml.cljk
 ```
 
@@ -290,7 +290,7 @@ validated, traceable model, not free-text prose.
 ```bash
 # from a west workspace where kotoba-lang/dynamics, kotoba-lang/org-omg-sysmlv2,
 # and kotoba-lang/dsl-core are checked out as siblings:
-nbb --classpath "../dynamics/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../dynamics/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
     bin/run_cloud_itonami_isic_isco_sysml.cljk
 ```
 
@@ -361,7 +361,7 @@ set reach empty and needed a real fix (`apply max` on `[]` was crashing
 ## A different real model SHAPE (proportional decline, not additive accumulation)
 
 ```bash
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../dynamics/src:../org-oasis-open-xmile/src:../dsl-core/src:src" \
     bin/run_aca_marketplace_decline.cljk
 ```
 
@@ -382,7 +382,7 @@ part of doing this honestly.
 ## A DESIGN, not a measurement: etzhayyim's real AI-agent evangelism mechanism
 
 ```bash
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
+kbb --backend sci --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:src" \
     bin/run_etzhayyim_ai_agent_evangelism.cljk
 ```
 
@@ -457,7 +457,7 @@ will not emerge from publishing more content through more actors alone.
 ## Where to start (a real leverage-point ranking, not just observation)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljk
+kbb --backend sci --classpath "../dynamics/src:src" bin/run_cloud_itonami_leverage.cljk
 ```
 
 Every cycle above OBSERVES cloud-itonami (stocks, structure, age) but never
@@ -556,7 +556,7 @@ contract.
 ## Detect drift (the first real fulfillment of `:wire-live-observe`)
 
 ```bash
-nbb --classpath src bin/run_cloud_itonami_live_diff.cljk <superproject-root>
+kbb --backend sci --classpath src bin/run_cloud_itonami_live_diff.cljk <superproject-root>
 ```
 
 Every cloud-itonami cycle above hand-refreshed its seed by running `gh api`
@@ -588,7 +588,7 @@ uses for its external public-repo dependencies. `wire-live-observe` in
 ## Monitor for a real stall (the fulfillment of `:automate-age-lag-monitor`)
 
 ```bash
-nbb --classpath src bin/run_cloud_itonami_age_lag_monitor.cljk <superproject-root>
+kbb --backend sci --classpath src bin/run_cloud_itonami_age_lag_monitor.cljk <superproject-root>
 # exits 1 (CI/cron-schedulable) if a real stall is found, 0 otherwise
 ```
 
@@ -610,7 +610,7 @@ by name. First real run (2026-07-21): 0 stalls, youngest registered code
 ## A registered CASE, not an entity (corporate police-impersonation transfer fraud)
 
 ```bash
-nbb --classpath "../dynamics/src:src" bin/run_corporate_vishing_fraud.cljk
+kbb --backend sci --classpath "../dynamics/src:src" bin/run_corporate_vishing_fraud.cljk
 ```
 
 Every other cycle in this repository models an *organization*. This one models
@@ -655,7 +655,7 @@ not quietly credit interventions with slowing the attacker.
 
 ```bash
 npm install
-nbb --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljk
+kbb --backend sci --classpath "../dynamics/src:../org-oasis-open-xmile/src:../org-omg-sysmlv2/src:../dsl-core/src:../arrangement/src:../prolly-tree/src:../io-ipld/src:../io-multiformats/src:../org-ietf-cbor/src:src:test" test/run_tests.cljk
 ```
 
 ## Extending coverage

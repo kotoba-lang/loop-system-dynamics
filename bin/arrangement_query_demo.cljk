@@ -2,7 +2,7 @@
   "Standalone demo of the arrangement.datalog-backed query layer
    (src/loop_system_dynamics/arrangement_query.cljk) against real,
    currently-observed fleet-registration data. Usage:
-     nbb --classpath \"../arrangement/src:../prolly-tree/src:../io-ipld/src:\\
+     kbb --backend sci --classpath \"../arrangement/src:../prolly-tree/src:../io-ipld/src:\\
 ../io-multiformats/src:../org-ietf-cbor/src:../org-oasis-open-xmile/src:\\
 ../dsl-core/src:src\" bin/arrangement_query_demo.cljk
    Every query below is a real datalog map against real ingested facts --

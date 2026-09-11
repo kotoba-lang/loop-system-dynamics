@@ -15,8 +15,8 @@
   omitted (absent != zero). Never fabricate.
 
   Usage:
-    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljk --dry-run
-    NODE_PATH=<repo>/node_modules nbb scripts/ingest_nation_state_military.cljk
+    NODE_PATH=<repo>/node_modules kbb --backend sci scripts/ingest_nation_state_military.cljk --dry-run
+    NODE_PATH=<repo>/node_modules kbb --backend sci scripts/ingest_nation_state_military.cljk
   "
   (:require ["xlsx$default" :as XLSX]
             ["fs" :as fs]
