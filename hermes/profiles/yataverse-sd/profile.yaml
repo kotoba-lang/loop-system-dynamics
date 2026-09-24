@@ -1,0 +1,2 @@
+description: 'yataverse-sd: system-dynamics observation loop bot for wiki.yataverse.com. Runs one kotoba-lang/loop-system-dynamics cycle per tick (leverage ranking + XMILE stock-flow), appends evidence to profile ledger, proposes 1 finding. Propose-only.'
+description_auto: false
