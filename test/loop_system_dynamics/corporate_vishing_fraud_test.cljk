@@ -1,6 +1,6 @@
 (ns loop-system-dynamics.corporate-vishing-fraud-test
   (:require [cljs.test :refer [deftest is testing]]
-            [clojure.set :as set]
+            [kotoba.lang.coll :as set]
             [dynamics.core :as d]
             [loop-system-dynamics.corporate-vishing-fraud :as cvf]))
 

@@ -23,7 +23,7 @@
             ["path" :as path]
             ["os" :as os]
             [kotoba.lang.text :as str]
-            [clojure.pprint :as pprint]
+            [kotoba.pprint :as pprint]
             [kotoba.lang.edn :as edn]))
 
 ;; --------------------------------------------------------------------------

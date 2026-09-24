@@ -24,7 +24,7 @@
   (:require ["fs" :as fs]
             ["child_process" :as cp]
             [kotoba.lang.text :as str]
-            [clojure.set :as set]
+            [kotoba.lang.coll :as set]
             [kotoba.lang.edn :as edn]))
 
 (defn- slurp [p] (fs/readFileSync p "utf8"))
