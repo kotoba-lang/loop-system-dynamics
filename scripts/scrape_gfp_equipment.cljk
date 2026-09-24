@@ -18,7 +18,7 @@
   "
   (:require ["fs" :as fs]
             [kotoba.lang.text :as str]
-            [clojure.pprint :as pprint]))
+            [kotoba.pprint :as pprint]))
 
 (def RETRIEVED "2026-07-23")
 (def GFP-LISTING "https://www.globalfirepower.com/countries-listing.php")
