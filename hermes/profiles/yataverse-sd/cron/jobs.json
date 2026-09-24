@@ -1,0 +1,24 @@
+{
+  "jobs": [
+    {
+      "context_from": null,
+      "deliver": "local",
+      "enabled": true,
+      "enabled_toolsets": null,
+      "id": "1d5b8486b29d",
+      "name": "yata-sd-tick",
+      "no_agent": true,
+      "prompt": "",
+      "provider": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "3 7 * * *",
+        "display": "3 7 * * *"
+      },
+      "script": "yata_sd_tick.py",
+      "skill": null,
+      "skills": [],
+      "workdir": null
+    }
+  ]
+}
