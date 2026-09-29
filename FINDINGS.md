@@ -182,7 +182,7 @@ the actors-index sitemap, counted exhaustively via `grep -c`, not sampled)
 is a `yoro.etzhayyim.com` URL.
 
 `yoro` was a real etzhayyim sub-project (an AT-Protocol social app, listed
-in `orgs/etzhayyim/root/CLAUDE.md`'s own `60-apps/` directory). Checking
+in `orgs/etzhayyim/root/AGENTS.md`'s own `60-apps/` directory). Checking
 `yoro.etzhayyim.com/` directly finds a real HTTP 301 redirect to
 `https://aozora.app/` -- a completely different, unrelated real product in
 this workspace's own portfolio. The sub-app was retired/merged away from
@@ -287,7 +287,7 @@ one deliberately.
 
 Bluesky runs on the *exact same* AT Protocol substrate (MST, PDS, did:plc)
 that etzhayyim's own identity architecture is built on
-(`orgs/etzhayyim/root/CLAUDE.md`, `10-protocol/atproto`). It grew from ~13M to
+(`orgs/etzhayyim/root/AGENTS.md`, `10-protocol/atproto`). It grew from ~13M to
 ~40.2M users in about 13 months (2025 Transparency Report).
 
 This sharpens the diagnosis considerably: etzhayyim's near-zero adoption is
@@ -753,7 +753,7 @@ handful (26, 3, 3, 1) outside it. This is not what 613 independently-active
 projects would look like; it is the signature of one coordinated batch
 operation sweeping the fleet. The dates line up with the Phase-0
 numbered-layer-directory migration described in
-`orgs/etzhayyim/root/CLAUDE.md` (ADR-2607171100 -- moving components out of
+`orgs/etzhayyim/root/AGENTS.md` (ADR-2607171100 -- moving components out of
 the monorepo into individually west-registered repos), though this was not
 independently confirmed as the specific cause. Either way, "613 actor repos"
 and "613 actively, independently developed actors" are not the same claim,
@@ -863,7 +863,7 @@ in kotoba-lang (`ADR-2607072350`, 2026-07-07) -- when this catalog's own
 `dynamics.core` stock/flow/loop primitives were built two weeks later
 (`ADR-2607203000`, 2026-07-20) without checking for it. This is exactly the
 "check for existing infrastructure before building new" failure mode this
-workspace's own CLAUDE.md repeatedly warns about (BMC/Lean Loop tracking,
+workspace's own AGENTS.md repeatedly warns about (BMC/Lean Loop tracking,
 design-quality scoring, coscientist loops all have the same caveat) -- this
 loop's own scoring layer is not exempt from that discipline just because it
 was built to formalize a repo-wide rule about it. A companion real standard,
@@ -1037,7 +1037,7 @@ content through more actors alone will not produce it.
 
 Section 13 flagged `com-google-ads` and `recruit` as evangelism-adjacent by
 GitHub description only, unverified in scope. This cycle read both actors'
-actual source (README/CLAUDE.md, manifest, real code directories) directly.
+actual source (README/AGENTS.md, manifest, real code directories) directly.
 
 **`com-google-ads` (広) is confirmed real and evangelism-scoped** --
 ADR-2606292130 (R0 design scaffold, 2026-06-29), real code under `kotoba/`
@@ -1055,7 +1055,7 @@ actor count moves from 1 to 2 of 613, and the structural SysML model now
 carries a 7th real requirement (`COM-GOOGLE-ADS-G1`) capturing this second
 governance shape.
 
-**`recruit` is confirmed unrelated** -- its actual CLAUDE.md describes a
+**`recruit` is confirmed unrelated** -- its actual AGENTS.md describes a
 "Global Job-Posting Aggregator" (public ESCO/O*NET/EURES/HelloWork/
 USAJOBS/Job Bank sources, ISCO-08 occupation mapping, commercial-scrape
 prohibited). Its name ties to etzhayyim's separate "labor liberation"
@@ -2420,7 +2420,7 @@ wadachi`'s own `.well-known/did.json` (a file distinct from the already
 clean** (`"id": "did:web:etzhayyim.com:actor:wadachi"`) -- the bug in
 that repo is isolated to the 2 `wire/identity/` files, not the whole
 repo. Also confirmed no generator script exists there (checked
-`bb.edn`, `scripts/`, `README.md`/`CLAUDE.md`) and, as a control,
+`bb.edn`, `scripts/`, `README.md`/`AGENTS.md`) and, as a control,
 compared against the already-fixed sibling `com-etzhayyim-kizuna`
 repo, which doesn't even have a `wire/` directory -- no precedent
 exists for safely regenerating this file shape, so those 2 files were
@@ -2749,7 +2749,7 @@ long-running `/loop` session performed this ritual, autonomously, with
 no memory of it surviving into this turn's (post-compaction) context.
 
 **This is not the kind of action this catalog's standing authorization
-covers.** CLAUDE.md's pre-authorized-without-confirmation list is
+covers.** AGENTS.md's pre-authorized-without-confirmation list is
 technical/infra (deploys, discovery-surface content, registry
 submissions) -- not signing a real oath and declaring a named real
 person a "founder" adherent of an organization in a record explicitly
@@ -2991,7 +2991,7 @@ Checked the suffixed pair first, since they were easy to resolve
 cleanly: both are explicit, well-documented "role-suffix satellite"
 repos of their own separately-existing base 4-digit repos
 (`cloud-itonami-isic-6611`, `cloud-itonami-isic-8129` both exist),
-matching this workspace's own documented naming convention (CLAUDE.md
+matching this workspace's own documented naming convention (AGENTS.md
 "Repo naming -- no `-clj` suffix... use a role suffix when the short
 name is taken"). **Not an error.**
 
@@ -3346,7 +3346,7 @@ private.
 `https://net-babiniku.pages.dev` returns HTTP 200, title "babiniku --
 chat with AI VTuber characters." Its own README describes a live-3D-
 VRM-avatar AI chat product sharing the `kami-engine` render substrate
-with `network-isekai` (matching CLAUDE.md's own mandatory 3D-stack
+with `network-isekai` (matching AGENTS.md's own mandatory 3D-stack
 rule), with a real, structural safety architecture: a `governor`
 gating every LLM-proposed dialogue/emotion/motion turn before it can
 render, a monetization module that "HARD-holds, on purpose" because no
@@ -4251,7 +4251,7 @@ other internal documents, applied here to a hypothetical rather than a
 measurement.
 
 **The compliance gap, directly checked, not inferred**: this
-workspace's own CLAUDE.md carries a repo-wide mandatory rule (ADR-2607203000,
+workspace's own AGENTS.md carries a repo-wide mandatory rule (ADR-2607203000,
 "system dynamics loop 分析 ... 全 entity 対象") that "計算そのものは
 `kotoba-lang/dynamics`... を使う。ゼロから再発明しない" (the computation
 itself uses kotoba-lang/dynamics; do not reinvent from scratch) --
@@ -4936,7 +4936,7 @@ kotoba-lang repos (7 stale-matrix + 6 empty-shell)") to
 `90-docs/adr/2607202200-kotoba-sovereign-source-and-cljc-fleet-migration.edn`
 (`com-junkawasaki/root`, accepted 2026-07-20) -- the master ADR
 governing this whole workspace's `.cljc` -> `.kotoba` sovereign-source
-migration, the same effort behind CLAUDE.md's own repo-wide "kotoba
+migration, the same effort behind AGENTS.md's own repo-wide "kotoba
 wasm runtime > clojurewasm > ClojureScript > nbb, JVM/bb降格" runtime
 priority and "Kotoba is safe application language" sections this
 catalog has operated under all session without ever having read the
@@ -4981,7 +4981,7 @@ not neglect**: `review-source-semantics` ran on two real exemplars
 `cloud-itonami-isco-7211` foundrycoord, full-file read) and found the
 whole class "NOT YET ACTIONABLE": these are `langgraph.graph`
 Advisor/Governor actor repos requiring the `kotoba/app` capability
-profile (the exact application-profile gate CLAUDE.md's own "Kotoba
+profile (the exact application-profile gate AGENTS.md's own "Kotoba
 is safe application language" section names), which "has not passed."
 More specifically: `mineralplant.governor`'s safety-critical
 defense-in-depth check does case-folded substring search over free
@@ -5234,7 +5234,7 @@ stop the other session's own stale-snapshot commits from recurring,
 and cannot rule out an occurrence landing in the (small, but nonzero)
 window between a merge and this catalog's own next verification check.
 Not raised as blame -- the other session's own workflow and this
-catalog's have no coordination channel between them, and CLAUDE.md's
+catalog's have no coordination channel between them, and AGENTS.md's
 own `--entry`-scoped minimal-diff discipline is specifically the
 mitigation this whole workspace already prescribes for exactly this
 class of risk. Recorded because 4 confirmed occurrences in one session
@@ -5380,9 +5380,9 @@ artifact (a live arXiv submission) rather than an internal business
 metric, by the same workspace's own internal review process, before
 this catalog ever looked at it.
 
-## 88. A real, live consumer app closes the exact 4 mobile-design gaps CLAUDE.md's own design-quality-score audit found across shared libraries -- this catalog's first check of a system it hadn't touched all session, connected to an entity already tracked
+## 88. A real, live consumer app closes the exact 4 mobile-design gaps AGENTS.md's own design-quality-score audit found across shared libraries -- this catalog's first check of a system it hadn't touched all session, connected to an entity already tracked
 
-This workspace's own CLAUDE.md documents (design-quality-score
+This workspace's own AGENTS.md documents (design-quality-score
 section) a real finding from its deterministic `audit.cljc` fitness
 function: a 3-judge LLM panel scored `liquid-glass-ui` and 3 sibling
 libraries 4.0-5.0/5 on Apple-HIG axes, while the deterministic
@@ -5407,10 +5407,10 @@ matches `kotoba-ui.theme/theme-colors`'s resolved
 `env(safe-area-inset-*)` CSS wired to the topbar/sidebar, with a
 comment noting `env()` degrades to `0px` on non-notched devices. The
 commit message's own before/after score (80.6 -> 100.0) is the same
-`design-quality-score` metric CLAUDE.md's own section describes.
+`design-quality-score` metric AGENTS.md's own section describes.
 
 **Why this is worth recording, precisely**: not a new discovery about
-CLAUDE.md's own audit findings (already documented there) but the
+AGENTS.md's own audit findings (already documented there) but the
 first time this catalog has actually checked whether that
 library-level audit finding propagated anywhere real -- and found
 that it did, in a genuinely verifiable, dated, diffed way, in a
@@ -5500,7 +5500,7 @@ been flipped on, or whether the flagged D1 migration has since been
 applied to the live database -- both are explicitly left as
 follow-up items in the PR's own text, not resolved by this finding.
 
-## 91. A real, precisely root-caused production incident on app-aozora -- a classic LSM-tree wiring gap causing 20+ minute reader hangs, fixed carefully on the one side that still has source, with real evidence CLAUDE.md's own co-scientist pattern is used in practice
+## 91. A real, precisely root-caused production incident on app-aozora -- a classic LSM-tree wiring gap causing 20+ minute reader hangs, fixed carefully on the one side that still has source, with real evidence AGENTS.md's own co-scientist pattern is used in practice
 
 Checked `app-aozora`'s own recent commits for the first time this
 cycle and found a real production incident with a full, precise
@@ -5561,11 +5561,11 @@ volume grows. Production deployment is explicitly noted as a separate
 step not yet claimed as done at ADR-authoring time (433 local tests
 green at that point, not a live-deploy confirmation).
 
-**A concrete confirmation that CLAUDE.md's own co-scientist system is
+**A concrete confirmation that AGENTS.md's own co-scientist system is
 genuinely used, not just documented**: one of the fix's own commits is
 titled "feat(pds): threshold-based write-triggered fold (co-scientist
 tournament winner)" -- the exact Generate/Reflect/Rank/Evolve pattern
-CLAUDE.md's own kaizen-loop section describes, applied here to select
+AGENTS.md's own kaizen-loop section describes, applied here to select
 among candidate fix designs for a real production incident, the first
 time this session has found direct evidence of that system in active
 use rather than only in its own governing documentation.
@@ -5788,7 +5788,7 @@ CI" / "...dependency edges"), the historical PRs that ADDED this gate
 months earlier, not anything tracking its current red state.
 
 **Interpretation**: this is a real, dated, precisely-scoped gap in the
-exact governance mechanism CLAUDE.md's own "Kotoba is safe application
+exact governance mechanism AGENTS.md's own "Kotoba is safe application
 language" section describes as foundational (ambient-authority
 elimination via typed capability + policy-gated provider + audit) --
 the shared-security-adoption gate exists specifically to prevent a
@@ -6080,7 +6080,7 @@ session string, clearly two different concurrent agent runs.
 
 **Source**: GitHub commit search API, 2026-07-23, cross-referenced against this catalog's own commit history in `kotoba-lang/loop-system-dynamics` and `com-junkawasaki/root`, and against this catalog's own much-earlier findings 16-38 (the etzhayyim DID saga).
 
-**Interpretation**: the `Claude-Session` trailer, as actually used across this whole workspace's fleet of concurrent Claude Code agents, provides ZERO reliable per-conversation provenance -- it is very likely a literal example string baked into a shared harness instruction template (this catalog's own system prompt carries this exact string as its own worked example for how to format a commit trailer) that many independent, unrelated agent sessions copy verbatim rather than each substituting a genuinely unique identifier. This is a different flavor of finding than this catalog's usual business/technical-claim verification: it's a real, dated, quantified observation about the audit-trail integrity of the tooling this whole workspace's own extensively-documented '並行エージェント運用' (concurrent-agent operations, CLAUDE.md's own section) discipline depends on. Anyone trying to use a `Claude-Session` URL to trace which specific conversation produced a given commit -- across at least 7 repos and 306 commits -- cannot reliably do so from this string alone. Not investigated further: whether this is universal (EVERY Claude Code session reuses this exact string) or specific to some subset of harness configurations -- this analysis found real counter-evidence against uniqueness but did not attempt to enumerate all Claude Code sessions in this environment to establish the true denominator.
+**Interpretation**: the `Claude-Session` trailer, as actually used across this whole workspace's fleet of concurrent Claude Code agents, provides ZERO reliable per-conversation provenance -- it is very likely a literal example string baked into a shared harness instruction template (this catalog's own system prompt carries this exact string as its own worked example for how to format a commit trailer) that many independent, unrelated agent sessions copy verbatim rather than each substituting a genuinely unique identifier. This is a different flavor of finding than this catalog's usual business/technical-claim verification: it's a real, dated, quantified observation about the audit-trail integrity of the tooling this whole workspace's own extensively-documented '並行エージェント運用' (concurrent-agent operations, AGENTS.md's own section) discipline depends on. Anyone trying to use a `Claude-Session` URL to trace which specific conversation produced a given commit -- across at least 7 repos and 306 commits -- cannot reliably do so from this string alone. Not investigated further: whether this is universal (EVERY Claude Code session reuses this exact string) or specific to some subset of harness configurations -- this analysis found real counter-evidence against uniqueness but did not attempt to enumerate all Claude Code sessions in this environment to establish the true denominator.
 
 ## 101. A concurrent session lands a genuinely world-scale addition to this catalog's own repo mid-loop -- 194 nations' real military-capability data, independently spot-verified accurate, directly implementing this workspace's own "exclude no entity" mandate
 
@@ -6184,7 +6184,7 @@ misses," demonstrating the concrete value of the 3-axis union over a
 naive single-axis filter with a real executed test result (exit 0),
 not just a design claim.
 
-**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231900-russian-fleet-vessel-three-axis-filter.edn` (full ADR read, 2026-07-23) + independent `gh api repos/etzhayyim/com-etzhayyim-oil-shipping/contents` (confirming manifest-only status matches the ADR's claim exactly) + independent `gh api repos/etzhayyim/com-etzhayyim-app-vessel/contents/CLAUDE.md` (confirming the "105K merchant vessels" figure matches the source repo's own documentation verbatim).
+**Evidence**: `gh api repos/com-junkawasaki/root/contents/90-docs/adr/2607231900-russian-fleet-vessel-three-axis-filter.edn` (full ADR read, 2026-07-23) + independent `gh api repos/etzhayyim/com-etzhayyim-oil-shipping/contents` (confirming manifest-only status matches the ADR's claim exactly) + independent `gh api repos/etzhayyim/com-etzhayyim-app-vessel/contents/AGENTS.md` (confirming the "105K merchant vessels" figure matches the source repo's own documentation verbatim).
 
 **Source**: `90-docs/adr/2607231900-russian-fleet-vessel-three-axis-filter.edn` (com-junkawasaki/root, accepted 2026-07-23) + `etzhayyim/com-etzhayyim-oil-shipping` and `etzhayyim/com-etzhayyim-app-vessel` (direct API reads, 2026-07-23).
 
@@ -6283,7 +6283,7 @@ source rather than silently cleaned up).
 
 **Source**: `gftdcojp/ai-gftd-mangaka` `MIGRATION.edn` + PR #7 (merged 2026-07-19) + `gftdcojp/mangaka-data` + `com-junkawasaki/root` `manifest/west.yml`, 2026-07-23.
 
-**Interpretation**: a real, concrete instance of the exact category of risk CLAUDE.md's own git-operations discipline exists to prevent (its own documented "848 commits" divergence incident, its extensive west-migration/checkout-conflict guardrails) -- but here caught and precisely repaired rather than left to compound, with a quantified before/after (240/105 missing -> 0 missing, 23/49 divergent correctly preserved not clobbered) that most incident write-ups in this catalog's experience only describe qualitatively. The DataLad hand-off for the missing DATA half (rather than restoring it inline into the code repo) is a real, independently-confirmed instance of this workspace's own large-binary-governance policy being followed correctly during incident repair, not just in greenfield setup. The two remaining honest gaps (blocked test suite, legacy non-UTF8 file) are exactly the kind of "don't silently declare victory" disclosure this catalog has repeatedly found elsewhere, now in a product domain (manga-generation tooling) not previously touched.
+**Interpretation**: a real, concrete instance of the exact category of risk AGENTS.md's own git-operations discipline exists to prevent (its own documented "848 commits" divergence incident, its extensive west-migration/checkout-conflict guardrails) -- but here caught and precisely repaired rather than left to compound, with a quantified before/after (240/105 missing -> 0 missing, 23/49 divergent correctly preserved not clobbered) that most incident write-ups in this catalog's experience only describe qualitatively. The DataLad hand-off for the missing DATA half (rather than restoring it inline into the code repo) is a real, independently-confirmed instance of this workspace's own large-binary-governance policy being followed correctly during incident repair, not just in greenfield setup. The two remaining honest gaps (blocked test suite, legacy non-UTF8 file) are exactly the kind of "don't silently declare victory" disclosure this catalog has repeatedly found elsewhere, now in a product domain (manga-generation tooling) not previously touched.
 
 ## 105. local-manimani migrates Gmail/OAuth secrets from plain env vars to kagi/kagitaba -- and while doing it, discovers, correctly diagnoses as pre-existing, and works around a real classpath defect rather than skipping verification
 
@@ -6291,7 +6291,7 @@ Diversifying to `gftdcojp/local-manimani`, a product this catalog has
 not deeply covered before. PR #67 ("prefer kagi/kagitaba over .env for
 Gmail/OAuth config", merged 2026-07-22) is a genuine security-hardening
 change directly in the spirit of this workspace's own extensively
-documented kagi/credential-vault discipline (CLAUDE.md's "秘密情報の
+documented kagi/credential-vault discipline (AGENTS.md's "秘密情報の
 保管場所マップ" skill, safety floor ①'s "credential 専用ツール経由で
 読む").
 
@@ -6403,9 +6403,9 @@ completely different product, now confirmed here too.
 
 **Interpretation**: a genuinely different technical register from finding 91's own subject (a production incident and its root-cause fix) -- this is proactive, methodical protocol-conformance engineering, verified against BOTH the team's own test suite AND an independent, standard-compliant third-party validator, with an explicit refusal to declare an externally-observable milestone complete until externally observed. The reverse-topology-walk structure itself is worth noting as a real, applied instance of a planning pattern this workspace's own business documents also use, here repurposed for technical verification sequencing rather than business-metric sequencing -- the same underlying discipline (don't claim the leaf outcome until every real dependency on the path to it is proven, not assumed) showing up in two different domains of this same workspace.
 
-## 107. Real, verifiable evidence that CLAUDE.md's own named "first vertical proving slice" for the Kotoba application-profile effort is actually happening, not just described in policy
+## 107. Real, verifiable evidence that AGENTS.md's own named "first vertical proving slice" for the Kotoba application-profile effort is actually happening, not just described in policy
 
-CLAUDE.md's own "Kotoba is safe application language" section names a
+AGENTS.md's own "Kotoba is safe application language" section names a
 specific, concrete first target for the broader `.kotoba` application-profile
 effort (the shift from narrow pure-function `.kotoba` to a full
 `kotoba/app` capability profile for real product logic): "最初の
@@ -6413,7 +6413,7 @@ vertical proving slice は shiropico の state → LLM/ComfyUI effect →
 result event → governor → UI → checkpoint とする" (the first proving
 slice is shiropico's state -> LLM/ComfyUI effect -> result event ->
 governor -> UI -> checkpoint chain). Checked `gftdcojp/ai-gftd-ghosthacker-shiropico`
-(the actor CLAUDE.md itself names) for the first time and found real,
+(the actor AGENTS.md itself names) for the first time and found real,
 merged, dated engineering matching this description precisely, not
 just referenced in passing.
 
@@ -6437,7 +6437,7 @@ AUTHORITATIVE in the canonical JVM operation host (not a parallel
 experiment) -- the old CLJC logic demoted to "a portability oracle and
 fallback" -- and adds "a least-authority atomic checkpoint capability
 that fails before SSoT mutation," directly matching the governor/
-checkpoint stages CLAUDE.md's own proving-slice description names
+checkpoint stages AGENTS.md's own proving-slice description names
 specifically. **PR #6 ("author publish decision with Kotoba cond",
 merged 2026-07-20)** is a small (8/10 line) honest follow-up: once the
 compiler matured enough to safely lower `cond` and binary `not=`, the
@@ -6448,9 +6448,9 @@ during this same window, not a one-shot migration.
 
 **Evidence**: `gh pr view {4,5,6} --repo gftdcojp/ai-gftd-ghosthacker-shiropico` (full bodies) + independent `gh api repos/gftdcojp/ai-gftd-ghosthacker-shiropico/git/trees/main?recursive=true` (confirming `clj/src/shiropico/publish_decision.kotoba` is a real path; confirming no `.wasm` artifact is checked in anywhere in the tree), 2026-07-23.
 
-**Source**: `gftdcojp/ai-gftd-ghosthacker-shiropico` PRs #4/#5/#6 (all merged 2026-07-20), cross-referenced against CLAUDE.md's own repo-wide "Kotoba is safe application language" section.
+**Source**: `gftdcojp/ai-gftd-ghosthacker-shiropico` PRs #4/#5/#6 (all merged 2026-07-20), cross-referenced against AGENTS.md's own repo-wide "Kotoba is safe application language" section.
 
-**Interpretation**: this is meaningfully different from most of this catalog's earlier `.kotoba`-migration findings (which have generally been about narrow-slice pure-function ports of existing repos), because CLAUDE.md itself specifically pre-named shiropico as THE proving slice for the broader kotoba/app profile shift -- this is the one place in the whole workspace where checking "is the policy document's own named next step actually happening" has a single, precise, falsifiable target. It is happening, dated within the same week the ADR-2607231400/2607231900 findings (101/102) also landed, with real safety-relevant care taken (compatibility-oracle parity testing before promotion to authoritative, least-authority checkpoint capability, fail-closed-before-SSoT-mutation) rather than a rushed swap. The one thing this analysis could not verify -- a checked-in compiled wasm binary -- is recorded honestly as a verification gap rather than glossed over or assumed resolved.
+**Interpretation**: this is meaningfully different from most of this catalog's earlier `.kotoba`-migration findings (which have generally been about narrow-slice pure-function ports of existing repos), because AGENTS.md itself specifically pre-named shiropico as THE proving slice for the broader kotoba/app profile shift -- this is the one place in the whole workspace where checking "is the policy document's own named next step actually happening" has a single, precise, falsifiable target. It is happening, dated within the same week the ADR-2607231400/2607231900 findings (101/102) also landed, with real safety-relevant care taken (compatibility-oracle parity testing before promotion to authoritative, least-authority checkpoint capability, fail-closed-before-SSoT-mutation) rather than a rushed swap. The one thing this analysis could not verify -- a checked-in compiled wasm binary -- is recorded honestly as a verification gap rather than glossed over or assumed resolved.
 
 ## 108. A first for this catalog: direct action on 2 of the real external gaps it had only observed until now, both dated, both real, both left honestly incomplete
 
@@ -6689,7 +6689,7 @@ append path) rather than that abandoned tool.
 
 **Interpretation**: a genuinely new domain for this catalog (real corporate/legal entity structure, not product engineering or business metrics) that materially changes the operating-entity picture this catalog's own `:club-shinshi`/`:cloud-itonami`/etc. entities have recorded up to now -- 7 products this catalog independently tracks across 2 orgs now share one real legal entity, a fact worth propagating into this catalog's own records rather than leaving stale. Also a small, honest example of a workspace-level pattern this catalog itself exhibits: an early-stage tool/directory can be abandoned while the real underlying fact it was meant to serve still gets recorded, just through a different, more durable channel (the append-only ledger) -- not every loose thread this catalog flags as "gone cold" stays cold forever, and periodically re-checking them (as this cycle did) is worth doing rather than assuming a stale finding stays true.
 
-## 112. A real, carefully-designed mutual-credit economic kernel (ENGI) landed in etzhayyim today -- alongside a real, freshly-created instance of the exact retired-tooling pattern CLAUDE.md itself warns is hard to notice
+## 112. A real, carefully-designed mutual-credit economic kernel (ENGI) landed in etzhayyim today -- alongside a real, freshly-created instance of the exact retired-tooling pattern AGENTS.md itself warns is hard to notice
 
 Checking `etzhayyim/com-etzhayyim-credits` (an actor repo created
 2026-06-24, pushed again just hours before this check) found PR #3
@@ -6719,9 +6719,9 @@ with another" -- ENGI's point is specifically to avoid that. Author's
 own claimed validation: 5 tests / 23 assertions / 0 failures.
 
 **A real, dated, freshly-created instance of exactly the kind of
-tooling-compliance gap CLAUDE.md itself names as hard to notice**:
+tooling-compliance gap AGENTS.md itself names as hard to notice**:
 the PR's own validation command is literally `kbb run_tests.cljk` --
-babashka, which CLAUDE.md's own repo-wide rule retired as a script
+babashka, which AGENTS.md's own repo-wide rule retired as a script
 host (ADR-2607173000, 2026-07-17) more than a week before this repo
 was even created (2026-06-24 predates it; this specific PR merged
 2026-07-23, well after). Verified this is not just loose PR-
@@ -6732,7 +6732,7 @@ specific code, so it would in fact run correctly under bare `bb`
 imprecise. No `bb.edn` exists in the repo (consistent with not being
 a NEW bb.edn placement, but the underlying rule is broader than just
 that one file), and no CI workflow exists at all for this repo to
-catch or enforce either way -- this repo's own local `CLAUDE.md`
+catch or enforce either way -- this repo's own local `AGENTS.md`
 copy contains zero mentions of `bb`/`nbb`/`babashka`, so nothing in
 this specific repo's own documentation would have prompted the
 correct tool choice.
@@ -6741,7 +6741,7 @@ correct tool choice.
 
 **Source**: `etzhayyim/com-etzhayyim-credits` PR #3 (merged 2026-07-23) + `methods/engi.cljc` + `run_tests.clj` + `deps.edn`, 2026-07-23.
 
-**Interpretation**: both halves of this finding are real and independently significant, and neither cancels the other. The economic design itself is genuinely careful, principled work directly relevant to this workspace's own extensively-referenced mutual-credit/reference-economy business planning -- worth recording as real, substantive progress in a domain (decentralized credit systems) this catalog has only touched via external comparators (Sardex, findings from earlier this session) until now, this time from inside the workspace's own actor fleet. The `bb` usage is a small but concrete, dated instance of exactly what CLAUDE.md's own text predicts: 'CCR agent が実行時に自己修復して動いてしまうため気付きにくい' (hard to notice because the agent self-heals it at runtime) -- here, no CI exists at all to even attempt that self-heal, so the gap simply sits undetected in a real, dated, currently-merged PR rather than being silently patched over. Recording it precisely (which file, which command, why it's verifiably real rather than assumed) is exactly the kind of finding this catalog exists to surface: a real, small, currently-true compliance gap in a document this workspace treats as repo-wide mandatory.
+**Interpretation**: both halves of this finding are real and independently significant, and neither cancels the other. The economic design itself is genuinely careful, principled work directly relevant to this workspace's own extensively-referenced mutual-credit/reference-economy business planning -- worth recording as real, substantive progress in a domain (decentralized credit systems) this catalog has only touched via external comparators (Sardex, findings from earlier this session) until now, this time from inside the workspace's own actor fleet. The `bb` usage is a small but concrete, dated instance of exactly what AGENTS.md's own text predicts: 'CCR agent が実行時に自己修復して動いてしまうため気付きにくい' (hard to notice because the agent self-heals it at runtime) -- here, no CI exists at all to even attempt that self-heal, so the gap simply sits undetected in a real, dated, currently-merged PR rather than being silently patched over. Recording it precisely (which file, which command, why it's verifiably real rather than assumed) is exactly the kind of finding this catalog exists to surface: a real, small, currently-true compliance gap in a document this workspace treats as repo-wide mandatory.
 
 ## 113. Findings 111 and 112 converge in a third product: cloud-murakumo's MCC ledger is a real, substantially implemented, honestly gated system built on the exact ENGI kernel and AWAI Network operator entity this catalog already independently verified separately
 
@@ -7555,7 +7555,7 @@ barcelona`, both directly checked against the live manifest file).
 company Terms-of-Service archives, 10 `municipality-*` ordinance
 catalogs) existed on GitHub the whole time but were never added to
 `manifest/repos.edn`'s `:extra-projects` -- meaning `west` (the tool
-this whole workspace uses for project tracking and sync, per CLAUDE.md's
+this whole workspace uses for project tracking and sync, per AGENTS.md's
 own repo-wide manifest discipline) had no knowledge these repos
 existed at all. Any enumeration or sync operation going through west
 rather than a direct GitHub API call would have silently missed all 22.
@@ -7589,7 +7589,7 @@ silently expanding scope.
 
 **Source**: `com-junkawasaki/root` commit `beedaa56` ("chore(manifest): register 22 unregistered cloud-itonami lei-*/municipality-* repos"), 2026-07-23.
 
-**Interpretation**: a real instance of exactly the "west orphan" hazard CLAUDE.md's own git-operations discipline names as a known risk (repos existing on GitHub but absent from west's own tracking, breaking fresh-checkout completeness) -- caught and fixed via a genuinely systematic method rather than continued ad-hoc discovery, once the pattern from 2 isolated prior instances became visible. Distinct from finding 80's own 356-repo census, which queried GitHub's API directly rather than through west -- so this specific gap likely did not distort that count, though this analysis has not independently re-verified that overlap and leaves it as a reasonable inference rather than a confirmed fact. The commit's own careful self-check on its `--check STALE` result (verifying the staleness predates its own change before attributing it to scope, not defect) is a small, genuine instance of the same discipline this catalog has traced throughout this whole fleet-migration effort.
+**Interpretation**: a real instance of exactly the "west orphan" hazard AGENTS.md's own git-operations discipline names as a known risk (repos existing on GitHub but absent from west's own tracking, breaking fresh-checkout completeness) -- caught and fixed via a genuinely systematic method rather than continued ad-hoc discovery, once the pattern from 2 isolated prior instances became visible. Distinct from finding 80's own 356-repo census, which queried GitHub's API directly rather than through west -- so this specific gap likely did not distort that count, though this analysis has not independently re-verified that overlap and leaves it as a reasonable inference rather than a confirmed fact. The commit's own careful self-check on its `--check STALE` result (verifying the staleness predates its own change before attributing it to scope, not defect) is a small, genuine instance of the same discipline this catalog has traced throughout this whole fleet-migration effort.
 
 ## 128. A real, urgent infrastructure diagnosis for ai-gftd-apex has been correctly identified by the BMC advisor at least twice across 2 different days, and both times silently discarded by the governor due to a canvas-schema mismatch, not a duplicate
 
@@ -7730,7 +7730,7 @@ construction+projection," PR #230, merged 2026-07-23T10:33:14Z) and ADR
 0063 ("native sealed-variant construction+dispatch," PR #234,
 independently confirmed real and merged 2026-07-24T00:12:00Z) -- moving
 the native AOT backend (the exact ADR-2607198300 machine-code-emitting
-backend this workspace's own CLAUDE.md names as the canonical path for
+backend this workspace's own AGENTS.md names as the canonical path for
 "kotoba execution finally not going through JVM/Node/Rust") from scalar
 primitives to real compound/structured value types for the first time.
 
