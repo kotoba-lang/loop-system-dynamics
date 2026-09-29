@@ -66,7 +66,7 @@
 
    What was checked and RULED OUT this cycle: `com-etzhayyim-recruit`
    (flagged as an unverified candidate in an earlier draft of this exact
-   design) is confirmed, by reading its actual CLAUDE.md, to be a 'Global
+   design) is confirmed, by reading its actual AGENTS.md, to be a 'Global
    Job-Posting Aggregator' (ESCO/O*NET/EURES/HelloWork/USAJOBS/Job Bank
    public sources) -- a labor-market/talent-matching function unrelated to
    etzhayyim-adherent evangelism. Its name ties to etzhayyim's separate
@@ -129,7 +129,7 @@
                          :did-status-inconsistency "MATURITY.md's own header still says the DID is '(placeholder, not live-hosted)', but a later 2026-07-13 entry lists 'did:web live' among landed R2 items -- an unresolved inconsistency in the source itself"}
    :com-google-ads-maturity {:tier "R0 design scaffold (2026-06-29, per its own README)"
                               :created-and-pushed-same-timestamp true}
-   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc + com-google-ads/README.md (ADR-2606292130, G1-G9 gates) + recruit/CLAUDE.md + tomoshibi/MATURITY.md + tomoshibi commit history (gh api repos/etzhayyim/com-etzhayyim-tomoshibi/commits), orgs/etzhayyim/root/CLAUDE.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
+   :source "gh api orgs/etzhayyim/repos --paginate (613 total, description-keyword search for evangel|invit|outreach|recruit), direct read of evangelism_gate.cljc + com-google-ads/README.md (ADR-2606292130, G1-G9 gates) + recruit/AGENTS.md + tomoshibi/MATURITY.md + tomoshibi commit history (gh api repos/etzhayyim/com-etzhayyim-tomoshibi/commits), orgs/etzhayyim/root/AGENTS.md Do-Not section (ADR-2606281500 autonomous publication), 2026-07-21"})
 
 ;; ---------------------------------------------------------------------------
 ;; evaluate -- real SysML structure + explicitly-labeled Bass scenarios

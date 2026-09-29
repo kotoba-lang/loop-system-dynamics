@@ -183,7 +183,7 @@
      -- there is no Durable Object anywhere in that worker (verified in the config file, not inferred
      from a truncated grep). Two settlements landing together = last write wins. DIRECTION MATTERS:
      under-reading is SAFE for theta (smaller envelope) and HARMFUL for LP dividends (pro-rata
-     payouts computed off a lossy index). CLAUDE.md already prescribes the fix in another context --
+     payouts computed off a lossy index). AGENTS.md already prescribes the fix in another context --
      a DO is globally unique and single-threaded, so 'exactly one writer' comes for free without
      hand-written leases. Deferred deliberately: x402.nexus is a live production custom domain, DO
      migrations are effectively one-way, and current settlement volume is zero."}

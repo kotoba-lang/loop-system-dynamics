@@ -28,7 +28,7 @@
   :t1 "2026-07-21T12:47:41+09:00"
   :t1-source "com-junkawasaki/root git commit d912e386e52a064cdf8f7e58777f6425b0297662 (HEAD at observation time), manifest/west.yml"
   :days 1.9991
-  :note "window is bounded by local shallow-clone depth, not by when registration activity actually started -- a wider window would need `git fetch --deepen` per com-junkawasaki/root CLAUDE.md's targeted-depth guidance. Org-wide GitHub repo total was independently re-confirmed unchanged (1331) across all three 2026-07-2{0,1} observations of this org, so all of `west-registered`'s movement in the window is genuine catch-up registration, not new repo creation diluting the count."}
+  :note "window is bounded by local shallow-clone depth, not by when registration activity actually started -- a wider window would need `git fetch --deepen` per com-junkawasaki/root AGENTS.md's targeted-depth guidance. Org-wide GitHub repo total was independently re-confirmed unchanged (1331) across all three 2026-07-2{0,1} observations of this org, so all of `west-registered`'s movement in the window is genuine catch-up registration, not new repo creation diluting the count."}
 
  ;; :github-total -- `gh api orgs/cloud-itonami/repos --paginate --jq '.[].name'`,
  ;;   grouped by `^cloud-itonami-<prefix>` (iso = the iso3166-<code> sub-prefix
