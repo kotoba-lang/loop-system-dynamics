@@ -1,0 +1,57 @@
+(ns run-inequality-calibrated
+  (:require [loop-system-dynamics.inequality-calibrated :as ic]))
+
+(def data (ic/read-json "resources/real/inequality-real-data.json"))
+(def cov  (ic/read-json "resources/real/itonami-bot-coverage.json"))
+(def impact (ic/read-json "resources/real/necessity-impact.json"))
+
+(defn pct [x] (str (.toFixed (* 100 x) 1) "%"))
+(defn f3 [x] (.toFixed x 3))
+(defn at [rows t] (first (filter #(= (:t %) (double t)) rows)))
+
+(doseq [c ["JPN" "USA"]]
+  (let [tg (ic/targets data c)
+        isicw (ic/isic-weights data c)
+        iscow (ic/isco-weights data c)
+        ncov (ic/necessity-coverage cov isicw)
+        scov (ic/isco-coverage cov iscow)
+        ens (ic/calibrate tg 1500 15 42)
+        best (first ens)]
+    (println "==========" c)
+    (println "REAL targets: labour-share slope" (f3 (* 100 (:ls-slope tg))) "pp/yr over" (:ls-window tg)
+             "| top10 slope" (f3 (* 100 (:top10-slope tg))) "pp/yr over" (:top10-window tg)
+             "| g" (pct (:g tg)) "rf" (pct (:rf tg)))
+    (println "ISIC emp weights year" (:year isicw) "(covered" (pct (:covered isicw)) ") | ISCO year" (:year iscow) "(covered" (pct (:covered iscow)) ")")
+    (println "itonami bot coverage: necessity-sector (ISIC A,D,E,F,I,L,P,Q) emp-weighted =" (pct ncov)
+             "| all-occupation ISCO-weighted =" (pct scov))
+    (let [ms (ic/measured-bot-state impact cov isicw)]
+      (println "BOT STATE  measured delta:" (or (:delta ms) "UNMEASURED") "(n_measured" (:n-measured ms) ") | active coverage (>=20/30 days):" (pct (:active-coverage ms))
+               "| ASSUMED for scenarios below: delta" (:assumed-delta ms) ", profile-exists coverage" (pct (:profile-coverage ms))))
+    (println "calibration ensemble (best 15 of 1500): fit slopes LS" (f3 (* 100 (:fit-ls-slope best))) "top10" (f3 (* 100 (:fit-top10-slope best)))
+             "err" (f3 (:err best)) "| eros range" (f3 (apply min (map :eros ens))) "-" (f3 (apply max (map :eros ens)))
+             "asset-pass" (f3 (apply min (map :asset-pass ens))) "-" (f3 (apply max (map :asset-pass ens))))
+    (let [scenarios
+          [["baseline (no bots)" {}]
+           ["bots AS MEASURED TODAY (a=30%)" (ic/effective-bot-params (ic/measured-bot-state impact cov isicw) 0.30 0.03)]
+           ["bots a=2%"  {:a-max 0.02 :cov ncov :delta 0.3 :kappa 0.03}]
+           ["bots a=10%" {:a-max 0.10 :cov ncov :delta 0.3 :kappa 0.03}]
+           ["bots a=30%" {:a-max 0.30 :cov ncov :delta 0.3 :kappa 0.03}]
+           ["bots a=60%" {:a-max 0.60 :cov ncov :delta 0.3 :kappa 0.03}]
+           ["bots a=60% cov=100%" {:a-max 0.60 :cov 1.0 :delta 0.3 :kappa 0.03}]
+           ["structural only (bargain+capture)" {:eros 0.0 :p-gain 0.0 :b-recovery 0.03}]
+           ["structural + bots a=30%" {:eros 0.0 :p-gain 0.0 :b-recovery 0.03 :a-max 0.30 :cov ncov :delta 0.3 :kappa 0.03}]]]
+      (println "year-40 outcomes, min..max over the ensemble:   squeeze        top10        labour-share   Rn")
+      (doseq [[nm sp] scenarios]
+        (let [rs (for [pm ens] (at (ic/simulate tg (merge (select-keys pm [:eros :asset-pass :p-gain]) sp) 40) 40))
+              rng (fn [k] (str (f3 (apply min (map k rs))) ".." (f3 (apply max (map k rs)))))]
+          (println " " (.padEnd nm 36) (rng :squeeze) " " (rng :top10) " " (rng :LS) " " (rng :Rn)))))
+    ;; breakeven adoption: smallest a-max so year-30 squeeze <= year-0 squeeze
+    (let [be (for [pm ens]
+               (let [base (select-keys pm [:eros :asset-pass :p-gain])
+                     s0 (:squeeze (at (ic/simulate tg base 30) 0))
+                     ok? (fn [a] (<= (:squeeze (at (ic/simulate tg (merge base {:a-max a :cov ncov :delta 0.3 :kappa 0.03}) 30) 30)) s0))]
+                 (cond (ok? 0.0) 0.0 (not (ok? 1.0)) nil
+                       :else (loop [lo 0.0 hi 1.0 i 0] (if (> i 12) hi (let [m (/ (+ lo hi) 2)] (if (ok? m) (recur lo m (inc i)) (recur m hi (inc i)))))))))
+          fin (remove nil? be)]
+      (println "BREAKEVEN bot adoption (hold year-30 squeeze at year-0 level, delta=30% kappa=3%, coverage as measured):"
+               (if (seq fin) (str (pct (apply min fin)) " .. " (pct (apply max fin)) " (" (count fin) "/" (count be) " ensemble members reachable)") "unreachable in all members")))))

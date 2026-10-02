@@ -1,0 +1,14 @@
+(ns run-inequality-sd
+  (:require [loop-system-dynamics.inequality-sd :as sd]))
+
+(defn f [x] (if (number? x) (.toFixed x 3) (str x)))
+(println "scenario            Kt/Y y0/y25/y50           Kb/Y y0/y25/y50  squeeze y0/y25/y50       Rn50   B50    P50   Kb50")
+(doseq [[k m] (sd/run-scenarios)]
+  (println (.padEnd (name k) 20)
+           (f (get-in m [:kt-y :y0])) (f (get-in m [:kt-y :y25])) (f (get-in m [:kt-y :y50])) "|" (f (get-in m [:kb-y :y0])) (f (get-in m [:kb-y :y25])) (f (get-in m [:kb-y :y50])) "|"
+           (f (get-in m [:squeeze :y0])) (f (get-in m [:squeeze :y25])) (f (get-in m [:squeeze :y50])) "|"
+           (f (get-in m [:Rn :y50])) (f (get-in m [:B :y50])) (f (get-in m [:P :y50])) (f (get-in m [:Kb :y50]))))
+(println)
+(println "Meadows leverage ranking:")
+(doseq [l (sd/ranked-levers)]
+  (println " " (.padEnd (name (:id l)) 22) (:band l) (:tractability l) "=>" (:base-score l) (:note l)))

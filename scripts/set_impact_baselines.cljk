@@ -1,0 +1,45 @@
+;; Write SOURCED baseline unit costs into per-repo impact.json (necessity-impact).
+;; Only entries whose number was read from a primary source on the as_of date are
+;; here; every other repo keeps baseline null (UNMEASURED) rather than a guess.
+;; with_bot is never touched. Idempotent. Usage: kbb --backend sci scripts/set_impact_baselines.cljk
+(ns set-impact-baselines
+  (:require ["fs" :as fs] ["path" :as path] ["os" :as os]))
+(def root (path/join (os/homedir) "github" "cloud-itonami"))
+(def as-of "2026-10-02")
+
+(def health
+  {:cost 2910
+   :unit "JPY per first outpatient visit (initial consultation fee, excluding surcharges), insurance price"
+   :source (str "初診料 291点 x 1点=10円. 291点: 医科診療報酬点数表 区分A000 (令和6年度改定, https://www.mhlw.go.jp/content/12404000/001251499.pdf) "
+                "and unchanged by the 令和8年度改定 (before/after both 291点, https://www.mhlw.go.jp/content/12400000/001672521.pdf; "
+                "R8 adds a separate 2-point 外来・在宅物価対応料 surcharge not counted here). 1点=10円: 診療報酬の算定方法 (平成20年厚生労働省告示第59号) 二, "
+                "https://www.mhlw.go.jp/web/t_doc?dataId=84aa9729&dataType=0&pageNo=1")
+   :note "regulated insurance price (patient pays a share); a floor-and-ceiling price, not the provider's cost to serve"})
+
+(def education
+  {:cost 535800
+   :unit "JPY per year, national university undergraduate/graduate tuition (standard amount)"
+   :source (str "国立大学等の授業料その他の費用に関する省令 標準額 535,800円/年 (set FY2005 per "
+                "https://www.mext.go.jp/b_menu/shingi/kokuritu/005/gijiroku/attach/1386503.htm; still listed unchanged through R7 in "
+                "https://www.mext.go.jp/content/20251226-mxt_sigakujo-000046463_4.pdf)")
+   :note "regulated reference price; each university may set up to 120% of it; private universities charge more"})
+
+(def construction
+  {:cost 25834
+   :unit "JPY per construction worker-day (labour cost input, national all-trades weighted average of the public-works design labour rate)"
+   :source "公共工事設計労務単価 令和8年3月適用 全国全職種加重平均値 25,834円, https://www.mlit.go.jp/report/press/content/001981942.pdf (2026-02-17)"
+   :note "a LABOUR INPUT rate, not a price of a building service; excludes employer-borne overhead per the same source. delta vs this = labour-cost reduction per equivalent worker-day"})
+
+(def table {"6810" nil "8610" health "8620" health "8530" education
+            "4100" construction "4211" construction "4322" construction})
+
+(doseq [[code b] table :when b
+        :let [p (path/join root (str "cloud-itonami-isic-" code) "impact.json")]]
+  (if-not (fs/existsSync p)
+    (println "SKIP (no impact.json)" code)
+    (let [o (js/JSON.parse (fs/readFileSync p "utf8"))]
+      (set! (.-unit o) (:unit b))
+      (set! (.-baseline o) #js {:cost (:cost b) :source (:source b) :as_of as-of})
+      (set! (.-notes o) (str "baseline: " (:note b) ". with_bot must come from costs of work this repo's actor actually processed (n_events >= 30); never simulated."))
+      (fs/writeFileSync p (str (js/JSON.stringify o nil 2) "\n"))
+      (println "baseline set" code (:cost b)))))

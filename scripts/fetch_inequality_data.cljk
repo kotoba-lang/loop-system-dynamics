@@ -1,0 +1,52 @@
+;; Fetch the real series the inequality model is calibrated against.
+;; World Bank (api.worldbank.org) + ILOSTAT (rplumber.ilo.org).
+;; Writes resources/real/inequality-real-data.json with source URL + fetch date
+;; per series. Never fills a missing value: nulls are dropped, errors recorded.
+;; Usage (from loop-system-dynamics/): kbb --backend sci scripts/fetch_inequality_data.cljk
+(ns fetch-inequality-data
+  (:require ["fs" :as fs]))
+(def ctry ["JPN" "USA"])
+(def wb {"gini" "SI.POV.GINI" "top10-income" "SI.DST.10TH.10" "bottom20-income" "SI.DST.FRST.20"
+         "gdp-pc-growth" "NY.GDP.PCAP.KD.ZG" "real-interest" "FR.INR.RINR" "vulnerable-emp-pct" "SL.EMP.VULN.ZS"
+         "unemployment" "SL.UEM.TOTL.ZS" "tax-revenue-gdp" "GC.TAX.TOTL.GD.ZS" "inflation" "FP.CPI.TOTL.ZG"
+         "adv-econ-health-exp-gdp" "SH.XPD.CHEX.GD.ZS" "edu-exp-gdp" "SE.XPD.TOTL.GD.ZS"})
+(def ilo {"labour-income-share" "LAP_2GDP_NOC_RT_A" "emp-by-occupation" "EMP_TEMP_SEX_OC2_NB_A"
+          "emp-by-occupation-skill" "EMP_TEMP_SEX_OCU_NB_A" "emp-by-economic-activity" "EMP_TEMP_SEX_ECO_NB_A"})
+(def hdr #js {:headers #js {"User-Agent" "Mozilla/5.0" "Accept" "*/*"}})
+(defn get-text [url] (-> (js/fetch url hdr) (.then (fn [r] (if (.-ok r) (.text r) (throw (js/Error. (str "HTTP " (.-status r)))))))))
+(defn csv-line
+  "RFC-4180 line -> fields; handles quoted fields (with commas/\"\") and bare numerics."
+  [l]
+  (loop [i 0 cur "" q? false out []]
+    (if (>= i (count l))
+      (conj out cur)
+      (let [ch (nth l i)]
+        (cond
+          (and q? (= ch "\"") (= (get l (inc i)) "\"")) (recur (+ i 2) (str cur "\"") q? out)
+          (= ch "\"") (recur (inc i) cur (not q?) out)
+          (and (= ch ",") (not q?)) (recur (inc i) "" q? (conj out cur))
+          :else (recur (inc i) (str cur ch) q? out))))))
+(defn csv-rows [txt]
+  (let [lines (remove #(= "" %) (map #(.replace % "\r" "") (.split (.replace txt "\uFEFF" "") "\n")))
+        hd (csv-line (first lines))]
+    (map #(zipmap hd (csv-line %)) (rest lines))))
+(defn wb-one [k ind c]
+  (let [url (str "https://api.worldbank.org/v2/country/" c "/indicator/" ind "?format=json&date=1990:2025&per_page=200")]
+    (-> (get-text url)
+        (.then (fn [t] (let [d (or (second (js->clj (js/JSON.parse t))) [])]
+                         [:wb k c {"source" url "series" (into {} (for [r d :when (get r "value")] [(get r "date") (get r "value")]))}])))
+        (.catch (fn [e] [:wb k c {"source" url "error" (.-message e)}])))))
+(defn ilo-one [k ind c]
+  (let [url (str "https://rplumber.ilo.org/data/indicator/?id=" ind "&ref_area=" c "&format=.csv")]
+    (-> (get-text url)
+        (.then (fn [t] [:ilo k c {"source" url "rows" (vec (for [r (csv-rows t) :when (= "SEX_T" (get r "sex" "SEX_T"))]
+                                                              (select-keys r ["sex" "classif1" "classif2" "time" "obs_value" "source"])))}]))
+        (.catch (fn [e] [:ilo k c {"source" url "error" (.-message e)}])))))
+(-> (js/Promise.all (clj->js (concat (for [[k i] wb c ctry] (wb-one k i c)) (for [[k i] ilo c ctry] (ilo-one k i c)))))
+    (.then (fn [rs]
+             (let [out (reduce (fn [a [g k c v]] (assoc-in a [(name g) k c] v)) {} (map vec (array-seq rs)))
+                   out (assoc out "fetched" (subs (.toISOString (js/Date.)) 0 10))]
+               (fs/writeFileSync "resources/real/inequality-real-data.json" (js/JSON.stringify (clj->js out)))
+               (doseq [g ["wb" "ilo"] [k v] (get out g) [c x] v]
+                 (println g k c "n=" (count (or (get x "series") (get x "rows"))) (get x "error" ""))))))
+    (.catch (fn [e] (println "fetch failed:" (.-message e)) (.exit js/process 1))))

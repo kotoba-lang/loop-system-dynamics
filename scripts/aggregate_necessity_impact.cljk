@@ -1,0 +1,41 @@
+;; Aggregate the necessity-impact probes into resources/real/necessity-impact.json
+;; -- the MEASURED replacement for the model's assumed delta and coverage.
+;; Per ISIC section: equipped, active (>=20 of last 30 days), measured, deltas.
+;; delta_measured stays null until >= 1 repo is MEASURED.
+;; Usage (from loop-system-dynamics/): kbb --backend sci scripts/aggregate_necessity_impact.cljk
+(ns aggregate-necessity-impact
+  (:require ["fs" :as fs] ["path" :as path] ["os" :as os]))
+(def root (path/join (os/homedir) "github" "cloud-itonami"))
+(def home (path/join (os/homedir) ".hermes"))
+(def sections [["A" 1 3] ["D" 35 35] ["E" 36 39] ["F" 41 43] ["I" 55 56] ["L" 68 68] ["P" 85 85] ["Q" 86 88]])
+(defn sec-of [div] (first (first (filter (fn [[_ a b]] (<= a div b)) sections))))
+(defn last-line [p]
+  (when (fs/existsSync p)
+    (let [ls (remove #(= "" %) (.split (fs/readFileSync p "utf8") "\n"))]
+      (when (seq ls) (js->clj (js/JSON.parse (last ls)))))))
+(def acc
+  (reduce
+   (fn [a d]
+     (let [m (re-matches #"cloud-itonami-isic-(\d+)" d)
+           imp (path/join root d "impact.json")]
+       (if-not (and m (fs/existsSync imp)) a
+         (let [s (sec-of (js/parseInt (subs (second m) 0 2) 10))
+               pr (path/join root d "hermes" "profiles")
+               bot (first (filter #(.startsWith % "physai-") (array-seq (fs/readdirSync pr))))
+               l (last-line (path/join home "profiles" bot "ledger" "necessity-impact.jsonl"))
+               a (update-in a [s :equipped] (fnil inc 0))]
+           (if-not l a
+             (cond-> a
+               (>= (get l "active_days_30" 0) 20) (update-in [s :active] (fnil inc 0))
+               (= "MEASURED" (get l "status")) (-> (update-in [s :measured] (fnil inc 0))
+                                                   (update-in [s :deltas] (fnil conj []) (get l "delta")))
+               true (update-in [s :external_tenants] (fnil + 0) (or (get l "external_tenants") 0))))))))
+   {} (sort (array-seq (fs/readdirSync root)))))
+(def deltas (mapcat :deltas (vals acc)))
+(def res {"as-of" (subs (.toISOString (js/Date.)) 0 10)
+          "sections" (into {} (for [[s _ _] sections] [s (merge {:equipped 0 :active 0 :measured 0 :deltas [] :external_tenants 0} (get acc s))]))
+          "delta_measured" (when (seq deltas) (/ (reduce + deltas) (count deltas)))
+          "n_measured" (count deltas)
+          "note" "null = UNMEASURED; the model keeps its assumed delta until n_measured > 0"})
+(fs/writeFileSync "resources/real/necessity-impact.json" (js/JSON.stringify (clj->js res) nil 1))
+(println (select-keys res ["delta_measured" "n_measured"]) (into {} (for [[s v] (get res "sections")] [s [(:equipped v) (:active v) (:measured v)]])))

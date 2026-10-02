@@ -1,0 +1,32 @@
+========== JPN | reference (a=30%, delta .3, kappa .03, coverage 0.478 ): baseline squeeze y40 = 1.199  bot effect = 0.130
+one-at-a-time (median over ensemble). effect = squeeze reduction from bots at y40; base = baseline squeeze y40
+delta (bot cost cut)       delta=0.100 -> eff 0.073 base 1.199  delta=0.300 -> eff 0.130 base 1.199  delta=0.500 -> eff 0.169 base 1.199
+kappa (commons capital)    kappa=0.010 -> eff 0.117 base 1.199  kappa=0.030 -> eff 0.130 base 1.199  kappa=0.060 -> eff 0.146 base 1.199
+tau (ramp years)           tau=5.000 -> eff 0.139 base 1.199  tau=10.000 -> eff 0.130 base 1.199  tau=20.000 -> eff 0.110 base 1.199
+coverage                   cov=0.478 -> eff 0.130 base 1.199  cov=0.750 -> eff 0.171 base 1.199  cov=1.000 -> eff 0.198 base 1.199
+necessity-w                necessity-w=0.300 -> eff 0.064 base 1.098  necessity-w=0.450 -> eff 0.130 base 1.199  necessity-w=0.600 -> eff 0.202 base 1.315
+kB (LS vs bargaining)      kB=0.100 -> eff 0.160 base 1.276  kB=0.250 -> eff 0.130 base 1.199  kB=0.400 -> eff 0.107 base 1.152
+GLOBAL MC (250 draws x 5 ensemble members): bot effect at a=30%: min 0.018 median 0.117 max 0.367 | share of draws where effect > 0.10: 0.604 | effect > baseline-squeeze excess over 1.0 (i.e. bots alone bring squeeze <=1): 0.312
+correlation of each assumption with bot effect (|r| = importance):
+   delta        0.428
+   kappa        0.195
+   tau          -0.195
+   cov          0.345
+   necessity-w  0.662
+   kB           -0.415
+========== USA | reference (a=30%, delta .3, kappa .03, coverage 0.490 ): baseline squeeze y40 = 1.338  bot effect = 0.142
+one-at-a-time (median over ensemble). effect = squeeze reduction from bots at y40; base = baseline squeeze y40
+delta (bot cost cut)       delta=0.100 -> eff 0.063 base 1.338  delta=0.300 -> eff 0.142 base 1.338  delta=0.500 -> eff 0.212 base 1.338
+kappa (commons capital)    kappa=0.010 -> eff 0.122 base 1.338  kappa=0.030 -> eff 0.142 base 1.338  kappa=0.060 -> eff 0.170 base 1.338
+tau (ramp years)           tau=5.000 -> eff 0.161 base 1.338  tau=10.000 -> eff 0.142 base 1.338  tau=20.000 -> eff 0.107 base 1.338
+coverage                   cov=0.490 -> eff 0.142 base 1.338  cov=0.750 -> eff 0.212 base 1.338  cov=1.000 -> eff 0.261 base 1.338
+necessity-w                necessity-w=0.300 -> eff 0.106 base 1.294  necessity-w=0.450 -> eff 0.142 base 1.338  necessity-w=0.600 -> eff 0.181 base 1.371
+kB (LS vs bargaining)      kB=0.100 -> eff 0.130 base 1.255  kB=0.250 -> eff 0.142 base 1.338  kB=0.400 -> eff 0.145 base 1.455
+GLOBAL MC (250 draws x 5 ensemble members): bot effect at a=30%: min 0.024 median 0.159 max 0.319 | share of draws where effect > 0.10: 0.796 | effect > baseline-squeeze excess over 1.0 (i.e. bots alone bring squeeze <=1): 0.028
+correlation of each assumption with bot effect (|r| = importance):
+   delta        0.665
+   kappa        0.238
+   tau          -0.324
+   cov          0.385
+   necessity-w  0.363
+   kB           0.057
