@@ -23,8 +23,20 @@
 
 (def profile-dir (path/resolve (script-dir) ".."))
 (def profile (path/basename profile-dir))
-(def repo (path/resolve profile-dir ".." ".." ".."))
 (def hermes-home (or (.-HERMES_HOME (.-env process)) (path/join (os/homedir) ".hermes")))
+
+;; Where impact.json lives. In the repo this file sits at hermes/profiles/<bot>/scripts, so
+;; the repo is three levels above the profile dir; on the HOST the profile is
+;; ~/.hermes/profiles/<bot>, where that walk lands in $HOME. So try, in order:
+;; ITONAMI_REPO, the repo layout, the fleet's freshly fetched main worktree, the working checkout.
+(def repo-name (str "cloud-itonami-" (subs profile (count "physai-"))))
+(def repo
+  (let [cands [(.-ITONAMI_REPO (.-env process))
+               (path/resolve profile-dir ".." ".." "..")
+               (path/join (os/homedir) ".itonami-fleet" "worktrees" "physai" profile "main" "cloud-itonami" repo-name)
+               (path/join (os/homedir) "github" "cloud-itonami" repo-name)]]
+    (or (first (filter #(and % (fs/existsSync (path/join % "impact.json"))) cands))
+        (path/resolve profile-dir ".." ".." ".."))))
 (def ledger (path/join hermes-home "profiles" profile "ledger" "necessity-impact.jsonl"))
 
 (defn num? [x] (and (number? x) (pos? x)))
