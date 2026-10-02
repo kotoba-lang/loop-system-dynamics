@@ -1,0 +1,64 @@
+{
+ "as-of": "2026-10-02",
+ "sections": {
+  "A": {
+   "equipped": 23,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "D": {
+   "equipped": 4,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "E": {
+   "equipped": 3,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "F": {
+   "equipped": 3,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "I": {
+   "equipped": 2,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "L": {
+   "equipped": 2,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "P": {
+   "equipped": 9,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  },
+  "Q": {
+   "equipped": 10,
+   "active": 0,
+   "measured": 0,
+   "deltas": [],
+   "external_tenants": 0
+  }
+ },
+ "delta_measured": null,
+ "n_measured": 0,
+ "note": "null = UNMEASURED; the model keeps its assumed delta until n_measured > 0"
+}

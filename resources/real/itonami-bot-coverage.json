@@ -1,0 +1,163 @@
+{
+ "as-of": "2026-10-02",
+ "source": "filesystem scan ~/github/cloud-itonami/cloud-itonami-{isic,isco}-*/hermes/profiles/physai-* (+ cron/jobs.json non-empty)",
+ "isic-section": {
+  "A": {
+   "repos": 38,
+   "profile": 23,
+   "cron_jobs": 23
+  },
+  "B": {
+   "repos": 14,
+   "profile": 8,
+   "cron_jobs": 8
+  },
+  "C": {
+   "repos": 135,
+   "profile": 41,
+   "cron_jobs": 41
+  },
+  "D": {
+   "repos": 6,
+   "profile": 4,
+   "cron_jobs": 4
+  },
+  "E": {
+   "repos": 8,
+   "profile": 3,
+   "cron_jobs": 3
+  },
+  "F": {
+   "repos": 12,
+   "profile": 3,
+   "cron_jobs": 3
+  },
+  "G": {
+   "repos": 45,
+   "profile": 13,
+   "cron_jobs": 13
+  },
+  "H": {
+   "repos": 23,
+   "profile": 14,
+   "cron_jobs": 14
+  },
+  "I": {
+   "repos": 10,
+   "profile": 2,
+   "cron_jobs": 2
+  },
+  "J": {
+   "repos": 26,
+   "profile": 5,
+   "cron_jobs": 5
+  },
+  "K": {
+   "repos": 21,
+   "profile": 19,
+   "cron_jobs": 19
+  },
+  "L": {
+   "repos": 2,
+   "profile": 2,
+   "cron_jobs": 2
+  },
+  "M": {
+   "repos": 16,
+   "profile": 12,
+   "cron_jobs": 12
+  },
+  "N": {
+   "repos": 28,
+   "profile": 18,
+   "cron_jobs": 18
+  },
+  "O": {
+   "repos": 8,
+   "profile": 8,
+   "cron_jobs": 8
+  },
+  "P": {
+   "repos": 14,
+   "profile": 9,
+   "cron_jobs": 9
+  },
+  "Q": {
+   "repos": 18,
+   "profile": 10,
+   "cron_jobs": 10
+  },
+  "R": {
+   "repos": 14,
+   "profile": 10,
+   "cron_jobs": 10
+  },
+  "S": {
+   "repos": 25,
+   "profile": 17,
+   "cron_jobs": 17
+  },
+  "T": {
+   "repos": 3,
+   "profile": 1,
+   "cron_jobs": 1
+  },
+  "U": {
+   "repos": 1,
+   "profile": 1,
+   "cron_jobs": 1
+  }
+ },
+ "isco-major": {
+  "0": {
+   "repos": 3,
+   "profile": 2,
+   "cron_jobs": 2
+  },
+  "1": {
+   "repos": 28,
+   "profile": 21,
+   "cron_jobs": 21
+  },
+  "2": {
+   "repos": 56,
+   "profile": 52,
+   "cron_jobs": 52
+  },
+  "3": {
+   "repos": 59,
+   "profile": 54,
+   "cron_jobs": 54
+  },
+  "4": {
+   "repos": 29,
+   "profile": 29,
+   "cron_jobs": 29
+  },
+  "5": {
+   "repos": 16,
+   "profile": 16,
+   "cron_jobs": 16
+  },
+  "6": {
+   "repos": 18,
+   "profile": 18,
+   "cron_jobs": 18
+  },
+  "7": {
+   "repos": 66,
+   "profile": 66,
+   "cron_jobs": 66
+  },
+  "8": {
+   "repos": 40,
+   "profile": 40,
+   "cron_jobs": 40
+  },
+  "9": {
+   "repos": 25,
+   "profile": 23,
+   "cron_jobs": 23
+  }
+ }
+}

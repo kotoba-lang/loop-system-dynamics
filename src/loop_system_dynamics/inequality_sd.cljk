@@ -1,0 +1,151 @@
+(ns loop-system-dynamics.inequality-sd
+  "Stylized stock-flow model of why hardship and inequality compound in a
+   modern market economy. STRUCTURAL / QUALITATIVE: parameters are round
+   illustrative magnitudes, not fitted to any country's data, and every output
+   is a comparison between scenarios of the same model -- never a forecast.
+
+   Stocks (normalized, total initial wealth = 100):
+     Kt  top-decile capital wealth        Kb  bottom-90% net wealth (can go <0)
+     Rn  rent/necessities-cost index (housing, health, education; start 1.0)
+     B   worker bargaining power [0,1]   P   policy capture [0,1]
+
+   Loops:
+     R1 r>g        Kt -> capital income -> savings -> Kt
+     R2 rent       Kt surplus -> asset demand -> Rn up -> Kb squeezed -> Kt share up
+     R3 bargaining precarity -> B down -> labor share down -> more precarity
+     R4 debt trap  Kb < 0 -> interest -> Kb lower
+     R5 capture    Kt -> P -> after-tax r up -> Kt
+     B1 tax        progressive tax drains Kt flow (strength falls as P rises)
+     B2 growth     g dilutes the stock-ratio effect of R1"
+  (:require [dynamics.core :as d]))
+
+(def base-params
+  {:g 0.015                ;; real output growth
+   :r 0.045                ;; pre-tax real return on capital
+   :labor-share0 0.62      ;; labor share of income at B=0.5
+   :top-income-pop 0.1
+   :top-consume 0.25       ;; share of top income consumed
+   :asset-pass 0.35        ;; share of top surplus bidding up rent/asset prices
+   :rent-gain 0.012        ;; Rn growth per unit of asset-pass inflow (per yr)
+   :rent-decay 0.01        ;; supply response pulling Rn back
+   :necessity-w 0.55       ;; share of bottom budget tied to Rn-priced goods
+   :debt-rate 0.07
+   :save-frac 0.08         ;; share of bottom surplus saved
+   :b-erosion 0.02         ;; B decay per yr from precarity
+   :b-recovery 0.004
+   :p-gain 0.03            ;; P growth from top wealth share
+   :p-decay 0.01
+   :tax0 0.30              ;; effective tax on capital income at P=0
+   :tax-redistribute 0.9   ;; share of capital tax returned to bottom
+   :dt 0.25
+   :years 50})
+
+(defn- clamp [lo hi x] (max lo (min hi x)))
+
+(defn step
+  [{:keys [g r labor-share0 top-consume asset-pass rent-gain rent-decay
+           necessity-w debt-rate save-frac b-erosion b-recovery p-gain p-decay
+           tax0 tax-redistribute dt top-income-pop] :as p}
+   {:keys [Kt Kb Rn B P Y] :as s}]
+  (let [total (+ Kt (max Kb 0.0))
+        top-share (/ Kt (max 1e-9 (+ Kt (max Kb 0.0))))
+        ;; income: Y grows at g; labor share falls with weak bargaining power
+        labor-share (clamp 0.3 0.8 (+ labor-share0 (* 0.25 (- B 0.5))))
+        labor-income (* Y labor-share)
+        ;; capital income flows to wealth holders pro-rata to Kt
+        cap-income-top (* r Kt)
+        tax-rate (clamp 0.0 0.6 (* tax0 (- 1.0 P)))
+        tax (* tax-rate cap-income-top)
+        cap-income-top-net (- cap-income-top tax)
+        top-labor (* labor-income 0.25)           ;; top-decile wage premium
+        bottom-labor (- labor-income top-labor)
+        top-income (+ cap-income-top-net top-labor)
+        top-surplus (* (- 1.0 top-consume) top-income)
+        transfer (* tax-redistribute tax)
+        ;; bottom 90%: income minus necessities priced by Rn, minus debt service
+        necessities (* necessity-w Y 0.42 Rn)     ;; cost of living for the 90%
+        debt-service (* debt-rate (max 0.0 (- Kb)))
+        bottom-disp (- (+ bottom-labor transfer) necessities debt-service)
+        bottom-other (* (- 1.0 necessity-w) Y 0.42)     ;; non-necessity spending
+        bottom-net (- bottom-disp bottom-other)
+        dKb (if (pos? bottom-net) (* save-frac bottom-net) bottom-net) ;; deficits borrowed in full
+        ;; top surplus: part reinvested as capital, part bids up rents/assets
+        inflow-assets (* asset-pass top-surplus)
+        dKt (+ (- top-surplus inflow-assets) (* 0.5 inflow-assets))
+        dRn (- (* rent-gain (/ inflow-assets (max 1.0 Y)) 10.0 Rn)
+               (* rent-decay (- Rn 1.0)))
+        precarity (clamp 0.0 1.0 (- 1.0 (/ bottom-net (max 1e-6 (* 0.2 Y)))))
+        dB (- (* b-recovery (- 1.0 B)) (* b-erosion precarity B))
+        dP (- (* p-gain top-share (- 1.0 P)) (* p-decay P))
+        dY (* g Y)]
+    {:Kt (+ Kt (* dt dKt))
+     :Kb (+ Kb (* dt dKb))
+     :Rn (+ Rn (* dt dRn))
+     :B  (clamp 0.0 1.0 (+ B (* dt dB)))
+     :P  (clamp 0.0 1.0 (+ P (* dt dP)))
+     :Y  (+ Y (* dt dY))
+     :_top-share top-share
+     :_squeeze (/ (+ necessities debt-service bottom-other) (max 1e-9 (+ bottom-labor transfer)))}))
+
+(def init {:Kt 60.0 :Kb 40.0 :Rn 1.0 :B 0.5 :P 0.1 :Y 20.0})
+
+(defn simulate [params]
+  (let [p (merge base-params params)
+        n (long (/ (:years p) (:dt p)))]
+    (loop [i 0 s init out []]
+      (if (> i n)
+        out
+        (let [t (* i (:dt p))
+              nxt (step p s)
+              s' (select-keys nxt [:Kt :Kb :Rn :B :P :Y])]
+          (recur (inc i) s'
+                 (if (zero? (mod i (long (/ 1.0 (:dt p)))))
+                   (conj out (assoc s :t t
+                                    :kt-y (/ (:Kt s) (:Y s)) :kb-y (/ (:Kb s) (:Y s))
+                                    :squeeze (:_squeeze nxt)))
+                   out)))))))
+
+(def scenarios
+  {:baseline            {}
+   :wealth-tax          {:tax0 0.50}                    ;; B1 stronger
+   :close-capture       {:p-gain 0.005}                 ;; R5 weakened (rules/info)
+   :rent-decoupling     {:asset-pass 0.10 :rent-decay 0.05} ;; R2 weakened (housing supply / public housing)
+   :restore-bargaining  {:b-erosion 0.005 :b-recovery 0.02} ;; R3 weakened
+   :debt-relief         {:debt-rate 0.02}               ;; R4 weakened
+   :r-equals-g          {:r 0.02}                       ;; R1 weakened
+   :all-structural      {:tax0 0.50 :p-gain 0.005 :asset-pass 0.10 :rent-decay 0.05
+                         :b-erosion 0.005 :b-recovery 0.02 :debt-rate 0.02}
+   :worse-r-gt-g        {:r 0.07}})
+
+(defn summarize [series]
+  (let [at (fn [t] (first (filter #(= (:t %) (double t)) series)))
+        s0 (at 0) s25 (at 25) s50 (last series)]
+    {:kt-y {:y0 (:kt-y s0) :y25 (:kt-y s25) :y50 (:kt-y s50)}
+     :kb-y {:y0 (:kb-y s0) :y25 (:kb-y s25) :y50 (:kb-y s50)}
+     :squeeze   {:y0 (:squeeze s0)   :y25 (:squeeze s25)   :y50 (:squeeze s50)}
+     :Rn        {:y25 (:Rn s25) :y50 (:Rn s50)}
+     :B         {:y25 (:B s25)  :y50 (:B s50)}
+     :P         {:y25 (:P s25)  :y50 (:P s50)}
+     :Kb        {:y0 (:Kb s0) :y50 (:Kb s50)}}))
+
+(defn run-scenarios []
+  (into {} (for [[k v] scenarios] [k (summarize (simulate v))])))
+
+;; --- Meadows leverage scoring of the levers (tractability = judgment, flagged)
+(def levers
+  [{:id :tax-wealth-capital   :loop :R1/B1 :band :band/C :tractability 0.35
+    :note "raises B1 gain; politically gated by R5"}
+   {:id :close-capture        :loop :R5    :band :band/B :tractability 0.30
+    :note "campaign finance / lobbying disclosure; info-flow + rules"}
+   {:id :rent-decoupling      :loop :R2    :band :band/D :tractability 0.45
+    :note "housing supply, public/mutual housing, land-value capture"}
+   {:id :restore-bargaining   :loop :R3    :band :band/B :tractability 0.40
+    :note "sectoral bargaining, platform-worker status"}
+   {:id :debt-relief-cap      :loop :R4    :band :band/E :tractability 0.60
+    :note "interest cap / forgiveness: parameter change, fast, shallow"}
+   {:id :goal-shift           :loop :all   :band :band/A :tractability 0.10
+    :note "GDP -> wellbeing/necessities-security as the system goal"}
+   {:id :commons-infra        :loop :R2/R4 :band :band/D :tractability 0.25
+    :note "cooperative/mutual-aid service layer (itonami-style); effect UNMEASURED"}])
+
+(defn ranked-levers [] (d/rank-interventions levers))

@@ -1,0 +1,272 @@
+(ns loop-system-dynamics.inequality-calibrated
+  "Inequality stock-flow model calibrated to REAL series (World Bank, ILOSTAT;
+   resources/real/inequality-real-data.json), connected to ISIC/ISCO via
+   ILO employment weights, and to cloud-itonami's bot profiles via the real
+   per-ISIC-section / per-ISCO-major-group profile coverage
+   (resources/real/itonami-bot-coverage.json).
+
+   What is data and what is assumption is explicit:
+     DATA        labour income share (ILO), top-10% income share (WB), growth,
+                 employment by ISIC4 section and ISCO-08 2-digit (ILO),
+                 itonami profile counts (filesystem scan).
+     CALIBRATED  erosion of bargaining power, asset-bidding pass-through,
+                 policy-capture gain -- fitted to the OLS SLOPES of labour share
+                 and top-10 share over the observed window. Two targets, three
+                 free parameters => NOT identified; so we keep an ENSEMBLE of the
+                 best-fitting parameter sets and report ranges, not points.
+     ASSUMED     necessity budget share, bot cost-reduction, bot capital
+                 formation. Flagged where used; scenarios sweep them."
+  (:require ["fs" :as fs]
+            [dynamics.core :as d]))
+
+(defn read-json [p] (js->clj (js/JSON.parse (fs/readFileSync p "utf8")) :keywordize-keys false))
+
+;; ---------------------------------------------------------------- real data
+(defn ols-slope [pts]
+  (let [n (count pts)
+        mx (/ (reduce + (map first pts)) n) my (/ (reduce + (map second pts)) n)
+        sxx (reduce + (map #(let [dx (- (first %) mx)] (* dx dx)) pts))
+        sxy (reduce + (map #(* (- (first %) mx) (- (second %) my)) pts))]
+    (/ sxy sxx)))
+
+(defn wb-series [data k c]
+  (->> (get-in data ["wb" k c "series"])
+       (map (fn [[y v]] [(js/parseInt y 10) v])) (sort-by first)))
+
+(defn ilo-ls-series [data c]
+  (->> (get-in data ["ilo" "labour-income-share" c "rows"])
+       (map (fn [r] [(js/parseInt (get r "time") 10) (js/parseFloat (get r "obs_value"))]))
+       (filter (fn [[y v]] (and (<= 2004 y 2024) (not (js/isNaN v)))))
+       (sort-by first)))
+
+(defn mean [xs] (/ (reduce + xs) (count xs)))
+
+(defn targets [data c]
+  (let [ls (ilo-ls-series data c)
+        t10 (wb-series data "top10-income" c)
+        gr (filter (fn [[y _]] (>= y 2004)) (wb-series data "gdp-pc-growth" c))
+        rr (filter (fn [[y _]] (>= y 2004)) (wb-series data "real-interest" c))]
+    {:country c
+     :ls0 (/ (mean (map second (take 3 ls))) 100.0)
+     :ls-slope (/ (ols-slope ls) 100.0)                      ;; per year, share units
+     :ls-window [(ffirst ls) (first (last ls))]
+     :top10-0 (/ (mean (map second (take 3 t10))) 100.0)
+     :top10-slope (/ (ols-slope t10) 100.0)
+     :top10-window [(ffirst t10) (first (last t10))]
+     :g (/ (mean (map second gr)) 100.0)
+     :rf (/ (mean (map second rr)) 100.0)}))
+
+;; ISIC-section / ISCO-major employment weights (latest year with a TOTAL)
+(defn ilo-latest [data k c prefix total-id]
+  (let [rows (get-in data ["ilo" k c "rows"])
+        yr (->> rows (filter #(= (get % "classif1") total-id))
+                (map #(js/parseInt (get % "time") 10)) (apply max))
+        at-yr (filter #(= (js/parseInt (get % "time") 10) yr) rows)
+        total (->> at-yr (filter #(= (get % "classif1") total-id)) first (#(js/parseFloat (get % "obs_value"))))]
+    {:year yr :total total
+     :rows (->> at-yr (filter #(.startsWith (get % "classif1") prefix))
+                (map (fn [r] [(subs (get r "classif1") (count prefix))
+                              (js/parseFloat (get r "obs_value"))])))}))
+
+(defn isic-weights [data c]
+  (let [{:keys [year total rows]} (ilo-latest data "emp-by-economic-activity" c "ECO_ISIC4_" "ECO_ISIC4_TOTAL")
+        m (into {} (filter (fn [[k _]] (= 1 (count k))) rows))
+        m (dissoc m "X")]
+    {:year year :weights (into {} (map (fn [[k v]] [k (/ v total)]) m))
+     :covered (/ (reduce + (vals m)) total)}))
+
+(defn isco-weights [data c]
+  (let [{:keys [year total rows]} (ilo-latest data "emp-by-occupation" c "OC2_ISCO08_" "OC2_ISCO08_TOTAL")
+        two (filter (fn [[k _]] (and (= 2 (count k)) (re-matches #"[0-9]{2}" k))) rows)
+        by (reduce (fn [a [k v]] (update a (subs k 0 1) (fnil + 0) v)) {} two)]
+    {:year year :weights (into {} (map (fn [[k v]] [k (/ v total)]) by))
+     :covered (/ (reduce + (vals by)) total)}))
+
+;; ---------------------------------------------------------------- itonami bot coverage
+;; Necessity sectors = where households' cost of living is set (ISIC4 sections):
+;; A food production, D/E utilities, F construction, I food service, L housing,
+;; P education, Q health. This list is an ASSUMPTION about what "necessities" means.
+(def necessity-sections ["A" "D" "E" "F" "I" "L" "P" "Q"])
+
+(defn section-coverage [cov s]
+  (let [{:strs [repos profile]} (get-in cov ["isic-section" s])]
+    (if (and repos (pos? repos)) (/ profile repos 1.0) 0.0)))
+
+(defn necessity-coverage
+  "Employment-weighted fraction of the necessity sectors' ISIC codes that have a
+   resident bot profile."
+  [cov isicw]
+  (let [w (select-keys (:weights isicw) necessity-sections)
+        tot (reduce + (vals w))]
+    (/ (reduce + (map (fn [[s wt]] (* wt (section-coverage cov s))) w)) tot)))
+
+(defn isco-coverage [cov iscow]
+  (let [w (dissoc (:weights iscow) "0")
+        tot (reduce + (vals w))]
+    (/ (reduce + (map (fn [[g wt]]
+                        (let [{:strs [repos profile]} (get-in cov ["isco-major" g])]
+                          (* wt (if (and repos (pos? repos)) (/ profile repos 1.0) 0.0))))
+                      w))
+       tot)))
+
+;; ---------------------------------------------------------------- model
+(defn clamp [lo hi x] (max lo (min hi x)))
+
+(def fixed
+  {:dt 0.25
+   :kB 0.25                ;; labour-share sensitivity to bargaining power (ASSUMED)
+   :wage-premium-top 0.0   ;; set from top10-0 at init
+   :top-consume 0.40
+   :rent-gain 0.5 :rent-decay 0.03
+   :necessity-w 0.45       ;; ASSUMED: share of bottom-90% spending priced by Rn
+   :save0 0.06
+   :sf 0.25 :debt-spread 0.03
+   :dep 0.03
+   :b-recovery 0.01 :p-decay 0.01 :p-gain-scale 1.0
+   :tax0 0.25 :tax-redistribute 0.9
+   :ky0 4.5})              ;; initial capital/income ratio (stylized, Piketty-range)
+
+(defn init-state [tg]
+  (let [{:keys [ls0 top10-0 ky0]} (merge tg fixed)
+        K (* ky0 1.0)
+        kt-share 0.6]
+    {:Kt (* K kt-share) :Kb (* K (- 1 kt-share)) :Kc 0.0 :Rn 1.0 :B 0.5 :P 0.1 :Y 1.0
+     :B0 0.5 :ls0 ls0 :top10-0 top10-0}))
+
+(defn step [tg p s]
+  (let [{:keys [g rf]} tg
+        {:keys [dt kB top-consume rent-gain rent-decay necessity-w save0 sf debt-spread dep
+                b-recovery p-decay tax0 tax-redistribute eros asset-pass p-gain
+                a-t cov delta kappa]} p
+        {:keys [Kt Kb Kc Rn B P Y ls0 top10-0]} s
+        LS (clamp 0.3 0.8 (+ ls0 (* kB (- B 0.5))))
+        labor (* LS Y)
+        cap-inc (* (- 1 LS) Y)
+        Kb+ (max Kb 0.0)
+        Ktot (+ Kt Kb+ Kc)
+        f-top (/ Kt Ktot)
+        tax-rate (clamp 0.0 0.6 (* tax0 (- 1.0 P)))
+        cap-top (* f-top cap-inc)
+        tax (* tax-rate cap-top)
+        cap-top-net (- cap-top tax)
+        ;; top wage premium: top gets omega of labour income; omega fixed so that
+        ;; the INITIAL top-10 income share equals the observed one
+        omega (:omega s)
+        top-lab (* omega labor)
+        top-income (+ cap-top-net top-lab)
+        top10-share (/ top-income (+ labor cap-inc))
+        top-surplus (* (- 1 top-consume) top-income)
+        bid (* asset-pass top-surplus)
+        dKt (- (+ (- top-surplus bid) (* 0.5 bid)) (* dep Kt))
+        ;; bottom 90%
+        bot-lab (- labor top-lab)
+        cap-bot (* (- 1 f-top) cap-inc)       ;; includes Kc's pro-rata share
+        transfer (* tax-redistribute tax)
+        income-b (+ bot-lab cap-bot transfer)
+        spend0 (* (- 1 save0) (:income-b0 s))
+        scale (/ Y 1.0)
+        nec (* necessity-w spend0 scale Rn (- 1.0 (* delta a-t cov)))
+        oth (* (- 1.0 necessity-w) spend0 scale)
+        debt-svc (* (+ rf debt-spread) (max 0.0 (- Kb)))
+        spend (+ nec oth debt-svc)
+        surplus (- income-b spend)
+        dKb (if (pos? surplus) (* sf surplus) surplus)
+        dKc (- (* a-t cov kappa Y) (* dep Kc))
+        precarity (clamp 0.0 1.0 (- 1.0 (/ surplus (max 1e-6 (* 0.15 Y)))))
+        dB (- (* b-recovery (- 1.0 B)) (* eros precarity B))
+        dP (- (* p-gain f-top (- 1.0 P)) (* p-decay P))
+        dRn (- (* rent-gain (/ bid Y) Rn) (* rent-decay (- Rn 1.0)))
+        out {:LS LS :top10 top10-share :squeeze (/ spend income-b) :Rn Rn :B B :P P :Kt Kt :Kb Kb :Kc Kc :KY (/ Ktot Y)}]
+    [(assoc s :Kt (+ Kt (* dt dKt)) :Kb (+ Kb (* dt dKb)) :Kc (+ Kc (* dt dKc))
+            :Rn (+ Rn (* dt dRn)) :B (clamp 0 1 (+ B (* dt dB))) :P (clamp 0 1 (+ P (* dt dP)))
+            :Y (* Y (+ 1.0 (* dt g))))
+     out]))
+
+(defn calibrate-omega
+  "Solve omega so the initial top-10 income share equals the observed value."
+  [tg p s0]
+  (let [{:keys [ls0 top10-0]} s0
+        {:keys [Kt Kb]} s0
+        f-top (/ Kt (+ Kt Kb))
+        LS ls0 labor LS cap-inc (- 1 LS)
+        tax (* (* (:tax0 p) (- 1 (:P s0))) (* f-top cap-inc))
+        cap-top-net (- (* f-top cap-inc) tax)
+        ;; top10 = (cap-top-net + omega*labor)/1
+        omega (/ (- top10-0 cap-top-net) labor)
+        ;; initial bottom income to anchor spending
+        top-lab (* omega labor)
+        income-b0 (+ (- labor top-lab) (* (- 1 f-top) cap-inc) (* (:tax-redistribute p) tax))]
+    (assoc s0 :omega omega :income-b0 income-b0)))
+
+(defn simulate
+  "years of annual output rows. a-max/cov/delta/kappa drive the bot lever."
+  [tg params years]
+  (let [p (merge fixed params)
+        s0 (calibrate-omega tg p (init-state tg))
+        n (long (/ years (:dt p)))
+        per (long (/ 1.0 (:dt p)))]
+    (loop [i 0 s s0 rows []]
+      (if (> i n) rows
+          (let [t (* i (:dt p))
+                a-t (* (get params :a-max 0.0) (- 1.0 (js/Math.exp (- (/ t (get params :tau 10.0))))))
+                [s' o] (step tg (assoc p :a-t a-t) s)]
+            (recur (inc i) s' (if (zero? (mod i per)) (conj rows (assoc o :t t)) rows)))))))
+
+;; ---------------------------------------------------------------- calibration
+(defn rng [seed]
+  (let [st (atom seed)]
+    (fn [] (swap! st #(mod (+ (* % 1664525) 1013904223) 4294967296)) (/ @st 4294967296.0))))
+
+(defn fit-error [tg rows-by-window]
+  (let [ls (map (fn [r] [(:t r) (:LS r)]) rows-by-window)
+        t10 (map (fn [r] [(:t r) (:top10 r)]) rows-by-window)
+        e1 (- (ols-slope ls) (:ls-slope tg))
+        e2 (- (ols-slope t10) (:top10-slope tg))]
+    ;; scale errors by 0.1 pp/yr so both targets weigh equally
+    (+ (* (/ e1 0.001) (/ e1 0.001)) (* (/ e2 0.001) (/ e2 0.001)))))
+
+(defn calibrate [tg n keep seed]
+  (let [r (rng seed)
+        pick (fn [lo hi] (+ lo (* (r) (- hi lo))))
+        draws (for [_ (range n)]
+                {:eros (pick 0.0 0.06) :asset-pass (pick 0.0 0.6) :p-gain (pick 0.0 0.08)})
+        scored (map (fn [pm]
+                      (let [rows (simulate tg pm 20)]
+                        (assoc pm :err (fit-error tg rows)
+                               :fit-ls-slope (ols-slope (map (fn [r] [(:t r) (:LS r)]) rows))
+                               :fit-top10-slope (ols-slope (map (fn [r] [(:t r) (:top10 r)]) rows)))))
+                    draws)]
+    (take keep (sort-by :err scored))))
+
+;; ---------------------------------------------------------------- measured bot state
+;; resources/real/necessity-impact.json is written by scripts/aggregate_necessity_impact.cljk
+;; from the per-repo impact.json + host ledgers of the necessity-impact probe.
+(defn measured-bot-state
+  "What the probes have actually measured, vs. what the scenarios assume.
+   :delta   measured mean unit-cost reduction, or nil (UNMEASURED)
+   :active-coverage  employment-weighted share of necessity-sector ISIC codes whose
+            profile ran >= 20 of the last 30 days (0.0 if none have)
+   :assumed-delta / :profile-coverage are the structural assumption the
+   scenarios use; they are NOT measurements."
+  [impact cov isicw]
+  (let [secs (get impact "sections")
+        w (select-keys (:weights isicw) necessity-sections)
+        tot (reduce + (vals w))
+        repos (fn [s] (get-in cov ["isic-section" s "repos"] 0))
+        active-cov (/ (reduce + (map (fn [[s wt]]
+                                       (let [r (repos s)
+                                             a (get-in secs [s "active"] 0)]
+                                         (if (pos? r) (* wt (/ a r 1.0)) 0.0)))
+                                     w))
+                      tot)]
+    {:delta (get impact "delta_measured")
+     :n-measured (get impact "n_measured" 0)
+     :active-coverage active-cov
+     :assumed-delta 0.3
+     :profile-coverage (necessity-coverage cov isicw)}))
+
+(defn effective-bot-params
+  "Bot parameters for the 'as measured today' arm: no measured delta => the lever
+   is inert (delta 0), and coverage is the ACTIVE coverage, not profile existence."
+  [{:keys [delta active-coverage]} a-max kappa]
+  {:a-max a-max :cov active-coverage :delta (or delta 0.0) :kappa kappa})

@@ -1,0 +1,60 @@
+(ns run-inequality-sensitivity
+  (:require [loop-system-dynamics.inequality-calibrated :as ic]))
+
+(def data (ic/read-json "resources/real/inequality-real-data.json"))
+(def cov  (ic/read-json "resources/real/itonami-bot-coverage.json"))
+(defn f3 [x] (.toFixed x 3))
+(defn at [rows t] (first (filter #(= (:t %) (double t)) rows)))
+(defn median [xs] (let [s (vec (sort xs)) n (count s)] (nth s (quot n 2))))
+(def A 0.30)
+
+(defn bot-effect
+  "median over ensemble of squeeze(base,y40) - squeeze(bots,y40); positive = bots help.
+   base-over overrides apply to BOTH arms (structure assumptions), bot-over only to the bot arm."
+  [tg ens ncov base-over bot-over]
+  (let [ds (for [pm ens]
+             (let [b (merge (select-keys pm [:eros :asset-pass :p-gain]) base-over)
+                   s0 (:squeeze (at (ic/simulate tg b 40) 40))
+                   s1 (:squeeze (at (ic/simulate tg (merge b {:a-max A :cov ncov :delta 0.3 :kappa 0.03} bot-over) 40) 40))]
+               [s0 (- s0 s1)]))]
+    {:base (median (map first ds)) :effect (median (map second ds))}))
+
+(defn corr [xs ys]
+  (let [n (count xs) mx (/ (reduce + xs) n) my (/ (reduce + ys) n)
+        sxy (reduce + (map #(* (- %1 mx) (- %2 my)) xs ys))
+        sxx (reduce + (map #(* (- % mx) (- % mx)) xs)) syy (reduce + (map #(* (- % my) (- % my)) ys))]
+    (/ sxy (js/Math.sqrt (* sxx syy)))))
+
+(doseq [c ["JPN" "USA"]]
+  (let [tg (ic/targets data c) ncov (ic/necessity-coverage cov (ic/isic-weights data c))
+        ens (ic/calibrate tg 1500 15 42)
+        ref (bot-effect tg ens ncov {} {})]
+    (println "==========" c "| reference (a=30%, delta .3, kappa .03, coverage" (f3 ncov) "): baseline squeeze y40 =" (f3 (:base ref)) " bot effect =" (f3 (:effect ref)))
+    (println "one-at-a-time (median over ensemble). effect = squeeze reduction from bots at y40; base = baseline squeeze y40")
+    (doseq [[nm lvls]
+            [["delta (bot cost cut)"   [[:bot :delta 0.1] [:bot :delta 0.3] [:bot :delta 0.5]]]
+             ["kappa (commons capital)" [[:bot :kappa 0.01] [:bot :kappa 0.03] [:bot :kappa 0.06]]]
+             ["tau (ramp years)"       [[:bot :tau 5.0] [:bot :tau 10.0] [:bot :tau 20.0]]]
+             ["coverage"               [[:bot :cov ncov] [:bot :cov 0.75] [:bot :cov 1.0]]]
+             ["necessity-w"            [[:base :necessity-w 0.3] [:base :necessity-w 0.45] [:base :necessity-w 0.6]]]
+             ["kB (LS vs bargaining)"  [[:base :kB 0.1] [:base :kB 0.25] [:base :kB 0.4]]]]]
+      (println (.padEnd nm 26)
+               (clojure.string/join "  " (for [[arm k v] lvls]
+                                           (let [r (bot-effect tg ens ncov (if (= arm :base) {k v} {}) (if (= arm :bot) {k v} {}))]
+                                             (str (name k) "=" (f3 v) " -> eff " (f3 (:effect r)) " base " (f3 (:base r))))))))
+    ;; global Monte Carlo over all assumptions
+    (let [r (ic/rng 7) pick (fn [lo hi] (+ lo (* (r) (- hi lo))))
+          draws (for [_ (range 250)] {:delta (pick 0.05 0.5) :kappa (pick 0.005 0.06) :tau (pick 5 25)
+                                      :cov (pick ncov 1.0) :necessity-w (pick 0.3 0.6) :kB (pick 0.1 0.4)})
+          one-ens (take 5 ens)
+          res (for [d draws]
+                (let [rr (bot-effect tg one-ens ncov (select-keys d [:necessity-w :kB]) (select-keys d [:delta :kappa :tau :cov]))]
+                  (assoc d :effect (:effect rr) :base (:base rr))))
+          eff (map :effect res)]
+      (println "GLOBAL MC (250 draws x 5 ensemble members): bot effect at a=30%: min" (f3 (apply min eff)) "median" (f3 (median eff)) "max" (f3 (apply max eff))
+               "| share of draws where effect > 0.10:" (f3 (/ (count (filter #(> % 0.10) eff)) 250.0))
+               "| effect > baseline-squeeze excess over 1.0 (i.e. bots alone bring squeeze <=1):"
+               (f3 (/ (count (filter #(<= (- (:base %) (:effect %)) 1.0) res)) 250.0)))
+      (println "correlation of each assumption with bot effect (|r| = importance):")
+      (doseq [k [:delta :kappa :tau :cov :necessity-w :kB]]
+        (println "  " (.padEnd (name k) 12) (f3 (corr (map k res) eff)))))))

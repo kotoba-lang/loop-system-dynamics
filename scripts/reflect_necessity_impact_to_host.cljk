@@ -1,0 +1,55 @@
+;; Reflect ONLY the necessity-impact addition into the host's Hermes profiles.
+;; Why not install.cljk: a full materialize also applies every other pending
+;; repo<->host difference -- e.g. it would overwrite the host's working
+;; tick.cljk paths in SOUL.md with the repo's stale ~/github/com-junkawasaki/scripts
+;; paths and switch the grow job's model. This touches nothing else.
+;; Per bot: copy scripts/necessity_impact.{cljk,py} (from the landed main),
+;; append the SOUL.md section if its marker is absent, register the cron job
+;; with `hermes cron create` if the host lacks it by name. Idempotent.
+;; Usage: kbb --backend sci scripts/reflect_necessity_impact_to_host.cljk [--dry-run]
+(ns reflect-necessity-impact-to-host
+  (:require ["fs" :as fs] ["path" :as path] ["os" :as os] ["process" :as process] ["child_process" :as cp]))
+(def home (os/homedir))
+(def gh-root (path/join home "github" "cloud-itonami"))
+(def hermes-py (path/join home ".hermes" "hermes-agent" "venv" "bin" "python"))
+(def hermes-cli (path/join home ".hermes" "hermes-agent" "hermes"))
+(def dry? (some #{"--dry-run"} (array-seq process/argv)))
+(def mark "<!-- necessity-impact:v1 -->")
+(defn run [cwd argv]
+  (let [r (.spawnSync cp (first argv) (clj->js (rest argv)) #js {:cwd cwd :encoding "utf8" :maxBuffer (* 64 1024 1024)})]
+    {:exit (if (.-error r) -1 (.-status r)) :out (str (.-stdout r)) :err (str (.-stderr r))}))
+(defn host-jobs [p] (if (fs/existsSync p) (vec (array-seq (.-jobs (js/JSON.parse (fs/readFileSync p "utf8"))))) []))
+
+(def results
+  (for [d (sort (array-seq (fs/readdirSync gh-root)))
+        :let [m (re-matches #"cloud-itonami-isic-(\d+)" d)] :when (and m (fs/existsSync (path/join gh-root d "impact.json")))
+        :let [bot (str "physai-isic-" (second m)) repo (path/join gh-root d)
+              pdir (path/join home ".hermes" "profiles" bot)
+              rp (str "hermes/profiles/" bot)]]
+    (if-not (fs/existsSync (path/join pdir "SOUL.md"))
+      [bot :skipped "no host profile"]
+      (let [git (fn [& a] (run repo (into ["git"] a)))
+            _ (git "fetch" "-q" "cloud-itonami" "main")
+            show (fn [f] (let [r (git "show" (str "cloud-itonami/main:" rp "/" f))] (when (zero? (:exit r)) (:out r))))
+            soul-main (show "SOUL.md") py (show "scripts/necessity_impact.py") cljk (show "scripts/necessity_impact.cljk")
+            section (when soul-main (let [i (.indexOf soul-main mark)] (when (>= i 0) (subs soul-main i))))
+            soul-host (fs/readFileSync (path/join pdir "SOUL.md") "utf8")
+            jp (path/join pdir "cron" "jobs.json") nm (str bot "-necessity-impact")
+            has-job (some #(= (.-name %) nm) (host-jobs jp))
+            need-soul (not (.includes soul-host mark))]
+        (cond
+          (not (and py cljk section)) [bot :fail "landed main lacks scripts or SOUL section"]
+          dry? [bot :would {:scripts true :soul need-soul :cron (not has-job)}]
+          :else
+          (do (fs/mkdirSync (path/join pdir "scripts") #js {:recursive true})
+              (doseq [[f c] [["necessity_impact.py" py] ["necessity_impact.cljk" cljk]]]
+                (fs/writeFileSync (path/join pdir "scripts" f) c) (fs/chmodSync (path/join pdir "scripts" f) 493))
+              (when need-soul (fs/writeFileSync (path/join pdir "SOUL.md") (str (.replace soul-host #"\n+$" "") "\n\n" section)))
+              (let [r (when-not has-job
+                        (run repo [hermes-py hermes-cli "-p" bot "cron" "create" "17 21 * * *" "--name" nm "--deliver" "local"
+                                   "--script" "necessity_impact.py" "--no-agent"]))]
+                (if (and r (not (zero? (:exit r))))
+                  [bot :fail (str "cron create: " (subs (str (:out r) (:err r)) 0 (min 200 (count (str (:out r) (:err r))))))]
+                  [bot :done {:soul need-soul :cron (not has-job)}]))))))))
+(doseq [r results] (println (pr-str r)))
+(println (frequencies (map second results)))
