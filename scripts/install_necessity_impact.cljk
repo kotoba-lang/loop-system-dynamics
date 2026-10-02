@@ -20,7 +20,7 @@
        "この repo の ISIC コードは世帯の必需品（`" role "`）の供給側にある。inequality system-dynamics モデルは\n"
        "「bot が必需品の単位コストを何 % 下げるか（delta）」と「profile が実際に稼働しているか」が、\n"
        "bot で生活の苦しさを解消できるかを決める 2 つの未実測量だと示した。この profile はそれを測る。\n\n"
-       "- 毎日 `necessity_impact.sh`（実体は `necessity_impact.cljk`、モデル不使用）が repo 直下の `impact.json` を読み、\n"
+       "- 毎日 `necessity_impact.py`（起動だけの launcher。実体は `necessity_impact.cljk`、モデル不使用）が repo 直下の `impact.json` を読み、\n"
        "  `delta = 1 - with_bot.cost / baseline.cost` を **両方が数値・出典付き・with_bot が観測 30 件以上** のときだけ計算して\n"
        "  `~/.hermes/profiles/<bot>/ledger/necessity-impact.jsonl` に 1 行足す。足りなければ `UNMEASURED` と欠けた項目を書く。\n"
        "- 成長 tick で選べる候補に追加: `impact.json` の `baseline` を、出典（統計・公的料金表・事業者の公開価格と URL）のある\n"
@@ -50,24 +50,24 @@
           nm (str bot "-necessity-impact")]
       (when-not (fs/existsSync imp) (write-json imp (template role d code)))
       (fs/mkdirSync sd #js {:recursive true})
-      (when (fs/existsSync (path/join sd "necessity_impact.py")) (fs/unlinkSync (path/join sd "necessity_impact.py")))
-      (doseq [f ["necessity_impact.cljk" "necessity_impact.sh"]]
+      (doseq [old ["necessity_impact.sh"]] (when (fs/existsSync (path/join sd old)) (fs/unlinkSync (path/join sd old))))
+      (doseq [f ["necessity_impact.cljk" "necessity_impact.py"]]
         (fs/copyFileSync (path/join here "necessity_impact" f) (path/join sd f))
         (fs/chmodSync (path/join sd f) 493))
       (let [jobs (js/JSON.parse (fs/readFileSync jp "utf8"))
             arr (.-jobs jobs)
             ex (first (filter #(= (.-name %) nm) (array-seq arr)))]
         (if ex
-          (set! (.-script ex) "necessity_impact.sh")
+          (set! (.-script ex) "necessity_impact.py")
           (.push arr #js {:base_url nil :context_from nil :deliver "local" :enabled true :enabled_toolsets nil
                           :id (subs (-> (crypto/createHash "sha1") (.update nm) (.digest "hex")) 0 12)
                           :model nil :name nm :no_agent true :prompt "" :provider nil
                           :schedule #js {:kind "cron" :expr "17 21 * * *" :display "17 21 * * *"}
-                          :script "necessity_impact.sh" :skill nil :skills #js [] :workdir nil}))
+                          :script "necessity_impact.py" :skill nil :skills #js [] :workdir nil}))
         (write-json jp jobs))
       (let [s (fs/readFileSync sp "utf8")]
         (if (.includes s mark)
-          (fs/writeFileSync sp (.replace s "`necessity_impact.py`（モデル不使用）" "`necessity_impact.sh`（実体は `necessity_impact.cljk`、モデル不使用）"))
+          (fs/writeFileSync sp (.replace s "`necessity_impact.sh`（実体は `necessity_impact.cljk`、モデル不使用）" "`necessity_impact.py`（起動だけの launcher。実体は `necessity_impact.cljk`、モデル不使用）"))
           (fs/writeFileSync sp (str (.replace s #"\n+$" "") "\n\n" (soul role)))))
       (swap! n inc))))
 (println (if dry? "dry run, nothing written" (str "profiles equipped: " @n)))

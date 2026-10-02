@@ -11,7 +11,7 @@
 ;; observations. Otherwise STATUS is UNMEASURED and the missing fields are
 ;; listed -- never guessed, interpolated, or copied from another repo.
 ;; Always exits 0; the status travels in the text and in the ledger line.
-;; Run via necessity_impact.sh (the Hermes scheduler only runs .py/.sh).
+;; Run via the necessity_impact.py launcher (the Hermes scheduler only runs .py/.sh).
 (ns necessity-impact
   (:require ["fs" :as fs] ["path" :as path] ["os" :as os] ["process" :as process]))
 
